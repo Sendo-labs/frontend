@@ -1,42 +1,9 @@
-
-import React from "react";
-import { Plus, FileText, Terminal, Settings, Home, Wallet, Store, Trophy } from "lucide-react";
+import { Plus, Home, Wallet, Store, Trophy, FileText, Terminal, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
-const agents = [
-  {
-    id: "sendo",
-    name: "SENDO",
-    description: "Crypto analysis expert",
-    avatar: "🔥",
-    active: true
-  },
-  {
-    id: "trader",
-    name: "Trader Bot",
-    description: "Trading strategies",
-    avatar: "📈",
-    active: true
-  },
-  {
-    id: "research",
-    name: "Research AI",
-    description: "Market research",
-    avatar: "🔍",
-    active: false
-  },
-  {
-    id: "whale",
-    name: "Whale Tracker",
-    description: "Track big moves",
-    avatar: "🐋",
-    active: true
-  },
-];
-
-export default function AgentSidebar({ selectedAgent, onSelectAgent }) {
+export default function AgentSidebar({ agent }) {
   return (
     <div className="w-64 bg-[#0A0A0A] border-r border-white/10 flex flex-col h-screen">
       {/* Header */}
@@ -60,31 +27,21 @@ export default function AgentSidebar({ selectedAgent, onSelectAgent }) {
         </Button>
       </div>
 
-      {/* Agents List */}
+      {/* Agent Info */}
       <div className="flex-1 overflow-y-auto">
         <div className="p-3">
-          <p className="text-xs text-white/30 uppercase tracking-wider mb-3">Plugins</p>
-          {agents.map((agent) => (
-            <button
-              key={agent.id}
-              onClick={() => onSelectAgent(agent)}
-              className={`w-full p-3 rounded-lg mb-2 text-left transition-all flex items-center justify-between group ${
-                selectedAgent?.id === agent.id
-                  ? "bg-white/10"
-                  : "hover:bg-white/5"
-              }`}
-            >
+          <p className="text-xs text-white/30 uppercase tracking-wider mb-3">Active Agent</p>
+          {agent && (
+            <div className="w-full p-3 rounded-lg mb-2 bg-white/10 flex items-center justify-between">
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[#FF5C1A] to-[#E31D1C] flex items-center justify-center text-sm flex-shrink-0">
-                  {agent.avatar}
+                  🔥
                 </div>
                 <span className="text-sm text-white truncate">{agent.name}</span>
               </div>
-              {agent.active && (
-                <div className="w-2 h-2 bg-[#14F195] rounded-full flex-shrink-0" />
-              )}
-            </button>
-          ))}
+              <div className="w-2 h-2 bg-[#14F195] rounded-full flex-shrink-0" />
+            </div>
+          )}
         </div>
 
         <div className="p-3">
