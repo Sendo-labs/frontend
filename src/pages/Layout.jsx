@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { ArrowLeft, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import BetaDisclaimer from "./components/BetaDisclaimer";
+import BetaDisclaimer from "@/components/BetaDisclaimer";
 
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
