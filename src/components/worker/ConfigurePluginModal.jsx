@@ -1,0 +1,248 @@
+
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Eye, EyeOff, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+export default function ConfigurePluginModal({ plugin, onClose, onComplete }) {
+  const [formData, setFormData] = useState(() => {
+    const initial = {};
+    if (plugin.configFields) {
+      plugin.configFields.forEach(field => {
+        initial[field.name] = field.default || '';
+      });
+    }
+    return initial;
+  });
+  const [showPasswords, setShowPasswords] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Mock API call
+    setTimeout(() => {
+      console.log("Deploying plugin:", plugin.id, formData);
+      setIsSubmitting(false);
+      onComplete();
+    }, 1500);
+  };
+
+  const togglePasswordVisibility = (fieldName) => {
+    setShowPasswords(prev => ({
+      ...prev,
+      [fieldName]: !prev[fieldName]
+    }));
+  };
+
+  // OAuth flow
+  if (plugin.authType === "oauth") {
+    return (
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            onClick={(e) => e.stopPropagation()}
+            className="bg-[#0D0D0D] border-2 border-[#FF6B00]/30 max-w-2xl w-full"
+            style={{ borderRadius: 0 }}
+          >
+            <div className="border-b border-[#F2EDE7]/10 p-6">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-3xl" style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)' }}>
+                    {plugin.icon}
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-[#F2EDE7] mb-1" style={{ fontFamily: 'TECHNOS, sans-serif' }}>
+                      CONFIGURE <span className="text-[#FF6B00]">{plugin.name.toUpperCase()}</span>
+                    </h2>
+                    <p className="text-sm text-[#F2EDE7]/60">
+                      OAuth authentication required
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={onClose}
+                  className="w-10 h-10 bg-[#F2EDE7]/5 hover:bg-[#F2EDE7]/10 flex items-center justify-center"
+                  style={{ borderRadius: 0 }}
+                >
+                  <X className="w-6 h-6 text-[#F2EDE7]/60" />
+                </button>
+              </div>
+            </div>
+
+            <div className="p-8 text-center">
+              <p className="text-lg text-[#F2EDE7] mb-8">
+                You'll be redirected to {plugin.name} to authorize the connection.
+              </p>
+              
+              <div className="bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 p-6 mb-8" style={{ borderRadius: 0 }}>
+                <h3 className="text-sm font-bold text-[#F2EDE7] mb-4 uppercase" style={{ fontFamily: 'TECHNOS, sans-serif' }}>
+                  What we'll access:
+                </h3>
+                <ul className="space-y-2 text-left">
+                  <li className="flex items-center gap-2 text-[#F2EDE7]/70 text-sm">
+                    <Check className="w-4 h-4 text-[#14F195]" />
+                    Read wallet balances
+                  </li>
+                  <li className="flex items-center gap-2 text-[#F2EDE7]/70 text-sm">
+                    <Check className="w-4 h-4 text-[#14F195]" />
+                    Execute trades on your behalf
+                  </li>
+                  <li className="flex items-center gap-2 text-[#F2EDE7]/70 text-sm">
+                    <Check className="w-4 h-4 text-[#14F195]" />
+                    View transaction history
+                  </li>
+                </ul>
+              </div>
+
+              <div className="flex gap-3">
+                <Button
+                  onClick={onClose}
+                  variant="outline"
+                  className="flex-1 h-12 bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 hover:bg-[#F2EDE7]/10 text-[#F2EDE7]"
+                  style={{ borderRadius: 0 }}
+                >
+                  CANCEL
+                </Button>
+                <Button
+                  onClick={onComplete}
+                  className="flex-1 h-12 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white"
+                  style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)', borderRadius: 0, fontFamily: 'TECHNOS, sans-serif' }}
+                >
+                  AUTHORIZE CONNECTION
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
+
+  // API Key flow
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          onClick={(e) => e.stopPropagation()}
+          className="bg-[#0D0D0D] border-2 border-[#FF6B00]/30 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+          style={{ borderRadius: 0 }}
+        >
+          <div className="border-b border-[#F2EDE7]/10 p-6">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-3xl" style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)' }}>
+                  {plugin.icon}
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-[#F2EDE7] mb-1" style={{ fontFamily: 'TECHNOS, sans-serif' }}>
+                    CONFIGURE <span className="text-[#FF6B00]">{plugin.name.toUpperCase()}</span>
+                  </h2>
+                  <p className="text-sm text-[#F2EDE7]/60">
+                    Fill in the required parameters to deploy this plugin
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={onClose}
+                className="w-10 h-10 bg-[#F2EDE7]/5 hover:bg-[#F2EDE7]/10 flex items-center justify-center"
+                style={{ borderRadius: 0 }}
+              >
+                <X className="w-6 h-6 text-[#F2EDE7]/60" />
+              </button>
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="p-8">
+            <div className="space-y-6">
+              {plugin.configFields?.map((field) => (
+                <div key={field.name}>
+                  <label className="block text-sm font-bold text-[#F2EDE7] mb-2 uppercase">
+                    {field.label} {field.required && <span className="text-[#FF223B]">*</span>}
+                  </label>
+                  {field.description && (
+                    <p className="text-xs text-[#F2EDE7]/60 mb-3">{field.description}</p>
+                  )}
+                  <div className="relative">
+                    <Input
+                      type={field.type === "password" && !showPasswords[field.name] ? "password" : field.type === "password" ? "text" : field.type}
+                      value={formData[field.name]}
+                      onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
+                      placeholder={`Enter ${field.label.toLowerCase()}`}
+                      required={field.required}
+                      className="h-12 bg-[#F2EDE7]/5 border-[#F2EDE7]/20 text-[#F2EDE7]"
+                      style={{ borderRadius: 0 }}
+                    />
+                    {field.type === "password" && (
+                      <button
+                        type="button"
+                        onClick={() => togglePasswordVisibility(field.name)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#F2EDE7]/40 hover:text-[#F2EDE7]"
+                      >
+                        {showPasswords[field.name] ? (
+                          <EyeOff className="w-5 h-5" />
+                        ) : (
+                          <Eye className="w-5 h-5" />
+                        )}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 flex gap-3">
+              <Button
+                type="button"
+                onClick={onClose}
+                variant="outline"
+                className="flex-1 h-12 bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 hover:bg-[#F2EDE7]/10 text-[#F2EDE7]"
+                style={{ borderRadius: 0 }}
+              >
+                CANCEL
+              </Button>
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex-1 h-12 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white"
+                style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)', borderRadius: 0, fontFamily: 'TECHNOS, sans-serif' }}
+              >
+                {isSubmitting ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent" style={{ borderRadius: 0 }} />
+                    DEPLOYING...
+                  </div>
+                ) : (
+                  <>
+                    <Check className="w-5 h-5 mr-2" />
+                    DEPLOY PLUGIN
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}

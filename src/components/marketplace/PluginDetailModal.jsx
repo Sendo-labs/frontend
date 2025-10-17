@@ -1,0 +1,181 @@
+
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Star, CheckCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export default function PluginDetailModal({ plugin, onClose, onDeploy }) {
+  const [activeTab, setActiveTab] = useState("overview");
+
+  const tabs = ["OVERVIEW", "INFO", "REVIEWS", "SCREENSHOTS"];
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          onClick={(e) => e.stopPropagation()}
+          className="bg-[#0D0D0D] border-2 border-[#FF6B00]/30 max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+          style={{ borderRadius: 0 }}
+        >
+          {/* Header */}
+          <div className="border-b border-[#F2EDE7]/10 p-6">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-16 h-16 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-4xl flex-shrink-0" style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)' }}>
+                {plugin.icon}
+              </div>
+              <div className="flex-1">
+                <h2 className="text-2xl md:text-3xl font-bold text-[#F2EDE7] mb-2 uppercase" style={{ fontFamily: 'TECHNOS, sans-serif' }}>
+                  {plugin.name}
+                </h2>
+                <p className="text-[#F2EDE7]/70 mb-3">
+                  {plugin.longDescription}
+                </p>
+                <div className="flex flex-wrap items-center gap-4">
+                  {plugin.rating && (
+                    <div className="flex items-center gap-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          className={`w-4 h-4 ${
+                            star <= Math.floor(plugin.rating)
+                              ? "text-[#FFD700] fill-[#FFD700]"
+                              : "text-[#F2EDE7]/20"
+                          }`}
+                        />
+                      ))}
+                      <span className="text-sm text-[#F2EDE7]/60">
+                        {plugin.rating} ({plugin.reviews} reviews)
+                      </span>
+                    </div>
+                  )}
+                  <span className={`text-lg font-bold ${plugin.price === "FREE" ? 'text-[#14F195]' : 'text-[#FF6B00]'}`}>
+                    {plugin.price}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {plugin.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="px-2 py-1 bg-[#F2EDE7]/10 text-[#F2EDE7]/60 text-xs"
+                      style={{ borderRadius: 0 }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <button
+                onClick={onClose}
+                className="w-10 h-10 bg-[#F2EDE7]/5 hover:bg-[#F2EDE7]/10 flex items-center justify-center flex-shrink-0"
+                style={{ borderRadius: 0 }}
+              >
+                <X className="w-6 h-6 text-[#F2EDE7]/60" />
+              </button>
+            </div>
+
+            <Button
+              onClick={onDeploy}
+              className="w-full bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white h-12 text-lg font-bold uppercase"
+              style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)', borderRadius: 0 }}
+            >
+              Deploy Plugin
+            </Button>
+          </div>
+
+          {/* Tabs */}
+          <div className="border-b border-[#F2EDE7]/10 px-6">
+            <div className="flex gap-6">
+              {tabs.map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab.toLowerCase())}
+                  className={`py-4 text-sm font-bold border-b-2 transition-colors uppercase ${
+                    activeTab === tab.toLowerCase()
+                      ? "border-[#FF6B00] text-[#FF6B00]"
+                      : "border-transparent text-[#F2EDE7]/40 hover:text-[#F2EDE7]/70"
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 overflow-y-auto p-6">
+            {activeTab === "overview" && (
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-xl font-bold text-[#F2EDE7] mb-4 uppercase" style={{ fontFamily: 'TECHNOS, sans-serif' }}>
+                    About This Plugin
+                  </h3>
+                  <p className="text-[#F2EDE7]/70 leading-relaxed">
+                    {plugin.longDescription}
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold text-[#F2EDE7] mb-4 uppercase" style={{ fontFamily: 'TECHNOS, sans-serif' }}>
+                    Key Features
+                  </h3>
+                  <div className="space-y-3">
+                    {plugin.features.map((feature, index) => (
+                      <div key={index} className="flex items-start gap-3">
+                        <CheckCircle className="w-5 h-5 text-[#14F195] flex-shrink-0 mt-0.5" />
+                        <p className="text-[#F2EDE7]/70">{feature}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "info" && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-[#F2EDE7]/5 p-4" style={{ borderRadius: 0 }}>
+                    <p className="text-[#F2EDE7]/40 text-xs mb-2 uppercase">Category</p>
+                    <p className="text-[#F2EDE7] font-semibold capitalize">{plugin.category}</p>
+                  </div>
+                  <div className="bg-[#F2EDE7]/5 p-4" style={{ borderRadius: 0 }}>
+                    <p className="text-[#F2EDE7]/40 text-xs mb-2 uppercase">Auth Type</p>
+                    <p className="text-[#F2EDE7] font-semibold uppercase">{plugin.authType.replace('_', ' ')}</p>
+                  </div>
+                  <div className="bg-[#F2EDE7]/5 p-4" style={{ borderRadius: 0 }}>
+                    <p className="text-[#F2EDE7]/40 text-xs mb-2 uppercase">Price</p>
+                    <p className="text-[#F2EDE7] font-semibold">{plugin.price}</p>
+                  </div>
+                  <div className="bg-[#F2EDE7]/5 p-4" style={{ borderRadius: 0 }}>
+                    <p className="text-[#F2EDE7]/40 text-xs mb-2 uppercase">Users</p>
+                    <p className="text-[#F2EDE7] font-semibold">{plugin.reviews || 0}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "reviews" && (
+              <div className="text-center py-12">
+                <p className="text-[#F2EDE7]/40">Reviews coming soon...</p>
+              </div>
+            )}
+
+            {activeTab === "screenshots" && (
+              <div className="text-center py-12">
+                <p className="text-[#F2EDE7]/40">Screenshots coming soon...</p>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
