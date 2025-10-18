@@ -3,34 +3,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { getElizaClient } from '@/lib/eliza/client';
 import { io, Socket } from 'socket.io-client';
-
-interface Message {
-	id: string;
-	senderId: string;
-	text: string;
-	createdAt: string;
-	channelId: string;
-	type?: string;
-	source?: string;
-	rawMessage?: unknown;
-	updatedAt?: string;
-}
-
-interface UseElizaChatParams {
-	agentId?: string;
-	channelId?: string;
-}
-
-interface UseElizaChatReturn {
-	messages: Message[];
-	isLoading: boolean;
-	isAgentThinking: boolean;
-	channelId: string | null;
-	sendMessage: (content: string) => Promise<void>;
-	clearMessages: () => Promise<void>;
-	error: string | null;
-	animatedMessageId: string | null;
-}
+import { UUID } from 'crypto';
+import { Message, UseElizaChatParams, UseElizaChatReturn } from '@/types/agent';
 
 /**
  * Hook to manage chat with an Eliza agent
@@ -65,7 +39,7 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 					const userId = '00000000-0000-0000-0000-000000000001'; // TODO: Replace with real user ID from auth
 
 					const channel = await elizaClient.messaging.getOrCreateDmChannel({
-						participantIds: [userId, agentId],
+						participantIds: [userId, agentId as UUID],
 					});
 
 					console.log('[useElizaChat] Channel created:', channel.id);
@@ -87,7 +61,7 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 		const loadMessages = async () => {
 			try {
 				console.log('[useElizaChat] Loading messages for channel:', channelId);
-				const response = await elizaClient.messaging.getChannelMessages(channelId, {
+				const response = await elizaClient.messaging.getChannelMessages(channelId as UUID, {
 					limit: 50,
 				});
 
@@ -196,8 +170,8 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 						newUpdatedAt &&
 						(!existingUpdatedAt ||
 							newUpdatedAt >
-								(existingUpdatedAt instanceof Date
-									? existingUpdatedAt.getTime()
+								(existingUpdatedAt
+									? new Date(existingUpdatedAt).getTime()
 									: new Date(existingUpdatedAt).getTime()))
 					) {
 						console.log('[useElizaChat] Updating existing message:', formattedMessage.id);
@@ -345,7 +319,7 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 
 		try {
 			console.log('[useElizaChat] Clearing channel messages:', channelId);
-			await elizaClient.messaging.clearChannelHistory(channelId);
+			await elizaClient.messaging.clearChannelHistory(channelId as UUID);
 			setMessages([]);
 			console.log('[useElizaChat] Channel cleared successfully');
 		} catch (err) {

@@ -33,9 +33,9 @@ export function useElizaAgent(): UseElizaAgentReturn {
 
 				// Handle response format: could be {agents: [...]}, {data: {agents: [...]}} or {data: [...]}
 				const agents =
-					(response as { agents?: Agent[] }).agents ||
-					(response as { data?: { agents?: Agent[] } }).data?.agents ||
-					(response as { data?: Agent[] }).data ||
+					(response as unknown as { agents?: Agent[] }).agents ||
+					(response as unknown as { data?: { agents?: Agent[] } }).data?.agents ||
+					(response as unknown as { data?: Agent[] }).data ||
 					[];
 				console.log('[useElizaAgent] Agents found:', agents);
 
