@@ -1,14 +1,2 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 echo "🔍 Formatting code..."
-bun run format:fix
-
-echo "✅ Type checking..."
-bun run typecheck || echo "⚠️  Type checking failed"
-
-echo "🧪 Running tests..."
-bun run test || echo "⚠️  Tests failed"
-
-echo "🏗️  Building (informational only)..."
-bun run build || echo "⚠️  Build failed"
+bun run format

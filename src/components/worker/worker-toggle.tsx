@@ -10,26 +10,23 @@ interface WorkerToggleProps {
 
 export default function WorkerToggle({ mode, onModeChange }: WorkerToggleProps) {
 	return (
-		<div
-			className="bg-foreground/5 border border-foreground/10 p-4 md:p-6"
-			style={{ borderRadius: 0 }}
-		>
-			<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+		<div className='bg-foreground/5 border border-foreground/10 p-4 md:p-6' style={{ borderRadius: 0 }}>
+			<div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4'>
 				<div>
 					<h3
-						className="text-lg font-bold text-foreground mb-1 uppercase"
+						className='text-lg font-bold text-foreground mb-1 uppercase'
 						style={{ fontFamily: 'TECHNOS, sans-serif' }}
 					>
 						Worker Mode
 					</h3>
-					<p className="text-sm text-foreground/60">
+					<p className='text-sm text-foreground/60'>
 						{mode === 'suggest'
 							? 'Worker will suggest actions for your approval'
 							: 'Worker will execute actions automatically'}
 					</p>
 				</div>
 
-				<div className="flex gap-2">
+				<div className='flex gap-2'>
 					<Button
 						onClick={() => onModeChange('suggest')}
 						className={`h-10 px-4 transition-all ${
@@ -39,7 +36,7 @@ export default function WorkerToggle({ mode, onModeChange }: WorkerToggleProps) 
 						}`}
 						style={{ borderRadius: 0, fontFamily: 'TECHNOS, sans-serif' }}
 					>
-						<Eye className="w-4 h-4 mr-2" />
+						<Eye className='w-4 h-4 mr-2' />
 						SUGGEST
 					</Button>
 
@@ -52,20 +49,16 @@ export default function WorkerToggle({ mode, onModeChange }: WorkerToggleProps) 
 						}`}
 						style={{ borderRadius: 0, fontFamily: 'TECHNOS, sans-serif' }}
 					>
-						<Zap className="w-4 h-4 mr-2" />
+						<Zap className='w-4 h-4 mr-2' />
 						AUTO
 					</Button>
 				</div>
 			</div>
 
 			{mode === 'auto' && (
-				<div
-					className="mt-4 bg-[#FF223B]/10 border border-[#FF223B]/30 p-3"
-					style={{ borderRadius: 0 }}
-				>
-					<p className="text-xs text-[#FF223B] font-semibold">
-						⚠️ Auto mode enabled: Worker will execute trades without
-						confirmation
+				<div className='mt-4 bg-[#FF223B]/10 border border-[#FF223B]/30 p-3' style={{ borderRadius: 0 }}>
+					<p className='text-xs text-[#FF223B] font-semibold'>
+						⚠️ Auto mode enabled: Worker will execute trades without confirmation
 					</p>
 				</div>
 			)}

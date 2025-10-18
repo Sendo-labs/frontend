@@ -12,14 +12,12 @@ const WorkerSwitch = React.forwardRef<HTMLButtonElement, WorkerSwitchProps>(
 	({ className = '', checked, onCheckedChange, ...props }, ref) => {
 		return (
 			<button
-				type="button"
-				role="switch"
+				type='button'
+				role='switch'
 				aria-checked={checked}
 				onClick={() => onCheckedChange?.(!checked)}
 				className={`relative inline-flex h-6 w-11 items-center transition-colors ${
-					checked
-						? 'bg-gradient-to-r from-[#FF6B00] to-[#FF223B]'
-						: 'bg-foreground/20'
+					checked ? 'bg-gradient-to-r from-[#FF6B00] to-[#FF223B]' : 'bg-foreground/20'
 				} ${className}`}
 				style={{ borderRadius: 0 }}
 				ref={ref}

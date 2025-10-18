@@ -5,23 +5,23 @@ import { ApiClientConfig, ElizaClient } from '@elizaos/api-client';
  * @returns {import('@elizaos/api-client').ApiClientConfig}
  */
 export function createElizaClientConfig() {
-    const apiKey = localStorage.getItem('eliza-api-key') || process.env.ELIZA_SERVER_AUTH_TOKEN;
-    const baseUrl = process.env.ELIZA_SERVER_URL || 'http://localhost:3000';
+	const apiKey = localStorage.getItem('eliza-api-key') || process.env.ELIZA_SERVER_AUTH_TOKEN;
+	const baseUrl = process.env.ELIZA_SERVER_URL || 'http://localhost:3000';
 
-    const config: ApiClientConfig = {
-        baseUrl: baseUrl,
-        timeout: 30000,
-        headers: {
-            'Accept': 'application/json',
-        },
-    };
+	const config: ApiClientConfig = {
+		baseUrl: baseUrl,
+		timeout: 30000,
+		headers: {
+			Accept: 'application/json',
+		},
+	};
 
-    // Include apiKey (X-API-KEY header)
-    if (apiKey) {
-        config.apiKey = apiKey;
-    }
+	// Include apiKey (X-API-KEY header)
+	if (apiKey) {
+		config.apiKey = apiKey;
+	}
 
-    return config;
+	return config;
 }
 
 // Singleton instance
@@ -32,17 +32,17 @@ let elizaClientInstance: ElizaClient | null = null;
  * @returns {ElizaClient}
  */
 export function getElizaClient() {
-    if (!elizaClientInstance) {
-        elizaClientInstance = ElizaClient.create(createElizaClientConfig());
-    }
-    return elizaClientInstance;
+	if (!elizaClientInstance) {
+		elizaClientInstance = ElizaClient.create(createElizaClientConfig());
+	}
+	return elizaClientInstance;
 }
 
 /**
  * Reset the Eliza client singleton (useful for API key changes)
  */
 export function resetElizaClient() {
-    elizaClientInstance = null;
+	elizaClientInstance = null;
 }
 
 /**
@@ -50,12 +50,12 @@ export function resetElizaClient() {
  * @param {string | null} newApiKey
  */
 export function updateApiKey(newApiKey: string | null) {
-    if (newApiKey) {
-        localStorage.setItem('eliza-api-key', newApiKey);
-    } else {
-        localStorage.removeItem('eliza-api-key');
-    }
+	if (newApiKey) {
+		localStorage.setItem('eliza-api-key', newApiKey);
+	} else {
+		localStorage.removeItem('eliza-api-key');
+	}
 
-    // Reset the singleton so it uses the new API key
-    resetElizaClient();
+	// Reset the singleton so it uses the new API key
+	resetElizaClient();
 }

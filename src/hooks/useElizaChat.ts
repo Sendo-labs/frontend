@@ -145,7 +145,9 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 				senderId: data.senderId,
 				text: data.text,
 				createdAt:
-					typeof data.createdAt === 'number' ? new Date(data.createdAt).toISOString() : data.createdAt || new Date().toISOString(),
+					typeof data.createdAt === 'number'
+						? new Date(data.createdAt).toISOString()
+						: data.createdAt || new Date().toISOString(),
 				channelId: data.channelId || data.roomId,
 				type: data.type,
 				source: data.source || data.source_type || data.sourceType,
@@ -170,9 +172,7 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 						newUpdatedAt &&
 						(!existingUpdatedAt ||
 							newUpdatedAt >
-								(existingUpdatedAt
-									? new Date(existingUpdatedAt).getTime()
-									: new Date(existingUpdatedAt).getTime()))
+								(existingUpdatedAt ? new Date(existingUpdatedAt).getTime() : new Date(existingUpdatedAt).getTime()))
 					) {
 						console.log('[useElizaChat] Updating existing message:', formattedMessage.id);
 						const updatedMessages = [...prev];

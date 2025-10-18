@@ -32,25 +32,17 @@ interface ConfigurePluginModalProps {
 	onComplete: () => void;
 }
 
-export default function ConfigurePluginModal({
-	plugin,
-	onClose,
-	onComplete,
-}: ConfigurePluginModalProps) {
-	const [formData, setFormData] = useState<Record<string, string | number>>(
-		() => {
-			const initial: Record<string, string | number> = {};
-			if (plugin.configFields) {
-				plugin.configFields.forEach((field) => {
-					initial[field.name] = field.default || '';
-				});
-			}
-			return initial;
-		},
-	);
-	const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>(
-		{},
-	);
+export default function ConfigurePluginModal({ plugin, onClose, onComplete }: ConfigurePluginModalProps) {
+	const [formData, setFormData] = useState<Record<string, string | number>>(() => {
+		const initial: Record<string, string | number> = {};
+		if (plugin.configFields) {
+			plugin.configFields.forEach((field) => {
+				initial[field.name] = field.default || '';
+			});
+		}
+		return initial;
+	});
+	const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -80,7 +72,7 @@ export default function ConfigurePluginModal({
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
-					className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+					className='fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4'
 					onClick={onClose}
 				>
 					<motion.div
@@ -88,93 +80,82 @@ export default function ConfigurePluginModal({
 						animate={{ scale: 1, opacity: 1 }}
 						exit={{ scale: 0.9, opacity: 0 }}
 						onClick={(e) => e.stopPropagation()}
-						className="bg-[#0D0D0D] border-2 border-[#FF6B00]/30 max-w-2xl w-full"
+						className='bg-[#0D0D0D] border-2 border-[#FF6B00]/30 max-w-2xl w-full'
 						style={{ borderRadius: 0 }}
 					>
-						<div className="border-b border-foreground/10 p-6">
-							<div className="flex items-start justify-between">
-								<div className="flex items-center gap-4">
+						<div className='border-b border-foreground/10 p-6'>
+							<div className='flex items-start justify-between'>
+								<div className='flex items-center gap-4'>
 									<div
-										className="w-16 h-16 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-3xl"
+										className='w-16 h-16 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-3xl'
 										style={{
-											clipPath:
-												'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 										}}
 									>
 										{plugin.icon}
 									</div>
 									<div>
 										<h2
-											className="text-2xl font-bold text-foreground mb-1"
+											className='text-2xl font-bold text-foreground mb-1'
 											style={{ fontFamily: 'TECHNOS, sans-serif' }}
 										>
-											CONFIGURE{' '}
-											<span className="text-[#FF6B00]">
-												{plugin.name.toUpperCase()}
-											</span>
+											CONFIGURE <span className='text-[#FF6B00]'>{plugin.name.toUpperCase()}</span>
 										</h2>
-										<p className="text-sm text-foreground/60">
-											OAuth authentication required
-										</p>
+										<p className='text-sm text-foreground/60'>OAuth authentication required</p>
 									</div>
 								</div>
 								<button
 									onClick={onClose}
-									className="w-10 h-10 bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center"
+									className='w-10 h-10 bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center'
 									style={{ borderRadius: 0 }}
 								>
-									<X className="w-6 h-6 text-foreground/60" />
+									<X className='w-6 h-6 text-foreground/60' />
 								</button>
 							</div>
 						</div>
 
-						<div className="p-8 text-center">
-							<p className="text-lg text-foreground mb-8">
-								You'll be redirected to {plugin.name} to authorize the
-								connection.
+						<div className='p-8 text-center'>
+							<p className='text-lg text-foreground mb-8'>
+								You'll be redirected to {plugin.name} to authorize the connection.
 							</p>
 
-							<div
-								className="bg-foreground/5 border border-foreground/10 p-6 mb-8"
-								style={{ borderRadius: 0 }}
-							>
+							<div className='bg-foreground/5 border border-foreground/10 p-6 mb-8' style={{ borderRadius: 0 }}>
 								<h3
-									className="text-sm font-bold text-foreground mb-4 uppercase"
+									className='text-sm font-bold text-foreground mb-4 uppercase'
 									style={{ fontFamily: 'TECHNOS, sans-serif' }}
 								>
 									What we'll access:
 								</h3>
-								<ul className="space-y-2 text-left">
-									<li className="flex items-center gap-2 text-foreground/70 text-sm">
-										<Check className="w-4 h-4 text-[#14F195]" />
+								<ul className='space-y-2 text-left'>
+									<li className='flex items-center gap-2 text-foreground/70 text-sm'>
+										<Check className='w-4 h-4 text-[#14F195]' />
 										Read wallet balances
 									</li>
-									<li className="flex items-center gap-2 text-foreground/70 text-sm">
-										<Check className="w-4 h-4 text-[#14F195]" />
+									<li className='flex items-center gap-2 text-foreground/70 text-sm'>
+										<Check className='w-4 h-4 text-[#14F195]' />
 										Execute trades on your behalf
 									</li>
-									<li className="flex items-center gap-2 text-foreground/70 text-sm">
-										<Check className="w-4 h-4 text-[#14F195]" />
+									<li className='flex items-center gap-2 text-foreground/70 text-sm'>
+										<Check className='w-4 h-4 text-[#14F195]' />
 										View transaction history
 									</li>
 								</ul>
 							</div>
 
-							<div className="flex gap-3">
+							<div className='flex gap-3'>
 								<Button
 									onClick={onClose}
-									variant="outline"
-									className="flex-1 h-12 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 text-foreground"
+									variant='outline'
+									className='flex-1 h-12 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 text-foreground'
 									style={{ borderRadius: 0 }}
 								>
 									CANCEL
 								</Button>
 								<Button
 									onClick={onComplete}
-									className="flex-1 h-12 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white"
+									className='flex-1 h-12 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white'
 									style={{
-										clipPath:
-											'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+										clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 										borderRadius: 0,
 										fontFamily: 'TECHNOS, sans-serif',
 									}}
@@ -196,7 +177,7 @@ export default function ConfigurePluginModal({
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				exit={{ opacity: 0 }}
-				className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+				className='fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4'
 				onClick={onClose}
 			>
 				<motion.div
@@ -204,60 +185,46 @@ export default function ConfigurePluginModal({
 					animate={{ scale: 1, opacity: 1 }}
 					exit={{ scale: 0.9, opacity: 0 }}
 					onClick={(e) => e.stopPropagation()}
-					className="bg-[#0D0D0D] border-2 border-[#FF6B00]/30 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+					className='bg-[#0D0D0D] border-2 border-[#FF6B00]/30 max-w-2xl w-full max-h-[90vh] overflow-y-auto'
 					style={{ borderRadius: 0 }}
 				>
-					<div className="border-b border-foreground/10 p-6">
-						<div className="flex items-start justify-between">
-							<div className="flex items-center gap-4">
+					<div className='border-b border-foreground/10 p-6'>
+						<div className='flex items-start justify-between'>
+							<div className='flex items-center gap-4'>
 								<div
-									className="w-16 h-16 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-3xl"
+									className='w-16 h-16 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-3xl'
 									style={{
-										clipPath:
-											'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+										clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 									}}
 								>
 									{plugin.icon}
 								</div>
 								<div>
-									<h2
-										className="text-2xl font-bold text-foreground mb-1"
-										style={{ fontFamily: 'TECHNOS, sans-serif' }}
-									>
-										CONFIGURE{' '}
-										<span className="text-[#FF6B00]">
-											{plugin.name.toUpperCase()}
-										</span>
+									<h2 className='text-2xl font-bold text-foreground mb-1' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
+										CONFIGURE <span className='text-[#FF6B00]'>{plugin.name.toUpperCase()}</span>
 									</h2>
-									<p className="text-sm text-foreground/60">
-										Fill in the required parameters to deploy this plugin
-									</p>
+									<p className='text-sm text-foreground/60'>Fill in the required parameters to deploy this plugin</p>
 								</div>
 							</div>
 							<button
 								onClick={onClose}
-								className="w-10 h-10 bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center"
+								className='w-10 h-10 bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center'
 								style={{ borderRadius: 0 }}
 							>
-								<X className="w-6 h-6 text-foreground/60" />
+								<X className='w-6 h-6 text-foreground/60' />
 							</button>
 						</div>
 					</div>
 
-					<form onSubmit={handleSubmit} className="p-8">
-						<div className="space-y-6">
+					<form onSubmit={handleSubmit} className='p-8'>
+						<div className='space-y-6'>
 							{plugin.configFields?.map((field) => (
 								<div key={field.name}>
-									<label className="block text-sm font-bold text-foreground mb-2 uppercase">
-										{field.label}{' '}
-										{field.required && <span className="text-[#FF223B]">*</span>}
+									<label className='block text-sm font-bold text-foreground mb-2 uppercase'>
+										{field.label} {field.required && <span className='text-[#FF223B]'>*</span>}
 									</label>
-									{field.description && (
-										<p className="text-xs text-foreground/60 mb-3">
-											{field.description}
-										</p>
-									)}
-									<div className="relative">
+									{field.description && <p className='text-xs text-foreground/60 mb-3'>{field.description}</p>}
+									<div className='relative'>
 										<Input
 											type={
 												field.type === 'password' && !showPasswords[field.name]
@@ -275,20 +242,16 @@ export default function ConfigurePluginModal({
 											}
 											placeholder={`Enter ${field.label.toLowerCase()}`}
 											required={field.required}
-											className="h-12 bg-foreground/5 border-foreground/20 text-foreground"
+											className='h-12 bg-foreground/5 border-foreground/20 text-foreground'
 											style={{ borderRadius: 0 }}
 										/>
 										{field.type === 'password' && (
 											<button
-												type="button"
+												type='button'
 												onClick={() => togglePasswordVisibility(field.name)}
-												className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground"
+												className='absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground'
 											>
-												{showPasswords[field.name] ? (
-													<EyeOff className="w-5 h-5" />
-												) : (
-													<Eye className="w-5 h-5" />
-												)}
+												{showPasswords[field.name] ? <EyeOff className='w-5 h-5' /> : <Eye className='w-5 h-5' />}
 											</button>
 										)}
 									</div>
@@ -296,38 +259,34 @@ export default function ConfigurePluginModal({
 							))}
 						</div>
 
-						<div className="mt-8 flex gap-3">
+						<div className='mt-8 flex gap-3'>
 							<Button
-								type="button"
+								type='button'
 								onClick={onClose}
-								variant="outline"
-								className="flex-1 h-12 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 text-foreground"
+								variant='outline'
+								className='flex-1 h-12 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 text-foreground'
 								style={{ borderRadius: 0 }}
 							>
 								CANCEL
 							</Button>
 							<Button
-								type="submit"
+								type='submit'
 								disabled={isSubmitting}
-								className="flex-1 h-12 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white"
+								className='flex-1 h-12 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white'
 								style={{
-									clipPath:
-										'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 									borderRadius: 0,
 									fontFamily: 'TECHNOS, sans-serif',
 								}}
 							>
 								{isSubmitting ? (
-									<div className="flex items-center gap-2">
-										<div
-											className="w-4 h-4 border-2 border-white border-t-transparent"
-											style={{ borderRadius: 0 }}
-										/>
+									<div className='flex items-center gap-2'>
+										<div className='w-4 h-4 border-2 border-white border-t-transparent' style={{ borderRadius: 0 }} />
 										DEPLOYING...
 									</div>
 								) : (
 									<>
-										<Check className="w-5 h-5 mr-2" />
+										<Check className='w-5 h-5 mr-2' />
 										DEPLOY PLUGIN
 									</>
 								)}

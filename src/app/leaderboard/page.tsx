@@ -22,8 +22,7 @@ interface LeaderboardData {
 export default function Leaderboard() {
 	const [activeTab, setActiveTab] = useState<'shame' | 'fame'>('shame');
 	const [isLoading, setIsLoading] = useState(true);
-	const [leaderboardData, setLeaderboardData] =
-		useState<LeaderboardData | null>(null);
+	const [leaderboardData, setLeaderboardData] = useState<LeaderboardData | null>(null);
 
 	useEffect(() => {
 		fetchLeaderboard();
@@ -171,40 +170,35 @@ export default function Leaderboard() {
 
 	if (isLoading) {
 		return (
-			<div className="min-h-screen bg-background flex items-center justify-center">
-				<div className="text-center">
+			<div className='min-h-screen bg-background flex items-center justify-center'>
+				<div className='text-center'>
 					<div
-						className="w-16 h-16 border-4 border-sendo-orange border-t-transparent mx-auto mb-4"
+						className='w-16 h-16 border-4 border-sendo-orange border-t-transparent mx-auto mb-4'
 						style={{ borderRadius: 0 }}
 					/>
-					<p className="text-foreground/60 text-sm uppercase title-font">
-						Loading Leaderboard...
-					</p>
+					<p className='text-foreground/60 text-sm uppercase title-font'>Loading Leaderboard...</p>
 				</div>
 			</div>
 		);
 	}
 
-	const currentData =
-		activeTab === 'shame' ? leaderboardData?.shame : leaderboardData?.fame;
+	const currentData = activeTab === 'shame' ? leaderboardData?.shame : leaderboardData?.fame;
 
 	return (
-		<div className="min-h-screen bg-background text-foreground pt-24 pb-12">
-			<div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-12 md:py-20">
+		<div className='min-h-screen bg-background text-foreground pt-24 pb-12'>
+			<div className='max-w-[1400px] mx-auto px-4 sm:px-6 py-12 md:py-20'>
 				{/* Header */}
 				<motion.div
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8 }}
-					className="text-center mb-12 md:mb-16"
+					className='text-center mb-12 md:mb-16'
 				>
-					<h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font">
+					<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font'>
 						LEADER
-						<span className="bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent">
-							BOARD
-						</span>
+						<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>BOARD</span>
 					</h1>
-					<p className="text-lg sm:text-xl md:text-2xl text-foreground/60 max-w-3xl mx-auto">
+					<p className='text-lg sm:text-xl md:text-2xl text-foreground/60 max-w-3xl mx-auto'>
 						The best and worst traders on Solana 🏆
 					</p>
 				</motion.div>
@@ -214,7 +208,7 @@ export default function Leaderboard() {
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.2, duration: 0.8 }}
-					className="flex gap-4 mb-8 md:mb-12 max-w-2xl mx-auto"
+					className='flex gap-4 mb-8 md:mb-12 max-w-2xl mx-auto'
 				>
 					<button
 						onClick={() => setActiveTab('shame')}
@@ -224,15 +218,12 @@ export default function Leaderboard() {
 								: 'bg-foreground/5 hover:bg-foreground/10'
 						}`}
 						style={{
-							clipPath:
-								'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 							borderRadius: 0,
 						}}
 					>
-						<Skull className="w-5 h-5 md:w-6 md:h-6" />
-						<span className="text-sm md:text-base font-bold uppercase title-font">
-							HALL OF SHAME
-						</span>
+						<Skull className='w-5 h-5 md:w-6 md:h-6' />
+						<span className='text-sm md:text-base font-bold uppercase title-font'>HALL OF SHAME</span>
 					</button>
 
 					<button
@@ -243,12 +234,11 @@ export default function Leaderboard() {
 								: 'bg-foreground/5 hover:bg-foreground/10'
 						}`}
 						style={{
-							clipPath:
-								'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 							borderRadius: 0,
 						}}
 					>
-						<Trophy className="w-5 h-5 md:w-6 md:h-6" />
+						<Trophy className='w-5 h-5 md:w-6 md:h-6' />
 						<span
 							className={`text-sm md:text-base font-bold uppercase title-font ${activeTab === 'fame' ? 'text-black' : ''}`}
 						>
@@ -258,14 +248,14 @@ export default function Leaderboard() {
 				</motion.div>
 
 				{/* Leaderboard */}
-				<AnimatePresence mode="wait">
+				<AnimatePresence mode='wait'>
 					<motion.div
 						key={activeTab}
 						initial={{ opacity: 0, y: 30 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: -30 }}
 						transition={{ duration: 0.5 }}
-						className="space-y-4"
+						className='space-y-4'
 					>
 						{currentData?.map((entry, index) => (
 							<motion.div
@@ -280,18 +270,15 @@ export default function Leaderboard() {
 								}`}
 								style={{ borderRadius: 0 }}
 							>
-								<div className="bg-background p-4 md:p-6" style={{ borderRadius: 0 }}>
-									<div className="flex items-center gap-4 md:gap-6">
+								<div className='bg-background p-4 md:p-6' style={{ borderRadius: 0 }}>
+									<div className='flex items-center gap-4 md:gap-6'>
 										{/* Rank Badge */}
 										<div
 											className={`w-12 h-12 md:w-16 md:h-16 flex items-center justify-center flex-shrink-0 ${
-												entry.badge
-													? `bg-gradient-to-r ${getBadgeColor(entry.badge)}`
-													: 'bg-foreground/10'
+												entry.badge ? `bg-gradient-to-r ${getBadgeColor(entry.badge)}` : 'bg-foreground/10'
 											}`}
 											style={{
-												clipPath:
-													'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+												clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 											}}
 										>
 											{index < 3 ? (
@@ -307,37 +294,31 @@ export default function Leaderboard() {
 													}`}
 												/>
 											) : (
-												<span className="text-lg md:text-2xl font-bold text-foreground title-font">
-													#{index + 1}
-												</span>
+												<span className='text-lg md:text-2xl font-bold text-foreground title-font'>#{index + 1}</span>
 											)}
 										</div>
 
 										{/* Wallet Info */}
-										<div className="flex-1 min-w-0">
-											<div className="flex items-center gap-2 mb-1">
-												<p className="text-base md:text-lg font-bold text-foreground font-mono truncate">
+										<div className='flex-1 min-w-0'>
+											<div className='flex items-center gap-2 mb-1'>
+												<p className='text-base md:text-lg font-bold text-foreground font-mono truncate'>
 													{formatWallet(entry.wallet)}
 												</p>
 											</div>
-											<p className="text-sm md:text-base text-foreground/60">
-												{entry.rank}
-											</p>
+											<p className='text-sm md:text-base text-foreground/60'>{entry.rank}</p>
 										</div>
 
 										{/* Amount */}
-										<div className="text-right flex-shrink-0">
-											<div className="flex items-center gap-2 mb-1">
+										<div className='text-right flex-shrink-0'>
+											<div className='flex items-center gap-2 mb-1'>
 												{activeTab === 'shame' ? (
-													<TrendingDown className="w-5 h-5 text-sendo-red" />
+													<TrendingDown className='w-5 h-5 text-sendo-red' />
 												) : (
-													<TrendingUp className="w-5 h-5 text-sendo-green" />
+													<TrendingUp className='w-5 h-5 text-sendo-green' />
 												)}
 												<p
 													className={`text-xl md:text-3xl font-bold title-font ${
-														activeTab === 'shame'
-															? 'text-sendo-red'
-															: 'text-sendo-green'
+														activeTab === 'shame' ? 'text-sendo-red' : 'text-sendo-green'
 													}`}
 												>
 													$
@@ -347,7 +328,7 @@ export default function Leaderboard() {
 													K
 												</p>
 											</div>
-											<p className="text-xs md:text-sm text-foreground/40 uppercase">
+											<p className='text-xs md:text-sm text-foreground/40 uppercase'>
 												{activeTab === 'shame' ? 'MISSED' : 'GAINED'}
 											</p>
 										</div>
@@ -363,25 +344,20 @@ export default function Leaderboard() {
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.6, duration: 0.8 }}
-					className="mt-12 md:mt-16 text-center"
+					className='mt-12 md:mt-16 text-center'
 				>
-					<p className="text-foreground/60 mb-4 text-sm md:text-base">
-						{activeTab === 'shame'
-							? 'Think you can beat them? 💀'
-							: 'Can you join the legends? 🏆'}
+					<p className='text-foreground/60 mb-4 text-sm md:text-base'>
+						{activeTab === 'shame' ? 'Think you can beat them? 💀' : 'Can you join the legends? 🏆'}
 					</p>
-					<Link href="/analyzer">
+					<Link href='/analyzer'>
 						<Button
-							className="bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 md:h-14 px-6 md:px-8"
+							className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 md:h-14 px-6 md:px-8'
 							style={{
-								clipPath:
-									'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+								clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 								borderRadius: 0,
 							}}
 						>
-							<span className="text-sm md:text-base font-bold uppercase title-font">
-								ANALYZE YOUR WALLET
-							</span>
+							<span className='text-sm md:text-base font-bold uppercase title-font'>ANALYZE YOUR WALLET</span>
 						</Button>
 					</Link>
 				</motion.div>

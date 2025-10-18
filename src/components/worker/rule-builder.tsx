@@ -47,65 +47,51 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 
 	return (
 		<div>
-			<div className="flex items-center gap-2 mb-4">
-				<Settings className="w-5 h-5 text-[#FF6B00]" />
-				<h2 className="text-xl font-bold text-foreground uppercase title-font">
+			<div className='flex items-center gap-2 mb-4'>
+				<Settings className='w-5 h-5 text-[#FF6B00]' />
+				<h2 className='text-xl font-bold text-foreground uppercase title-font'>
 					AUTOMATION{' '}
-					<span className="bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent">
-						RULES
-					</span>
+					<span className='bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent'>RULES</span>
 				</h2>
 			</div>
 
-			<div className="space-y-3">
+			<div className='space-y-3'>
 				{rules.map((rule) => (
 					<div
 						key={rule.id}
-						className="bg-foreground/5 border border-foreground/10 overflow-hidden transition-all"
+						className='bg-foreground/5 border border-foreground/10 overflow-hidden transition-all'
 						style={{ borderRadius: 0 }}
 					>
-						<div className="p-4 flex items-center justify-between">
-							<div className="flex items-center gap-3 flex-1">
+						<div className='p-4 flex items-center justify-between'>
+							<div className='flex items-center gap-3 flex-1'>
 								<WorkerSwitch
 									checked={rule.enabled}
-									onCheckedChange={(checked) =>
-										onRuleUpdate(rule.id, { enabled: checked })
-									}
+									onCheckedChange={(checked) => onRuleUpdate(rule.id, { enabled: checked })}
 								/>
-								<div className="flex-1">
-									<h3 className="text-base font-bold text-foreground mb-0.5">
-										{RULE_LABELS[rule.id]}
-									</h3>
-									<p className="text-xs text-foreground/60">
-										{RULE_DESCRIPTIONS[rule.id]}
-									</p>
+								<div className='flex-1'>
+									<h3 className='text-base font-bold text-foreground mb-0.5'>{RULE_LABELS[rule.id]}</h3>
+									<p className='text-xs text-foreground/60'>{RULE_DESCRIPTIONS[rule.id]}</p>
 								</div>
 							</div>
 
 							<Button
 								onClick={() => toggleRule(rule.id)}
-								variant="ghost"
-								size="icon"
-								className="text-foreground/60 hover:text-foreground hover:bg-foreground/10"
+								variant='ghost'
+								size='icon'
+								className='text-foreground/60 hover:text-foreground hover:bg-foreground/10'
 								style={{ borderRadius: 0 }}
 							>
-								{expandedRule === rule.id ? (
-									<ChevronUp className="w-5 h-5" />
-								) : (
-									<ChevronDown className="w-5 h-5" />
-								)}
+								{expandedRule === rule.id ? <ChevronUp className='w-5 h-5' /> : <ChevronDown className='w-5 h-5' />}
 							</Button>
 						</div>
 
 						{expandedRule === rule.id && (
-							<div className="px-4 pb-4 border-t border-foreground/10 pt-4">
+							<div className='px-4 pb-4 border-t border-foreground/10 pt-4'>
 								{rule.id === 'sell_dust' && (
 									<div>
-										<label className="text-xs text-foreground/60 mb-2 block">
-											Minimum USD Value
-										</label>
+										<label className='text-xs text-foreground/60 mb-2 block'>Minimum USD Value</label>
 										<Input
-											type="number"
+											type='number'
 											value={rule.params.min_usd || ''}
 											onChange={(e) =>
 												onRuleUpdate(rule.id, {
@@ -115,23 +101,19 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 													},
 												})
 											}
-											className="h-10 bg-background border-foreground/20 text-foreground"
+											className='h-10 bg-background border-foreground/20 text-foreground'
 											style={{ borderRadius: 0 }}
-											placeholder="15"
+											placeholder='15'
 										/>
-										<p className="text-xs text-foreground/40 mt-2">
-											Tokens valued below this amount will be sold
-										</p>
+										<p className='text-xs text-foreground/40 mt-2'>Tokens valued below this amount will be sold</p>
 									</div>
 								)}
 
 								{rule.id === 'take_profit' && (
 									<div>
-										<label className="text-xs text-foreground/60 mb-2 block">
-											Target Profit Percentage
-										</label>
+										<label className='text-xs text-foreground/60 mb-2 block'>Target Profit Percentage</label>
 										<Input
-											type="number"
+											type='number'
 											value={rule.params.target_pct || ''}
 											onChange={(e) =>
 												onRuleUpdate(rule.id, {
@@ -141,29 +123,21 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 													},
 												})
 											}
-											className="h-10 bg-background border-foreground/20 text-foreground"
+											className='h-10 bg-background border-foreground/20 text-foreground'
 											style={{ borderRadius: 0 }}
-											placeholder="25"
+											placeholder='25'
 										/>
-										<p className="text-xs text-foreground/40 mt-2">
-											Sell when token is within this % of ATH
-										</p>
+										<p className='text-xs text-foreground/40 mt-2'>Sell when token is within this % of ATH</p>
 									</div>
 								)}
 
 								{rule.id === 'rebalance' && (
-									<div className="space-y-3">
+									<div className='space-y-3'>
 										<div>
-											<label className="text-xs text-foreground/60 mb-2 block">
-												SOL Target %
-											</label>
+											<label className='text-xs text-foreground/60 mb-2 block'>SOL Target %</label>
 											<Input
-												type="number"
-												value={
-													rule.params.target?.SOL
-														? rule.params.target.SOL * 100
-														: ''
-												}
+												type='number'
+												value={rule.params.target?.SOL ? rule.params.target.SOL * 100 : ''}
 												onChange={(e) =>
 													onRuleUpdate(rule.id, {
 														params: {
@@ -174,22 +148,16 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 														},
 													})
 												}
-												className="h-10 bg-background border-foreground/20 text-foreground"
+												className='h-10 bg-background border-foreground/20 text-foreground'
 												style={{ borderRadius: 0 }}
-												placeholder="60"
+												placeholder='60'
 											/>
 										</div>
 										<div>
-											<label className="text-xs text-foreground/60 mb-2 block">
-												USDC Target %
-											</label>
+											<label className='text-xs text-foreground/60 mb-2 block'>USDC Target %</label>
 											<Input
-												type="number"
-												value={
-													rule.params.target?.USDC
-														? rule.params.target.USDC * 100
-														: ''
-												}
+												type='number'
+												value={rule.params.target?.USDC ? rule.params.target.USDC * 100 : ''}
 												onChange={(e) =>
 													onRuleUpdate(rule.id, {
 														params: {
@@ -200,12 +168,12 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 														},
 													})
 												}
-												className="h-10 bg-background border-foreground/20 text-foreground"
+												className='h-10 bg-background border-foreground/20 text-foreground'
 												style={{ borderRadius: 0 }}
-												placeholder="40"
+												placeholder='40'
 											/>
 										</div>
-										<p className="text-xs text-foreground/40">
+										<p className='text-xs text-foreground/40'>
 											Automatically rebalance when allocation deviates by 10%+
 										</p>
 									</div>

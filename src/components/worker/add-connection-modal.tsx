@@ -249,10 +249,7 @@ const MARKETPLACE_PLUGINS: Record<string, Plugin[]> = {
 	],
 };
 
-export default function AddConnectionModal({
-	onClose,
-	onSelectPlugin,
-}: AddConnectionModalProps) {
+export default function AddConnectionModal({ onClose, onSelectPlugin }: AddConnectionModalProps) {
 	const [search, setSearch] = useState('');
 	const [selectedCategory, setSelectedCategory] = useState('all');
 
@@ -265,23 +262,14 @@ export default function AddConnectionModal({
 		...MARKETPLACE_PLUGINS.community,
 	];
 
-	const categories = [
-		'all',
-		'DEX',
-		'AI',
-		'Perps',
-		'Staking',
-		'DeFi',
-		'Analytics',
-	];
+	const categories = ['all', 'DEX', 'AI', 'Perps', 'Staking', 'DeFi', 'Analytics'];
 
 	const filteredPlugins = allPlugins.filter((plugin) => {
 		const matchesSearch =
 			plugin.name.toLowerCase().includes(search.toLowerCase()) ||
 			plugin.description.toLowerCase().includes(search.toLowerCase()) ||
 			plugin.category.toLowerCase().includes(search.toLowerCase());
-		const matchesCategory =
-			selectedCategory === 'all' || plugin.category === selectedCategory;
+		const matchesCategory = selectedCategory === 'all' || plugin.category === selectedCategory;
 		return matchesSearch && matchesCategory;
 	});
 
@@ -291,7 +279,7 @@ export default function AddConnectionModal({
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				exit={{ opacity: 0 }}
-				className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+				className='fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4'
 				onClick={onClose}
 			>
 				<motion.div
@@ -299,42 +287,39 @@ export default function AddConnectionModal({
 					animate={{ scale: 1, opacity: 1 }}
 					exit={{ scale: 0.9, opacity: 0 }}
 					onClick={(e) => e.stopPropagation()}
-					className="bg-[#0D0D0D] border-2 border-[#FF6B00]/30 max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+					className='bg-[#0D0D0D] border-2 border-[#FF6B00]/30 max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col'
 					style={{ borderRadius: 0 }}
 				>
 					{/* Header */}
-					<div className="border-b border-foreground/10 p-6">
-						<div className="flex items-center justify-between mb-4">
-							<h2
-								className="text-2xl font-bold uppercase"
-								style={{ fontFamily: 'TECHNOS, sans-serif' }}
-							>
-								ADD <span className="text-[#FF6B00]">CONNECTION</span>
+					<div className='border-b border-foreground/10 p-6'>
+						<div className='flex items-center justify-between mb-4'>
+							<h2 className='text-2xl font-bold uppercase' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
+								ADD <span className='text-[#FF6B00]'>CONNECTION</span>
 							</h2>
 							<button
 								onClick={onClose}
-								className="w-10 h-10 bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center"
+								className='w-10 h-10 bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center'
 								style={{ borderRadius: 0 }}
 							>
-								<X className="w-6 h-6 text-foreground/60" />
+								<X className='w-6 h-6 text-foreground/60' />
 							</button>
 						</div>
 
 						{/* Search */}
-						<div className="relative mb-4">
-							<Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
+						<div className='relative mb-4'>
+							<Search className='absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40' />
 							<Input
-								type="text"
-								placeholder="Search plugins..."
+								type='text'
+								placeholder='Search plugins...'
 								value={search}
 								onChange={(e) => setSearch(e.target.value)}
-								className="pl-10 h-12 bg-foreground/5 border-foreground/20 text-foreground"
+								className='pl-10 h-12 bg-foreground/5 border-foreground/20 text-foreground'
 								style={{ borderRadius: 0 }}
 							/>
 						</div>
 
 						{/* Category Filter */}
-						<div className="flex gap-2 flex-wrap">
+						<div className='flex gap-2 flex-wrap'>
 							{categories.map((cat) => (
 								<button
 									key={cat}
@@ -353,8 +338,8 @@ export default function AddConnectionModal({
 					</div>
 
 					{/* Plugin List */}
-					<div className="flex-1 overflow-y-auto p-6">
-						<div className="grid md:grid-cols-2 gap-4">
+					<div className='flex-1 overflow-y-auto p-6'>
+						<div className='grid md:grid-cols-2 gap-4'>
 							{filteredPlugins.map((plugin) => (
 								<motion.div
 									key={plugin.id}
@@ -368,52 +353,40 @@ export default function AddConnectionModal({
 									onClick={() => onSelectPlugin(plugin)}
 								>
 									<div
-										className="w-12 h-12 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-2xl flex-shrink-0"
+										className='w-12 h-12 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-2xl flex-shrink-0'
 										style={{
-											clipPath:
-												'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
+											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 										}}
 									>
 										{plugin.icon}
 									</div>
-									<div className="flex-1 min-w-0">
-										<div className="flex items-center gap-2 mb-1">
-											{plugin.isSponsored && (
-												<Crown className="w-4 h-4 text-[#FFD700] flex-shrink-0" />
-											)}
-											<h3 className="text-sm font-bold text-foreground truncate">
-												{plugin.name}
-											</h3>
+									<div className='flex-1 min-w-0'>
+										<div className='flex items-center gap-2 mb-1'>
+											{plugin.isSponsored && <Crown className='w-4 h-4 text-[#FFD700] flex-shrink-0' />}
+											<h3 className='text-sm font-bold text-foreground truncate'>{plugin.name}</h3>
 										</div>
-										<div className="flex items-center gap-2 mb-2">
-											<span
-												className="px-2 py-0.5 bg-[#FF6B00]/20 text-[#FF6B00] text-xs"
-												style={{ borderRadius: 0 }}
-											>
+										<div className='flex items-center gap-2 mb-2'>
+											<span className='px-2 py-0.5 bg-[#FF6B00]/20 text-[#FF6B00] text-xs' style={{ borderRadius: 0 }}>
 												{plugin.category}
 											</span>
 											<span
-												className="px-2 py-0.5 bg-foreground/10 text-foreground/60 text-xs uppercase"
+												className='px-2 py-0.5 bg-foreground/10 text-foreground/60 text-xs uppercase'
 												style={{ borderRadius: 0 }}
 											>
 												{plugin.authType === 'oauth' ? 'OAuth' : 'API Key'}
 											</span>
-											<span className="text-xs font-bold text-[#14F195]">
-												{plugin.price}
-											</span>
+											<span className='text-xs font-bold text-[#14F195]'>{plugin.price}</span>
 										</div>
-										<p className="text-xs text-foreground/60 line-clamp-2">
-											{plugin.description}
-										</p>
+										<p className='text-xs text-foreground/60 line-clamp-2'>{plugin.description}</p>
 									</div>
-									<div className="text-[#FF6B00] text-xl flex-shrink-0">→</div>
+									<div className='text-[#FF6B00] text-xl flex-shrink-0'>→</div>
 								</motion.div>
 							))}
 						</div>
 
 						{filteredPlugins.length === 0 && (
-							<div className="text-center py-12">
-								<p className="text-foreground/40">No plugins found</p>
+							<div className='text-center py-12'>
+								<p className='text-foreground/40'>No plugins found</p>
 							</div>
 						)}
 					</div>
