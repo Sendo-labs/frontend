@@ -3,7 +3,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Menu, X } from "lucide-react";
-import AgentPanel from "./components/AgentPanel";
+import AgentPanel from "@/components/AgentPanel";
 
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);

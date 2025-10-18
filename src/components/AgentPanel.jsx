@@ -1,25 +1,59 @@
-
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Loader2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { AnimatedMarkdown } from "@/components/ui/AnimatedMarkdown";
+import { Tool } from "@/components/ui/Tool";
+import { useElizaAgent } from "@/hooks/useElizaAgent";
+import { useElizaChat } from "@/hooks/useElizaChat";
 
-export default function AgentPanel({ context = {} }) {
+export default function AgentPanel() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const [animatedMessagesSet, setAnimatedMessagesSet] = useState(new Set());
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // Fetch agent from Eliza server
+  const { agent, isLoading: agentLoading, error: agentError } = useElizaAgent();
+
+  // Chat hook
+  const {
+    messages,
+    isLoading,
+    isAgentThinking,
+    sendMessage,
+    error: chatError,
+    animatedMessageId,
+  } = useElizaChat({
+    agentId: agent?.id,
+  });
+
+  const scrollToBottom = (smooth = true) => {
+    messagesEndRef.current?.scrollIntoView({ behavior: smooth ? "smooth" : "instant" });
   };
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Scroll to bottom immediately when chat opens
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => scrollToBottom(false), 100);
+    }
+  }, [isOpen]);
+
+  // Mark animated message as seen after animation
+  useEffect(() => {
+    if (animatedMessageId && !animatedMessagesSet.has(animatedMessageId)) {
+      const timer = setTimeout(() => {
+        setAnimatedMessagesSet(prev => new Set([...prev, animatedMessageId]));
+      }, 5000); // Match the animation duration
+      return () => clearTimeout(timer);
+    }
+  }, [animatedMessageId, animatedMessagesSet]);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -27,49 +61,19 @@ export default function AgentPanel({ context = {} }) {
     }
   }, [isOpen]);
 
-  // Welcome message on first open
-  useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      setMessages([
-        {
-          id: Date.now(),
-          role: "assistant",
-          content: "👋 Hey! I'm your sEnDO educational agent.\n\nI'm here to help you understand your wallet metrics, trading strategies, and crypto concepts.\n\n**Ask me anything!** For example:\n- \"Why did I miss so much on BONK?\"\n- \"What's ATH and why does it matter?\"\n- \"How can Worker help me?\"\n- \"Explain take profit strategies\"",
-          timestamp: new Date()
-        }
-      ]);
-    }
-  }, [isOpen]);
+  // Prevent background scroll - nothing needed here, handled in JSX
 
   const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+    if (!input.trim() || isLoading || isAgentThinking || !agent) return;
 
-    const userMessage = {
-      id: Date.now(),
-      role: "user",
-      content: input,
-      timestamp: new Date()
-    };
-
-    setMessages(prev => [...prev, userMessage]);
     const userInput = input;
     setInput("");
-    setIsLoading(true);
 
-    // Mock API call
-    setTimeout(() => {
-      const response = getEducationalResponse(userInput, context);
-      
-      const assistantMessage = {
-        id: Date.now() + 1,
-        role: "assistant",
-        content: response,
-        timestamp: new Date()
-      };
-
-      setMessages(prev => [...prev, assistantMessage]);
-      setIsLoading(false);
-    }, 1000);
+    try {
+      await sendMessage(userInput);
+    } catch (err) {
+      console.error('[AgentPanel] Error sending message:', err);
+    }
   };
 
   const handleKeyPress = (e) => {
@@ -77,6 +81,31 @@ export default function AgentPanel({ context = {} }) {
       e.preventDefault();
       handleSend();
     }
+  };
+
+  // Convert agent action messages to tool parts for Tool component
+  const convertToToolPart = (message) => {
+    // Try to parse rawMessage if it exists
+    let toolData = {};
+    if (message.rawMessage) {
+      try {
+        const parsed = typeof message.rawMessage === 'string'
+          ? JSON.parse(message.rawMessage)
+          : message.rawMessage;
+        toolData = parsed;
+      } catch (e) {
+        console.warn('[AgentPanel] Could not parse rawMessage:', e);
+      }
+    }
+
+    return {
+      type: toolData.tool?.name || message.type || 'action',
+      state: 'output-available',
+      input: toolData.tool?.input || toolData.input || {},
+      output: toolData.tool?.output || toolData.output || message.text,
+      toolCallId: message.id,
+      errorText: null,
+    };
   };
 
   return (
@@ -107,14 +136,18 @@ export default function AgentPanel({ context = {} }) {
       {/* Drawer Panel */}
       <AnimatePresence>
         {isOpen && (
-          <>
-            {/* Backdrop for mobile */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-end md:items-center justify-end"
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+          >
+            {/* Backdrop */}
+            <div
+              className="absolute inset-0 bg-black/60"
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/60 z-40 md:hidden"
             />
 
             {/* Drawer */}
@@ -123,8 +156,9 @@ export default function AgentPanel({ context = {} }) {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 400, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="fixed bottom-0 right-0 z-50 w-full md:w-[400px] h-[80vh] md:h-[600px] md:bottom-6 md:right-6 bg-[#0D0D0D] border-2 border-[#FF6B00]/30 flex flex-col"
+              className="chat-drawer relative w-full md:w-[400px] h-[80vh] md:h-[600px] md:m-6 bg-[#0D0D0D] border-2 border-[#FF6B00]/30 flex flex-col"
               style={{ borderRadius: 0 }}
+              onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b border-[#F2EDE7]/10 bg-gradient-to-r from-[#FF6B00]/10 to-[#FF223B]/10">
@@ -134,11 +168,11 @@ export default function AgentPanel({ context = {} }) {
                   </div>
                   <div>
                     <h3 className="text-white font-bold text-sm uppercase" style={{ fontFamily: 'TECHNOS, sans-serif' }}>
-                      sEnDO <span className="bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent">AGENT</span>
+                      {agent?.name || 'sEnDO'} <span className="bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent">AGENT</span>
                     </h3>
                     <p className="text-[#14F195] text-xs flex items-center gap-1">
                       <span className="w-1.5 h-1.5 bg-[#14F195] animate-pulse" style={{ borderRadius: 0 }} />
-                      ONLINE
+                      {agentLoading ? 'CONNECTING...' : agent ? 'ONLINE' : 'OFFLINE'}
                     </p>
                   </div>
                 </div>
@@ -151,49 +185,111 @@ export default function AgentPanel({ context = {} }) {
                 </button>
               </div>
 
+              {/* Error State */}
+              {(agentError || chatError) && (
+                <div className="p-4 bg-red-500/10 border-b border-red-500/30">
+                  <p className="text-red-400 text-sm">
+                    {agentError || chatError}
+                  </p>
+                </div>
+              )}
+
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex gap-3 ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
-                  >
-                    <div className={`w-8 h-8 flex items-center justify-center flex-shrink-0 ${
-                      message.role === 'user'
-                        ? 'bg-[#F2EDE7]/10'
-                        : 'bg-gradient-to-r from-[#FF6B00] to-[#FF223B]'
-                    }`} style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)' }}>
-                      {message.role === 'user' ? (
-                        <span className="text-[#F2EDE7] text-xs">👤</span>
-                      ) : (
-                        <Sparkles className="w-4 h-4 text-white" />
-                      )}
-                    </div>
-
-                    <div className={`flex-1 max-w-[80%] ${message.role === 'user' ? 'flex justify-end' : ''}`}>
-                      <div className={`p-3 ${
-                        message.role === 'user'
-                          ? 'bg-gradient-to-r from-[#FF6B00] to-[#FF223B] text-white'
-                          : 'bg-[#F2EDE7]/5 text-[#F2EDE7]'
-                      }`} style={{ borderRadius: 0 }}>
-                        <div className="text-sm leading-relaxed whitespace-pre-wrap">
-                          {message.content}
-                        </div>
-                        <p className="text-[10px] mt-2 opacity-60">
-                          {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </p>
-                      </div>
+                {agentLoading ? (
+                  <div className="flex items-center justify-center h-full">
+                    <div className="text-center">
+                      <Loader2 className="w-8 h-8 text-[#FF6B00] mx-auto mb-2" />
+                      <p className="text-[#F2EDE7]/60 text-sm">Connecting to agent...</p>
                     </div>
                   </div>
-                ))}
+                ) : !agent ? (
+                  <div className="flex items-center justify-center h-full">
+                    <div className="text-center">
+                      <p className="text-[#F2EDE7]/60 text-sm">Agent not available</p>
+                      <p className="text-[#F2EDE7]/40 text-xs mt-2">Check server connection</p>
+                    </div>
+                  </div>
+                ) : messages.length === 0 ? (
+                  <div className="flex items-center justify-center h-full">
+                    <div className="text-center max-w-xs">
+                      <Sparkles className="w-12 h-12 text-[#FF6B00] mx-auto mb-4" />
+                      <h4 className="text-white font-bold mb-2">Welcome to sEnDO Agent!</h4>
+                      <p className="text-[#F2EDE7]/60 text-sm">
+                        I'm your AI assistant powered by ElizaOS. Ask me anything about your wallet, trading strategies, or crypto!
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  messages.map((message) => {
+                    const isUser = message.senderId !== agent.id;
+                    const isActionMessage = message.type === 'agent_action' || message.source === 'agent_action';
 
-                {isLoading && (
+                    return (
+                      <div
+                        key={message.id}
+                        className={`flex gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
+                      >
+                        <div className={`w-8 h-8 flex items-center justify-center flex-shrink-0 ${
+                          isUser
+                            ? 'bg-[#F2EDE7]/10'
+                            : 'bg-gradient-to-r from-[#FF6B00] to-[#FF223B]'
+                        }`} style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)' }}>
+                          {isUser ? (
+                            <span className="text-[#F2EDE7] text-xs">👤</span>
+                          ) : (
+                            <Sparkles className="w-4 h-4 text-white" />
+                          )}
+                        </div>
+
+                        <div className={`flex-1 max-w-[80%] ${isUser ? 'flex justify-end' : ''}`}>
+                          <div className={`p-3 ${
+                            isUser
+                              ? 'bg-gradient-to-r from-[#FF6B00] to-[#FF223B] text-white'
+                              : 'bg-[#F2EDE7]/5 text-[#F2EDE7]'
+                          }`} style={{ borderRadius: 0 }}>
+                            {isActionMessage ? (
+                              <Tool toolPart={convertToToolPart(message)} />
+                            ) : (
+                              <>
+                                <div className="text-sm leading-relaxed">
+                                  {!isUser && message.id === animatedMessageId && !animatedMessagesSet.has(message.id) ? (
+                                    <AnimatedMarkdown
+                                      shouldAnimate={true}
+                                      messageId={message.id}
+                                      maxDurationMs={5000}
+                                      onUpdate={() => scrollToBottom(true)}
+                                    >
+                                      {message.text}
+                                    </AnimatedMarkdown>
+                                  ) : (
+                                    <AnimatedMarkdown shouldAnimate={false}>
+                                      {message.text}
+                                    </AnimatedMarkdown>
+                                  )}
+                                </div>
+                                {message.createdAt && (
+                                  <p className="text-[10px] mt-2 opacity-60">
+                                    {new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                  </p>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+
+                {isAgentThinking && (
                   <div className="flex gap-3">
                     <div className="w-8 h-8 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center flex-shrink-0" style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)' }}>
                       <Sparkles className="w-4 h-4 text-white" />
                     </div>
-                    <div className="bg-[#F2EDE7]/5 p-3" style={{ borderRadius: 0 }}>
-                      <div className="w-4 h-4 border-2 border-[#FF6B00] border-t-transparent" style={{ borderRadius: 0 }} />
+                    <div className="bg-[#F2EDE7]/5 p-3 flex items-center gap-2" style={{ borderRadius: 0 }}>
+                      <Loader2 className="w-4 h-4 text-[#FF6B00] animate-spin" />
+                      <span className="text-[#F2EDE7]/60 text-sm">Thinking...</span>
                     </div>
                   </div>
                 )}
@@ -209,22 +305,22 @@ export default function AgentPanel({ context = {} }) {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyPress}
-                    placeholder="Ask me anything..."
+                    placeholder={agent ? "Ask me anything..." : "Connecting..."}
                     className="bg-[#F2EDE7]/5 border-[#F2EDE7]/10 text-[#F2EDE7] placeholder:text-[#F2EDE7]/30 resize-none min-h-0"
-                    disabled={isLoading}
+                    disabled={isLoading || isAgentThinking || !agent}
                     rows={2}
                     style={{ borderRadius: 0 }}
                   />
-                  
+
                   <Button
                     onClick={handleSend}
-                    disabled={!input.trim() || isLoading}
+                    disabled={!input.trim() || isLoading || isAgentThinking || !agent}
                     size="icon"
-                    className="bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 flex-shrink-0 h-[72px] w-12"
+                    className="bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 flex-shrink-0 h-[72px] w-12 disabled:opacity-50"
                     style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)', borderRadius: 0 }}
                   >
                     {isLoading ? (
-                      <Loader2 className="w-5 h-5" /> // Removed animate-spin
+                      <Loader2 className="w-5 h-5" />
                     ) : (
                       <Send className="w-5 h-5" />
                     )}
@@ -235,67 +331,9 @@ export default function AgentPanel({ context = {} }) {
                 </p>
               </div>
             </motion.div>
-          </>
+          </motion.div>
         )}
       </AnimatePresence>
     </>
   );
-}
-
-// Educational response logic
-function getEducationalResponse(question, context) {
-  const lowerQuestion = question.toLowerCase();
-
-  // ATH related
-  if (lowerQuestion.includes("ath") || lowerQuestion.includes("all time high")) {
-    return "**ATH = ALL-TIME HIGH** 📈\n\nIt's the highest price a token ever reached. When you hold past ATH and the price drops, that's your \"missed profit\".\n\n💡 **Why it matters:**\n- Shows maximum potential gain\n- Reveals optimal exit timing\n- Highlights emotional trading mistakes\n\nMost traders hold through ATH hoping for more, then watch gains evaporate. That's the pain we measure! 💀";
-  }
-
-  // BONK or specific token
-  if (lowerQuestion.includes("bonk") || lowerQuestion.includes("token") || lowerQuestion.includes("miss")) {
-    return "**WHY YOU MISSED GAINS ON A TOKEN** 🎯\n\nWhen a token pumps to ATH and you don't sell:\n1. **Greed**: \"It'll go higher!\"\n2. **Hope**: \"It'll come back!\"\n3. **Diamond hands** syndrome 💎🙌\n\nThe gap between ATH and your sell price = your missed profit.\n\n💡 **Solution:** Use Worker to set automatic take-profit rules and never miss an exit again!";
-  }
-
-  // Worker related
-  if (lowerQuestion.includes("worker") || lowerQuestion.includes("automat") || lowerQuestion.includes("help")) {
-    return "**WORKER = YOUR AUTOMATED TRADING ASSISTANT** 🤖\n\n**2 MODES:**\n- **Suggest Mode**: Proposes actions, you approve\n- **Auto Mode**: Executes automatically\n\n**What it does:**\n✅ Sells dust tokens (<$15)\n✅ Takes profit at targets\n✅ Rebalances portfolio\n✅ Never sleeps or gets emotional\n\n💡 Connect Jupiter/Raydium and set your rules. Worker handles the rest!";
-  }
-
-  // Take profit
-  if (lowerQuestion.includes("take profit") || lowerQuestion.includes("sell") || lowerQuestion.includes("exit")) {
-    return "**Take Profit Strategy** 💰\n\nInstead of hoping for the moon, secure gains:\n\n**Ladder Exit:**\n- 25% at +50% gain\n- 25% at +100% gain\n- 25% at +200% gain\n- Let 25% ride\n\n**ATH-based:**\n- Sell 50% within 5% of ATH\n- Trail stop-loss for rest\n\n💡 Worker can automate this for you. Set rules → Sleep peacefully 😴";
-  }
-
-  // Dust tokens
-  if (lowerQuestion.includes("dust") || lowerQuestion.includes("small") || lowerQuestion.includes("worthless")) {
-    return "**Dust Tokens = Portfolio Clutter** 🧹\n\nTokens worth <$15 that:\n- Waste mental energy\n- Cost more in gas than they're worth\n- Never recover\n\n**Worker's \"Sell Dust\" rule:**\n- Scans your wallet daily\n- Identifies tokens below threshold\n- Proposes batch cleanup\n- Converts to SOL or USDC\n\n💡 Clean portfolio = clear mind!";
-  }
-
-  // Rebalance
-  if (lowerQuestion.includes("rebalanc") || lowerQuestion.includes("portfolio") || lowerQuestion.includes("allocation")) {
-    return "**Portfolio Rebalancing** ⚖️\n\nKeep your target allocation over time:\n\n**Example:**\nTarget: 60% SOL, 40% USDC\nActual: 80% SOL, 20% USDC (SOL pumped)\n\n**Rebalance:**\nSell 20% SOL → Buy USDC\n\n**Why:**\n- Lock in gains automatically\n- Maintain risk profile\n- \"Buy low, sell high\" by default\n\n💡 Worker can monitor and rebalance 24/7!";
-  }
-
-  // Rank/Leaderboard
-  if (lowerQuestion.includes("rank") || lowerQuestion.includes("leaderboard") || lowerQuestion.includes("position")) {
-    return "**Your Pain Rank** 🏆💀\n\nWe rank you by total missed profit:\n\n🐳 **Elite of Pain**: $100k+ missed\n💀 **Certified Bagholder**: $40k+ missed\n💎 **Diamond Hands**: $20k+ missed\n🤡 **Clown Prince**: $10k+ missed\n\nIt's sarcastic but real. The goal? Learn from mistakes, activate Worker, and climb the **Hall of Fame** instead (profitable exits)!\n\n💡 Share your rank to challenge friends 😈";
-  }
-
-  // Memory/Snapshots
-  if (lowerQuestion.includes("memory") || lowerQuestion.includes("snapshot") || lowerQuestion.includes("history")) {
-    return "**Memory Snapshots** 📸\n\nWe save daily snapshots of:\n- Wallet value\n- Missed profit vs ATH\n- Worker proposals\n- Executed actions\n\n**Why:**\n- Track progress over time\n- Feed Worker's learning\n- See if you're improving\n- Accountability\n\n💡 Coming soon: \"Memory Feed\" timeline view!";
-  }
-
-  // Slippage/Gas
-  if (lowerQuestion.includes("slippage") || lowerQuestion.includes("gas") || lowerQuestion.includes("fee")) {
-    return "**Slippage & Gas** ⛽\n\n**Slippage:**\nDifference between expected and actual price when swapping.\n- 0.5% = safe for liquid tokens\n- 1-2% = normal for most\n- 5%+ = high risk (rug territory)\n\n**Gas (Solana):**\n~0.00001 SOL per transaction\n(basically free compared to Ethereum)\n\n💡 Worker optimizes routes via Jupiter to minimize both!";
-  }
-
-  // General help
-  if (lowerQuestion.includes("how") || lowerQuestion.includes("what") || lowerQuestion.includes("explain")) {
-    return "I can help you understand:\n\n📊 **Metrics:**\n- ATH and missed profits\n- PnL calculations\n- Portfolio allocation\n\n🤖 **Worker:**\n- Automation strategies\n- Rule configuration\n- Risk management\n\n💡 **Trading:**\n- Take profit tactics\n- Rebalancing logic\n- Exit strategies\n\n🏆 **Leaderboard:**\n- Rank meanings\n- How to improve\n\nJust ask me anything specific!";
-  }
-
-  // Default response
-  return `Interesting question! 🤔\n\nI'm still learning, but here's what I know:\n\n**About your question:**\n"${question}"\n\nCould you be more specific? For example:\n- \"Why did I miss so much on BONK?\"\n- \"What's ATH?\"\n- \"How does Worker help me?\"\n- \"Explain take profit strategies\"\n\nI'm here to make crypto less confusing! 🚀`;
 }
