@@ -69,7 +69,7 @@ export default function ConnectionPanel({
 			<div className="flex items-center gap-2 mb-4">
 				<Link className="w-5 h-5 text-[#FF6B00]" />
 				<h2
-					className="text-xl font-bold text-[#F2EDE7] uppercase"
+					className="text-xl font-bold text-foreground uppercase"
 					style={{ fontFamily: 'TECHNOS, sans-serif' }}
 				>
 					CONNECTIONS
@@ -77,12 +77,12 @@ export default function ConnectionPanel({
 			</div>
 
 			<div
-				className="bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 p-4"
+				className="bg-foreground/5 border border-foreground/10 p-4"
 				style={{ borderRadius: 0 }}
 			>
 				{/* Connected Services */}
 				<div className="mb-4">
-					<h3 className="text-xs text-[#F2EDE7]/60 uppercase mb-3">
+					<h3 className="text-xs text-foreground/60 uppercase mb-3">
 						Connected Services
 					</h3>
 					{connectedServices.length > 0 ? (
@@ -96,10 +96,10 @@ export default function ConnectionPanel({
 									<div className="flex items-center gap-2">
 										<span className="text-xl">{service.logo}</span>
 										<div>
-											<p className="text-sm font-semibold text-[#F2EDE7]">
+											<p className="text-sm font-semibold text-foreground">
 												{service.name}
 											</p>
-											<p className="text-xs text-[#F2EDE7]/60">
+											<p className="text-xs text-foreground/60">
 												{service.type === 'oauth' ? 'OAuth' : 'API Key'}
 											</p>
 										</div>
@@ -118,7 +118,7 @@ export default function ConnectionPanel({
 							))}
 						</div>
 					) : (
-						<p className="text-[#F2EDE7]/40 text-sm text-center py-4">
+						<p className="text-foreground/40 text-sm text-center py-4">
 							No connections yet. Add one below!
 						</p>
 					)}
@@ -126,7 +126,7 @@ export default function ConnectionPanel({
 
 				<Button
 					onClick={onAddConnection}
-					className="w-full bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 hover:bg-[#F2EDE7]/10 hover:border-[#FF6B00]/50 text-[#F2EDE7] h-10"
+					className="w-full bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-[#FF6B00]/50 text-foreground h-10"
 					style={{ borderRadius: 0 }}
 				>
 					<Plus className="w-4 h-4 mr-2" />

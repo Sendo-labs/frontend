@@ -44,12 +44,12 @@ export default function ShareButtons({ result }: ShareButtonsProps) {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.6 }}
-      className="bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 p-6"
+      className="bg-foreground/5 border border-foreground/10 p-6"
       style={{ borderRadius: 0 }}
     >
       <div className="flex items-center gap-2 mb-4">
         <Share2 className="w-5 h-5 text-[#FF6B00]" />
-        <h3 className="text-[#F2EDE7]/60 uppercase text-sm title-font">SHARE YOUR PAIN</h3>
+        <h3 className="text-foreground/60 uppercase text-sm title-font">SHARE YOUR PAIN</h3>
       </div>
 
       <div className="space-y-3">
@@ -88,7 +88,7 @@ export default function ShareButtons({ result }: ShareButtonsProps) {
           </Button>
         </div>
 
-        <p className="text-[#F2EDE7]/40 text-xs text-center mt-3">
+        <p className="text-foreground/40 text-xs text-center mt-3">
           Challenge a friend to analyze their wallet 👀
         </p>
       </div>

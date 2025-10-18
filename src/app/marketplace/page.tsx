@@ -511,10 +511,10 @@ export default function MarketplacePage() {
           className="bg-gradient-to-r from-[#FF6B00]/10 to-[#FF223B]/10 border border-[#FF6B00]/30 p-12 text-center"
           style={{ borderRadius: 0 }}
         >
-          <h3 className="text-2xl md:text-3xl font-bold text-[#F2EDE7] mb-4" style={{ fontFamily: 'TECHNOS, sans-serif' }}>
+          <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4" style={{ fontFamily: 'TECHNOS, sans-serif' }}>
             WANT TO LIST YOUR PLUGIN?
           </h3>
-          <p className="text-[#F2EDE7]/60 text-lg mb-8">
+          <p className="text-foreground/60 text-lg mb-8">
             Join the marketplace and reach thousands of crypto enthusiasts
           </p>
           <button

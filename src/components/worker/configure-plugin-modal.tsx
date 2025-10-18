@@ -91,7 +91,7 @@ export default function ConfigurePluginModal({
 						className="bg-[#0D0D0D] border-2 border-[#FF6B00]/30 max-w-2xl w-full"
 						style={{ borderRadius: 0 }}
 					>
-						<div className="border-b border-[#F2EDE7]/10 p-6">
+						<div className="border-b border-foreground/10 p-6">
 							<div className="flex items-start justify-between">
 								<div className="flex items-center gap-4">
 									<div
@@ -105,7 +105,7 @@ export default function ConfigurePluginModal({
 									</div>
 									<div>
 										<h2
-											className="text-2xl font-bold text-[#F2EDE7] mb-1"
+											className="text-2xl font-bold text-foreground mb-1"
 											style={{ fontFamily: 'TECHNOS, sans-serif' }}
 										>
 											CONFIGURE{' '}
@@ -113,47 +113,47 @@ export default function ConfigurePluginModal({
 												{plugin.name.toUpperCase()}
 											</span>
 										</h2>
-										<p className="text-sm text-[#F2EDE7]/60">
+										<p className="text-sm text-foreground/60">
 											OAuth authentication required
 										</p>
 									</div>
 								</div>
 								<button
 									onClick={onClose}
-									className="w-10 h-10 bg-[#F2EDE7]/5 hover:bg-[#F2EDE7]/10 flex items-center justify-center"
+									className="w-10 h-10 bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center"
 									style={{ borderRadius: 0 }}
 								>
-									<X className="w-6 h-6 text-[#F2EDE7]/60" />
+									<X className="w-6 h-6 text-foreground/60" />
 								</button>
 							</div>
 						</div>
 
 						<div className="p-8 text-center">
-							<p className="text-lg text-[#F2EDE7] mb-8">
+							<p className="text-lg text-foreground mb-8">
 								You'll be redirected to {plugin.name} to authorize the
 								connection.
 							</p>
 
 							<div
-								className="bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 p-6 mb-8"
+								className="bg-foreground/5 border border-foreground/10 p-6 mb-8"
 								style={{ borderRadius: 0 }}
 							>
 								<h3
-									className="text-sm font-bold text-[#F2EDE7] mb-4 uppercase"
+									className="text-sm font-bold text-foreground mb-4 uppercase"
 									style={{ fontFamily: 'TECHNOS, sans-serif' }}
 								>
 									What we'll access:
 								</h3>
 								<ul className="space-y-2 text-left">
-									<li className="flex items-center gap-2 text-[#F2EDE7]/70 text-sm">
+									<li className="flex items-center gap-2 text-foreground/70 text-sm">
 										<Check className="w-4 h-4 text-[#14F195]" />
 										Read wallet balances
 									</li>
-									<li className="flex items-center gap-2 text-[#F2EDE7]/70 text-sm">
+									<li className="flex items-center gap-2 text-foreground/70 text-sm">
 										<Check className="w-4 h-4 text-[#14F195]" />
 										Execute trades on your behalf
 									</li>
-									<li className="flex items-center gap-2 text-[#F2EDE7]/70 text-sm">
+									<li className="flex items-center gap-2 text-foreground/70 text-sm">
 										<Check className="w-4 h-4 text-[#14F195]" />
 										View transaction history
 									</li>
@@ -164,7 +164,7 @@ export default function ConfigurePluginModal({
 								<Button
 									onClick={onClose}
 									variant="outline"
-									className="flex-1 h-12 bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 hover:bg-[#F2EDE7]/10 text-[#F2EDE7]"
+									className="flex-1 h-12 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 text-foreground"
 									style={{ borderRadius: 0 }}
 								>
 									CANCEL
@@ -207,7 +207,7 @@ export default function ConfigurePluginModal({
 					className="bg-[#0D0D0D] border-2 border-[#FF6B00]/30 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
 					style={{ borderRadius: 0 }}
 				>
-					<div className="border-b border-[#F2EDE7]/10 p-6">
+					<div className="border-b border-foreground/10 p-6">
 						<div className="flex items-start justify-between">
 							<div className="flex items-center gap-4">
 								<div
@@ -221,7 +221,7 @@ export default function ConfigurePluginModal({
 								</div>
 								<div>
 									<h2
-										className="text-2xl font-bold text-[#F2EDE7] mb-1"
+										className="text-2xl font-bold text-foreground mb-1"
 										style={{ fontFamily: 'TECHNOS, sans-serif' }}
 									>
 										CONFIGURE{' '}
@@ -229,17 +229,17 @@ export default function ConfigurePluginModal({
 											{plugin.name.toUpperCase()}
 										</span>
 									</h2>
-									<p className="text-sm text-[#F2EDE7]/60">
+									<p className="text-sm text-foreground/60">
 										Fill in the required parameters to deploy this plugin
 									</p>
 								</div>
 							</div>
 							<button
 								onClick={onClose}
-								className="w-10 h-10 bg-[#F2EDE7]/5 hover:bg-[#F2EDE7]/10 flex items-center justify-center"
+								className="w-10 h-10 bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center"
 								style={{ borderRadius: 0 }}
 							>
-								<X className="w-6 h-6 text-[#F2EDE7]/60" />
+								<X className="w-6 h-6 text-foreground/60" />
 							</button>
 						</div>
 					</div>
@@ -248,12 +248,12 @@ export default function ConfigurePluginModal({
 						<div className="space-y-6">
 							{plugin.configFields?.map((field) => (
 								<div key={field.name}>
-									<label className="block text-sm font-bold text-[#F2EDE7] mb-2 uppercase">
+									<label className="block text-sm font-bold text-foreground mb-2 uppercase">
 										{field.label}{' '}
 										{field.required && <span className="text-[#FF223B]">*</span>}
 									</label>
 									{field.description && (
-										<p className="text-xs text-[#F2EDE7]/60 mb-3">
+										<p className="text-xs text-foreground/60 mb-3">
 											{field.description}
 										</p>
 									)}
@@ -275,14 +275,14 @@ export default function ConfigurePluginModal({
 											}
 											placeholder={`Enter ${field.label.toLowerCase()}`}
 											required={field.required}
-											className="h-12 bg-[#F2EDE7]/5 border-[#F2EDE7]/20 text-[#F2EDE7]"
+											className="h-12 bg-foreground/5 border-foreground/20 text-foreground"
 											style={{ borderRadius: 0 }}
 										/>
 										{field.type === 'password' && (
 											<button
 												type="button"
 												onClick={() => togglePasswordVisibility(field.name)}
-												className="absolute right-3 top-1/2 -translate-y-1/2 text-[#F2EDE7]/40 hover:text-[#F2EDE7]"
+												className="absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground"
 											>
 												{showPasswords[field.name] ? (
 													<EyeOff className="w-5 h-5" />
@@ -301,7 +301,7 @@ export default function ConfigurePluginModal({
 								type="button"
 								onClick={onClose}
 								variant="outline"
-								className="flex-1 h-12 bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 hover:bg-[#F2EDE7]/10 text-[#F2EDE7]"
+								className="flex-1 h-12 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 text-foreground"
 								style={{ borderRadius: 0 }}
 							>
 								CANCEL

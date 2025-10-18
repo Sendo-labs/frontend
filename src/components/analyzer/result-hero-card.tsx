@@ -70,7 +70,7 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
           <div className="w-12 h-12 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center" style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}>
             <TrendingDown className="w-7 h-7 text-white" />
           </div>
-          <h2 className="text-lg md:text-xl text-[#F2EDE7]/60 uppercase title-font">
+          <h2 className="text-lg md:text-xl text-foreground/60 uppercase title-font">
             TOTAL MISSED AT ATH
           </h2>
         </div>
@@ -81,20 +81,20 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
         </div>
 
         {/* Subtitle */}
-        <p className="text-lg md:text-xl text-[#F2EDE7]/60 mb-8">
+        <p className="text-lg md:text-xl text-foreground/60 mb-8">
           You could've been rich... but you held 💀😭
         </p>
 
         {/* Top Pain Points */}
         <div>
-          <h3 className="text-sm text-[#F2EDE7]/40 uppercase mb-4 title-font">
+          <h3 className="text-sm text-foreground/40 uppercase mb-4 title-font">
             TOP PAIN POINTS
           </h3>
           <div className="grid gap-3">
             {result.tokens.slice(0, 3).map((token, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between p-4 bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 hover:border-[#FF223B]/30 transition-all"
+                className="flex items-center justify-between p-4 bg-foreground/5 border border-foreground/10 hover:border-[#FF223B]/30 transition-all"
                 style={{ borderRadius: 0 }}
               >
                 <div className="flex items-center gap-4">
@@ -102,8 +102,8 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
                     {index + 1}
                   </div>
                   <div>
-                    <p className="text-[#F2EDE7] font-bold text-lg">{token.symbol}</p>
-                    <p className="text-[#F2EDE7]/40 text-sm">
+                    <p className="text-foreground font-bold text-lg">{token.symbol}</p>
+                    <p className="text-foreground/40 text-sm">
                       ATH: ${token.ath_price.toFixed(8)} • Sold: ${token.sold_price ? token.sold_price.toFixed(8) : 'Still Held'}
                     </p>
                   </div>

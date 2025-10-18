@@ -41,13 +41,13 @@ const ACTION_ICONS: Record<string, LucideIcon> = {
 const PRIORITY_COLORS: Record<string, string> = {
 	high: 'border-[#FF223B] bg-[#FF223B]/10',
 	medium: 'border-[#FF6B00] bg-[#FF6B00]/10',
-	low: 'border-[#F2EDE7] bg-[#F2EDE7]/5',
+	low: 'border-foreground bg-foreground/5',
 };
 
 const PRIORITY_TEXT: Record<string, string> = {
 	high: 'text-[#FF223B]',
 	medium: 'text-[#FF6B00]',
-	low: 'text-[#F2EDE7]/60',
+	low: 'text-foreground/60',
 };
 
 export default function ActionList({
@@ -64,7 +64,7 @@ export default function ActionList({
 				<div className="flex items-center gap-2 mb-4">
 					<Zap className="w-5 h-5 text-[#FF6B00]" />
 					<h2
-						className="text-xl font-bold text-[#F2EDE7] uppercase"
+						className="text-xl font-bold text-foreground uppercase"
 						style={{ fontFamily: 'TECHNOS, sans-serif' }}
 					>
 						SUGGESTED{' '}
@@ -74,17 +74,17 @@ export default function ActionList({
 					</h2>
 				</div>
 				<div
-					className="bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 p-12 text-center"
+					className="bg-foreground/5 border border-foreground/10 p-12 text-center"
 					style={{ borderRadius: 0 }}
 				>
 					<CheckCircle className="w-12 h-12 text-[#14F195] mx-auto mb-4" />
 					<h3
-						className="text-xl font-bold text-[#F2EDE7] mb-2"
+						className="text-xl font-bold text-foreground mb-2"
 						style={{ fontFamily: 'TECHNOS, sans-serif' }}
 					>
 						All Clear! 🎉
 					</h3>
-					<p className="text-[#F2EDE7]/60">
+					<p className="text-foreground/60">
 						No actions needed right now. Your portfolio is looking good.
 					</p>
 				</div>
@@ -98,7 +98,7 @@ export default function ActionList({
 				<div className="flex items-center gap-2">
 					<Zap className="w-5 h-5 text-[#FF6B00]" />
 					<h2
-						className="text-xl font-bold text-[#F2EDE7] uppercase"
+						className="text-xl font-bold text-foreground uppercase"
 						style={{ fontFamily: 'TECHNOS, sans-serif' }}
 					>
 						SUGGESTED{' '}
@@ -109,8 +109,8 @@ export default function ActionList({
 				</div>
 				<div className="flex items-center gap-3">
 					<div className="flex items-center gap-2">
-						<Clock className="w-4 h-4 text-[#F2EDE7]/40" />
-						<span className="text-xs text-[#F2EDE7]/40">Updated 2 min ago</span>
+						<Clock className="w-4 h-4 text-foreground/40" />
+						<span className="text-xs text-foreground/40">Updated 2 min ago</span>
 					</div>
 					{mode === 'suggest' && proposals.length > 1 && (
 						<Button
@@ -151,7 +151,7 @@ export default function ActionList({
 									<div className="flex-1 min-w-0">
 										<div className="flex items-center gap-2 mb-2">
 											<h3
-												className="text-lg font-bold text-[#F2EDE7] uppercase"
+												className="text-lg font-bold text-foreground uppercase"
 												style={{ fontFamily: 'TECHNOS, sans-serif' }}
 											>
 												{proposal.type.replace(/_/g, ' ')}
@@ -163,25 +163,25 @@ export default function ActionList({
 											</span>
 										</div>
 
-										<p className="text-sm text-[#F2EDE7]/70 mb-3">
+										<p className="text-sm text-foreground/70 mb-3">
 											{proposal.reason}
 										</p>
 
 										<div className="flex flex-wrap gap-2">
 											{proposal.tokens && (
-												<div className="text-xs text-[#F2EDE7]/60">
+												<div className="text-xs text-foreground/60">
 													<span className="font-semibold">Tokens:</span>{' '}
 													{proposal.tokens.join(', ')}
 												</div>
 											)}
 											{proposal.token && (
-												<div className="text-xs text-[#F2EDE7]/60">
+												<div className="text-xs text-foreground/60">
 													<span className="font-semibold">Token:</span>{' '}
 													{proposal.token}
 												</div>
 											)}
 											{proposal.size_pct && (
-												<div className="text-xs text-[#F2EDE7]/60">
+												<div className="text-xs text-foreground/60">
 													<span className="font-semibold">Size:</span>{' '}
 													{proposal.size_pct}%
 												</div>

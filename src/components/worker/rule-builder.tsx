@@ -61,7 +61,7 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 				{rules.map((rule) => (
 					<div
 						key={rule.id}
-						className="bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 overflow-hidden transition-all"
+						className="bg-foreground/5 border border-foreground/10 overflow-hidden transition-all"
 						style={{ borderRadius: 0 }}
 					>
 						<div className="p-4 flex items-center justify-between">
@@ -73,10 +73,10 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 									}
 								/>
 								<div className="flex-1">
-									<h3 className="text-base font-bold text-[#F2EDE7] mb-0.5">
+									<h3 className="text-base font-bold text-foreground mb-0.5">
 										{RULE_LABELS[rule.id]}
 									</h3>
-									<p className="text-xs text-[#F2EDE7]/60">
+									<p className="text-xs text-foreground/60">
 										{RULE_DESCRIPTIONS[rule.id]}
 									</p>
 								</div>
@@ -86,7 +86,7 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 								onClick={() => toggleRule(rule.id)}
 								variant="ghost"
 								size="icon"
-								className="text-[#F2EDE7]/60 hover:text-[#F2EDE7] hover:bg-[#F2EDE7]/10"
+								className="text-foreground/60 hover:text-foreground hover:bg-foreground/10"
 								style={{ borderRadius: 0 }}
 							>
 								{expandedRule === rule.id ? (
@@ -98,10 +98,10 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 						</div>
 
 						{expandedRule === rule.id && (
-							<div className="px-4 pb-4 border-t border-[#F2EDE7]/10 pt-4">
+							<div className="px-4 pb-4 border-t border-foreground/10 pt-4">
 								{rule.id === 'sell_dust' && (
 									<div>
-										<label className="text-xs text-[#F2EDE7]/60 mb-2 block">
+										<label className="text-xs text-foreground/60 mb-2 block">
 											Minimum USD Value
 										</label>
 										<Input
@@ -115,11 +115,11 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 													},
 												})
 											}
-											className="h-10 bg-background border-[#F2EDE7]/20 text-[#F2EDE7]"
+											className="h-10 bg-background border-foreground/20 text-foreground"
 											style={{ borderRadius: 0 }}
 											placeholder="15"
 										/>
-										<p className="text-xs text-[#F2EDE7]/40 mt-2">
+										<p className="text-xs text-foreground/40 mt-2">
 											Tokens valued below this amount will be sold
 										</p>
 									</div>
@@ -127,7 +127,7 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 
 								{rule.id === 'take_profit' && (
 									<div>
-										<label className="text-xs text-[#F2EDE7]/60 mb-2 block">
+										<label className="text-xs text-foreground/60 mb-2 block">
 											Target Profit Percentage
 										</label>
 										<Input
@@ -141,11 +141,11 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 													},
 												})
 											}
-											className="h-10 bg-background border-[#F2EDE7]/20 text-[#F2EDE7]"
+											className="h-10 bg-background border-foreground/20 text-foreground"
 											style={{ borderRadius: 0 }}
 											placeholder="25"
 										/>
-										<p className="text-xs text-[#F2EDE7]/40 mt-2">
+										<p className="text-xs text-foreground/40 mt-2">
 											Sell when token is within this % of ATH
 										</p>
 									</div>
@@ -154,7 +154,7 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 								{rule.id === 'rebalance' && (
 									<div className="space-y-3">
 										<div>
-											<label className="text-xs text-[#F2EDE7]/60 mb-2 block">
+											<label className="text-xs text-foreground/60 mb-2 block">
 												SOL Target %
 											</label>
 											<Input
@@ -174,13 +174,13 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 														},
 													})
 												}
-												className="h-10 bg-background border-[#F2EDE7]/20 text-[#F2EDE7]"
+												className="h-10 bg-background border-foreground/20 text-foreground"
 												style={{ borderRadius: 0 }}
 												placeholder="60"
 											/>
 										</div>
 										<div>
-											<label className="text-xs text-[#F2EDE7]/60 mb-2 block">
+											<label className="text-xs text-foreground/60 mb-2 block">
 												USDC Target %
 											</label>
 											<Input
@@ -200,12 +200,12 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 														},
 													})
 												}
-												className="h-10 bg-background border-[#F2EDE7]/20 text-[#F2EDE7]"
+												className="h-10 bg-background border-foreground/20 text-foreground"
 												style={{ borderRadius: 0 }}
 												placeholder="40"
 											/>
 										</div>
-										<p className="text-xs text-[#F2EDE7]/40">
+										<p className="text-xs text-foreground/40">
 											Automatically rebalance when allocation deviates by 10%+
 										</p>
 									</div>

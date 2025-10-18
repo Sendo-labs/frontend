@@ -11,18 +11,18 @@ interface WorkerToggleProps {
 export default function WorkerToggle({ mode, onModeChange }: WorkerToggleProps) {
 	return (
 		<div
-			className="bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 p-4 md:p-6"
+			className="bg-foreground/5 border border-foreground/10 p-4 md:p-6"
 			style={{ borderRadius: 0 }}
 		>
 			<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
 				<div>
 					<h3
-						className="text-lg font-bold text-[#F2EDE7] mb-1 uppercase"
+						className="text-lg font-bold text-foreground mb-1 uppercase"
 						style={{ fontFamily: 'TECHNOS, sans-serif' }}
 					>
 						Worker Mode
 					</h3>
-					<p className="text-sm text-[#F2EDE7]/60">
+					<p className="text-sm text-foreground/60">
 						{mode === 'suggest'
 							? 'Worker will suggest actions for your approval'
 							: 'Worker will execute actions automatically'}
@@ -35,7 +35,7 @@ export default function WorkerToggle({ mode, onModeChange }: WorkerToggleProps) 
 						className={`h-10 px-4 transition-all ${
 							mode === 'suggest'
 								? 'bg-gradient-to-r from-[#FF6B00] to-[#FF223B] text-white'
-								: 'bg-[#F2EDE7]/5 text-[#F2EDE7]/60 hover:text-[#F2EDE7] hover:bg-[#F2EDE7]/10'
+								: 'bg-foreground/5 text-foreground/60 hover:text-foreground hover:bg-foreground/10'
 						}`}
 						style={{ borderRadius: 0, fontFamily: 'TECHNOS, sans-serif' }}
 					>
@@ -48,7 +48,7 @@ export default function WorkerToggle({ mode, onModeChange }: WorkerToggleProps) 
 						className={`h-10 px-4 transition-all ${
 							mode === 'auto'
 								? 'bg-gradient-to-r from-[#FF6B00] to-[#FF223B] text-white'
-								: 'bg-[#F2EDE7]/5 text-[#F2EDE7]/60 hover:text-[#F2EDE7] hover:bg-[#F2EDE7]/10'
+								: 'bg-foreground/5 text-foreground/60 hover:text-foreground hover:bg-foreground/10'
 						}`}
 						style={{ borderRadius: 0, fontFamily: 'TECHNOS, sans-serif' }}
 					>

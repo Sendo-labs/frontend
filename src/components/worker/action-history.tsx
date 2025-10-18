@@ -48,25 +48,25 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 	return (
 		<div>
 			<div className="flex items-center gap-2 mb-4">
-				<History className="w-5 h-5 text-[#F2EDE7]/60" />
+				<History className="w-5 h-5 text-foreground/60" />
 				<h2
-					className="text-xl font-bold text-[#F2EDE7] uppercase"
+					className="text-xl font-bold text-foreground uppercase"
 					style={{ fontFamily: 'TECHNOS, sans-serif' }}
 				>
 					HISTORY
 				</h2>
 				{history.length > 0 && (
-					<span className="text-sm text-[#F2EDE7]/40">({history.length})</span>
+					<span className="text-sm text-foreground/40">({history.length})</span>
 				)}
 			</div>
 
 			{history.length === 0 ? (
 				<div
-					className="bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 p-8 text-center"
+					className="bg-foreground/5 border border-foreground/10 p-8 text-center"
 					style={{ borderRadius: 0 }}
 				>
-					<History className="w-12 h-12 text-[#F2EDE7]/20 mx-auto mb-3" />
-					<p className="text-[#F2EDE7]/40 text-sm">
+					<History className="w-12 h-12 text-foreground/20 mx-auto mb-3" />
+					<p className="text-foreground/40 text-sm">
 						No actions executed yet. Start by accepting or rejecting suggested
 						actions above.
 					</p>
@@ -110,7 +110,7 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 										<div className="flex-1 min-w-0">
 											<div className="flex items-center gap-2 mb-1">
 												<h3
-													className="text-base font-bold text-[#F2EDE7]/70 uppercase"
+													className="text-base font-bold text-foreground/70 uppercase"
 													style={{ fontFamily: 'TECHNOS, sans-serif' }}
 												>
 													{action.type.replace(/_/g, ' ')}
@@ -134,19 +134,19 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 												</div>
 											</div>
 
-											<p className="text-sm text-[#F2EDE7]/50 mb-2">
+											<p className="text-sm text-foreground/50 mb-2">
 												{action.reason}
 											</p>
 
 											<div className="flex items-center justify-between">
 												<div className="flex flex-wrap gap-2 text-xs">
 													{action.tokens && (
-														<span className="text-[#F2EDE7]/40">
+														<span className="text-foreground/40">
 															{action.tokens.join(', ')}
 														</span>
 													)}
 													{action.token && (
-														<span className="text-[#F2EDE7]/40">
+														<span className="text-foreground/40">
 															{action.token}
 														</span>
 													)}
@@ -156,7 +156,7 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 														${action.est_usd.toFixed(2)}
 													</span>
 												</div>
-												<span className="text-xs text-[#F2EDE7]/30">
+												<span className="text-xs text-foreground/30">
 													{formatTime(action.executedAt)}
 												</span>
 											</div>

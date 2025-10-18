@@ -248,7 +248,7 @@ export default function Worker() {
 						style={{ borderRadius: 0 }}
 					/>
 					<p
-						className="text-[#F2EDE7]/60 text-sm uppercase"
+						className="text-foreground/60 text-sm uppercase"
 						style={{ fontFamily: 'TECHNOS, sans-serif' }}
 					>
 						LOADING WORKER...
@@ -278,14 +278,14 @@ export default function Worker() {
 									DASHBOARD
 								</span>
 							</h1>
-							<p className="text-lg sm:text-xl md:text-2xl text-[#F2EDE7]/60">
+							<p className="text-lg sm:text-xl md:text-2xl text-foreground/60">
 								Automate your trading strategy. Never miss an exit again 🎯
 							</p>
 						</div>
 
 						<Button
 							onClick={handleRefresh}
-							className="bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 hover:bg-[#F2EDE7]/10 hover:border-[#FF6B00]/50 text-[#F2EDE7] h-12 px-6"
+							className="bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-[#FF6B00]/50 text-foreground h-12 px-6"
 							style={{ borderRadius: 0 }}
 						>
 							<RefreshCw className="w-5 h-5 mr-2" />

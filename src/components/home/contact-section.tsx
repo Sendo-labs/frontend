@@ -166,7 +166,7 @@ export default function ContactSection() {
           transition={{ delay: 0.6, duration: 0.8 }}
           className="mt-12 sm:mt-16 text-center text-foreground/40 text-xs sm:text-sm px-4"
         >
-          <p>© 2025 sEnDO. All rights reserved.</p>
+          <p>©{new Date().getFullYear()} sEnDO. All rights reserved.</p>
           <p className="mt-2">Built by degens, for degens.</p>
         </motion.div>
       </div>

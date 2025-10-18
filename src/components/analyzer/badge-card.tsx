@@ -14,7 +14,7 @@ export default function BadgeCard({ rank, punchline }: BadgeCardProps) {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, delay: 0.2 }}
-      className="bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 p-6 md:p-8 relative overflow-hidden group hover:border-[#FF6B00]/50 transition-all flex flex-col items-center justify-center text-center"
+      className="bg-foreground/5 border border-foreground/10 p-6 md:p-8 relative overflow-hidden group hover:border-[#FF6B00]/50 transition-all flex flex-col items-center justify-center text-center"
       style={{ borderRadius: 0 }}
     >
       {/* Glow effect */}
@@ -30,7 +30,7 @@ export default function BadgeCard({ rank, punchline }: BadgeCardProps) {
           💀
         </motion.div>
 
-        <h3 className="text-2xl md:text-3xl font-bold mb-3 text-[#F2EDE7] title-font">
+        <h3 className="text-2xl md:text-3xl font-bold mb-3 text-foreground title-font">
           {rank}
         </h3>
 
@@ -38,7 +38,7 @@ export default function BadgeCard({ rank, punchline }: BadgeCardProps) {
           <p className="text-[#FF223B] text-sm font-semibold">{punchline}</p>
         </div>
 
-        <p className="text-[#F2EDE7]/40 text-sm mt-6 max-w-xs mx-auto">
+        <p className="text-foreground/40 text-sm mt-6 max-w-xs mx-auto">
           You held through pain, hope, and more pain. Congrats, you're officially a legend 🏆
         </p>
       </div>

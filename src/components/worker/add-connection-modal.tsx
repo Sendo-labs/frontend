@@ -303,7 +303,7 @@ export default function AddConnectionModal({
 					style={{ borderRadius: 0 }}
 				>
 					{/* Header */}
-					<div className="border-b border-[#F2EDE7]/10 p-6">
+					<div className="border-b border-foreground/10 p-6">
 						<div className="flex items-center justify-between mb-4">
 							<h2
 								className="text-2xl font-bold uppercase"
@@ -313,22 +313,22 @@ export default function AddConnectionModal({
 							</h2>
 							<button
 								onClick={onClose}
-								className="w-10 h-10 bg-[#F2EDE7]/5 hover:bg-[#F2EDE7]/10 flex items-center justify-center"
+								className="w-10 h-10 bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center"
 								style={{ borderRadius: 0 }}
 							>
-								<X className="w-6 h-6 text-[#F2EDE7]/60" />
+								<X className="w-6 h-6 text-foreground/60" />
 							</button>
 						</div>
 
 						{/* Search */}
 						<div className="relative mb-4">
-							<Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#F2EDE7]/40" />
+							<Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/40" />
 							<Input
 								type="text"
 								placeholder="Search plugins..."
 								value={search}
 								onChange={(e) => setSearch(e.target.value)}
-								className="pl-10 h-12 bg-[#F2EDE7]/5 border-[#F2EDE7]/20 text-[#F2EDE7]"
+								className="pl-10 h-12 bg-foreground/5 border-foreground/20 text-foreground"
 								style={{ borderRadius: 0 }}
 							/>
 						</div>
@@ -342,7 +342,7 @@ export default function AddConnectionModal({
 									className={`px-3 py-1.5 text-xs uppercase transition-all ${
 										selectedCategory === cat
 											? 'bg-gradient-to-r from-[#FF6B00] to-[#FF223B] text-white'
-											: 'bg-[#F2EDE7]/5 text-[#F2EDE7]/60 hover:bg-[#F2EDE7]/10'
+											: 'bg-foreground/5 text-foreground/60 hover:bg-foreground/10'
 									}`}
 									style={{ borderRadius: 0 }}
 								>
@@ -362,7 +362,7 @@ export default function AddConnectionModal({
 									className={`flex items-start gap-3 p-4 border transition-all cursor-pointer ${
 										plugin.isSponsored
 											? 'bg-gradient-to-r from-[#FFD700]/10 to-[#FF6B00]/10 border-[#FFD700]/30'
-											: 'bg-[#F2EDE7]/5 border-[#F2EDE7]/10 hover:bg-[#F2EDE7]/10 hover:border-[#FF6B00]/50'
+											: 'bg-foreground/5 border-foreground/10 hover:bg-foreground/10 hover:border-[#FF6B00]/50'
 									}`}
 									style={{ borderRadius: 0 }}
 									onClick={() => onSelectPlugin(plugin)}
@@ -381,7 +381,7 @@ export default function AddConnectionModal({
 											{plugin.isSponsored && (
 												<Crown className="w-4 h-4 text-[#FFD700] flex-shrink-0" />
 											)}
-											<h3 className="text-sm font-bold text-[#F2EDE7] truncate">
+											<h3 className="text-sm font-bold text-foreground truncate">
 												{plugin.name}
 											</h3>
 										</div>
@@ -393,7 +393,7 @@ export default function AddConnectionModal({
 												{plugin.category}
 											</span>
 											<span
-												className="px-2 py-0.5 bg-[#F2EDE7]/10 text-[#F2EDE7]/60 text-xs uppercase"
+												className="px-2 py-0.5 bg-foreground/10 text-foreground/60 text-xs uppercase"
 												style={{ borderRadius: 0 }}
 											>
 												{plugin.authType === 'oauth' ? 'OAuth' : 'API Key'}
@@ -402,7 +402,7 @@ export default function AddConnectionModal({
 												{plugin.price}
 											</span>
 										</div>
-										<p className="text-xs text-[#F2EDE7]/60 line-clamp-2">
+										<p className="text-xs text-foreground/60 line-clamp-2">
 											{plugin.description}
 										</p>
 									</div>
@@ -413,7 +413,7 @@ export default function AddConnectionModal({
 
 						{filteredPlugins.length === 0 && (
 							<div className="text-center py-12">
-								<p className="text-[#F2EDE7]/40">No plugins found</p>
+								<p className="text-foreground/40">No plugins found</p>
 							</div>
 						)}
 					</div>

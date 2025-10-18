@@ -51,7 +51,7 @@ export default function ResultCard({ result }: ResultCardProps) {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6 }}
-      className="bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 p-6 md:p-8 relative overflow-hidden group hover:border-[#FF223B]/50 transition-all"
+      className="bg-foreground/5 border border-foreground/10 p-6 md:p-8 relative overflow-hidden group hover:border-[#FF223B]/50 transition-all"
       style={{ borderRadius: 0 }}
     >
       {/* Glow effect */}
@@ -62,7 +62,7 @@ export default function ResultCard({ result }: ResultCardProps) {
           <div className="w-10 h-10 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center" style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}>
             <TrendingDown className="w-6 h-6 text-white" />
           </div>
-          <h3 className="text-[#F2EDE7]/60 uppercase text-sm title-font">TOTAL MISSED AT ATH</h3>
+          <h3 className="text-foreground/60 uppercase text-sm title-font">TOTAL MISSED AT ATH</h3>
         </div>
 
         <div className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent title-font">
@@ -70,16 +70,16 @@ export default function ResultCard({ result }: ResultCardProps) {
         </div>
 
         <div className="space-y-3">
-          <h4 className="text-[#F2EDE7]/40 text-xs uppercase mb-3 title-font">TOP PAIN POINTS</h4>
+          <h4 className="text-foreground/40 text-xs uppercase mb-3 title-font">TOP PAIN POINTS</h4>
           {result.tokens.map((token, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-background/50 border border-[#F2EDE7]/5">
+            <div key={index} className="flex items-center justify-between p-3 bg-background/50 border border-foreground/5">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-white font-bold text-sm" style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)' }}>
                   {index + 1}
                 </div>
                 <div>
-                  <p className="text-[#F2EDE7] font-semibold">{token.symbol}</p>
-                  <p className="text-[#F2EDE7]/40 text-xs">{token.ath_change_pct}% from ATH</p>
+                  <p className="text-foreground font-semibold">{token.symbol}</p>
+                  <p className="text-foreground/40 text-xs">{token.ath_change_pct}% from ATH</p>
                 </div>
               </div>
               <div className="text-right">

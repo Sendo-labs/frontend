@@ -22,25 +22,25 @@ export default function CTAActivateWorker() {
           <div className="w-10 h-10 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center" style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}>
             <Zap className="w-6 h-6 text-white" />
           </div>
-          <h3 className="text-[#F2EDE7] uppercase text-sm font-bold title-font">
+          <h3 className="text-foreground uppercase text-sm font-bold title-font">
             TIRED OF MISSING ATHS?
           </h3>
         </div>
 
-        <p className="text-[#F2EDE7]/70 text-sm mb-4">
+        <p className="text-foreground/70 text-sm mb-4">
           Activate the Worker to get real-time suggestions and automate your exit strategy. Never miss a top again 🎯
         </p>
 
         <ul className="space-y-2 mb-6">
-          <li className="flex items-center gap-2 text-[#F2EDE7]/60 text-sm">
+          <li className="flex items-center gap-2 text-foreground/60 text-sm">
             <div className="w-1.5 h-1.5 bg-[#FF6B00]" style={{ borderRadius: 0 }} />
             Auto take-profit alerts
           </li>
-          <li className="flex items-center gap-2 text-[#F2EDE7]/60 text-sm">
+          <li className="flex items-center gap-2 text-foreground/60 text-sm">
             <div className="w-1.5 h-1.5 bg-[#FF6B00]" style={{ borderRadius: 0 }} />
             Dust token cleanup
           </li>
-          <li className="flex items-center gap-2 text-[#F2EDE7]/60 text-sm">
+          <li className="flex items-center gap-2 text-foreground/60 text-sm">
             <div className="w-1.5 h-1.5 bg-[#FF6B00]" style={{ borderRadius: 0 }} />
             Portfolio rebalancing
           </li>

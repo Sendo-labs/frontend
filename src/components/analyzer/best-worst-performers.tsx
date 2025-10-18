@@ -21,7 +21,7 @@ export default function BestWorstPerformers({ best, worst }: BestWorstPerformers
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.4, duration: 0.6 }}
-      className="bg-background border border-[#F2EDE7]/10 p-6 space-y-6"
+      className="bg-background border border-foreground/10 p-6 space-y-6"
       style={{ borderRadius: 0 }}
     >
       {/* Best Performer */}
@@ -36,18 +36,18 @@ export default function BestWorstPerformers({ best, worst }: BestWorstPerformers
         </div>
         <div className="space-y-2">
           <div className="flex justify-between">
-            <span className="text-[#F2EDE7]/60 text-sm">Token</span>
-            <span className="text-[#F2EDE7] font-bold">{best.token}</span>
+            <span className="text-foreground/60 text-sm">Token</span>
+            <span className="text-foreground font-bold">{best.token}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-[#F2EDE7]/60 text-sm">PnL</span>
+            <span className="text-foreground/60 text-sm">PnL</span>
             <span className="text-[#14F195] font-bold title-font">
               +{best.pnl_sol.toFixed(4)} SOL
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-[#F2EDE7]/60 text-sm">Volume</span>
-            <span className="text-[#F2EDE7]">{best.volume_sol.toFixed(3)} SOL</span>
+            <span className="text-foreground/60 text-sm">Volume</span>
+            <span className="text-foreground">{best.volume_sol.toFixed(3)} SOL</span>
           </div>
         </div>
       </div>
@@ -64,18 +64,18 @@ export default function BestWorstPerformers({ best, worst }: BestWorstPerformers
         </div>
         <div className="space-y-2">
           <div className="flex justify-between">
-            <span className="text-[#F2EDE7]/60 text-sm">Token</span>
-            <span className="text-[#F2EDE7] font-bold">{worst.token}</span>
+            <span className="text-foreground/60 text-sm">Token</span>
+            <span className="text-foreground font-bold">{worst.token}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-[#F2EDE7]/60 text-sm">PnL</span>
+            <span className="text-foreground/60 text-sm">PnL</span>
             <span className="text-[#FF223B] font-bold title-font">
               {worst.pnl_sol.toFixed(4)} SOL
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-[#F2EDE7]/60 text-sm">Volume</span>
-            <span className="text-[#F2EDE7]">{worst.volume_sol.toFixed(3)} SOL</span>
+            <span className="text-foreground/60 text-sm">Volume</span>
+            <span className="text-foreground">{worst.volume_sol.toFixed(3)} SOL</span>
           </div>
         </div>
       </div>

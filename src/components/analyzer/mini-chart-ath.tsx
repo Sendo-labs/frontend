@@ -33,9 +33,9 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
     if (active && payload && payload.length) {
       return (
         <div className="bg-background border border-[#FF6B00]/30 p-3" style={{ borderRadius: 0 }}>
-          <p className="text-[#F2EDE7] text-sm font-bold">{payload[0].payload.name}</p>
+          <p className="text-foreground text-sm font-bold">{payload[0].payload.name}</p>
           <p className="text-[#FF6B00] text-xs">{payload[0].value.toFixed(1)}%</p>
-          <p className="text-[#F2EDE7]/60 text-xs">
+          <p className="text-foreground/60 text-xs">
             ${(peakValue * payload[0].payload.rawValue / 1000).toFixed(1)}k
           </p>
         </div>
@@ -49,12 +49,12 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.4 }}
-      className="bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 p-6 md:p-8 relative overflow-hidden group hover:border-[#FF6B00]/50 transition-all"
+      className="bg-foreground/5 border border-foreground/10 p-6 md:p-8 relative overflow-hidden group hover:border-[#FF6B00]/50 transition-all"
       style={{ borderRadius: 0 }}
     >
       <div className="flex items-center gap-2 mb-6">
         <TrendingDown className="w-5 h-5 text-[#FF223B]" />
-        <h3 className="text-[#F2EDE7]/60 uppercase text-sm title-font">
+        <h3 className="text-foreground/60 uppercase text-sm title-font">
           VALUE FROM ATH TO NOW
         </h3>
       </div>
@@ -95,25 +95,25 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
         </ResponsiveContainer>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 pt-6 border-t border-[#F2EDE7]/10">
+      <div className="grid grid-cols-3 gap-4 pt-6 border-t border-foreground/10">
         <div>
-          <p className="text-[#F2EDE7]/40 text-xs mb-1 uppercase title-font">
+          <p className="text-foreground/40 text-xs mb-1 uppercase title-font">
             PEAK VALUE
           </p>
-          <p className="text-[#F2EDE7] font-bold text-lg">
+          <p className="text-foreground font-bold text-lg">
             ${(peakValue / 1000).toFixed(1)}k
           </p>
         </div>
         <div>
-          <p className="text-[#F2EDE7]/40 text-xs mb-1 uppercase title-font">
+          <p className="text-foreground/40 text-xs mb-1 uppercase title-font">
             CURRENT VALUE
           </p>
-          <p className="text-[#F2EDE7] font-bold text-lg">
+          <p className="text-foreground font-bold text-lg">
             ${(currentValue / 1000).toFixed(1)}k
           </p>
         </div>
         <div>
-          <p className="text-[#F2EDE7]/40 text-xs mb-1 uppercase title-font">
+          <p className="text-foreground/40 text-xs mb-1 uppercase title-font">
             % LOST
           </p>
           <p className="text-[#FF223B] font-bold text-lg">

@@ -260,7 +260,7 @@ export default function AnalyzerPage() {
               ANALYZER
             </span>
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-[#F2EDE7]/60 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl md:text-2xl text-foreground/60 max-w-3xl mx-auto">
             Analyze your pain 💀 See how much you lost by not selling at ATH
           </p>
         </motion.div>
@@ -331,7 +331,7 @@ export default function AnalyzerPage() {
             className="mt-16 text-center"
           >
             <Link href={createPageUrl("Leaderboard")}>
-              <Button className="bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 hover:bg-[#F2EDE7]/10 hover:border-[#FF223B]/50 text-[#F2EDE7] h-12 px-8 transition-all group" style={{ borderRadius: 0 }}>
+              <Button className="bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-[#FF223B]/50 text-foreground h-12 px-8 transition-all group" style={{ borderRadius: 0 }}>
                 <Crown className="w-5 h-5 mr-2 text-[#FF6B00] group-hover:scale-110 transition-transform" />
                 <span style={{ fontFamily: 'TECHNOS, sans-serif' }}>VIEW LEADERBOARD</span>
               </Button>

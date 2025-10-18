@@ -26,7 +26,7 @@ export default function WorkerPanel({ proposals }: WorkerPanelProps) {
 			<div className="flex items-center gap-2 mb-4">
 				<Activity className="w-5 h-5 text-[#FF6B00]" />
 				<h2
-					className="text-xl font-bold text-[#F2EDE7] uppercase"
+					className="text-xl font-bold text-foreground uppercase"
 					style={{ fontFamily: 'TECHNOS, sans-serif' }}
 				>
 					STATS
@@ -34,13 +34,13 @@ export default function WorkerPanel({ proposals }: WorkerPanelProps) {
 			</div>
 
 			<div
-				className="bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 p-4 space-y-4"
+				className="bg-foreground/5 border border-foreground/10 p-4 space-y-4"
 				style={{ borderRadius: 0 }}
 			>
 				<div>
 					<div className="flex items-center gap-2 mb-2">
 						<TrendingUp className="w-4 h-4 text-[#14F195]" />
-						<p className="text-xs text-[#F2EDE7]/60 uppercase">
+						<p className="text-xs text-foreground/60 uppercase">
 							Potential Gains
 						</p>
 					</div>
@@ -52,12 +52,12 @@ export default function WorkerPanel({ proposals }: WorkerPanelProps) {
 					</p>
 				</div>
 
-				<div className="h-px bg-[#F2EDE7]/10" />
+				<div className="h-px bg-foreground/10" />
 
 				<div>
 					<div className="flex items-center gap-2 mb-2">
 						<Zap className="w-4 h-4 text-[#FF223B]" />
-						<p className="text-xs text-[#F2EDE7]/60 uppercase">High Priority</p>
+						<p className="text-xs text-foreground/60 uppercase">High Priority</p>
 					</div>
 					<p
 						className="text-2xl font-bold text-[#FF223B]"
@@ -67,22 +67,22 @@ export default function WorkerPanel({ proposals }: WorkerPanelProps) {
 					</p>
 				</div>
 
-				<div className="h-px bg-[#F2EDE7]/10" />
+				<div className="h-px bg-foreground/10" />
 
 				<div>
-					<p className="text-xs text-[#F2EDE7]/60 uppercase mb-2">
+					<p className="text-xs text-foreground/60 uppercase mb-2">
 						Active Rules
 					</p>
 					<p
-						className="text-2xl font-bold text-[#F2EDE7]"
+						className="text-2xl font-bold text-foreground"
 						style={{ fontFamily: 'TECHNOS, sans-serif' }}
 					>
 						2/3
 					</p>
 				</div>
 
-				<div className="mt-4 pt-4 border-t border-[#F2EDE7]/10">
-					<p className="text-xs text-[#F2EDE7]/40 text-center">
+				<div className="mt-4 pt-4 border-t border-foreground/10">
+					<p className="text-xs text-foreground/40 text-center">
 						Worker last checked 2 minutes ago
 					</p>
 				</div>
