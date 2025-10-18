@@ -41,31 +41,34 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-sendo-orange: var(--sendo-orange);
+  --color-sendo-red: var(--sendo-red);
+  --color-sendo-green: var(--sendo-green);
 }
 
 :root {
   --radius: 0rem; /* Sharp corners for SENDO design */
 
   /* SENDO Dark Theme - OKLCH version */
-  --background: oklch(10% 0.01 270); /* #0D0D0D */
-  --foreground: oklch(94% 0.02 80); /* #F2EDE7 */
+  --background: oklch(0.1591 0 0); /* #0D0D0D */
+  --foreground: oklch(0.9483 0.0097 72.66); /* #F2EDE7 */
   --card: oklch(12% 0.01 270); /* Slightly lighter than background */
-  --card-foreground: oklch(94% 0.02 80);
+  --card-foreground: oklch(0.9483 0.0097 72.66);
   --popover: oklch(10% 0.01 270);
-  --popover-foreground: oklch(94% 0.02 80);
+  --popover-foreground: oklch(0.9483 0.0097 72.66);
 
-  --primary: oklch(94% 0.02 80); /* Light beige */
+  --primary: oklch(0.9483 0.0097 72.66); /* Light beige */
   --primary-foreground: oklch(10% 0.01 270); /* Dark text */
   --secondary: oklch(18% 0.01 270); /* Slightly lighter dark */
-  --secondary-foreground: oklch(94% 0.02 80);
+  --secondary-foreground: oklch(0.9483 0.0097 72.66);
   --muted: oklch(18% 0.01 270);
   --muted-foreground: oklch(65% 0.03 270);
 
-  --accent: oklch(94% 0.02 80);
+  --accent: oklch(0.9483 0.0097 72.66);
   --accent-foreground: oklch(10% 0.01 270);
 
   --destructive: oklch(62% 0.21 25); /* Red for errors */
-  --destructive-foreground: oklch(94% 0.02 80);
+  --destructive-foreground: oklch(0.9483 0.0097 72.66);
 
   --border: oklch(94% 0.02 80 / 10%);
   --input: oklch(94% 0.02 80 / 10%);
@@ -78,48 +81,59 @@
   --chart-5: oklch(65% 0.22 300); /* Purple */
 
   --sidebar-background: oklch(10% 0.01 270);
-  --sidebar-foreground: oklch(94% 0.02 80);
-  --sidebar-primary: oklch(94% 0.02 80);
+  --sidebar-foreground: oklch(0.9483 0.0097 72.66);
+  --sidebar-primary: oklch(0.9483 0.0097 72.66);
   --sidebar-primary-foreground: oklch(10% 0.01 270);
   --sidebar-accent: oklch(18% 0.01 270);
-  --sidebar-accent-foreground: oklch(94% 0.02 80);
+  --sidebar-accent-foreground: oklch(0.9483 0.0097 72.66);
   --sidebar-border: oklch(94% 0.02 80 / 10%);
   --sidebar-ring: oklch(94% 0.02 80 / 50%);
+
+  /* SENDO Brand Colors */
+  --sendo-orange: oklch(0.7022 0.2004 45.1); /* #FF6B00 */
+  --sendo-red: oklch(0.6404 0.2452 23.56); /* #FF223B */
+  --sendo-green: oklch(0.8441 0.1991 156.83); /* #14F195 */
 }
 
 .dark {
-  --background: oklch(10% 0.01 270);
-  --foreground: oklch(94% 0.02 80);
+  --background: oklch(0.1591 0 0);
+  --foreground: oklch(0.9483 0.0097 72.66);
   --card: oklch(12% 0.01 270);
-  --card-foreground: oklch(94% 0.02 80);
+  --card-foreground: oklch(0.9483 0.0097 72.66);
   --popover: oklch(10% 0.01 270);
-  --popover-foreground: oklch(94% 0.02 80);
-  --primary: oklch(94% 0.02 80);
+  --popover-foreground: oklch(0.9483 0.0097 72.66);
+  --primary: oklch(0.9483 0.0097 72.66);
   --primary-foreground: oklch(10% 0.01 270);
   --secondary: oklch(18% 0.01 270);
-  --secondary-foreground: oklch(94% 0.02 80);
+  --secondary-foreground: oklch(0.9483 0.0097 72.66);
   --muted: oklch(18% 0.01 270);
   --muted-foreground: oklch(65% 0.03 270);
-  --accent: oklch(94% 0.02 80);
+  --accent: oklch(0.9483 0.0097 72.66);
   --accent-foreground: oklch(10% 0.01 270);
   --destructive: oklch(62% 0.21 25);
-  --destructive-foreground: oklch(94% 0.02 80);
+  --destructive-foreground: oklch(0.9483 0.0097 72.66);
   --border: oklch(94% 0.02 80 / 10%);
   --input: oklch(94% 0.02 80 / 15%);
   --ring: oklch(94% 0.02 80 / 50%);
+
   --chart-1: oklch(65% 0.2 240);
   --chart-2: oklch(65% 0.18 145);
   --chart-3: oklch(78% 0.16 90);
   --chart-4: oklch(62% 0.21 25);
   --chart-5: oklch(65% 0.22 300);
   --sidebar-background: oklch(10% 0.01 270);
-  --sidebar-foreground: oklch(94% 0.02 80);
-  --sidebar-primary: oklch(94% 0.02 80);
+  --sidebar-foreground: oklch(0.9483 0.0097 72.66);
+  --sidebar-primary: oklch(0.9483 0.0097 72.66);
   --sidebar-primary-foreground: oklch(10% 0.01 270);
   --sidebar-accent: oklch(18% 0.01 270);
-  --sidebar-accent-foreground: oklch(94% 0.02 80);
+  --sidebar-accent-foreground: oklch(0.9483 0.0097 72.66);
   --sidebar-border: oklch(94% 0.02 80 / 10%);
   --sidebar-ring: oklch(94% 0.02 80 / 50%);
+
+  /* SENDO Brand Colors */
+  --sendo-orange: oklch(0.7022 0.2004 45.1); /* #FF6B00 */
+  --sendo-red: oklch(0.6404 0.2452 23.56); /* #FF223B */
+  --sendo-green: oklch(0.8441 0.1991 156.83); /* #14F195 */
 }
 
 @layer base {
@@ -129,4 +143,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.title-font {
+  font-family: 'TECHNOS', sans-serif;
 }

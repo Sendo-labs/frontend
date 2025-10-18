@@ -49,8 +49,8 @@ export default function Navigation() {
                     className={cn(
                       "px-3 lg:px-4 py-2 text-xs lg:text-sm font-medium transition-all uppercase",
                       isActive(link.path)
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                        ? "bg-foreground text-background"
+                        : "text-foreground/70 hover:text-foreground hover:bg-foreground/10"
                     )}
                     style={{ borderRadius: 0 }}
                   >
@@ -83,8 +83,8 @@ export default function Navigation() {
                       className={cn(
                         "px-4 py-2 text-sm font-medium transition-all uppercase",
                         isActive(link.path)
-                          ? "bg-primary text-primary-foreground"
-                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                          ? "bg-foreground text-background"
+                          : "text-foreground/70 hover:text-foreground hover:bg-foreground/10"
                       )}
                       style={{ borderRadius: 0 }}
                     >

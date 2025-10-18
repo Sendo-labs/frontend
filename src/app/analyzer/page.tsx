@@ -3,12 +3,25 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, TrendingDown, Share2, Zap, MessageCircle, Crown, Wallet, Activity, Image as ImageIcon, Coins } from "lucide-react";
+import { Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
+import { createPageUrl } from "@/lib/utils";
+import WalletInput from "@/components/analyzer/wallet-input";
+import ResultHeroCard from "@/components/analyzer/result-hero-card";
+import WalletStatsGrid from "@/components/analyzer/wallet-stats-grid";
+import PerformanceMetrics from "@/components/analyzer/performance-metrics";
+import TokenDistribution from "@/components/analyzer/token-distribution";
+import BestWorstPerformers from "@/components/analyzer/best-worst-performers";
+import MiniChartATH from "@/components/analyzer/mini-chart-ath";
+import TokenDetailsList from "@/components/analyzer/token-details-list";
+import ShareButtons from "@/components/analyzer/share-buttons";
+import CTAActivateWorker from "@/components/analyzer/cta-activate-worker";
 
 interface WalletAnalysisResult {
+  mini_chart: {
+    points: Array<[number, number]>;
+  };
   wallet: string;
   total_missed_usd: number;
   stats: {
@@ -67,7 +80,7 @@ export default function AnalyzerPage() {
 
   useEffect(() => {
     const walletParam = searchParams.get('wallet');
-    
+
     if (walletParam && walletParam.trim()) {
       setWallet(walletParam);
       setTimeout(() => {
@@ -78,32 +91,40 @@ export default function AnalyzerPage() {
 
   const handleAnalyze = async (walletAddress = wallet) => {
     if (!walletAddress.trim()) return;
-    
+
     setIsAnalyzing(true);
-    
+
     // Mock data - Replace with actual API call
     setTimeout(() => {
       setResult({
         wallet: walletAddress,
         total_missed_usd: 847393,
+        
+        // Wallet stats
         stats: {
           signatures: 2847,
           sol_balance: 1551.82,
           nfts: 2,
           tokens: 47
         },
+        
+        // Performance metrics
         performance: {
           total_volume_sol: 22.444,
           total_pnl_sol: 11.692,
           success_rate: 50,
           tokens_analyzed: 6
         },
+        
+        // Token distribution
         distribution: {
           in_profit: 3,
           in_loss: 2,
           fully_sold: 0,
           still_held: 2
         },
+        
+        // Top performers
         best_performer: {
           token: "5ZV3HcSD",
           symbol: "BONK",
@@ -116,6 +137,8 @@ export default function AnalyzerPage() {
           pnl_sol: -8.4216,
           volume_sol: 1.734
         },
+        
+        // Top pain points
         tokens: [
           { 
             symbol: "BONK", 
@@ -144,10 +167,78 @@ export default function AnalyzerPage() {
             transactions: 3,
             status: "sold",
             profit_status: "loss"
+          },
+          { 
+            symbol: "SAMO", 
+            token_address: "Bg34H2jy",
+            missed_usd: 156789, 
+            ath_price: 0.234,
+            sold_price: 0.067,
+            ath_change_pct: -78,
+            volume_sol: 1.485,
+            pnl_sol: 0.0566,
+            tokens_held: 0,
+            transactions: 2,
+            status: "sold",
+            profit_status: "profit"
+          },
+          {
+            symbol: "PUMP",
+            token_address: "7hpxmtJ1",
+            missed_usd: 98420,
+            ath_price: 0.00000089,
+            sold_price: 0,
+            ath_change_pct: -91,
+            volume_sol: 0.925,
+            pnl_sol: -0.2251,
+            tokens_held: 15535577.16,
+            transactions: 1,
+            status: "holding",
+            profit_status: "loss"
+          },
+          {
+            symbol: "DEGEN",
+            token_address: "LHywvDs4",
+            missed_usd: 67234,
+            ath_price: 0.045,
+            sold_price: 0,
+            ath_change_pct: -86,
+            volume_sol: 0.518,
+            pnl_sol: -0.2987,
+            tokens_held: 8923456.22,
+            transactions: 1,
+            status: "holding",
+            profit_status: "loss"
+          },
+          {
+            symbol: "MEW",
+            token_address: "oXMtQ4uCv",
+            missed_usd: 45120,
+            ath_price: 0.0012,
+            sold_price: 0.00089,
+            ath_change_pct: -74,
+            volume_sol: 0.518,
+            pnl_sol: 0.1334,
+            tokens_held: 0,
+            transactions: 3,
+            status: "sold",
+            profit_status: "profit"
           }
         ],
+        
         rank: "CERTIFIED BAGHOLDER 💀",
-        punchline: "Top 0.1% of Pain"
+        punchline: "Top 0.1% of Pain",
+        
+        mini_chart: {
+          points: [
+            [0, 1.0],
+            [1, 0.8],
+            [2, 0.6],
+            [3, 0.4],
+            [4, 0.3],
+            [5, 0.2]
+          ]
+        }
       });
       setIsAnalyzing(false);
     }, 2000);
@@ -155,7 +246,7 @@ export default function AnalyzerPage() {
 
   return (
     <div className="min-h-screen pt-24 pb-12">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-12 md:py-20">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -163,171 +254,90 @@ export default function AnalyzerPage() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12 md:mb-16"
         >
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
-            WALLET ANALYZER
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6" style={{ fontFamily: 'TECHNOS, sans-serif' }}>
+            WALLET{" "}
+            <span className="bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent">
+              ANALYZER
+            </span>
           </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Analyze your trading performance and discover missed opportunities
+          <p className="text-lg sm:text-xl md:text-2xl text-[#F2EDE7]/60 max-w-3xl mx-auto">
+            Analyze your pain 💀 See how much you lost by not selling at ATH
           </p>
         </motion.div>
 
-        {/* Search Input */}
+        {/* Wallet Input */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="max-w-2xl mx-auto mb-16"
+          transition={{ delay: 0.2, duration: 0.8 }}
         >
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex gap-2">
-                <Input
-                  type="text"
-                  placeholder="Enter Solana wallet address..."
-                  value={wallet}
-                  onChange={(e) => setWallet(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleAnalyze()}
-                  className="flex-1"
-                />
-                <Button 
-                  onClick={() => handleAnalyze()}
-                  disabled={isAnalyzing || !wallet.trim()}
-                >
-                  {isAnalyzing ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent mr-2" />
-                      Analyzing...
-                    </>
-                  ) : (
-                    <>
-                      <Search className="w-4 h-4 mr-2" />
-                      Analyze
-                    </>
-                  )}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <WalletInput
+            wallet={wallet}
+            setWallet={setWallet}
+            onAnalyze={() => handleAnalyze()}
+            isAnalyzing={isAnalyzing}
+          />
         </motion.div>
 
         {/* Results */}
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {result && (
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -40 }}
+              exit={{ opacity: 0, y: -50 }}
               transition={{ duration: 0.6 }}
-              className="space-y-8"
+              className="mt-12 md:mt-16 space-y-6 md:space-y-8"
             >
-              {/* Hero Card */}
-              <Card className="border-destructive">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-3xl font-bold">
-                      ${result.total_missed_usd.toLocaleString()}
-                    </CardTitle>
-                    <span className="text-sm text-muted-foreground">
-                      Total Missed Value
-                    </span>
-                  </div>
-                  <CardDescription className="text-xl">
-                    {result.rank}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+              {/* Hero Recap Card */}
+              <ResultHeroCard result={result} />
 
-              {/* Stats Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-3">
-                      <Activity className="w-5 h-5 text-primary" />
-                      <div>
-                        <p className="text-sm text-muted-foreground">Signatures</p>
-                        <p className="text-2xl font-bold">{result.stats.signatures}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-3">
-                      <Wallet className="w-5 h-5 text-primary" />
-                      <div>
-                        <p className="text-sm text-muted-foreground">SOL Balance</p>
-                        <p className="text-2xl font-bold">{result.stats.sol_balance}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+              {/* Wallet Stats Grid */}
+              <WalletStatsGrid stats={result.stats} />
 
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-3">
-                      <ImageIcon className="w-5 h-5 text-primary" />
-                      <div>
-                        <p className="text-sm text-muted-foreground">NFTs</p>
-                        <p className="text-2xl font-bold">{result.stats.nfts}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+              {/* Performance Metrics */}
+              <PerformanceMetrics performance={result.performance} />
 
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-3">
-                      <Coins className="w-5 h-5 text-primary" />
-                      <div>
-                        <p className="text-sm text-muted-foreground">Tokens</p>
-                        <p className="text-2xl font-bold">{result.stats.tokens}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+              {/* Token Distribution + Best/Worst Performers */}
+              <div className="grid lg:grid-cols-2 gap-6">
+                <TokenDistribution distribution={result.distribution} />
+                <BestWorstPerformers
+                  best={result.best_performer}
+                  worst={result.worst_performer}
+                />
               </div>
 
-              {/* Token List */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Token Analysis</CardTitle>
-                  <CardDescription>Detailed breakdown of your trading history</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {result.tokens.map((token, index) => (
-                      <div 
-                        key={index}
-                        className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold">
-                            {token.symbol.substring(0, 2)}
-                          </div>
-                          <div>
-                            <p className="font-semibold">{token.symbol}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {token.token_address.substring(0, 8)}...
-                            </p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className={`font-bold ${token.profit_status === 'profit' ? 'text-green-500' : 'text-destructive'}`}>
-                            {token.pnl_sol > 0 ? '+' : ''}{token.pnl_sol.toFixed(4)} SOL
-                          </p>
-                          <p className="text-sm text-muted-foreground">
-                            Missed: ${token.missed_usd.toLocaleString()}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              {/* Chart */}
+              <MiniChartATH data={result.mini_chart} />
+
+              {/* Token Details List */}
+              <TokenDetailsList tokens={result.tokens} />
+
+              {/* Actions */}
+              <div className="grid md:grid-cols-2 gap-6">
+                <ShareButtons result={result} />
+                <CTAActivateWorker />
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Leaderboard CTA */}
+        {!result && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="mt-16 text-center"
+          >
+            <Link href={createPageUrl("Leaderboard")}>
+              <Button className="bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 hover:bg-[#F2EDE7]/10 hover:border-[#FF223B]/50 text-[#F2EDE7] h-12 px-8 transition-all group" style={{ borderRadius: 0 }}>
+                <Crown className="w-5 h-5 mr-2 text-[#FF6B00] group-hover:scale-110 transition-transform" />
+                <span style={{ fontFamily: 'TECHNOS, sans-serif' }}>VIEW LEADERBOARD</span>
+              </Button>
+            </Link>
+          </motion.div>
+        )}
       </div>
     </div>
   );

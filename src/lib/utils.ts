@@ -5,3 +5,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function createPageUrl(pageName: string) {
+  return '/' + pageName.toLowerCase().replace(/ /g, '-');
+}
