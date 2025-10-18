@@ -23,42 +23,34 @@ export default function WorkerPanel({ proposals }: WorkerPanelProps) {
 	return (
 		<div>
 			<div className='flex items-center gap-2 mb-4'>
-				<Activity className='w-5 h-5 text-[#FF6B00]' />
-				<h2 className='text-xl font-bold text-foreground uppercase' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
-					STATS
-				</h2>
+				<Activity className='w-5 h-5 text-sendo-orange' />
+				<h2 className='text-xl font-bold text-foreground uppercase title-font'>STATS</h2>
 			</div>
 
 			<div className='bg-foreground/5 border border-foreground/10 p-4 space-y-4' style={{ borderRadius: 0 }}>
 				<div>
 					<div className='flex items-center gap-2 mb-2'>
-						<TrendingUp className='w-4 h-4 text-[#14F195]' />
+						<TrendingUp className='w-4 h-4 text---sendo-green' />
 						<p className='text-xs text-foreground/60 uppercase'>Potential Gains</p>
 					</div>
-					<p className='text-2xl font-bold text-[#14F195]' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
-						${totalValue.toFixed(2)}
-					</p>
+					<p className='text-2xl font-bold text---sendo-green title-font'>${totalValue.toFixed(2)}</p>
 				</div>
 
 				<div className='h-px bg-foreground/10' />
 
 				<div>
 					<div className='flex items-center gap-2 mb-2'>
-						<Zap className='w-4 h-4 text-[#FF223B]' />
+						<Zap className='w-4 h-4 text-sendo-red' />
 						<p className='text-xs text-foreground/60 uppercase'>High Priority</p>
 					</div>
-					<p className='text-2xl font-bold text-[#FF223B]' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
-						{highPriorityCount}
-					</p>
+					<p className='text-2xl font-bold text-sendo-red title-font'>{highPriorityCount}</p>
 				</div>
 
 				<div className='h-px bg-foreground/10' />
 
 				<div>
 					<p className='text-xs text-foreground/60 uppercase mb-2'>Active Rules</p>
-					<p className='text-2xl font-bold text-foreground' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
-						2/3
-					</p>
+					<p className='text-2xl font-bold text-foreground title-font'>2/3</p>
 				</div>
 
 				<div className='mt-4 pt-4 border-t border-foreground/10'>

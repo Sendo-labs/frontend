@@ -83,6 +83,7 @@ export default function Worker() {
 	const [showAddConnection, setShowAddConnection] = useState(false);
 	const [selectedPluginToConnect, setSelectedPluginToConnect] = useState<Plugin | null>(null);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: no need to define dependencies
 	useEffect(() => {
 		fetchWorkerConfig();
 		fetchProposals();
@@ -237,12 +238,10 @@ export default function Worker() {
 			<div className='min-h-screen bg-background flex items-center justify-center pt-24 pb-12'>
 				<div className='text-center'>
 					<div
-						className='w-16 h-16 border-4 border-[#FF6B00] border-t-transparent mx-auto mb-4'
+						className='w-16 h-16 border-4 border-sendo-orange border-t-transparent mx-auto mb-4'
 						style={{ borderRadius: 0 }}
 					/>
-					<p className='text-foreground/60 text-sm uppercase' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
-						LOADING WORKER...
-					</p>
+					<p className='text-foreground/60 text-sm uppercase title-font'>LOADING WORKER...</p>
 				</div>
 			</div>
 		);
@@ -259,12 +258,9 @@ export default function Worker() {
 				>
 					<div className='flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6'>
 						<div>
-							<h1
-								className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-2'
-								style={{ fontFamily: 'TECHNOS, sans-serif' }}
-							>
+							<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-2 title-font'>
 								WORKER{' '}
-								<span className='bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent'>
+								<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
 									DASHBOARD
 								</span>
 							</h1>
@@ -275,11 +271,11 @@ export default function Worker() {
 
 						<Button
 							onClick={handleRefresh}
-							className='bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-[#FF6B00]/50 text-foreground h-12 px-6'
+							className='bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-orange/50 text-foreground h-12 px-6'
 							style={{ borderRadius: 0 }}
 						>
 							<RefreshCw className='w-5 h-5 mr-2' />
-							<span style={{ fontFamily: 'TECHNOS, sans-serif' }}>REFRESH</span>
+							<span className='title-font'>REFRESH</span>
 						</Button>
 					</div>
 

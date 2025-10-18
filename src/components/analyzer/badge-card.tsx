@@ -14,11 +14,11 @@ export default function BadgeCard({ rank, punchline }: BadgeCardProps) {
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
 			transition={{ duration: 0.6, delay: 0.2 }}
-			className='bg-foreground/5 border border-foreground/10 p-6 md:p-8 relative overflow-hidden group hover:border-[#FF6B00]/50 transition-all flex flex-col items-center justify-center text-center'
+			className='bg-foreground/5 border border-foreground/10 p-6 md:p-8 relative overflow-hidden group hover:border-sendo-orange/50 transition-all flex flex-col items-center justify-center text-center'
 			style={{ borderRadius: 0 }}
 		>
 			{/* Glow effect */}
-			<div className='absolute inset-0 bg-gradient-to-br from-[#FF223B]/5 via-transparent to-[#FF6B00]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
+			<div className='absolute inset-0 bg-gradient-to-br from-sendo-red/5 via-transparent to-sendo-orange/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
 
 			<div className='relative z-10'>
 				<motion.div
@@ -32,8 +32,8 @@ export default function BadgeCard({ rank, punchline }: BadgeCardProps) {
 
 				<h3 className='text-2xl md:text-3xl font-bold mb-3 text-foreground title-font'>{rank}</h3>
 
-				<div className='inline-block px-4 py-2 bg-[#FF223B]/10 border border-[#FF223B]/30' style={{ borderRadius: 0 }}>
-					<p className='text-[#FF223B] text-sm font-semibold'>{punchline}</p>
+				<div className='inline-block px-4 py-2 bg-sendo-red/10 border border-sendo-red/30' style={{ borderRadius: 0 }}>
+					<p className='text-sendo-red text-sm font-semibold'>{punchline}</p>
 				</div>
 
 				<p className='text-foreground/40 text-sm mt-6 max-w-xs mx-auto'>

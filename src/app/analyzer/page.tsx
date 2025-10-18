@@ -78,6 +78,7 @@ export default function AnalyzerPage() {
 	const [isAnalyzing, setIsAnalyzing] = useState(false);
 	const [result, setResult] = useState<WalletAnalysisResult | null>(null);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: no need to define dependencies
 	useEffect(() => {
 		const walletParam = searchParams.get('wallet');
 
@@ -254,12 +255,11 @@ export default function AnalyzerPage() {
 					transition={{ duration: 0.8 }}
 					className='text-center mb-12 md:mb-16'
 				>
-					<h1
-						className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6'
-						style={{ fontFamily: 'TECHNOS, sans-serif' }}
-					>
+					<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font'>
 						WALLET{' '}
-						<span className='bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent'>ANALYZER</span>
+						<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+							ANALYZER
+						</span>
 					</h1>
 					<p className='text-lg sm:text-xl md:text-2xl text-foreground/60 max-w-3xl mx-auto'>
 						Analyze your pain 💀 See how much you lost by not selling at ATH
@@ -330,11 +330,11 @@ export default function AnalyzerPage() {
 					>
 						<Link href={createPageUrl('Leaderboard')}>
 							<Button
-								className='bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-[#FF223B]/50 text-foreground h-12 px-8 transition-all group'
+								className='bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-red/50 text-foreground h-12 px-8 transition-all group'
 								style={{ borderRadius: 0 }}
 							>
-								<Crown className='w-5 h-5 mr-2 text-[#FF6B00] group-hover:scale-110 transition-transform' />
-								<span style={{ fontFamily: 'TECHNOS, sans-serif' }}>VIEW LEADERBOARD</span>
+								<Crown className='w-5 h-5 mr-2 text-sendo-orange group-hover:scale-110 transition-transform' />
+								<span className='title-font'>VIEW LEADERBOARD</span>
 							</Button>
 						</Link>
 					</motion.div>

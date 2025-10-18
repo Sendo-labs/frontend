@@ -32,7 +32,7 @@ const team: TeamMember[] = [
 		name: 'Kidam',
 		role: 'Full stack Web3 developer',
 		image:
-			'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de563762a326681f5a5a3/039ae2e84_u9457137444_Cinematic_anime_concept_art_portrait_of_a_mysteri_f89ed810-e4e4-48cf-baec-15bff380b5f1_1.png',
+			'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/039ae2e84_u9457137444_Cinematic_anime_concept_art_portrait_of_a_mysteri_f89ed810-e4e4-48cf-baec-15bff380b5f1_1.png',
 		socials: { twitter: '#', github: '#' },
 	},
 	{
@@ -52,11 +52,12 @@ export default function TeamSection() {
 					initial={{ opacity: 0, y: 30 }}
 					whileInView={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8 }}
-					className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-3 sm:mb-4 md:mb-6 text-foreground'
-					style={{ fontFamily: 'TECHNOS, sans-serif' }}
+					className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-3 sm:mb-4 md:mb-6 text-foreground title-font'
 				>
 					THE{' '}
-					<span className='bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent'>GUARDIANS</span>
+					<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+						GUARDIANS
+					</span>
 				</motion.h2>
 
 				<motion.p
@@ -78,7 +79,7 @@ export default function TeamSection() {
 							className='group'
 						>
 							<div
-								className='relative overflow-hidden bg-foreground/5 border border-foreground/10 hover:border-[#FF6B00]/50 transition-all duration-300'
+								className='relative overflow-hidden bg-foreground/5 border border-foreground/10 hover:border-sendo-orange/50 transition-all duration-300'
 								style={{ borderRadius: 0 }}
 							>
 								<div className='relative aspect-square overflow-hidden'>
@@ -93,7 +94,7 @@ export default function TeamSection() {
 										{member.socials.twitter && (
 											<a
 												href={member.socials.twitter}
-												className='w-8 h-8 sm:w-10 sm:h-10 bg-foreground/10 flex items-center justify-center hover:bg-[#FF6B00] transition-colors'
+												className='w-8 h-8 sm:w-10 sm:h-10 bg-foreground/10 flex items-center justify-center hover:bg-sendo-orange transition-colors'
 												style={{ borderRadius: 0 }}
 											>
 												<Twitter className='w-4 h-4 sm:w-5 sm:h-5 text-foreground' />
@@ -102,7 +103,7 @@ export default function TeamSection() {
 										{member.socials.github && (
 											<a
 												href={member.socials.github}
-												className='w-8 h-8 sm:w-10 sm:h-10 bg-foreground/10 flex items-center justify-center hover:bg-[#FF6B00] transition-colors'
+												className='w-8 h-8 sm:w-10 sm:h-10 bg-foreground/10 flex items-center justify-center hover:bg-sendo-orange transition-colors'
 												style={{ borderRadius: 0 }}
 											>
 												<Github className='w-4 h-4 sm:w-5 sm:h-5 text-foreground' />
@@ -111,7 +112,7 @@ export default function TeamSection() {
 										{member.socials.linkedin && (
 											<a
 												href={member.socials.linkedin}
-												className='w-8 h-8 sm:w-10 sm:h-10 bg-foreground/10 flex items-center justify-center hover:bg-[#FF6B00] transition-colors'
+												className='w-8 h-8 sm:w-10 sm:h-10 bg-foreground/10 flex items-center justify-center hover:bg-sendo-orange transition-colors'
 												style={{ borderRadius: 0 }}
 											>
 												<Linkedin className='w-4 h-4 sm:w-5 sm:h-5 text-foreground' />
@@ -121,10 +122,7 @@ export default function TeamSection() {
 								</div>
 
 								<div className='p-3 sm:p-4 md:p-6'>
-									<h3
-										className='text-sm sm:text-base md:text-lg lg:text-xl font-bold text-foreground mb-1'
-										style={{ fontFamily: 'TECHNOS, sans-serif' }}
-									>
+									<h3 className='text-sm sm:text-base md:text-lg lg:text-xl font-bold text-foreground mb-1 title-font'>
 										{member.name}
 									</h3>
 									<p className='text-foreground/60 text-xs sm:text-sm'>{member.role}</p>

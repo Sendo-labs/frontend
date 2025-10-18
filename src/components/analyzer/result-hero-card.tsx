@@ -53,22 +53,22 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 			initial={{ opacity: 0, scale: 0.95 }}
 			animate={{ opacity: 1, scale: 1 }}
 			transition={{ duration: 0.6 }}
-			className='relative bg-background border-2 border-[#FF223B]/30 p-8 md:p-12 overflow-hidden'
+			className='relative bg-background border-2 border-sendo-red/30 p-8 md:p-12 overflow-hidden'
 			style={{ borderRadius: 0 }}
 		>
 			{/* Background gradient */}
-			<div className='absolute inset-0 bg-gradient-to-br from-[#FF6B00]/10 via-transparent to-[#FF223B]/10 opacity-50' />
+			<div className='absolute inset-0 bg-gradient-to-br from-sendo-orange/10 via-transparent to-sendo-red/10 opacity-50' />
 
 			{/* Decorative skull */}
 			<div className='absolute top-8 right-8 opacity-5'>
-				<Skull className='w-48 h-48 md:w-64 md:h-64 text-[#FF223B]' />
+				<Skull className='w-48 h-48 md:w-64 md:h-64 text-sendo-red' />
 			</div>
 
 			<div className='relative z-10'>
 				{/* Title */}
 				<div className='flex items-center gap-3 mb-6'>
 					<div
-						className='w-12 h-12 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center'
+						className='w-12 h-12 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center'
 						style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
 					>
 						<TrendingDown className='w-7 h-7 text-white' />
@@ -77,7 +77,7 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 				</div>
 
 				{/* Big number */}
-				<div className='text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold mb-4 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent leading-none title-font'>
+				<div className='text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold mb-4 bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent leading-none title-font'>
 					<CountUp end={result.total_missed_usd} />
 				</div>
 
@@ -91,12 +91,12 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 						{result.tokens.slice(0, 3).map((token, index) => (
 							<div
 								key={index}
-								className='flex items-center justify-between p-4 bg-foreground/5 border border-foreground/10 hover:border-[#FF223B]/30 transition-all'
+								className='flex items-center justify-between p-4 bg-foreground/5 border border-foreground/10 hover:border-sendo-red/30 transition-all'
 								style={{ borderRadius: 0 }}
 							>
 								<div className='flex items-center gap-4'>
 									<div
-										className='w-10 h-10 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-white font-bold title-font'
+										className='w-10 h-10 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center text-white font-bold title-font'
 										style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)' }}
 									>
 										{index + 1}
@@ -110,8 +110,8 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 									</div>
 								</div>
 								<div className='text-right'>
-									<p className='text-[#FF223B] font-bold text-xl title-font'>-${token.missed_usd.toLocaleString()}</p>
-									<p className='text-[#FF223B]/60 text-sm'>{token.ath_change_pct}% from ATH</p>
+									<p className='text-sendo-red font-bold text-xl title-font'>-${token.missed_usd.toLocaleString()}</p>
+									<p className='text-sendo-red/60 text-sm'>{token.ath_change_pct}% from ATH</p>
 								</div>
 							</div>
 						))}

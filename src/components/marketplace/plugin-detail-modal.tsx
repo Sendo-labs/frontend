@@ -41,23 +41,20 @@ export default function PluginDetailModal({ plugin, onClose, onDeploy }: PluginD
 					animate={{ scale: 1, opacity: 1 }}
 					exit={{ scale: 0.9, opacity: 0 }}
 					onClick={(e) => e.stopPropagation()}
-					className='bg-background border-2 border-[#FF6B00]/30 max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col'
+					className='bg-background border-2 border-sendo-orange/30 max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col'
 					style={{ borderRadius: 0 }}
 				>
 					{/* Header */}
 					<div className='border-b border-foreground/10 p-6'>
 						<div className='flex items-start gap-4 mb-6'>
 							<div
-								className='w-16 h-16 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-4xl flex-shrink-0'
+								className='w-16 h-16 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center text-4xl flex-shrink-0'
 								style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)' }}
 							>
 								{plugin.icon}
 							</div>
 							<div className='flex-1'>
-								<h2
-									className='text-2xl md:text-3xl font-bold text-foreground mb-2 uppercase'
-									style={{ fontFamily: 'TECHNOS, sans-serif' }}
-								>
+								<h2 className='text-2xl md:text-3xl font-bold text-foreground mb-2 uppercase title-font'>
 									{plugin.name}
 								</h2>
 								<p className='text-foreground/70 mb-3'>{plugin.longDescription}</p>
@@ -78,7 +75,7 @@ export default function PluginDetailModal({ plugin, onClose, onDeploy }: PluginD
 										</div>
 									)}
 									<span
-										className={`text-lg font-bold ${plugin.price === 'FREE' ? 'text-[#14F195]' : 'text-[#FF6B00]'}`}
+										className={`text-lg font-bold ${plugin.price === 'FREE' ? 'text---sendo-green' : 'text-sendo-orange'}`}
 									>
 										{plugin.price}
 									</span>
@@ -96,6 +93,7 @@ export default function PluginDetailModal({ plugin, onClose, onDeploy }: PluginD
 								</div>
 							</div>
 							<button
+								type='button'
 								onClick={onClose}
 								className='w-10 h-10 bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center flex-shrink-0'
 								style={{ borderRadius: 0 }}
@@ -106,7 +104,7 @@ export default function PluginDetailModal({ plugin, onClose, onDeploy }: PluginD
 
 						<Button
 							onClick={onDeploy}
-							className='w-full bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white h-12 text-lg font-bold uppercase'
+							className='w-full bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 text-lg font-bold uppercase'
 							style={{
 								clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 								borderRadius: 0,
@@ -121,11 +119,12 @@ export default function PluginDetailModal({ plugin, onClose, onDeploy }: PluginD
 						<div className='flex gap-6'>
 							{tabs.map((tab) => (
 								<button
+									type='button'
 									key={tab}
 									onClick={() => setActiveTab(tab.toLowerCase())}
 									className={`py-4 text-sm font-bold border-b-2 transition-colors uppercase ${
 										activeTab === tab.toLowerCase()
-											? 'border-[#FF6B00] text-[#FF6B00]'
+											? 'border-sendo-orange text-sendo-orange'
 											: 'border-transparent text-foreground/40 hover:text-foreground/70'
 									}`}
 								>
@@ -140,26 +139,16 @@ export default function PluginDetailModal({ plugin, onClose, onDeploy }: PluginD
 						{activeTab === 'overview' && (
 							<div className='space-y-6'>
 								<div>
-									<h3
-										className='text-xl font-bold text-foreground mb-4 uppercase'
-										style={{ fontFamily: 'TECHNOS, sans-serif' }}
-									>
-										About This Plugin
-									</h3>
+									<h3 className='text-xl font-bold text-foreground mb-4 uppercase title-font'>About This Plugin</h3>
 									<p className='text-foreground/70 leading-relaxed'>{plugin.longDescription}</p>
 								</div>
 
 								<div>
-									<h3
-										className='text-xl font-bold text-foreground mb-4 uppercase'
-										style={{ fontFamily: 'TECHNOS, sans-serif' }}
-									>
-										Key Features
-									</h3>
+									<h3 className='text-xl font-bold text-foreground mb-4 uppercase title-font'>Key Features</h3>
 									<div className='space-y-3'>
 										{plugin.features.map((feature, index) => (
 											<div key={index} className='flex items-start gap-3'>
-												<CheckCircle className='w-5 h-5 text-[#14F195] flex-shrink-0 mt-0.5' />
+												<CheckCircle className='w-5 h-5 text---sendo-green flex-shrink-0 mt-0.5' />
 												<p className='text-foreground/70'>{feature}</p>
 											</div>
 										))}

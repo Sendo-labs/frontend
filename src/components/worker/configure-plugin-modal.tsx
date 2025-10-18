@@ -80,14 +80,14 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 						animate={{ scale: 1, opacity: 1 }}
 						exit={{ scale: 0.9, opacity: 0 }}
 						onClick={(e) => e.stopPropagation()}
-						className='bg-[#0D0D0D] border-2 border-[#FF6B00]/30 max-w-2xl w-full'
+						className='bg-[#0D0D0D] border-2 border-sendo-orange/30 max-w-2xl w-full'
 						style={{ borderRadius: 0 }}
 					>
 						<div className='border-b border-foreground/10 p-6'>
 							<div className='flex items-start justify-between'>
 								<div className='flex items-center gap-4'>
 									<div
-										className='w-16 h-16 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-3xl'
+										className='w-16 h-16 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center text-3xl'
 										style={{
 											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 										}}
@@ -95,16 +95,14 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 										{plugin.icon}
 									</div>
 									<div>
-										<h2
-											className='text-2xl font-bold text-foreground mb-1'
-											style={{ fontFamily: 'TECHNOS, sans-serif' }}
-										>
-											CONFIGURE <span className='text-[#FF6B00]'>{plugin.name.toUpperCase()}</span>
+										<h2 className='text-2xl font-bold text-foreground mb-1 title-font'>
+											CONFIGURE <span className='text-sendo-orange'>{plugin.name.toUpperCase()}</span>
 										</h2>
 										<p className='text-sm text-foreground/60'>OAuth authentication required</p>
 									</div>
 								</div>
 								<button
+									type='button'
 									onClick={onClose}
 									className='w-10 h-10 bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center'
 									style={{ borderRadius: 0 }}
@@ -120,23 +118,18 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 							</p>
 
 							<div className='bg-foreground/5 border border-foreground/10 p-6 mb-8' style={{ borderRadius: 0 }}>
-								<h3
-									className='text-sm font-bold text-foreground mb-4 uppercase'
-									style={{ fontFamily: 'TECHNOS, sans-serif' }}
-								>
-									What we'll access:
-								</h3>
+								<h3 className='text-sm font-bold text-foreground mb-4 uppercase title-font'>What we'll access:</h3>
 								<ul className='space-y-2 text-left'>
 									<li className='flex items-center gap-2 text-foreground/70 text-sm'>
-										<Check className='w-4 h-4 text-[#14F195]' />
+										<Check className='w-4 h-4 text---sendo-green' />
 										Read wallet balances
 									</li>
 									<li className='flex items-center gap-2 text-foreground/70 text-sm'>
-										<Check className='w-4 h-4 text-[#14F195]' />
+										<Check className='w-4 h-4 text---sendo-green' />
 										Execute trades on your behalf
 									</li>
 									<li className='flex items-center gap-2 text-foreground/70 text-sm'>
-										<Check className='w-4 h-4 text-[#14F195]' />
+										<Check className='w-4 h-4 text---sendo-green' />
 										View transaction history
 									</li>
 								</ul>
@@ -153,7 +146,7 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 								</Button>
 								<Button
 									onClick={onComplete}
-									className='flex-1 h-12 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white'
+									className='flex-1 h-12 bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white'
 									style={{
 										clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 										borderRadius: 0,
@@ -185,14 +178,14 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 					animate={{ scale: 1, opacity: 1 }}
 					exit={{ scale: 0.9, opacity: 0 }}
 					onClick={(e) => e.stopPropagation()}
-					className='bg-[#0D0D0D] border-2 border-[#FF6B00]/30 max-w-2xl w-full max-h-[90vh] overflow-y-auto'
+					className='bg-[#0D0D0D] border-2 border-sendo-orange/30 max-w-2xl w-full max-h-[90vh] overflow-y-auto'
 					style={{ borderRadius: 0 }}
 				>
 					<div className='border-b border-foreground/10 p-6'>
 						<div className='flex items-start justify-between'>
 							<div className='flex items-center gap-4'>
 								<div
-									className='w-16 h-16 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-3xl'
+									className='w-16 h-16 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center text-3xl'
 									style={{
 										clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 									}}
@@ -200,13 +193,14 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 									{plugin.icon}
 								</div>
 								<div>
-									<h2 className='text-2xl font-bold text-foreground mb-1' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
-										CONFIGURE <span className='text-[#FF6B00]'>{plugin.name.toUpperCase()}</span>
+									<h2 className='text-2xl font-bold text-foreground mb-1 title-font'>
+										CONFIGURE <span className='text-sendo-orange'>{plugin.name.toUpperCase()}</span>
 									</h2>
 									<p className='text-sm text-foreground/60'>Fill in the required parameters to deploy this plugin</p>
 								</div>
 							</div>
 							<button
+								type='button'
 								onClick={onClose}
 								className='w-10 h-10 bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center'
 								style={{ borderRadius: 0 }}
@@ -220,8 +214,11 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 						<div className='space-y-6'>
 							{plugin.configFields?.map((field) => (
 								<div key={field.name}>
-									<label className='block text-sm font-bold text-foreground mb-2 uppercase'>
-										{field.label} {field.required && <span className='text-[#FF223B]'>*</span>}
+									<label
+										htmlFor={field.name}
+										className='block text-sm font-bold text-foreground mb-2 uppercase title-font'
+									>
+										{field.label} {field.required && <span className='text-sendo-red'>*</span>}
 									</label>
 									{field.description && <p className='text-xs text-foreground/60 mb-3'>{field.description}</p>}
 									<div className='relative'>
@@ -272,7 +269,7 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 							<Button
 								type='submit'
 								disabled={isSubmitting}
-								className='flex-1 h-12 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white'
+								className='flex-1 h-12 bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white'
 								style={{
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 									borderRadius: 0,

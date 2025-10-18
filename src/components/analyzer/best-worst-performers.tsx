@@ -25,12 +25,12 @@ export default function BestWorstPerformers({ best, worst }: BestWorstPerformers
 			style={{ borderRadius: 0 }}
 		>
 			{/* Best Performer */}
-			<div className='bg-[#14F195]/5 border border-[#14F195]/20 p-4' style={{ borderRadius: 0 }}>
+			<div className='bg---sendo-green/5 border border---sendo-green/20 p-4' style={{ borderRadius: 0 }}>
 				<div className='flex items-center gap-2 mb-3'>
-					<div className='w-8 h-8 bg-[#14F195] flex items-center justify-center' style={{ borderRadius: 0 }}>
+					<div className='w-8 h-8 bg---sendo-green flex items-center justify-center' style={{ borderRadius: 0 }}>
 						<TrendingUp className='w-5 h-5 text-black' />
 					</div>
-					<h4 className='text-sm font-bold text-[#14F195] uppercase title-font'>BEST PERFORMER</h4>
+					<h4 className='text-sm font-bold text---sendo-green uppercase title-font'>BEST PERFORMER</h4>
 				</div>
 				<div className='space-y-2'>
 					<div className='flex justify-between'>
@@ -39,7 +39,7 @@ export default function BestWorstPerformers({ best, worst }: BestWorstPerformers
 					</div>
 					<div className='flex justify-between'>
 						<span className='text-foreground/60 text-sm'>PnL</span>
-						<span className='text-[#14F195] font-bold title-font'>+{best.pnl_sol.toFixed(4)} SOL</span>
+						<span className='text---sendo-green font-bold title-font'>+{best.pnl_sol.toFixed(4)} SOL</span>
 					</div>
 					<div className='flex justify-between'>
 						<span className='text-foreground/60 text-sm'>Volume</span>
@@ -49,12 +49,12 @@ export default function BestWorstPerformers({ best, worst }: BestWorstPerformers
 			</div>
 
 			{/* Worst Performer */}
-			<div className='bg-[#FF223B]/5 border border-[#FF223B]/20 p-4' style={{ borderRadius: 0 }}>
+			<div className='bg-sendo-red/5 border border-sendo-red/20 p-4' style={{ borderRadius: 0 }}>
 				<div className='flex items-center gap-2 mb-3'>
-					<div className='w-8 h-8 bg-[#FF223B] flex items-center justify-center' style={{ borderRadius: 0 }}>
+					<div className='w-8 h-8 bg-sendo-red flex items-center justify-center' style={{ borderRadius: 0 }}>
 						<TrendingDown className='w-5 h-5 text-white' />
 					</div>
-					<h4 className='text-sm font-bold text-[#FF223B] uppercase title-font'>WORST PERFORMER</h4>
+					<h4 className='text-sm font-bold text-sendo-red uppercase title-font'>WORST PERFORMER</h4>
 				</div>
 				<div className='space-y-2'>
 					<div className='flex justify-between'>
@@ -63,7 +63,7 @@ export default function BestWorstPerformers({ best, worst }: BestWorstPerformers
 					</div>
 					<div className='flex justify-between'>
 						<span className='text-foreground/60 text-sm'>PnL</span>
-						<span className='text-[#FF223B] font-bold title-font'>{worst.pnl_sol.toFixed(4)} SOL</span>
+						<span className='text-sendo-red font-bold title-font'>{worst.pnl_sol.toFixed(4)} SOL</span>
 					</div>
 					<div className='flex justify-between'>
 						<span className='text-foreground/60 text-sm'>Volume</span>

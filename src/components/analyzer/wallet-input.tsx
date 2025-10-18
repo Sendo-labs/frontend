@@ -22,14 +22,14 @@ export default function WalletInput({ wallet, setWallet, onAnalyze, isAnalyzing 
 						placeholder='Enter your Solana wallet address...'
 						value={wallet}
 						onChange={(e) => setWallet(e.target.value)}
-						className='h-14 text-base bg-background border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-[#FF6B00] transition-all flex-1'
+						className='h-14 text-base bg-background border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-sendo-orange transition-all flex-1'
 						style={{ borderRadius: 0 }}
 						disabled={isAnalyzing}
 					/>
 					<Button
 						onClick={onAnalyze}
 						disabled={isAnalyzing || !wallet.trim()}
-						className='h-14 px-8 text-base font-bold bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white transition-all title-font'
+						className='h-14 px-8 text-base font-bold bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white transition-all title-font'
 						style={{
 							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
 							borderRadius: 0,

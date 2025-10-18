@@ -48,7 +48,7 @@ export default function ShareButtons({ result }: ShareButtonsProps) {
 			style={{ borderRadius: 0 }}
 		>
 			<div className='flex items-center gap-2 mb-4'>
-				<Share2 className='w-5 h-5 text-[#FF6B00]' />
+				<Share2 className='w-5 h-5 text-sendo-orange' />
 				<h3 className='text-foreground/60 uppercase text-sm title-font'>SHARE YOUR PAIN</h3>
 			</div>
 
@@ -56,7 +56,7 @@ export default function ShareButtons({ result }: ShareButtonsProps) {
 				{/* Download Button */}
 				<Button
 					onClick={handleDownload}
-					className='w-full bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white h-12 title-font'
+					className='w-full bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 title-font'
 					style={{
 						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 						borderRadius: 0,

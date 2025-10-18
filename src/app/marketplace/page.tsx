@@ -427,7 +427,7 @@ export default function MarketplacePage() {
 				<div className='text-center'>
 					{/* This element creates a static square with a missing top border, not a spinning animation */}
 					<div
-						className='w-16 h-16 border-4 border-[#FF6B00] border-t-transparent mx-auto mb-4'
+						className='w-16 h-16 border-4 border-sendo-orange border-t-transparent mx-auto mb-4'
 						style={{ borderRadius: 0 }}
 					/>
 					<p className='text-foreground/60 text-sm uppercase title-font'>LOADING MARKETPLACE...</p>
@@ -448,7 +448,7 @@ export default function MarketplacePage() {
 				>
 					<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font'>
 						PLUGIN{' '}
-						<span className='bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent'>
+						<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
 							MARKETPLACE
 						</span>
 					</h1>
@@ -491,8 +491,8 @@ export default function MarketplacePage() {
 					className='mb-12 md:mb-16'
 				>
 					<div className='flex items-center gap-3 mb-6'>
-						<Flame className='w-7 h-7 text-[#FF6B00]' />
-						<h2 className='text-2xl sm:text-3xl font-bold text-[#FF6B00]'>LIQUIDITY AND SWAP PROTOCOLS</h2>
+						<Flame className='w-7 h-7 text-sendo-orange' />
+						<h2 className='text-2xl sm:text-3xl font-bold text-sendo-orange'>LIQUIDITY AND SWAP PROTOCOLS</h2>
 					</div>
 					<div className='grid md:grid-cols-3 gap-6'>
 						{PLUGINS.liquidity.map((plugin, index) => (
@@ -515,8 +515,8 @@ export default function MarketplacePage() {
 					className='mb-12 md:mb-16'
 				>
 					<div className='flex items-center gap-3 mb-6'>
-						<Zap className='w-7 h-7 text-[#FF6B00]' />
-						<h2 className='text-2xl sm:text-3xl font-bold text-[#FF6B00]'>TRADING, YIELD AND LIQUID STAKING</h2>
+						<Zap className='w-7 h-7 text-sendo-orange' />
+						<h2 className='text-2xl sm:text-3xl font-bold text-sendo-orange'>TRADING, YIELD AND LIQUID STAKING</h2>
 					</div>
 					<div className='grid md:grid-cols-3 gap-6'>
 						{PLUGINS.trading.map((plugin, index) => (
@@ -539,8 +539,8 @@ export default function MarketplacePage() {
 					className='mb-12 md:mb-16'
 				>
 					<div className='flex items-center gap-3 mb-6'>
-						<Bot className='w-7 h-7 text-[#FF6B00]' />
-						<h2 className='text-2xl sm:text-3xl font-bold text-[#FF6B00]'>AUTONOMOUS AI AGENTS (BUILT ON sEnDO)</h2>
+						<Bot className='w-7 h-7 text-sendo-orange' />
+						<h2 className='text-2xl sm:text-3xl font-bold text-sendo-orange'>AUTONOMOUS AI AGENTS (BUILT ON sEnDO)</h2>
 					</div>
 					<div className='grid md:grid-cols-2 gap-6'>
 						{PLUGINS.ai.map((plugin, index) => (
@@ -563,8 +563,8 @@ export default function MarketplacePage() {
 					className='mb-12 md:mb-16'
 				>
 					<div className='flex items-center gap-3 mb-6'>
-						<Plug className='w-7 h-7 text-[#FF6B00]' />
-						<h2 className='text-2xl sm:text-3xl font-bold text-[#FF6B00]'>COMMUNITY AND EXTERNAL PLUGINS</h2>
+						<Plug className='w-7 h-7 text-sendo-orange' />
+						<h2 className='text-2xl sm:text-3xl font-bold text-sendo-orange'>COMMUNITY AND EXTERNAL PLUGINS</h2>
 					</div>
 					<div className='grid md:grid-cols-3 gap-6'>
 						{PLUGINS.community.map((plugin, index) => (
@@ -584,20 +584,15 @@ export default function MarketplacePage() {
 					initial={{ opacity: 0, y: 30 }}
 					whileInView={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8 }}
-					className='bg-gradient-to-r from-[#FF6B00]/10 to-[#FF223B]/10 border border-[#FF6B00]/30 p-12 text-center'
+					className='bg-gradient-to-r from-sendo-orange/10 to-sendo-red/10 border border-sendo-orange/30 p-12 text-center'
 					style={{ borderRadius: 0 }}
 				>
-					<h3
-						className='text-2xl md:text-3xl font-bold text-foreground mb-4'
-						style={{ fontFamily: 'TECHNOS, sans-serif' }}
-					>
-						WANT TO LIST YOUR PLUGIN?
-					</h3>
+					<h3 className='text-2xl md:text-3xl font-bold text-foreground mb-4 title-font'>WANT TO LIST YOUR PLUGIN?</h3>
 					<p className='text-foreground/60 text-lg mb-8'>
 						Join the marketplace and reach thousands of crypto enthusiasts
 					</p>
 					<button
-						className='bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white px-8 py-4 text-lg font-bold transition-all uppercase cursor-pointer'
+						className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white px-8 py-4 text-lg font-bold transition-all uppercase cursor-pointer'
 						style={{
 							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
 							borderRadius: 0,

@@ -45,21 +45,21 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 					animate={{ scale: 1, opacity: 1 }}
 					exit={{ scale: 0.9, opacity: 0 }}
 					onClick={(e) => e.stopPropagation()}
-					className='bg-background border-2 border-[#FF6B00]/30 max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col'
+					className='bg-background border-2 border-sendo-orange/30 max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col'
 					style={{ borderRadius: 0 }}
 				>
 					{/* Header */}
 					<div className='border-b border-foreground/10 p-6'>
 						<div className='flex items-start gap-4'>
 							<div
-								className='w-16 h-16 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-4xl flex-shrink-0'
+								className='w-16 h-16 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center text-4xl flex-shrink-0'
 								style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)' }}
 							>
 								{plugin.icon}
 							</div>
 							<div className='flex-1'>
-								<h2 className='text-2xl font-bold mb-2 uppercase' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
-									CONFIGURE <span className='text-[#FF6B00]'>{plugin.name}</span>
+								<h2 className='text-2xl font-bold mb-2 uppercase title-font'>
+									CONFIGURE <span className='text-sendo-orange'>{plugin.name}</span>
 								</h2>
 								<p className='text-foreground/60 text-sm'>
 									{isOAuth
@@ -68,6 +68,7 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 								</p>
 							</div>
 							<button
+								type='button'
 								onClick={onClose}
 								className='w-10 h-10 bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center flex-shrink-0'
 								style={{ borderRadius: 0 }}
@@ -82,15 +83,12 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 						{isOAuth ? (
 							<div className='text-center py-12'>
 								<div
-									className='w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-5xl'
+									className='w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center text-5xl'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%)' }}
 								>
 									{plugin.icon}
 								</div>
-								<h3
-									className='text-xl font-bold text-foreground mb-3 uppercase'
-									style={{ fontFamily: 'TECHNOS, sans-serif' }}
-								>
+								<h3 className='text-xl font-bold text-foreground mb-3 uppercase title-font'>
 									CONNECT TO {plugin.name.toUpperCase()}
 								</h3>
 								<p className='text-foreground/60 mb-8 max-w-md mx-auto'>
@@ -98,15 +96,15 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 								</p>
 								<div className='space-y-4 max-w-sm mx-auto'>
 									<div className='flex items-start gap-3 text-left'>
-										<CheckCircle className='w-5 h-5 text-[#14F195] flex-shrink-0 mt-0.5' />
+										<CheckCircle className='w-5 h-5 text---sendo-green flex-shrink-0 mt-0.5' />
 										<p className='text-sm text-foreground/70'>Secure OAuth 2.0 authentication</p>
 									</div>
 									<div className='flex items-start gap-3 text-left'>
-										<CheckCircle className='w-5 h-5 text-[#14F195] flex-shrink-0 mt-0.5' />
+										<CheckCircle className='w-5 h-5 text---sendo-green flex-shrink-0 mt-0.5' />
 										<p className='text-sm text-foreground/70'>sEnDO never stores your credentials</p>
 									</div>
 									<div className='flex items-start gap-3 text-left'>
-										<CheckCircle className='w-5 h-5 text-[#14F195] flex-shrink-0 mt-0.5' />
+										<CheckCircle className='w-5 h-5 text---sendo-green flex-shrink-0 mt-0.5' />
 										<p className='text-sm text-foreground/70'>Revoke access anytime</p>
 									</div>
 								</div>
@@ -116,9 +114,9 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 								{plugin.configFields &&
 									plugin.configFields.map((field) => (
 										<div key={field.name}>
-											<label className='block mb-2'>
+											<label htmlFor={field.name} className='block mb-2'>
 												<span className='text-foreground font-bold text-sm uppercase'>
-													{field.label} {field.required && <span className='text-[#FF223B]'>*</span>}
+													{field.label} {field.required && <span className='text-sendo-red'>*</span>}
 												</span>
 												{field.description && (
 													<span className='block text-foreground/60 text-xs mt-1'>{field.description}</span>
@@ -180,7 +178,7 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 												handleSubmit(event as unknown as FormEvent<HTMLFormElement>)
 								}
 								type={isOAuth ? 'button' : 'submit'}
-								className='bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white h-12 uppercase'
+								className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 uppercase'
 								style={{
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 									borderRadius: 0,

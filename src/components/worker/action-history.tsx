@@ -42,9 +42,7 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 		<div>
 			<div className='flex items-center gap-2 mb-4'>
 				<History className='w-5 h-5 text-foreground/60' />
-				<h2 className='text-xl font-bold text-foreground uppercase' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
-					HISTORY
-				</h2>
+				<h2 className='text-xl font-bold text-foreground uppercase title-font'>HISTORY</h2>
 				{history.length > 0 && <span className='text-sm text-foreground/40'>({history.length})</span>}
 			</div>
 
@@ -70,33 +68,30 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 									exit={{ opacity: 0, y: 20 }}
 									transition={{ duration: 0.3 }}
 									className={`border p-4 opacity-70 hover:opacity-90 transition-opacity ${
-										isAccepted ? 'bg-[#14F195]/5 border-[#14F195]/20' : 'bg-[#FF223B]/5 border-[#FF223B]/20'
+										isAccepted ? 'bg---sendo-green/5 border---sendo-green/20' : 'bg-sendo-red/5 border-sendo-red/20'
 									}`}
 									style={{ borderRadius: 0 }}
 								>
 									<div className='flex items-start gap-3'>
 										<div
 											className={`w-10 h-10 flex items-center justify-center flex-shrink-0 ${
-												isAccepted ? 'bg-[#14F195]/20' : 'bg-[#FF223B]/20'
+												isAccepted ? 'bg---sendo-green/20' : 'bg-sendo-red/20'
 											}`}
 											style={{
 												clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 											}}
 										>
-											<Icon className={`w-5 h-5 ${isAccepted ? 'text-[#14F195]' : 'text-[#FF223B]'}`} />
+											<Icon className={`w-5 h-5 ${isAccepted ? 'text---sendo-green' : 'text-sendo-red'}`} />
 										</div>
 
 										<div className='flex-1 min-w-0'>
 											<div className='flex items-center gap-2 mb-1'>
-												<h3
-													className='text-base font-bold text-foreground/70 uppercase'
-													style={{ fontFamily: 'TECHNOS, sans-serif' }}
-												>
+												<h3 className='text-base font-bold text-foreground/70 uppercase title-font'>
 													{action.type.replace(/_/g, ' ')}
 												</h3>
 												<div
 													className={`flex items-center gap-1 text-xs font-bold ${
-														isAccepted ? 'text-[#14F195]' : 'text-[#FF223B]'
+														isAccepted ? 'text---sendo-green' : 'text-sendo-red'
 													}`}
 												>
 													{isAccepted ? (
@@ -119,7 +114,7 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 												<div className='flex flex-wrap gap-2 text-xs'>
 													{action.tokens && <span className='text-foreground/40'>{action.tokens.join(', ')}</span>}
 													{action.token && <span className='text-foreground/40'>{action.token}</span>}
-													<span className={`font-bold ${isAccepted ? 'text-[#14F195]/60' : 'text-[#FF223B]/60'}`}>
+													<span className={`font-bold ${isAccepted ? 'text---sendo-green/60' : 'text-sendo-red/60'}`}>
 														${action.est_usd.toFixed(2)}
 													</span>
 												</div>

@@ -17,10 +17,10 @@ interface TokenDistributionProps {
 
 export default function TokenDistribution({ distribution }: TokenDistributionProps) {
 	const items = [
-		{ label: 'In Profit', value: distribution.in_profit, color: 'text-[#14F195]', pct: 50 },
-		{ label: 'In Loss', value: distribution.in_loss, color: 'text-[#FF223B]', pct: 33.3 },
+		{ label: 'In Profit', value: distribution.in_profit, color: 'text---sendo-green', pct: 50 },
+		{ label: 'In Loss', value: distribution.in_loss, color: 'text-sendo-red', pct: 33.3 },
 		{ label: 'Fully Sold', value: distribution.fully_sold, color: 'text-foreground', pct: 0 },
-		{ label: 'Still Held', value: distribution.still_held, color: 'text-[#FF6B00]', pct: 16.7 },
+		{ label: 'Still Held', value: distribution.still_held, color: 'text-sendo-orange', pct: 16.7 },
 	];
 
 	return (
@@ -32,7 +32,7 @@ export default function TokenDistribution({ distribution }: TokenDistributionPro
 			style={{ borderRadius: 0 }}
 		>
 			<div className='flex items-center gap-2 mb-6'>
-				<PieChart className='w-5 h-5 text-[#FF6B00]' />
+				<PieChart className='w-5 h-5 text-sendo-orange' />
 				<h3 className='text-lg font-bold text-foreground uppercase title-font'>TOKEN DISTRIBUTION</h3>
 			</div>
 

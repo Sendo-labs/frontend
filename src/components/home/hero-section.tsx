@@ -89,11 +89,12 @@ export default function HeroSection() {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.7, duration: 0.8 }}
 					className='text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 text-foreground title-font'
-					style={{ fontFamily: 'TECHNOS, sans-serif' }}
 				>
 					HOW MUCH DID
 					<br />
-					<span className='bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent'>YOU LOSE?</span>
+					<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+						YOU LOSE?
+					</span>
 				</motion.h1>
 
 				<motion.p
@@ -120,13 +121,13 @@ export default function HeroSection() {
 								value={walletAddress}
 								onChange={(e) => setWalletAddress(e.target.value)}
 								onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
-								className='h-12 sm:h-14 md:h-16 text-sm sm:text-base md:text-lg bg-foreground/10 border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-[#FF6B00] transition-all'
+								className='h-12 sm:h-14 md:h-16 text-sm sm:text-base md:text-lg bg-foreground/10 border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-sendo-orange transition-all'
 								style={{ borderRadius: 0 }}
 							/>
 							<Button
 								onClick={handleAnalyze}
 								disabled={!walletAddress.trim()}
-								className='h-12 sm:h-14 md:h-16 px-6 sm:px-8 text-sm sm:text-base md:text-lg whitespace-nowrap bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white'
+								className='h-12 sm:h-14 md:h-16 px-6 sm:px-8 text-sm sm:text-base md:text-lg whitespace-nowrap bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white'
 								style={{
 									fontFamily: 'TECHNOS, sans-serif',
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
@@ -151,11 +152,8 @@ export default function HeroSection() {
 						className='mt-8 sm:mt-10'
 					>
 						<div className='flex items-center justify-center gap-2 mb-4'>
-							<Crown className='w-5 h-5 text-[#FF6B00]' />
-							<p
-								className='text-sm sm:text-base text-foreground/60 uppercase tracking-wider'
-								style={{ fontFamily: 'TECHNOS, sans-serif' }}
-							>
+							<Crown className='w-5 h-5 text-sendo-orange' />
+							<p className='text-sm sm:text-base text-foreground/60 uppercase tracking-wider title-font'>
 								BIGGEST LOOSERS TODAY
 							</p>
 						</div>
@@ -165,27 +163,21 @@ export default function HeroSection() {
 								<div
 									key={looser.rank}
 									onClick={() => handleLooserClick(looser.wallet)}
-									className='bg-foreground/5 border border-foreground/10 p-3 sm:p-4 hover:bg-foreground/10 hover:border-[#FF6B00]/50 transition-all cursor-pointer group'
+									className='bg-foreground/5 border border-foreground/10 p-3 sm:p-4 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all cursor-pointer group'
 									style={{ borderRadius: 0 }}
 								>
 									<div className='flex items-center justify-center gap-1 sm:gap-2 mb-2'>
 										<Crown
 											className={`w-3 h-3 sm:w-4 sm:h-4 ${getRankColor(looser.rank)} group-hover:scale-110 transition-transform`}
 										/>
-										<span
-											className={`text-lg sm:text-xl font-bold ${getRankColor(looser.rank)}`}
-											style={{ fontFamily: 'TECHNOS, sans-serif' }}
-										>
+										<span className={`text-lg sm:text-xl font-bold ${getRankColor(looser.rank)} title-font`}>
 											#{looser.rank}
 										</span>
 									</div>
 									<p className='text-[10px] sm:text-xs text-foreground/60 font-mono mb-2'>
 										{formatWallet(looser.wallet)}
 									</p>
-									<p
-										className='text-sm sm:text-base font-bold text-[#FF223B] group-hover:scale-105 transition-transform'
-										style={{ fontFamily: 'TECHNOS, sans-serif' }}
-									>
+									<p className='text-sm sm:text-base font-bold text-sendo-red group-hover:scale-105 transition-transform title-font'>
 										$
 										{looser.missed >= 1000000
 											? `${(looser.missed / 1000000).toFixed(2)}M`

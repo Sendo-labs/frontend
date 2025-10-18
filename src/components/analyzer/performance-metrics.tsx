@@ -27,7 +27,7 @@ export default function PerformanceMetrics({ performance }: PerformanceMetricsPr
 			icon: TrendingUp,
 			label: 'TOTAL PNL',
 			value: `${performance.total_pnl_sol >= 0 ? '+' : ''}${performance.total_pnl_sol.toFixed(3)} SOL`,
-			color: performance.total_pnl_sol >= 0 ? 'text-[#14F195]' : 'text-[#FF223B]',
+			color: performance.total_pnl_sol >= 0 ? 'text---sendo-green' : 'text-sendo-red',
 		},
 		{ icon: Target, label: 'SUCCESS RATE', value: `${performance.success_rate}%`, color: 'text-foreground' },
 		{ icon: BarChart3, label: 'TOKENS ANALYZED', value: performance.tokens_analyzed, color: 'text-foreground' },
@@ -48,7 +48,7 @@ export default function PerformanceMetrics({ performance }: PerformanceMetricsPr
 							className='w-8 h-8 bg-foreground/10 flex items-center justify-center flex-shrink-0'
 							style={{ borderRadius: 0 }}
 						>
-							<metric.icon className='w-4 h-4 text-[#FF6B00]' />
+							<metric.icon className='w-4 h-4 text-sendo-orange' />
 						</div>
 						<div>
 							<p className='text-xs text-foreground/40 uppercase mb-1 title-font'>{metric.label}</p>

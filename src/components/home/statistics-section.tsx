@@ -68,10 +68,10 @@ export default function StatisticsSection() {
 					initial={{ opacity: 0, y: 30 }}
 					whileInView={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8 }}
-					className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-3 sm:mb-4 md:mb-6 text-foreground'
-					style={{ fontFamily: 'TECHNOS, sans-serif' }}
+					className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-3 sm:mb-4 md:mb-6 text-foreground title-font'
 				>
-					THE <span className='bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent'>DAMAGE</span>
+					THE{' '}
+					<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>DAMAGE</span>
 				</motion.h2>
 
 				<motion.p
@@ -94,16 +94,13 @@ export default function StatisticsSection() {
 						>
 							<div className='bg-foreground/5 border border-foreground/10 p-6 sm:p-8 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all duration-300 h-full'>
 								<div
-									className='w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 bg-gradient-to-r from-[#FF6B00] via-[#FF223B] to-[#FF6B00] flex items-center justify-center group-hover:scale-110 transition-transform duration-300'
+									className='w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-orange flex items-center justify-center group-hover:scale-110 transition-transform duration-300'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)' }}
 								>
 									<stat.icon className='w-7 h-7 sm:w-8 sm:h-8 text-white' />
 								</div>
 
-								<div
-									className='text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2 sm:mb-3 text-center'
-									style={{ fontFamily: 'TECHNOS, sans-serif' }}
-								>
+								<div className='text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2 sm:mb-3 text-center title-font'>
 									<CountUp end={stat.value} format={stat.format} />
 								</div>
 

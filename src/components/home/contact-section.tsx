@@ -29,11 +29,10 @@ export default function ContactSection() {
 					initial={{ opacity: 0, y: 30 }}
 					whileInView={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8 }}
-					className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-3 sm:mb-4 md:mb-6 text-foreground'
-					style={{ fontFamily: 'TECHNOS, sans-serif' }}
+					className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-3 sm:mb-4 md:mb-6 text-foreground title-font'
 				>
 					GET IN{' '}
-					<span className='bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent'>TOUCH</span>
+					<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>TOUCH</span>
 				</motion.h2>
 
 				<motion.p
@@ -58,7 +57,7 @@ export default function ContactSection() {
 									placeholder='Your email'
 									value={formData.email}
 									onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-									className='h-12 sm:h-14 bg-foreground/5 border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-[#FF6B00]'
+									className='h-12 sm:h-14 bg-foreground/5 border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-sendo-orange'
 									style={{ borderRadius: 0 }}
 									required
 								/>
@@ -68,14 +67,14 @@ export default function ContactSection() {
 									placeholder='Your message'
 									value={formData.message}
 									onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-									className='min-h-24 sm:min-h-32 bg-foreground/5 border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-[#FF6B00] resize-none'
+									className='min-h-24 sm:min-h-32 bg-foreground/5 border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-sendo-orange resize-none'
 									style={{ borderRadius: 0 }}
 									required
 								/>
 							</div>
 							<Button
 								type='submit'
-								className='w-full h-12 sm:h-14 text-foreground text-base sm:text-lg font-bold bg-gradient-to-r from-[#FF6B00] via-[#FF223B] to-[#FF6B00] hover:shadow-lg hover:shadow-[#FF223B]/50 transition-all'
+								className='w-full h-12 sm:h-14 text-foreground text-base sm:text-lg font-bold bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-orange hover:shadow-lg hover:shadow-sendo-red/50 transition-all'
 								style={{
 									fontFamily: 'TECHNOS, sans-serif',
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
@@ -94,21 +93,16 @@ export default function ContactSection() {
 						transition={{ delay: 0.4, duration: 0.8 }}
 						className='flex flex-col justify-center'
 					>
-						<h3
-							className='text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6'
-							style={{ fontFamily: 'TECHNOS, sans-serif' }}
-						>
-							FOLLOW US
-						</h3>
+						<h3 className='text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6 title-font'>FOLLOW US</h3>
 
 						<div className='space-y-3 sm:space-y-4'>
 							<a
-								href='#'
-								className='flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-[#FF6B00]/50 transition-all group'
+								href='https://x.com/sendo_agent'
+								className='flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all group'
 								style={{ borderRadius: 0 }}
 							>
 								<div
-									className='w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-[#FF6B00] via-[#FF223B] to-[#FF6B00] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
+									className='w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-orange flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
 								>
 									<Twitter className='w-5 h-5 sm:w-6 sm:h-6 text-white' />
@@ -120,12 +114,12 @@ export default function ContactSection() {
 							</a>
 
 							<a
-								href='#'
-								className='flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-[#FF6B00]/50 transition-all group'
+								href='https://t.me/sendo_official'
+								className='flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all group'
 								style={{ borderRadius: 0 }}
 							>
 								<div
-									className='w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-[#FF6B00] via-[#FF223B] to-[#FF6B00] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
+									className='w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-orange flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
 								>
 									<Send className='w-5 h-5 sm:w-6 sm:h-6 text-white' />
@@ -137,12 +131,12 @@ export default function ContactSection() {
 							</a>
 
 							<a
-								href='#'
-								className='flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-[#FF6B00]/50 transition-all group'
+								href='https://discord.gg/sendo'
+								className='flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all group'
 								style={{ borderRadius: 0 }}
 							>
 								<div
-									className='w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-[#FF6B00] via-[#FF223B] to-[#FF6B00] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
+									className='w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-orange flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
 								>
 									<MessageCircle className='w-5 h-5 sm:w-6 sm:h-6 text-white' />
@@ -155,11 +149,11 @@ export default function ContactSection() {
 
 							<a
 								href='mailto:contact@sendo.io'
-								className='flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-[#FF6B00]/50 transition-all group'
+								className='flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all group'
 								style={{ borderRadius: 0 }}
 							>
 								<div
-									className='w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-[#FF6B00] via-[#FF223B] to-[#FF6B00] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
+									className='w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-orange flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
 								>
 									<Mail className='w-5 h-5 sm:w-6 sm:h-6 text-white' />

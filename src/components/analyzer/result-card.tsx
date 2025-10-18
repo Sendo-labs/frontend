@@ -51,16 +51,16 @@ export default function ResultCard({ result }: ResultCardProps) {
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
 			transition={{ duration: 0.6 }}
-			className='bg-foreground/5 border border-foreground/10 p-6 md:p-8 relative overflow-hidden group hover:border-[#FF223B]/50 transition-all'
+			className='bg-foreground/5 border border-foreground/10 p-6 md:p-8 relative overflow-hidden group hover:border-sendo-red/50 transition-all'
 			style={{ borderRadius: 0 }}
 		>
 			{/* Glow effect */}
-			<div className='absolute inset-0 bg-gradient-to-br from-[#FF6B00]/5 via-transparent to-[#FF223B]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
+			<div className='absolute inset-0 bg-gradient-to-br from-sendo-orange/5 via-transparent to-sendo-red/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
 
 			<div className='relative z-10'>
 				<div className='flex items-center gap-2 mb-4'>
 					<div
-						className='w-10 h-10 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center'
+						className='w-10 h-10 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center'
 						style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
 					>
 						<TrendingDown className='w-6 h-6 text-white' />
@@ -68,7 +68,7 @@ export default function ResultCard({ result }: ResultCardProps) {
 					<h3 className='text-foreground/60 uppercase text-sm title-font'>TOTAL MISSED AT ATH</h3>
 				</div>
 
-				<div className='text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent title-font'>
+				<div className='text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent title-font'>
 					<CountUp end={result.total_missed_usd} />
 				</div>
 
@@ -81,7 +81,7 @@ export default function ResultCard({ result }: ResultCardProps) {
 						>
 							<div className='flex items-center gap-3'>
 								<div
-									className='w-8 h-8 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-white font-bold text-sm'
+									className='w-8 h-8 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center text-white font-bold text-sm'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)' }}
 								>
 									{index + 1}
@@ -92,7 +92,7 @@ export default function ResultCard({ result }: ResultCardProps) {
 								</div>
 							</div>
 							<div className='text-right'>
-								<p className='text-[#FF223B] font-bold text-lg'>-${token.missed_usd.toLocaleString()}</p>
+								<p className='text-sendo-red font-bold text-lg'>-${token.missed_usd.toLocaleString()}</p>
 							</div>
 						</div>
 					))}

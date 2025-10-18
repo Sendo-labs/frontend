@@ -30,14 +30,14 @@ const ACTION_ICONS: Record<string, LucideIcon> = {
 };
 
 const PRIORITY_COLORS: Record<string, string> = {
-	high: 'border-[#FF223B] bg-[#FF223B]/10',
-	medium: 'border-[#FF6B00] bg-[#FF6B00]/10',
+	high: 'border-sendo-red bg-sendo-red/10',
+	medium: 'border-sendo-orange bg-sendo-orange/10',
 	low: 'border-foreground bg-foreground/5',
 };
 
 const PRIORITY_TEXT: Record<string, string> = {
-	high: 'text-[#FF223B]',
-	medium: 'text-[#FF6B00]',
+	high: 'text-sendo-red',
+	medium: 'text-sendo-orange',
 	low: 'text-foreground/60',
 };
 
@@ -53,17 +53,17 @@ export default function ActionList({
 		return (
 			<div>
 				<div className='flex items-center gap-2 mb-4'>
-					<Zap className='w-5 h-5 text-[#FF6B00]' />
-					<h2 className='text-xl font-bold text-foreground uppercase' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
+					<Zap className='w-5 h-5 text-sendo-orange' />
+					<h2 className='text-xl font-bold text-foreground uppercase title-font'>
 						SUGGESTED{' '}
-						<span className='bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent'>ACTIONS</span>
+						<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+							ACTIONS
+						</span>
 					</h2>
 				</div>
 				<div className='bg-foreground/5 border border-foreground/10 p-12 text-center' style={{ borderRadius: 0 }}>
-					<CheckCircle className='w-12 h-12 text-[#14F195] mx-auto mb-4' />
-					<h3 className='text-xl font-bold text-foreground mb-2' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
-						All Clear! 🎉
-					</h3>
+					<CheckCircle className='w-12 h-12 text---sendo-green mx-auto mb-4' />
+					<h3 className='text-xl font-bold text-foreground mb-2 title-font'>All Clear! 🎉</h3>
 					<p className='text-foreground/60'>No actions needed right now. Your portfolio is looking good.</p>
 				</div>
 			</div>
@@ -74,10 +74,12 @@ export default function ActionList({
 		<div>
 			<div className='flex items-center justify-between mb-4'>
 				<div className='flex items-center gap-2'>
-					<Zap className='w-5 h-5 text-[#FF6B00]' />
-					<h2 className='text-xl font-bold text-foreground uppercase' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
+					<Zap className='w-5 h-5 text-sendo-orange' />
+					<h2 className='text-xl font-bold text-foreground uppercase title-font'>
 						SUGGESTED{' '}
-						<span className='bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent'>ACTIONS</span>
+						<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+							ACTIONS
+						</span>
 					</h2>
 				</div>
 				<div className='flex items-center gap-3'>
@@ -89,7 +91,7 @@ export default function ActionList({
 						<Button
 							onClick={onValidateAll}
 							disabled={isExecuting}
-							className='bg-[#14F195] hover:bg-[#14F195]/80 text-black h-10 px-4'
+							className='bg---sendo-green hover:bg---sendo-green/80 text-black h-10 px-4'
 							style={{ borderRadius: 0, fontFamily: 'TECHNOS, sans-serif' }}
 						>
 							<Check className='w-4 h-4 mr-2' />
@@ -112,7 +114,7 @@ export default function ActionList({
 							<div className='flex items-start justify-between gap-4'>
 								<div className='flex items-start gap-3 flex-1'>
 									<div
-										className={`w-10 h-10 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center flex-shrink-0`}
+										className={`w-10 h-10 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center flex-shrink-0`}
 										style={{
 											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 										}}
@@ -122,10 +124,7 @@ export default function ActionList({
 
 									<div className='flex-1 min-w-0'>
 										<div className='flex items-center gap-2 mb-2'>
-											<h3
-												className='text-lg font-bold text-foreground uppercase'
-												style={{ fontFamily: 'TECHNOS, sans-serif' }}
-											>
+											<h3 className='text-lg font-bold text-foreground uppercase title-font'>
 												{proposal.type.replace(/_/g, ' ')}
 											</h3>
 											<span className={`text-xs font-bold uppercase ${PRIORITY_TEXT[proposal.priority]}`}>
@@ -151,7 +150,7 @@ export default function ActionList({
 													<span className='font-semibold'>Size:</span> {proposal.size_pct}%
 												</div>
 											)}
-											<div className='text-xs font-bold text-[#14F195]'>~${proposal.est_usd.toFixed(2)}</div>
+											<div className='text-xs font-bold text---sendo-green'>~${proposal.est_usd.toFixed(2)}</div>
 										</div>
 									</div>
 								</div>
@@ -161,7 +160,7 @@ export default function ActionList({
 										<Button
 											onClick={() => onAccept(proposal)}
 											disabled={isExecuting}
-											className='bg-[#14F195] hover:bg-[#14F195]/80 text-black h-10 w-10 p-0 flex items-center justify-center'
+											className='bg---sendo-green hover:bg---sendo-green/80 text-black h-10 w-10 p-0 flex items-center justify-center'
 											style={{ borderRadius: 0 }}
 										>
 											<Check className='w-5 h-5' />
@@ -169,7 +168,7 @@ export default function ActionList({
 										<Button
 											onClick={() => onReject(proposal)}
 											disabled={isExecuting}
-											className='bg-[#FF223B] hover:bg-[#FF223B]/80 text-white h-10 w-10 p-0 flex items-center justify-center'
+											className='bg-sendo-red hover:bg-sendo-red/80 text-white h-10 w-10 p-0 flex items-center justify-center'
 											style={{ borderRadius: 0 }}
 										>
 											<X className='w-5 h-5' />
@@ -178,7 +177,7 @@ export default function ActionList({
 								)}
 
 								{mode === 'auto' && (
-									<div className='flex items-center gap-2 text-xs text-[#14F195] flex-shrink-0'>
+									<div className='flex items-center gap-2 text-xs text---sendo-green flex-shrink-0'>
 										<CheckCircle className='w-4 h-4' />
 										<span className='font-semibold'>AUTO</span>
 									</div>

@@ -44,7 +44,7 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 			{/* Header */}
 			<div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6'>
 				<div className='flex items-center gap-2'>
-					<List className='w-5 h-5 text-[#FF6B00]' />
+					<List className='w-5 h-5 text-sendo-orange' />
 					<h3 className='text-lg font-bold text-foreground uppercase title-font'>
 						TOKEN DETAILS ({filteredTokens.length})
 					</h3>
@@ -64,7 +64,7 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 							onClick={() => setFilter(id)}
 							className={`h-8 px-4 text-xs transition-all title-font ${
 								filter === id
-									? 'bg-gradient-to-r from-[#FF6B00] to-[#FF223B] text-white'
+									? 'bg-gradient-to-r from-sendo-orange to-sendo-red text-white'
 									: 'bg-foreground/5 text-foreground/60 hover:text-foreground hover:bg-foreground/10'
 							}`}
 							style={{ borderRadius: 0 }}
@@ -83,7 +83,7 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 						initial={{ opacity: 0, x: -20 }}
 						animate={{ opacity: 1, x: 0 }}
 						transition={{ delay: 0.05 * index, duration: 0.4 }}
-						className='bg-foreground/5 border border-foreground/10 p-4 hover:border-[#FF6B00]/30 transition-all'
+						className='bg-foreground/5 border border-foreground/10 p-4 hover:border-sendo-orange/30 transition-all'
 						style={{ borderRadius: 0 }}
 					>
 						{/* Header */}
@@ -91,7 +91,7 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 							<div className='flex items-center gap-3'>
 								<div
 									className={`w-10 h-10 ${
-										token.profit_status === 'profit' ? 'bg-[#14F195]' : 'bg-[#FF223B]'
+										token.profit_status === 'profit' ? 'bg---sendo-green' : 'bg-sendo-red'
 									} flex items-center justify-center text-white font-bold text-xs title-font`}
 									style={{ borderRadius: 0 }}
 								>
@@ -109,7 +109,9 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 							<div className='flex flex-col items-end gap-1'>
 								<div
 									className={`px-2 py-1 text-xs font-bold title-font ${
-										token.status === 'sold' ? 'bg-foreground/10 text-foreground' : 'bg-[#FF6B00]/10 text-[#FF6B00]'
+										token.status === 'sold'
+											? 'bg-foreground/10 text-foreground'
+											: 'bg-sendo-orange/10 text-sendo-orange'
 									}`}
 									style={{ borderRadius: 0 }}
 								>
@@ -118,8 +120,8 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 								<div
 									className={`px-2 py-1 text-xs font-bold title-font ${
 										token.profit_status === 'profit'
-											? 'bg-[#14F195]/10 text-[#14F195]'
-											: 'bg-[#FF223B]/10 text-[#FF223B]'
+											? 'bg---sendo-green/10 text---sendo-green'
+											: 'bg-sendo-red/10 text-sendo-red'
 									}`}
 									style={{ borderRadius: 0 }}
 								>
@@ -137,7 +139,7 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 							<div>
 								<p className='text-foreground/40 text-xs mb-1'>PnL Realized</p>
 								<p
-									className={`font-bold text-sm title-font ${token.pnl_sol >= 0 ? 'text-[#14F195]' : 'text-[#FF223B]'}`}
+									className={`font-bold text-sm title-font ${token.pnl_sol >= 0 ? 'text---sendo-green' : 'text-sendo-red'}`}
 								>
 									{token.pnl_sol >= 0 ? '+' : ''}
 									{token.pnl_sol.toFixed(4)} SOL

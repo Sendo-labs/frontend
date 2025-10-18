@@ -32,9 +32,9 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
 	const CustomTooltip = ({ active, payload }: any) => {
 		if (active && payload && payload.length) {
 			return (
-				<div className='bg-background border border-[#FF6B00]/30 p-3' style={{ borderRadius: 0 }}>
+				<div className='bg-background border border-sendo-orange/30 p-3' style={{ borderRadius: 0 }}>
 					<p className='text-foreground text-sm font-bold'>{payload[0].payload.name}</p>
-					<p className='text-[#FF6B00] text-xs'>{payload[0].value.toFixed(1)}%</p>
+					<p className='text-sendo-orange text-xs'>{payload[0].value.toFixed(1)}%</p>
 					<p className='text-foreground/60 text-xs'>
 						${((peakValue * payload[0].payload.rawValue) / 1000).toFixed(1)}k
 					</p>
@@ -49,11 +49,11 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
 			initial={{ opacity: 0, y: 30 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.6, delay: 0.4 }}
-			className='bg-foreground/5 border border-foreground/10 p-6 md:p-8 relative overflow-hidden group hover:border-[#FF6B00]/50 transition-all'
+			className='bg-foreground/5 border border-foreground/10 p-6 md:p-8 relative overflow-hidden group hover:border-sendo-orange/50 transition-all'
 			style={{ borderRadius: 0 }}
 		>
 			<div className='flex items-center gap-2 mb-6'>
-				<TrendingDown className='w-5 h-5 text-[#FF223B]' />
+				<TrendingDown className='w-5 h-5 text-sendo-red' />
 				<h3 className='text-foreground/60 uppercase text-sm title-font'>VALUE FROM ATH TO NOW</h3>
 			</div>
 
@@ -99,7 +99,7 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
 				</div>
 				<div>
 					<p className='text-foreground/40 text-xs mb-1 uppercase title-font'>% LOST</p>
-					<p className='text-[#FF223B] font-bold text-lg'>-{lossPercent}%</p>
+					<p className='text-sendo-red font-bold text-lg'>-{lossPercent}%</p>
 				</div>
 			</div>
 		</motion.div>

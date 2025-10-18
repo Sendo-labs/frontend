@@ -48,10 +48,10 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 	return (
 		<div>
 			<div className='flex items-center gap-2 mb-4'>
-				<Settings className='w-5 h-5 text-[#FF6B00]' />
+				<Settings className='w-5 h-5 text-sendo-orange' />
 				<h2 className='text-xl font-bold text-foreground uppercase title-font'>
 					AUTOMATION{' '}
-					<span className='bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent'>RULES</span>
+					<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>RULES</span>
 				</h2>
 			</div>
 

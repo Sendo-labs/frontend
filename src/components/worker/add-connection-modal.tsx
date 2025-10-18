@@ -287,16 +287,17 @@ export default function AddConnectionModal({ onClose, onSelectPlugin }: AddConne
 					animate={{ scale: 1, opacity: 1 }}
 					exit={{ scale: 0.9, opacity: 0 }}
 					onClick={(e) => e.stopPropagation()}
-					className='bg-[#0D0D0D] border-2 border-[#FF6B00]/30 max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col'
+					className='bg-[#0D0D0D] border-2 border-sendo-orange/30 max-w-5xl w-full max-h-[90vh] overflow-hidden flex flex-col'
 					style={{ borderRadius: 0 }}
 				>
 					{/* Header */}
 					<div className='border-b border-foreground/10 p-6'>
 						<div className='flex items-center justify-between mb-4'>
-							<h2 className='text-2xl font-bold uppercase' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
-								ADD <span className='text-[#FF6B00]'>CONNECTION</span>
+							<h2 className='text-2xl font-bold uppercase title-font'>
+								ADD <span className='text-sendo-orange'>CONNECTION</span>
 							</h2>
 							<button
+								type='button'
 								onClick={onClose}
 								className='w-10 h-10 bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center'
 								style={{ borderRadius: 0 }}
@@ -322,11 +323,12 @@ export default function AddConnectionModal({ onClose, onSelectPlugin }: AddConne
 						<div className='flex gap-2 flex-wrap'>
 							{categories.map((cat) => (
 								<button
+									type='button'
 									key={cat}
 									onClick={() => setSelectedCategory(cat)}
 									className={`px-3 py-1.5 text-xs uppercase transition-all ${
 										selectedCategory === cat
-											? 'bg-gradient-to-r from-[#FF6B00] to-[#FF223B] text-white'
+											? 'bg-gradient-to-r from-sendo-orange to-sendo-red text-white'
 											: 'bg-foreground/5 text-foreground/60 hover:bg-foreground/10'
 									}`}
 									style={{ borderRadius: 0 }}
@@ -346,14 +348,14 @@ export default function AddConnectionModal({ onClose, onSelectPlugin }: AddConne
 									whileHover={{ scale: 1.02 }}
 									className={`flex items-start gap-3 p-4 border transition-all cursor-pointer ${
 										plugin.isSponsored
-											? 'bg-gradient-to-r from-[#FFD700]/10 to-[#FF6B00]/10 border-[#FFD700]/30'
-											: 'bg-foreground/5 border-foreground/10 hover:bg-foreground/10 hover:border-[#FF6B00]/50'
+											? 'bg-gradient-to-r from-[#FFD700]/10 to-sendo-orange/10 border-[#FFD700]/30'
+											: 'bg-foreground/5 border-foreground/10 hover:bg-foreground/10 hover:border-sendo-orange/50'
 									}`}
 									style={{ borderRadius: 0 }}
 									onClick={() => onSelectPlugin(plugin)}
 								>
 									<div
-										className='w-12 h-12 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-2xl flex-shrink-0'
+										className='w-12 h-12 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center text-2xl flex-shrink-0'
 										style={{
 											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 										}}
@@ -366,7 +368,10 @@ export default function AddConnectionModal({ onClose, onSelectPlugin }: AddConne
 											<h3 className='text-sm font-bold text-foreground truncate'>{plugin.name}</h3>
 										</div>
 										<div className='flex items-center gap-2 mb-2'>
-											<span className='px-2 py-0.5 bg-[#FF6B00]/20 text-[#FF6B00] text-xs' style={{ borderRadius: 0 }}>
+											<span
+												className='px-2 py-0.5 bg-sendo-orange/20 text-sendo-orange text-xs'
+												style={{ borderRadius: 0 }}
+											>
 												{plugin.category}
 											</span>
 											<span
@@ -375,11 +380,11 @@ export default function AddConnectionModal({ onClose, onSelectPlugin }: AddConne
 											>
 												{plugin.authType === 'oauth' ? 'OAuth' : 'API Key'}
 											</span>
-											<span className='text-xs font-bold text-[#14F195]'>{plugin.price}</span>
+											<span className='text-xs font-bold text---sendo-green'>{plugin.price}</span>
 										</div>
 										<p className='text-xs text-foreground/60 line-clamp-2'>{plugin.description}</p>
 									</div>
-									<div className='text-[#FF6B00] text-xl flex-shrink-0'>→</div>
+									<div className='text-sendo-orange text-xl flex-shrink-0'>→</div>
 								</motion.div>
 							))}
 						</div>

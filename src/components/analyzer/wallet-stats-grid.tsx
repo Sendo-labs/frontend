@@ -21,11 +21,11 @@ export default function WalletStatsGrid({ stats }: WalletStatsGridProps) {
 			icon: Activity,
 			label: 'SIGNATURES',
 			value: stats.signatures.toLocaleString(),
-			color: 'from-[#FF6B00] to-[#FF223B]',
+			color: 'from-sendo-orange to-sendo-red',
 		},
-		{ icon: Wallet, label: 'SOL', value: stats.sol_balance.toFixed(2), color: 'from-[#14F195] to-[#00D9B5]' },
-		{ icon: ImageIcon, label: 'NFTs', value: stats.nfts, color: 'from-[#9945FF] to-[#14F195]' },
-		{ icon: Coins, label: 'TOKENS', value: stats.tokens, color: 'from-[#FF6B00] to-[#FF223B]' },
+		{ icon: Wallet, label: 'SOL', value: stats.sol_balance.toFixed(2), color: 'from---sendo-green to-[#00D9B5]' },
+		{ icon: ImageIcon, label: 'NFTs', value: stats.nfts, color: 'from-[#9945FF] to---sendo-green' },
+		{ icon: Coins, label: 'TOKENS', value: stats.tokens, color: 'from-sendo-orange to-sendo-red' },
 	];
 
 	return (
@@ -36,7 +36,7 @@ export default function WalletStatsGrid({ stats }: WalletStatsGridProps) {
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.1 * index, duration: 0.5 }}
-					className='bg-background border border-foreground/10 p-6 hover:border-[#FF6B00]/50 transition-all'
+					className='bg-background border border-foreground/10 p-6 hover:border-sendo-orange/50 transition-all'
 					style={{ borderRadius: 0 }}
 				>
 					<div

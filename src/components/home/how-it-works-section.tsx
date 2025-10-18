@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Brain, Store, Zap, Sparkles, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from '../ui/button';
 
 const steps = [
 	{
@@ -85,11 +86,10 @@ export default function HowItWorksSection() {
 					initial={{ opacity: 0, y: 30 }}
 					whileInView={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8 }}
-					className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-3 sm:mb-4 md:mb-6 text-foreground'
-					style={{ fontFamily: 'TECHNOS, sans-serif' }}
+					className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-3 sm:mb-4 md:mb-6 text-foreground title-font'
 				>
 					HOW IT{' '}
-					<span className='bg-gradient-to-r from-[#FF6B00] to-[#FF223B] bg-clip-text text-transparent'>WORKS</span>
+					<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>WORKS</span>
 				</motion.h2>
 
 				<motion.p
@@ -116,45 +116,38 @@ export default function HowItWorksSection() {
 								{/* Content Side */}
 								<div className='order-2 md:order-1'>
 									<div
-										className='relative bg-foreground/5 border border-foreground/10 p-8 lg:p-10 hover:bg-foreground/10 hover:border-[#FF6B00]/50 transition-all group'
+										className='relative bg-foreground/5 border border-foreground/10 p-8 lg:p-10 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all group'
 										style={{ borderRadius: 0 }}
 									>
 										{/* Number Badge */}
 										<div
-											className='absolute -top-6 -left-6 w-20 h-20 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center group-hover:scale-110 transition-transform'
+											className='absolute -top-6 -left-6 w-20 h-20 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center group-hover:scale-110 transition-transform'
 											style={{
 												clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%)',
 											}}
 										>
-											<span className='text-3xl font-bold text-white' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
-												{step.number}
-											</span>
+											<span className='text-3xl font-bold text-white title-font'>{step.number}</span>
 										</div>
 
 										{/* Icon */}
 										<div
-											className='w-16 h-16 bg-black border border-[#FF6B00]/30 flex items-center justify-center mb-6 ml-10'
+											className='w-16 h-16 bg-black border border-sendo-orange/30 flex items-center justify-center mb-6 ml-10'
 											style={{
 												clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
 											}}
 										>
-											<step.icon className='w-8 h-8 text-[#FF6B00]' />
+											<step.icon className='w-8 h-8 text-sendo-orange' />
 										</div>
 
 										{/* Title */}
-										<h3
-											className='text-2xl lg:text-3xl font-bold text-foreground mb-4'
-											style={{ fontFamily: 'TECHNOS, sans-serif' }}
-										>
-											{step.title}
-										</h3>
+										<h3 className='text-2xl lg:text-3xl font-bold text-foreground mb-4 title-font'>{step.title}</h3>
 
 										{/* Description */}
 										<p className='text-base lg:text-lg text-foreground/70 leading-relaxed mb-6'>{step.description}</p>
 
 										{/* Highlight */}
 										<div
-											className='bg-gradient-to-r from-[#FF6B00]/10 to-transparent border-l-4 border-[#FF6B00] pl-4 py-3'
+											className='bg-gradient-to-r from-sendo-orange/10 to-transparent border-l-4 border-sendo-orange pl-4 py-3'
 											style={{ borderRadius: 0 }}
 										>
 											<p className='text-base lg:text-lg text-foreground/90 font-semibold italic'>{step.highlight}</p>
@@ -165,7 +158,7 @@ export default function HowItWorksSection() {
 								{/* Media Side - Vidéo */}
 								<div className='order-1 md:order-2'>
 									<div
-										className='relative aspect-square bg-foreground/5 border border-foreground/10 flex items-center justify-center group hover:border-[#FF6B00]/50 transition-all overflow-hidden'
+										className='relative aspect-square bg-foreground/5 border border-foreground/10 flex items-center justify-center group hover:border-sendo-orange/50 transition-all overflow-hidden'
 										style={{ borderRadius: 0 }}
 									>
 										<video src={step.videoUrl} autoPlay loop muted playsInline className='w-full h-full object-cover' />
@@ -176,13 +169,13 @@ export default function HowItWorksSection() {
 
 						{/* Navigation Arrows */}
 						<div className='flex items-center justify-center gap-4 mt-8'>
-							<button
+							<Button
 								onClick={prevStep}
-								className='w-14 h-14 bg-foreground/10 border border-foreground/20 flex items-center justify-center hover:bg-foreground/20 hover:border-[#FF6B00]/50 transition-all group'
+								className='w-14 h-14 bg-foreground/10 border border-foreground/20 flex items-center justify-center hover:bg-foreground/20 hover:border-sendo-orange/50 transition-all group'
 								style={{ borderRadius: 0 }}
 							>
-								<ChevronLeft className='w-6 h-6 text-foreground group-hover:text-[#FF6B00] transition-colors' />
-							</button>
+								<ChevronLeft className='w-6 h-6 text-foreground group-hover:text-sendo-orange transition-colors' />
+							</Button>
 
 							{/* Step Indicators */}
 							<div className='flex gap-2'>
@@ -192,21 +185,22 @@ export default function HowItWorksSection() {
 										onClick={() => setCurrentStep(index)}
 										className={`h-2 transition-all ${
 											index === currentStep
-												? 'w-8 bg-gradient-to-r from-[#FF6B00] to-[#FF223B]'
+												? 'w-8 bg-gradient-to-r from-sendo-orange to-sendo-red'
 												: 'w-2 bg-foreground/20 hover:bg-foreground/40'
 										}`}
 										style={{ borderRadius: 0 }}
+										type='button'
 									/>
 								))}
 							</div>
 
-							<button
+							<Button
 								onClick={nextStep}
-								className='w-14 h-14 bg-foreground/10 border border-foreground/20 flex items-center justify-center hover:bg-foreground/20 hover:border-[#FF6B00]/50 transition-all group'
+								className='w-14 h-14 bg-foreground/10 border border-foreground/20 flex items-center justify-center hover:bg-foreground/20 hover:border-sendo-orange/50 transition-all group'
 								style={{ borderRadius: 0 }}
 							>
-								<ChevronRight className='w-6 h-6 text-foreground group-hover:text-[#FF6B00] transition-colors' />
-							</button>
+								<ChevronRight className='w-6 h-6 text-foreground group-hover:text-sendo-orange transition-colors' />
+							</Button>
 						</div>
 					</div>
 				</div>
@@ -240,33 +234,29 @@ export default function HowItWorksSection() {
 							<div className='relative bg-foreground/5 border border-foreground/10 p-6' style={{ borderRadius: 0 }}>
 								{/* Number Badge */}
 								<div
-									className='absolute -top-4 -left-4 w-14 h-14 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center'
+									className='absolute -top-4 -left-4 w-14 h-14 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)' }}
 								>
-									<span className='text-xl font-bold text-white' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
-										{mobileStep.number}
-									</span>
+									<span className='text-xl font-bold text-white title-font'>{mobileStep.number}</span>
 								</div>
 
 								{/* Icon */}
 								<div
-									className='w-12 h-12 bg-black border border-[#FF6B00]/30 flex items-center justify-center mb-4 ml-8'
+									className='w-12 h-12 bg-black border border-sendo-orange/30 flex items-center justify-center mb-4 ml-8'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
 								>
-									<mobileStep.icon className='w-6 h-6 text-[#FF6B00]' />
+									<mobileStep.icon className='w-6 h-6 text-sendo-orange' />
 								</div>
 
 								{/* Title */}
-								<h3 className='text-lg font-bold text-foreground mb-3' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
-									{mobileStep.title}
-								</h3>
+								<h3 className='text-lg font-bold text-foreground mb-3 title-font'>{mobileStep.title}</h3>
 
 								{/* Description */}
 								<p className='text-sm text-foreground/70 leading-relaxed mb-3'>{mobileStep.description}</p>
 
 								{/* Highlight */}
 								<div
-									className='bg-gradient-to-r from-[#FF6B00]/10 to-transparent border-l-2 border-[#FF6B00] pl-3 py-2'
+									className='bg-gradient-to-r from-sendo-orange/10 to-transparent border-l-2 border-sendo-orange pl-3 py-2'
 									style={{ borderRadius: 0 }}
 								>
 									<p className='text-sm text-foreground/90 font-semibold italic'>{mobileStep.highlight}</p>
@@ -287,16 +277,14 @@ export default function HowItWorksSection() {
 					{/* Changed div to a and added href for redirection */}
 					<a
 						href='/connect-wallet' // Assuming '/connect-wallet' is the desired path for wallet connection
-						className='inline-block bg-gradient-to-r from-[#FF6B00] to-[#FF223B] p-[2px] hover:shadow-lg hover:shadow-[#FF223B]/50 transition-all group'
+						className='inline-block bg-gradient-to-r from-sendo-orange to-sendo-red p-[2px] hover:shadow-lg hover:shadow-sendo-red/50 transition-all group'
 						style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)' }}
 					>
 						<div
 							className='bg-background px-6 py-3 hover:bg-transparent transition-all flex items-center gap-2'
 							style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)' }}
 						>
-							<span className='text-white font-bold text-sm sm:text-base' style={{ fontFamily: 'TECHNOS, sans-serif' }}>
-								START NOW
-							</span>
+							<span className='text-white font-bold text-sm sm:text-base title-font'>START NOW</span>
 							<ArrowRight className='w-4 h-4 text-white group-hover:translate-x-1 transition-transform' />
 						</div>
 					</a>

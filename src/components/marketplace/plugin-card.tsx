@@ -29,7 +29,7 @@ export default function PluginCard({ plugin, isSponsored = false, onDetails, onD
 			initial={{ opacity: 0, y: 30 }}
 			whileInView={{ opacity: 1, y: 0 }}
 			transition={{ delay, duration: 0.6 }}
-			className={`relative overflow-hidden bg-foreground/5 border hover:bg-foreground/10 hover:border-[#FF6B00]/50 transition-all group ${
+			className={`relative overflow-hidden bg-foreground/5 border hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all group ${
 				isSponsored ? 'border-[#FFD700]/50' : 'border-foreground/10'
 			}`}
 			style={{ borderRadius: 0 }}
@@ -48,7 +48,7 @@ export default function PluginCard({ plugin, isSponsored = false, onDetails, onD
 				{/* Header */}
 				<div className='flex items-start gap-4 mb-4'>
 					<div
-						className='w-14 h-14 bg-gradient-to-r from-[#FF6B00] to-[#FF223B] flex items-center justify-center text-3xl flex-shrink-0'
+						className='w-14 h-14 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center text-3xl flex-shrink-0'
 						style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)' }}
 					>
 						{plugin.icon}
@@ -56,7 +56,7 @@ export default function PluginCard({ plugin, isSponsored = false, onDetails, onD
 					<div className='flex-1 min-w-0'>
 						<h3 className='text-lg font-bold text-foreground mb-1 truncate'>{plugin.name}</h3>
 						<div className='flex items-center gap-2'>
-							<span className={`text-sm font-bold ${isPaid ? 'text-[#FF6B00]' : 'text-[#14F195]'}`}>
+							<span className={`text-sm font-bold ${isPaid ? 'text-sendo-orange' : 'text---sendo-green'}`}>
 								{plugin.price}
 							</span>
 							{plugin.rating && (
@@ -76,7 +76,9 @@ export default function PluginCard({ plugin, isSponsored = false, onDetails, onD
 					<div className='mb-3 p-2 bg-background/50 border border-foreground/5' style={{ borderRadius: 0 }}>
 						<div className='flex items-center justify-between text-xs'>
 							<span className='text-foreground/40 uppercase'>Current Bid</span>
-							<span className='text-[#14F195] font-bold'>{plugin.price === 'FREE' ? '15.5 SOL' : plugin.price}</span>
+							<span className='text---sendo-green font-bold'>
+								{plugin.price === 'FREE' ? '15.5 SOL' : plugin.price}
+							</span>
 						</div>
 					</div>
 				)}
@@ -108,7 +110,7 @@ export default function PluginCard({ plugin, isSponsored = false, onDetails, onD
 					</Button>
 					<Button
 						onClick={onDeploy}
-						className='bg-gradient-to-r from-[#FF6B00] to-[#FF223B] hover:shadow-lg hover:shadow-[#FF223B]/50 text-white h-10 uppercase'
+						className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-10 uppercase'
 						style={{
 							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 							borderRadius: 0,
