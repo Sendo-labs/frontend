@@ -96,15 +96,15 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 								</p>
 								<div className='space-y-4 max-w-sm mx-auto'>
 									<div className='flex items-start gap-3 text-left'>
-										<CheckCircle className='w-5 h-5 text---sendo-green flex-shrink-0 mt-0.5' />
+										<CheckCircle className='w-5 h-5 text-sendo-green flex-shrink-0 mt-0.5' />
 										<p className='text-sm text-foreground/70'>Secure OAuth 2.0 authentication</p>
 									</div>
 									<div className='flex items-start gap-3 text-left'>
-										<CheckCircle className='w-5 h-5 text---sendo-green flex-shrink-0 mt-0.5' />
+										<CheckCircle className='w-5 h-5 text-sendo-green flex-shrink-0 mt-0.5' />
 										<p className='text-sm text-foreground/70'>sEnDO never stores your credentials</p>
 									</div>
 									<div className='flex items-start gap-3 text-left'>
-										<CheckCircle className='w-5 h-5 text---sendo-green flex-shrink-0 mt-0.5' />
+										<CheckCircle className='w-5 h-5 text-sendo-green flex-shrink-0 mt-0.5' />
 										<p className='text-sm text-foreground/70'>Revoke access anytime</p>
 									</div>
 								</div>

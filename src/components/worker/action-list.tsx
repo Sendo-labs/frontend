@@ -62,7 +62,7 @@ export default function ActionList({
 					</h2>
 				</div>
 				<div className='bg-foreground/5 border border-foreground/10 p-12 text-center' style={{ borderRadius: 0 }}>
-					<CheckCircle className='w-12 h-12 text---sendo-green mx-auto mb-4' />
+					<CheckCircle className='w-12 h-12 text-sendo-green mx-auto mb-4' />
 					<h3 className='text-xl font-bold text-foreground mb-2 title-font'>All Clear! 🎉</h3>
 					<p className='text-foreground/60'>No actions needed right now. Your portfolio is looking good.</p>
 				</div>
@@ -91,7 +91,7 @@ export default function ActionList({
 						<Button
 							onClick={onValidateAll}
 							disabled={isExecuting}
-							className='bg---sendo-green hover:bg---sendo-green/80 text-black h-10 px-4'
+							className='bg-sendo-green hover:bg-sendo-green/80 text-black h-10 px-4'
 							style={{ borderRadius: 0, fontFamily: 'TECHNOS, sans-serif' }}
 						>
 							<Check className='w-4 h-4 mr-2' />
@@ -150,7 +150,7 @@ export default function ActionList({
 													<span className='font-semibold'>Size:</span> {proposal.size_pct}%
 												</div>
 											)}
-											<div className='text-xs font-bold text---sendo-green'>~${proposal.est_usd.toFixed(2)}</div>
+											<div className='text-xs font-bold text-sendo-green'>~${proposal.est_usd.toFixed(2)}</div>
 										</div>
 									</div>
 								</div>
@@ -160,7 +160,7 @@ export default function ActionList({
 										<Button
 											onClick={() => onAccept(proposal)}
 											disabled={isExecuting}
-											className='bg---sendo-green hover:bg---sendo-green/80 text-black h-10 w-10 p-0 flex items-center justify-center'
+											className='bg-sendo-green hover:bg-sendo-green/80 text-black h-10 w-10 p-0 flex items-center justify-center'
 											style={{ borderRadius: 0 }}
 										>
 											<Check className='w-5 h-5' />
@@ -177,7 +177,7 @@ export default function ActionList({
 								)}
 
 								{mode === 'auto' && (
-									<div className='flex items-center gap-2 text-xs text---sendo-green flex-shrink-0'>
+									<div className='flex items-center gap-2 text-xs text-sendo-green flex-shrink-0'>
 										<CheckCircle className='w-4 h-4' />
 										<span className='font-semibold'>AUTO</span>
 									</div>

@@ -91,7 +91,7 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 							<div className='flex items-center gap-3'>
 								<div
 									className={`w-10 h-10 ${
-										token.profit_status === 'profit' ? 'bg---sendo-green' : 'bg-sendo-red'
+										token.profit_status === 'profit' ? 'bg-sendo-green' : 'bg-sendo-red'
 									} flex items-center justify-center text-white font-bold text-xs title-font`}
 									style={{ borderRadius: 0 }}
 								>
@@ -120,7 +120,7 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 								<div
 									className={`px-2 py-1 text-xs font-bold title-font ${
 										token.profit_status === 'profit'
-											? 'bg---sendo-green/10 text---sendo-green'
+											? 'bg-sendo-green/10 text-sendo-green'
 											: 'bg-sendo-red/10 text-sendo-red'
 									}`}
 									style={{ borderRadius: 0 }}
@@ -139,7 +139,7 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 							<div>
 								<p className='text-foreground/40 text-xs mb-1'>PnL Realized</p>
 								<p
-									className={`font-bold text-sm title-font ${token.pnl_sol >= 0 ? 'text---sendo-green' : 'text-sendo-red'}`}
+									className={`font-bold text-sm title-font ${token.pnl_sol >= 0 ? 'text-sendo-green' : 'text-sendo-red'}`}
 								>
 									{token.pnl_sol >= 0 ? '+' : ''}
 									{token.pnl_sol.toFixed(4)} SOL

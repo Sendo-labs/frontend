@@ -75,7 +75,7 @@ export default function PluginDetailModal({ plugin, onClose, onDeploy }: PluginD
 										</div>
 									)}
 									<span
-										className={`text-lg font-bold ${plugin.price === 'FREE' ? 'text---sendo-green' : 'text-sendo-orange'}`}
+										className={`text-lg font-bold ${plugin.price === 'FREE' ? 'text-sendo-green' : 'text-sendo-orange'}`}
 									>
 										{plugin.price}
 									</span>
@@ -148,7 +148,7 @@ export default function PluginDetailModal({ plugin, onClose, onDeploy }: PluginD
 									<div className='space-y-3'>
 										{plugin.features.map((feature, index) => (
 											<div key={index} className='flex items-start gap-3'>
-												<CheckCircle className='w-5 h-5 text---sendo-green flex-shrink-0 mt-0.5' />
+												<CheckCircle className='w-5 h-5 text-sendo-green flex-shrink-0 mt-0.5' />
 												<p className='text-foreground/70'>{feature}</p>
 											</div>
 										))}

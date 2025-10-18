@@ -17,7 +17,7 @@ interface TokenDistributionProps {
 
 export default function TokenDistribution({ distribution }: TokenDistributionProps) {
 	const items = [
-		{ label: 'In Profit', value: distribution.in_profit, color: 'text---sendo-green', pct: 50 },
+		{ label: 'In Profit', value: distribution.in_profit, color: 'text-sendo-green', pct: 50 },
 		{ label: 'In Loss', value: distribution.in_loss, color: 'text-sendo-red', pct: 33.3 },
 		{ label: 'Fully Sold', value: distribution.fully_sold, color: 'text-foreground', pct: 0 },
 		{ label: 'Still Held', value: distribution.still_held, color: 'text-sendo-orange', pct: 16.7 },

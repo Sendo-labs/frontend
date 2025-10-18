@@ -30,10 +30,10 @@ export default function WorkerPanel({ proposals }: WorkerPanelProps) {
 			<div className='bg-foreground/5 border border-foreground/10 p-4 space-y-4' style={{ borderRadius: 0 }}>
 				<div>
 					<div className='flex items-center gap-2 mb-2'>
-						<TrendingUp className='w-4 h-4 text---sendo-green' />
+						<TrendingUp className='w-4 h-4 text-sendo-green' />
 						<p className='text-xs text-foreground/60 uppercase'>Potential Gains</p>
 					</div>
-					<p className='text-2xl font-bold text---sendo-green title-font'>${totalValue.toFixed(2)}</p>
+					<p className='text-2xl font-bold text-sendo-green title-font'>${totalValue.toFixed(2)}</p>
 				</div>
 
 				<div className='h-px bg-foreground/10' />

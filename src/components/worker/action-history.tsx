@@ -68,20 +68,20 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 									exit={{ opacity: 0, y: 20 }}
 									transition={{ duration: 0.3 }}
 									className={`border p-4 opacity-70 hover:opacity-90 transition-opacity ${
-										isAccepted ? 'bg---sendo-green/5 border---sendo-green/20' : 'bg-sendo-red/5 border-sendo-red/20'
+										isAccepted ? 'bg-sendo-green/5 border-sendo-green/20' : 'bg-sendo-red/5 border-sendo-red/20'
 									}`}
 									style={{ borderRadius: 0 }}
 								>
 									<div className='flex items-start gap-3'>
 										<div
 											className={`w-10 h-10 flex items-center justify-center flex-shrink-0 ${
-												isAccepted ? 'bg---sendo-green/20' : 'bg-sendo-red/20'
+												isAccepted ? 'bg-sendo-green/20' : 'bg-sendo-red/20'
 											}`}
 											style={{
 												clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 											}}
 										>
-											<Icon className={`w-5 h-5 ${isAccepted ? 'text---sendo-green' : 'text-sendo-red'}`} />
+											<Icon className={`w-5 h-5 ${isAccepted ? 'text-sendo-green' : 'text-sendo-red'}`} />
 										</div>
 
 										<div className='flex-1 min-w-0'>
@@ -91,7 +91,7 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 												</h3>
 												<div
 													className={`flex items-center gap-1 text-xs font-bold ${
-														isAccepted ? 'text---sendo-green' : 'text-sendo-red'
+														isAccepted ? 'text-sendo-green' : 'text-sendo-red'
 													}`}
 												>
 													{isAccepted ? (
@@ -114,7 +114,7 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 												<div className='flex flex-wrap gap-2 text-xs'>
 													{action.tokens && <span className='text-foreground/40'>{action.tokens.join(', ')}</span>}
 													{action.token && <span className='text-foreground/40'>{action.token}</span>}
-													<span className={`font-bold ${isAccepted ? 'text---sendo-green/60' : 'text-sendo-red/60'}`}>
+													<span className={`font-bold ${isAccepted ? 'text-sendo-green/60' : 'text-sendo-red/60'}`}>
 														${action.est_usd.toFixed(2)}
 													</span>
 												</div>

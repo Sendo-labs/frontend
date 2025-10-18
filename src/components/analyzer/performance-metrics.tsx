@@ -27,7 +27,7 @@ export default function PerformanceMetrics({ performance }: PerformanceMetricsPr
 			icon: TrendingUp,
 			label: 'TOTAL PNL',
 			value: `${performance.total_pnl_sol >= 0 ? '+' : ''}${performance.total_pnl_sol.toFixed(3)} SOL`,
-			color: performance.total_pnl_sol >= 0 ? 'text---sendo-green' : 'text-sendo-red',
+			color: performance.total_pnl_sol >= 0 ? 'text-sendo-green' : 'text-sendo-red',
 		},
 		{ icon: Target, label: 'SUCCESS RATE', value: `${performance.success_rate}%`, color: 'text-foreground' },
 		{ icon: BarChart3, label: 'TOKENS ANALYZED', value: performance.tokens_analyzed, color: 'text-foreground' },

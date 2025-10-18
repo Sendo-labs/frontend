@@ -121,15 +121,15 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 								<h3 className='text-sm font-bold text-foreground mb-4 uppercase title-font'>What we'll access:</h3>
 								<ul className='space-y-2 text-left'>
 									<li className='flex items-center gap-2 text-foreground/70 text-sm'>
-										<Check className='w-4 h-4 text---sendo-green' />
+										<Check className='w-4 h-4 text-sendo-green' />
 										Read wallet balances
 									</li>
 									<li className='flex items-center gap-2 text-foreground/70 text-sm'>
-										<Check className='w-4 h-4 text---sendo-green' />
+										<Check className='w-4 h-4 text-sendo-green' />
 										Execute trades on your behalf
 									</li>
 									<li className='flex items-center gap-2 text-foreground/70 text-sm'>
-										<Check className='w-4 h-4 text---sendo-green' />
+										<Check className='w-4 h-4 text-sendo-green' />
 										View transaction history
 									</li>
 								</ul>

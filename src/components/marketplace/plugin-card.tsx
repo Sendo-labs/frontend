@@ -56,7 +56,7 @@ export default function PluginCard({ plugin, isSponsored = false, onDetails, onD
 					<div className='flex-1 min-w-0'>
 						<h3 className='text-lg font-bold text-foreground mb-1 truncate'>{plugin.name}</h3>
 						<div className='flex items-center gap-2'>
-							<span className={`text-sm font-bold ${isPaid ? 'text-sendo-orange' : 'text---sendo-green'}`}>
+							<span className={`text-sm font-bold ${isPaid ? 'text-sendo-orange' : 'text-sendo-green'}`}>
 								{plugin.price}
 							</span>
 							{plugin.rating && (
@@ -76,7 +76,7 @@ export default function PluginCard({ plugin, isSponsored = false, onDetails, onD
 					<div className='mb-3 p-2 bg-background/50 border border-foreground/5' style={{ borderRadius: 0 }}>
 						<div className='flex items-center justify-between text-xs'>
 							<span className='text-foreground/40 uppercase'>Current Bid</span>
-							<span className='text---sendo-green font-bold'>
+							<span className='text-sendo-green font-bold'>
 								{plugin.price === 'FREE' ? '15.5 SOL' : plugin.price}
 							</span>
 						</div>

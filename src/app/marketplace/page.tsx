@@ -592,6 +592,7 @@ export default function MarketplacePage() {
 						Join the marketplace and reach thousands of crypto enthusiasts
 					</p>
 					<button
+						type='button'
 						className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white px-8 py-4 text-lg font-bold transition-all uppercase cursor-pointer'
 						style={{
 							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',

@@ -380,7 +380,7 @@ export default function AddConnectionModal({ onClose, onSelectPlugin }: AddConne
 											>
 												{plugin.authType === 'oauth' ? 'OAuth' : 'API Key'}
 											</span>
-											<span className='text-xs font-bold text---sendo-green'>{plugin.price}</span>
+											<span className='text-xs font-bold text-sendo-green'>{plugin.price}</span>
 										</div>
 										<p className='text-xs text-foreground/60 line-clamp-2'>{plugin.description}</p>
 									</div>

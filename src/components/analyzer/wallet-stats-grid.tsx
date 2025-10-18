@@ -23,8 +23,8 @@ export default function WalletStatsGrid({ stats }: WalletStatsGridProps) {
 			value: stats.signatures.toLocaleString(),
 			color: 'from-sendo-orange to-sendo-red',
 		},
-		{ icon: Wallet, label: 'SOL', value: stats.sol_balance.toFixed(2), color: 'from---sendo-green to-[#00D9B5]' },
-		{ icon: ImageIcon, label: 'NFTs', value: stats.nfts, color: 'from-[#9945FF] to---sendo-green' },
+		{ icon: Wallet, label: 'SOL', value: stats.sol_balance.toFixed(2), color: 'from-sendo-green to-[#00D9B5]' },
+		{ icon: ImageIcon, label: 'NFTs', value: stats.nfts, color: 'from-[#9945FF] to-sendo-green' },
 		{ icon: Coins, label: 'TOKENS', value: stats.tokens, color: 'from-sendo-orange to-sendo-red' },
 	];
 

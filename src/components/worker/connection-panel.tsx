@@ -76,7 +76,7 @@ export default function ConnectionPanel({ connections, onAddConnection, onRemove
 							{connectedServices.map((service) => (
 								<div
 									key={service.id}
-									className='flex items-center justify-between p-3 bg---sendo-green/10 border border---sendo-green/30 group'
+									className='flex items-center justify-between p-3 bg-sendo-green/10 border border-sendo-green/30 group'
 									style={{ borderRadius: 0 }}
 								>
 									<div className='flex items-center gap-2'>
@@ -87,7 +87,7 @@ export default function ConnectionPanel({ connections, onAddConnection, onRemove
 										</div>
 									</div>
 									<div className='flex items-center gap-2'>
-										<CheckCircle className='w-5 h-5 text---sendo-green' />
+										<CheckCircle className='w-5 h-5 text-sendo-green' />
 										<button
 											type='button'
 											onClick={() => onRemoveConnection(service.id)}
