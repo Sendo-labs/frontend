@@ -184,8 +184,20 @@ export default function AgentPanel() {
 											</span>
 										</h3>
 										<p className='text-sendo-green text-xs flex items-center gap-1'>
-											{agentLoading ? <span className='w-1.5 h-1.5 bg-sendo-green animate-pulse' style={{ borderRadius: 0 }} /> : agent ? <span className='w-1.5 h-1.5 bg-sendo-green animate-pulse' style={{ borderRadius: 0 }} /> : <span className='w-1.5 h-1.5 bg-sendo-red animate-pulse' style={{ borderRadius: 0 }} />}
-											{agentLoading ? 'CONNECTING...' : agent ? <span className='text-sendo-green'>ONLINE</span> : <span className='text-sendo-red'>OFFLINE</span>}
+											{agentLoading ? (
+												<span className='w-1.5 h-1.5 bg-sendo-green animate-pulse' style={{ borderRadius: 0 }} />
+											) : agent ? (
+												<span className='w-1.5 h-1.5 bg-sendo-green animate-pulse' style={{ borderRadius: 0 }} />
+											) : (
+												<span className='w-1.5 h-1.5 bg-sendo-red animate-pulse' style={{ borderRadius: 0 }} />
+											)}
+											{agentLoading ? (
+												'CONNECTING...'
+											) : agent ? (
+												<span className='text-sendo-green'>ONLINE</span>
+											) : (
+												<span className='text-sendo-red'>OFFLINE</span>
+											)}
 										</p>
 									</div>
 								</div>

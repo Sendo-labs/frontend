@@ -76,9 +76,7 @@ export default function PluginCard({ plugin, isSponsored = false, onDetails, onD
 					<div className='mb-3 p-2 bg-background/50 border border-foreground/5' style={{ borderRadius: 0 }}>
 						<div className='flex items-center justify-between text-xs'>
 							<span className='text-foreground/40 uppercase'>Current Bid</span>
-							<span className='text-sendo-green font-bold'>
-								{plugin.price === 'FREE' ? '15.5 SOL' : plugin.price}
-							</span>
+							<span className='text-sendo-green font-bold'>{plugin.price === 'FREE' ? '15.5 SOL' : plugin.price}</span>
 						</div>
 					</div>
 				)}
