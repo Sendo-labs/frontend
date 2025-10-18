@@ -4,13 +4,14 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { getElizaClient } from '@/lib/eliza/client';
 import { io, Socket } from 'socket.io-client';
 import { UUID } from 'crypto';
-import { Message, UseElizaChatParams, UseElizaChatReturn } from '@/types/agent';
+import { AgentMessage, UseElizaChatParams, UseElizaChatReturn } from '@/types/agent';
+import type { Message } from '@elizaos/api-client';
 
 /**
  * Hook to manage chat with an Eliza agent
  */
 export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaChatParams): UseElizaChatReturn {
-	const [messages, setMessages] = useState<Message[]>([]);
+	const [messages, setMessages] = useState<AgentMessage[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isAgentThinking, setIsAgentThinking] = useState(false);
 	const [channelId, setChannelId] = useState<string | null>(initialChannelId || null);
@@ -69,13 +70,13 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 				console.log('[useElizaChat] Raw messages from API:', response.messages);
 
 				// Normalize messages to match our expected format
-				const normalizedMessages: Message[] = (response.messages || []).map((msg: any) => ({
+				const normalizedMessages: AgentMessage[] = (response.messages || []).map((msg: Message) => ({
 					id: msg.id,
-					senderId: msg.senderId || msg.authorId,
-					text: msg.text || msg.content,
+					senderId: msg.authorId,
+					text: msg.content,
 					createdAt: msg.createdAt,
 					channelId: msg.channelId,
-					type: msg.type,
+					type: msg.metadata?.type as string | undefined,
 					source: msg.sourceType,
 					rawMessage: msg.rawMessage,
 				}));
@@ -140,7 +141,7 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 			console.log('[useElizaChat] Message broadcast received:', data.id, data.source);
 
 			// Format the message to match our expected structure
-			const formattedMessage: Message = {
+			const formattedMessage: AgentMessage = {
 				id: data.id,
 				senderId: data.senderId,
 				text: data.text,

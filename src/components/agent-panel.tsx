@@ -9,16 +9,7 @@ import { AnimatedMarkdown } from '@/components/ui/animated-markdown';
 import { Tool } from '@/components/ui/tool';
 import { useElizaAgent } from '@/hooks/useElizaAgent';
 import { useElizaChat } from '@/hooks/useElizaChat';
-
-interface Message {
-	id: string;
-	senderId: string;
-	text: string;
-	createdAt: string;
-	type?: string;
-	source?: string;
-	rawMessage?: unknown;
-}
+import { AgentMessage } from '@/types/agent';
 
 interface ToolPart {
 	type: string;
@@ -103,7 +94,7 @@ export default function AgentPanel() {
 	};
 
 	// Convert agent action messages to tool parts for Tool component
-	const convertToToolPart = (message: Message): ToolPart => {
+	const convertToToolPart = (message: AgentMessage): ToolPart => {
 		// Try to parse rawMessage if it exists
 		let toolData: Record<string, any> = {};
 		if (message.rawMessage) {

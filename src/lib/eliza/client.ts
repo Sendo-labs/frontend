@@ -5,8 +5,15 @@ import { ApiClientConfig, ElizaClient } from '@elizaos/api-client';
  * @returns {import('@elizaos/api-client').ApiClientConfig}
  */
 export function createElizaClientConfig() {
-	const apiKey = localStorage.getItem('eliza-api-key') || process.env.ELIZA_SERVER_AUTH_TOKEN;
-	const baseUrl = process.env.ELIZA_SERVER_URL || 'http://localhost:3000';
+	const apiKey = process.env.NEXT_PUBLIC_ELIZA_SERVER_AUTH_TOKEN; // TODO: Replace by a database fetch for authentication user
+	const baseUrl = process.env.NEXT_PUBLIC_ELIZA_SERVER_URL;
+
+	console.log('apiKey', apiKey);
+	console.log('baseUrl', baseUrl);
+
+	if (!apiKey || !baseUrl) {
+		throw new Error('NEXT_PUBLIC_ELIZA_SERVER_AUTH_TOKEN and NEXT_PUBLIC_ELIZA_SERVER_URL are required');
+	}
 
 	const config: ApiClientConfig = {
 		baseUrl: baseUrl,
@@ -43,19 +50,4 @@ export function getElizaClient() {
  */
 export function resetElizaClient() {
 	elizaClientInstance = null;
-}
-
-/**
- * Update the API key and reset the client
- * @param {string | null} newApiKey
- */
-export function updateApiKey(newApiKey: string | null) {
-	if (newApiKey) {
-		localStorage.setItem('eliza-api-key', newApiKey);
-	} else {
-		localStorage.removeItem('eliza-api-key');
-	}
-
-	// Reset the singleton so it uses the new API key
-	resetElizaClient();
 }

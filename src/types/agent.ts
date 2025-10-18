@@ -1,13 +1,15 @@
-interface Message {
-	id: string;
-	senderId: string;
+import type { UUID } from "crypto";
+
+interface AgentMessage {
+	id: UUID;
+	senderId: UUID;
 	text: string;
-	createdAt: string;
-	channelId: string;
+	createdAt: Date;
+	channelId: UUID;
 	type?: string;
 	source?: string;
 	rawMessage?: unknown;
-	updatedAt?: string;
+	updatedAt?: Date;
 }
 
 interface UseElizaChatParams {
@@ -16,7 +18,7 @@ interface UseElizaChatParams {
 }
 
 interface UseElizaChatReturn {
-	messages: Message[];
+	messages: AgentMessage[];
 	isLoading: boolean;
 	isAgentThinking: boolean;
 	channelId: string | null;
@@ -26,4 +28,4 @@ interface UseElizaChatReturn {
 	animatedMessageId: string | null;
 }
 
-export type { Message, UseElizaChatParams, UseElizaChatReturn };
+export type { AgentMessage, UseElizaChatParams, UseElizaChatReturn };

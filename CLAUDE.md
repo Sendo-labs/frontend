@@ -25,7 +25,21 @@ bun start            # Start production server
 # Code Quality
 bun lint             # Run Biome linter checks
 bun format           # Format code with Biome
+
+# Git Hooks
+bun prepare          # Install Husky Git hooks (runs automatically after install)
 ```
+
+## Environment Variables
+
+Required environment variables (see `.env.example`):
+
+```bash
+ELIZA_SERVER_AUTH_TOKEN=    # API token for Eliza server authentication
+ELIZA_SERVER_URL=           # Eliza server URL (defaults to http://localhost:3000)
+```
+
+The application integrates with an Eliza AI agent server. API credentials can be stored in localStorage (`eliza-api-key`) or via environment variables.
 
 ## Technology Stack
 
@@ -66,11 +80,19 @@ src/
 │   ├── analyzer/          # Analyzer-specific components
 │   ├── home/              # Home page sections (hero, stats, team, contact, etc.)
 │   ├── marketplace/       # Marketplace components (cards, modals)
+│   ├── worker/            # Worker management components
 │   ├── ui/                # Reusable shadcn/ui components (Radix-based)
+│   ├── agent-panel.tsx    # Global AI agent chat interface
 │   └── navigation.tsx     # Global navigation component
+├── hooks/
+│   ├── useElizaAgent.ts   # Hook to fetch and manage Eliza agent
+│   └── useElizaChat.ts    # Hook for real-time chat with Eliza agent
 ├── lib/
+│   ├── eliza/
+│   │   └── client.ts      # Eliza API client singleton and configuration
 │   └── utils.ts           # cn() utility and helpers
 └── types/
+    ├── agent.ts           # Eliza agent and chat types
     └── plugins.ts         # Plugin-related TypeScript interfaces
 ```
 
@@ -93,6 +115,12 @@ className={cn("base-classes", conditional && "conditional-classes")}
 **Modal Pattern**: Marketplace uses controlled modal states with detail and configuration views
 
 **Animation Pattern**: Home page implements custom snap-scroll with Framer Motion on desktop, free scroll on mobile
+
+**Eliza Integration Pattern**: The app integrates with an external Eliza AI agent server using a singleton client pattern:
+- `lib/eliza/client.ts` provides a singleton ElizaClient instance with configuration
+- `useElizaAgent` hook fetches the SENDO agent on mount
+- `useElizaChat` hook manages real-time chat with the agent
+- Agent panel is globally available via `<AgentPanel />` in root layout
 
 ## Code Style (Biome Configuration)
 
@@ -134,7 +162,9 @@ Uses Tailwind CSS 4 with:
 3. **Client Components**: Most pages require `"use client"` due to state/hooks usage
 4. **TypeScript Strict**: All code must satisfy strict TypeScript checks
 5. **Import Organization**: Biome auto-organizes imports on format
-6. **UI Components**: Located in `src/components/ui/`, ignore from Biome linting
+6. **UI Components**: Located in `src/components/ui/`, ignored from Biome linting
+7. **Git Hooks**: Husky pre-commit hook automatically runs `bun format` before each commit
+8. **Eliza Server**: Application requires an external Eliza server to be running for AI agent features
 
 ## Git Workflow
 
