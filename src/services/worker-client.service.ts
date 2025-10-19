@@ -25,19 +25,27 @@ export interface WorkerAction {
 	reasoning: string;
 	confidence: number;
 	triggerMessage: string;
+	params: {
+		amount: number;
+		validator: string;
+		token: string;
+	};
+	estimatedImpact: string;
+	estimatedGas: string;
 	status: string;
+	result: string | null;
 	createdAt: string;
 }
 
 export class WorkerClientService {
-	private pluginBaseUrl: string;
+	private agentId: string;
 
 	constructor(agentId: string) {
 		const elizaServerUrl = elizaService.getBaseUrl();
 		if (!elizaServerUrl) {
 			throw new Error('[WorkerClientService] NEXT_PUBLIC_ELIZA_SERVER_URL is not set');
 		}
-		this.pluginBaseUrl = `${elizaServerUrl}/api/agents/${agentId}/plugins/worker`;
+		this.agentId = agentId;
 	}
 
 	/**
@@ -45,9 +53,11 @@ export class WorkerClientService {
 	 * @returns {Promise<WorkerAnalysis>}
 	 */
 	async getWorkerAnalysis(): Promise<WorkerAnalysis[]> {
-		const response = await fetch(`${this.pluginBaseUrl}/analysis`);
-		const data = await response.json();
-		return data.data.analyses as WorkerAnalysis[];
+		const response = await elizaService.apiRequest<{ data: { analyses: WorkerAnalysis[] } }>(
+			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/analysis`,
+			'GET',
+		);
+		return response.data.analyses;
 	}
 
 	/**
@@ -56,9 +66,11 @@ export class WorkerClientService {
 	 * @returns {Promise<WorkerAnalysis>}
 	 */
 	async getWorkerAnalysisById(id: string): Promise<WorkerAnalysis> {
-		const response = await fetch(`${this.pluginBaseUrl}/analysis/${id}`);
-		const data = await response.json();
-		return data.data as WorkerAnalysis;
+		const response = await elizaService.apiRequest<{ data: { analysis: WorkerAnalysis } }>(
+			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/analysis/${id}`,
+			'GET',
+		);
+		return response.data.analysis;
 	}
 
 	/**
@@ -67,9 +79,11 @@ export class WorkerClientService {
 	 * @returns {Promise<WorkerAction[]>}
 	 */
 	async getWorkerActionsByAnalysisId(analysisId: string): Promise<WorkerAction[]> {
-		const response = await fetch(`${this.pluginBaseUrl}/analysis/${analysisId}/actions`);
-		const data = await response.json();
-		return data.data.actions as WorkerAction[];
+		const response = await elizaService.apiRequest<{ data: { actions: WorkerAction[] } }>(
+			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/analysis/${analysisId}/actions`,
+			'GET',
+		);
+		return response.data.actions;
 	}
 
 	/**
@@ -78,8 +92,10 @@ export class WorkerClientService {
 	 * @returns {Promise<WorkerAction>}
 	 */
 	async getWorkerActionById(id: string): Promise<WorkerAction> {
-		const response = await fetch(`${this.pluginBaseUrl}/action/${id}`);
-		const data = await response.json();
-		return data.data as WorkerAction;
+		const response = await elizaService.apiRequest<{ data: { action: WorkerAction } }>(
+			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/action/${id}`,
+			'GET',
+		);
+		return response.data.action;
 	}
 }

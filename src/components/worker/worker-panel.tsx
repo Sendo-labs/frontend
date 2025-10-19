@@ -2,24 +2,7 @@
 
 import { Activity, TrendingUp, Zap } from 'lucide-react';
 
-interface Proposal {
-	type: string;
-	tokens?: string[];
-	token?: string;
-	size_pct?: number;
-	est_usd: number;
-	reason: string;
-	priority: 'low' | 'medium' | 'high';
-}
-
-interface WorkerPanelProps {
-	proposals: Proposal[] | null;
-}
-
-export default function WorkerPanel({ proposals }: WorkerPanelProps) {
-	const totalValue = proposals?.reduce((sum, p) => sum + p.est_usd, 0) || 0;
-	const highPriorityCount = proposals?.filter((p) => p.priority === 'high').length || 0;
-
+export default function WorkerPanel() {
 	return (
 		<div>
 			<div className='flex items-center gap-2 mb-4'>
@@ -33,7 +16,7 @@ export default function WorkerPanel({ proposals }: WorkerPanelProps) {
 						<TrendingUp className='w-4 h-4 text-sendo-green' />
 						<p className='text-xs text-foreground/60 uppercase'>Potential Gains</p>
 					</div>
-					<p className='text-2xl font-bold text-sendo-green title-font'>${totalValue.toFixed(2)}</p>
+					<p className='text-2xl font-bold text-sendo-green title-font'>$1050.00</p>
 				</div>
 
 				<div className='h-px bg-foreground/10' />
@@ -43,7 +26,7 @@ export default function WorkerPanel({ proposals }: WorkerPanelProps) {
 						<Zap className='w-4 h-4 text-sendo-red' />
 						<p className='text-xs text-foreground/60 uppercase'>High Priority</p>
 					</div>
-					<p className='text-2xl font-bold text-sendo-red title-font'>{highPriorityCount}</p>
+					<p className='text-2xl font-bold text-sendo-red title-font'>3</p>
 				</div>
 
 				<div className='h-px bg-foreground/10' />

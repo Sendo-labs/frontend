@@ -3,21 +3,12 @@
 import { TrendingDown, DollarSign, AlertCircle, CheckCircle, Clock, Zap, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { LucideIcon } from 'lucide-react';
-
-interface Proposal {
-	type: string;
-	tokens?: string[];
-	token?: string;
-	size_pct?: number;
-	est_usd: number;
-	reason: string;
-	priority: 'low' | 'medium' | 'high';
-}
+import type { WorkerAction } from '@/services/worker-client.service';
 
 interface ActionListProps {
-	proposals: Proposal[] | null;
-	onAccept: (proposal: Proposal) => void;
-	onReject: (proposal: Proposal) => void;
+	actions: WorkerAction[] | null;
+	onAccept: (action: WorkerAction) => void;
+	onReject: (action: WorkerAction) => void;
 	onValidateAll: () => void;
 	isExecuting: boolean;
 	mode: 'suggest' | 'auto';
@@ -27,29 +18,24 @@ const ACTION_ICONS: Record<string, LucideIcon> = {
 	SELL_DUST: TrendingDown,
 	TAKE_PROFIT: DollarSign,
 	REBALANCE: AlertCircle,
+	STAKE: DollarSign,
+	SWAP: TrendingDown,
 };
 
 const PRIORITY_COLORS: Record<string, string> = {
-	high: 'border-sendo-red bg-sendo-red/10',
-	medium: 'border-sendo-orange bg-sendo-orange/10',
-	low: 'border-foreground bg-foreground/5',
+	HIGH: 'border-sendo-red bg-sendo-red/10',
+	MEDIUM: 'border-sendo-orange bg-sendo-orange/10',
+	LOW: 'border-foreground bg-foreground/5',
 };
 
 const PRIORITY_TEXT: Record<string, string> = {
-	high: 'text-sendo-red',
-	medium: 'text-sendo-orange',
-	low: 'text-foreground/60',
+	HIGH: 'text-sendo-red',
+	MEDIUM: 'text-sendo-orange',
+	LOW: 'text-foreground/60',
 };
 
-export default function ActionList({
-	proposals,
-	onAccept,
-	onReject,
-	onValidateAll,
-	isExecuting,
-	mode,
-}: ActionListProps) {
-	if (!proposals || proposals.length === 0) {
+export default function ActionList({ actions, onAccept, onReject, onValidateAll, isExecuting, mode }: ActionListProps) {
+	if (!actions || actions.length === 0) {
 		return (
 			<div>
 				<div className='flex items-center gap-2 mb-4'>
@@ -87,7 +73,7 @@ export default function ActionList({
 						<Clock className='w-4 h-4 text-foreground/40' />
 						<span className='text-xs text-foreground/40'>Updated 2 min ago</span>
 					</div>
-					{mode === 'suggest' && proposals.length > 1 && (
+					{mode === 'suggest' && actions.length > 1 && (
 						<Button
 							onClick={onValidateAll}
 							disabled={isExecuting}
@@ -102,13 +88,14 @@ export default function ActionList({
 			</div>
 
 			<div className='space-y-4'>
-				{proposals.map((proposal, index) => {
-					const Icon = ACTION_ICONS[proposal.type] || AlertCircle;
+				{actions.map((action) => {
+					const Icon = ACTION_ICONS[action.actionType] || AlertCircle;
+					const priorityKey = action.priority.toUpperCase();
 
 					return (
 						<div
-							key={index}
-							className={`border p-4 md:p-6 transition-all hover:scale-[1.02] ${PRIORITY_COLORS[proposal.priority]}`}
+							key={action.id}
+							className={`border p-4 md:p-6 transition-all hover:scale-[1.02] ${PRIORITY_COLORS[priorityKey] || PRIORITY_COLORS.LOW}`}
 							style={{ borderRadius: 0 }}
 						>
 							<div className='flex items-start justify-between gap-4'>
@@ -125,32 +112,36 @@ export default function ActionList({
 									<div className='flex-1 min-w-0'>
 										<div className='flex items-center gap-2 mb-2'>
 											<h3 className='text-lg font-bold text-foreground uppercase title-font'>
-												{proposal.type.replace(/_/g, ' ')}
+												{action.actionType.replace(/_/g, ' ')}
 											</h3>
-											<span className={`text-xs font-bold uppercase ${PRIORITY_TEXT[proposal.priority]}`}>
-												{proposal.priority}
+											<span
+												className={`text-xs font-bold uppercase ${PRIORITY_TEXT[priorityKey] || PRIORITY_TEXT.LOW}`}
+											>
+												{action.priority}
 											</span>
 										</div>
 
-										<p className='text-sm text-foreground/70 mb-3'>{proposal.reason}</p>
+										<p className='text-sm text-foreground/70 mb-3'>{action.reasoning}</p>
 
 										<div className='flex flex-wrap gap-2'>
-											{proposal.tokens && (
+											{action.params.token && (
 												<div className='text-xs text-foreground/60'>
-													<span className='font-semibold'>Tokens:</span> {proposal.tokens.join(', ')}
+													<span className='font-semibold'>Token:</span> {action.params.token}
 												</div>
 											)}
-											{proposal.token && (
+											{action.params.amount && (
 												<div className='text-xs text-foreground/60'>
-													<span className='font-semibold'>Token:</span> {proposal.token}
+													<span className='font-semibold'>Amount:</span> {action.params.amount}
 												</div>
 											)}
-											{proposal.size_pct && (
+											{action.params.validator && (
 												<div className='text-xs text-foreground/60'>
-													<span className='font-semibold'>Size:</span> {proposal.size_pct}%
+													<span className='font-semibold'>Validator:</span> {action.params.validator}
 												</div>
 											)}
-											<div className='text-xs font-bold text-sendo-green'>~${proposal.est_usd.toFixed(2)}</div>
+											<div className='text-xs font-bold text-sendo-green'>
+												Confidence: {(action.confidence * 100).toFixed(0)}%
+											</div>
 										</div>
 									</div>
 								</div>
@@ -158,7 +149,7 @@ export default function ActionList({
 								{mode === 'suggest' && (
 									<div className='flex gap-2 flex-shrink-0'>
 										<Button
-											onClick={() => onAccept(proposal)}
+											onClick={() => onAccept(action)}
 											disabled={isExecuting}
 											className='bg-sendo-green hover:bg-sendo-green/80 text-black h-10 w-10 p-0 flex items-center justify-center'
 											style={{ borderRadius: 0 }}
@@ -166,7 +157,7 @@ export default function ActionList({
 											<Check className='w-5 h-5' />
 										</Button>
 										<Button
-											onClick={() => onReject(proposal)}
+											onClick={() => onReject(action)}
 											disabled={isExecuting}
 											className='bg-sendo-red hover:bg-sendo-red/80 text-white h-10 w-10 p-0 flex items-center justify-center'
 											style={{ borderRadius: 0 }}

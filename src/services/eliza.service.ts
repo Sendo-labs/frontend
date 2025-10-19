@@ -99,6 +99,37 @@ class ElizaService {
 	public isInitialized(): boolean {
 		return this.elizaClient !== null;
 	}
+
+	/**
+	 * Make a request to the Eliza API using fetch including the API key in the headers
+	 * @param {string} path - The path to the API endpoint
+	 * @param {string} method - The HTTP method to use
+	 * @param {any} body - The body of the request
+	 * @returns {Promise<T>} - The response from the API
+	 */
+	public async apiRequest<T>(path: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE', body?: any): Promise<T> {
+		const config = this.getConfig();
+		if (!config) {
+			throw new Error('Eliza client is not initialized');
+		}
+		try {
+			const response = await fetch(`${config.baseUrl}${path}`, {
+				method,
+				headers: new Headers({
+					'Content-Type': 'application/json',
+					'X-API-KEY': config.apiKey || '',
+				}),
+				body: JSON.stringify(body),
+			});
+			if (!response.ok) {
+				throw new Error(`Failed to make API request to ${path}: ${response.statusText}`);
+			}
+			return response.json() as Promise<T>;
+		} catch (error) {
+			console.error(`[ElizaService] Failed to make API request to ${path}:`, error);
+			throw error;
+		}
+	}
 }
 
 // Singleton instance

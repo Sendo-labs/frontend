@@ -3,15 +3,9 @@
 import { History, TrendingDown, DollarSign, AlertCircle, CheckCircle, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
+import type { WorkerAction } from '@/services/worker-client.service';
 
-interface HistoryAction {
-	type: string;
-	tokens?: string[];
-	token?: string;
-	size_pct?: number;
-	est_usd: number;
-	reason: string;
-	priority: 'low' | 'medium' | 'high';
+interface HistoryAction extends WorkerAction {
 	executedAt: Date;
 	accepted: boolean;
 	status: 'accepted' | 'rejected';
@@ -25,6 +19,8 @@ const ACTION_ICONS: Record<string, LucideIcon> = {
 	SELL_DUST: TrendingDown,
 	TAKE_PROFIT: DollarSign,
 	REBALANCE: AlertCircle,
+	STAKE: DollarSign,
+	SWAP: TrendingDown,
 };
 
 export default function ActionHistory({ history }: ActionHistoryProps) {
@@ -56,13 +52,13 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 			) : (
 				<div className='space-y-3'>
 					<AnimatePresence>
-						{history.map((action, index) => {
-							const Icon = ACTION_ICONS[action.type] || AlertCircle;
+						{history.map((action) => {
+							const Icon = ACTION_ICONS[action.actionType] || AlertCircle;
 							const isAccepted = action.accepted;
 
 							return (
 								<motion.div
-									key={index}
+									key={action.id}
 									initial={{ opacity: 0, y: -20 }}
 									animate={{ opacity: 1, y: 0 }}
 									exit={{ opacity: 0, y: 20 }}
@@ -87,7 +83,7 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 										<div className='flex-1 min-w-0'>
 											<div className='flex items-center gap-2 mb-1'>
 												<h3 className='text-base font-bold text-foreground/70 uppercase title-font'>
-													{action.type.replace(/_/g, ' ')}
+													{action.actionType.replace(/_/g, ' ')}
 												</h3>
 												<div
 													className={`flex items-center gap-1 text-xs font-bold ${
@@ -108,14 +104,13 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 												</div>
 											</div>
 
-											<p className='text-sm text-foreground/50 mb-2'>{action.reason}</p>
+											<p className='text-sm text-foreground/50 mb-2'>{action.reasoning}</p>
 
 											<div className='flex items-center justify-between'>
 												<div className='flex flex-wrap gap-2 text-xs'>
-													{action.tokens && <span className='text-foreground/40'>{action.tokens.join(', ')}</span>}
-													{action.token && <span className='text-foreground/40'>{action.token}</span>}
+													{action.params.token && <span className='text-foreground/40'>{action.params.token}</span>}
 													<span className={`font-bold ${isAccepted ? 'text-sendo-green/60' : 'text-sendo-red/60'}`}>
-														${action.est_usd.toFixed(2)}
+														${action.params.amount.toFixed(2)}
 													</span>
 												</div>
 												<span className='text-xs text-foreground/30'>{formatTime(action.executedAt)}</span>

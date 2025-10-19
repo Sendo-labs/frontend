@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+import AnalysisPanel from '@/components/worker/analysis-panel';
 import WorkerPanel from '@/components/worker/worker-panel';
 import WorkerToggle from '@/components/worker/worker-toggle';
 import RuleBuilder from '@/components/worker/rule-builder';
@@ -13,6 +14,10 @@ import ActionHistory from '@/components/worker/action-history';
 import ConnectionPanel from '@/components/worker/connection-panel';
 import AddConnectionModal from '@/components/worker/add-connection-modal';
 import ConfigurePluginModal from '@/components/worker/configure-plugin-modal';
+import type { WorkerAction, WorkerAnalysis } from '@/services/worker-client.service';
+import { WorkerClientService } from '@/services/worker-client.service';
+import { QUERY_KEYS } from '@/lib/query-keys';
+import { useQuery } from '@tanstack/react-query';
 
 interface RuleParams {
 	min_usd?: number;
@@ -40,17 +45,7 @@ interface Config {
 	connections: Connections;
 }
 
-interface Proposal {
-	type: string;
-	tokens?: string[];
-	token?: string;
-	size_pct?: number;
-	est_usd: number;
-	reason: string;
-	priority: 'low' | 'medium' | 'high';
-}
-
-interface HistoryAction extends Proposal {
+interface HistoryAction extends WorkerAction {
 	executedAt: Date;
 	accepted: boolean;
 	status: 'accepted' | 'rejected';
@@ -74,19 +69,38 @@ interface Plugin {
 	}>;
 }
 
-export default function Worker() {
+interface WorkerProps {
+	agentId: string;
+	initialWorkerAnalysis: WorkerAnalysis[];
+	initialAnalysisActions: WorkerAction[];
+}
+
+export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysisActions }: WorkerProps) {
+	const workerClientService = new WorkerClientService(agentId);
 	const [config, setConfig] = useState<Config | null>(null);
-	const [proposals, setProposals] = useState<Proposal[] | null>(null);
+	const [actions, setActions] = useState<WorkerAction[] | null>(null);
 	const [history, setHistory] = useState<HistoryAction[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
 	const [selectedPluginToConnect, setSelectedPluginToConnect] = useState<Plugin | null>(null);
 
+	const { data: workerAnalysis, isLoading: isWorkerAnalysisLoading } = useQuery({
+		queryKey: QUERY_KEYS.WORKER_ANALYSIS.list(),
+		queryFn: () => workerClientService.getWorkerAnalysis(),
+		initialData: initialWorkerAnalysis,
+	});
+
+	const { data: workerActions, isLoading: isWorkerActionsLoading } = useQuery({
+		queryKey: QUERY_KEYS.WORKER_ACTIONS.list(),
+		queryFn: () => workerClientService.getWorkerActionsByAnalysisId(workerAnalysis[0].id),
+		initialData: initialAnalysisActions,
+	});
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies: no need to define dependencies
 	useEffect(() => {
 		fetchWorkerConfig();
-		fetchProposals();
+		// fetchProposals();
 	}, []);
 
 	const fetchWorkerConfig = async () => {
@@ -111,36 +125,6 @@ export default function Worker() {
 		}, 1000);
 	};
 
-	const fetchProposals = async () => {
-		setTimeout(() => {
-			setProposals([
-				{
-					type: 'SELL_DUST',
-					tokens: ['XYZ', 'ABC', 'DEF'],
-					est_usd: 42.1,
-					reason: 'Tokens below $15 threshold detected',
-					priority: 'low',
-				},
-				{
-					type: 'TAKE_PROFIT',
-					token: 'BONK',
-					size_pct: 15,
-					est_usd: 380.0,
-					reason: 'BONK is within 8% of ATH - take profits',
-					priority: 'high',
-				},
-				{
-					type: 'TAKE_PROFIT',
-					token: 'WIF',
-					size_pct: 20,
-					est_usd: 520.0,
-					reason: 'WIF reached your 25% profit target',
-					priority: 'medium',
-				},
-			]);
-		}, 1500);
-	};
-
 	const handleModeChange = (newMode: 'suggest' | 'auto') => {
 		if (config) {
 			setConfig({ ...config, mode: newMode });
@@ -154,19 +138,19 @@ export default function Worker() {
 		}
 	};
 
-	const handleActionResponse = async (proposal: Proposal, accepted: boolean) => {
+	const handleActionResponse = async (action: WorkerAction, accepted: boolean) => {
 		setIsExecuting(true);
 
 		setTimeout(() => {
 			// Remove from proposals
-			if (proposals) {
-				setProposals(proposals.filter((p) => p !== proposal));
+			if (actions) {
+				setActions(actions.filter((p) => p.id !== action.id));
 			}
 
 			// Add to history with timestamp and status
 			setHistory([
 				{
-					...proposal,
+					...action,
 					executedAt: new Date(),
 					accepted: accepted,
 					status: accepted ? 'accepted' : 'rejected',
@@ -179,28 +163,27 @@ export default function Worker() {
 	};
 
 	const handleValidateAll = async () => {
-		if (!proposals || proposals.length === 0) return;
+		if (!actions || actions.length === 0) return;
 
 		setIsExecuting(true);
 
 		setTimeout(() => {
 			// Move all proposals to history as accepted
-			const acceptedProposals: HistoryAction[] = proposals.map((proposal) => ({
-				...proposal,
+			const acceptedActions: HistoryAction[] = actions.map((action) => ({
+				...action,
 				executedAt: new Date(),
 				accepted: true,
 				status: 'accepted',
 			}));
 
-			setHistory([...acceptedProposals, ...history]);
-			setProposals([]);
+			setHistory([...acceptedActions, ...history]);
+			setActions([]);
 			setIsExecuting(false);
 		}, 2000);
 	};
 
 	const handleRefresh = () => {
 		setIsLoading(true);
-		fetchProposals();
 		fetchWorkerConfig();
 	};
 
@@ -233,7 +216,7 @@ export default function Worker() {
 		}
 	};
 
-	if (isLoading) {
+	if (isWorkerAnalysisLoading || isWorkerActionsLoading) {
 		return (
 			<div className='min-h-screen bg-background flex items-center justify-center pt-24 pb-12'>
 				<div className='text-center'>
@@ -282,19 +265,29 @@ export default function Worker() {
 					{config && <WorkerToggle mode={config.mode} onModeChange={handleModeChange} />}
 				</motion.div>
 
+				{/* Analysis Section - Full Width */}
+				<motion.div
+					initial={{ opacity: 0, y: 30 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ delay: 0.1, duration: 0.8 }}
+				>
+					<AnalysisPanel analysis={workerAnalysis && workerAnalysis.length > 0 ? workerAnalysis[0] : null} />
+				</motion.div>
+
 				<div className='grid lg:grid-cols-3 gap-6 md:gap-8'>
 					{/* Left Column - Actions & History */}
 					<div className='lg:col-span-2 space-y-6 md:space-y-8'>
+						{/* Actions Section */}
 						<motion.div
 							initial={{ opacity: 0, y: 30 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.2, duration: 0.8 }}
 						>
-							{config && (
+							{config && workerActions && (
 								<ActionList
-									proposals={proposals}
-									onAccept={(proposal) => handleActionResponse(proposal, true)}
-									onReject={(proposal) => handleActionResponse(proposal, false)}
+									actions={workerActions}
+									onAccept={(action) => handleActionResponse(action, true)}
+									onReject={(action) => handleActionResponse(action, false)}
 									onValidateAll={handleValidateAll}
 									isExecuting={isExecuting}
 									mode={config.mode}
@@ -318,7 +311,7 @@ export default function Worker() {
 							animate={{ opacity: 1, x: 0 }}
 							transition={{ delay: 0.3, duration: 0.8 }}
 						>
-							<WorkerPanel proposals={proposals} />
+							<WorkerPanel />
 						</motion.div>
 
 						<motion.div
