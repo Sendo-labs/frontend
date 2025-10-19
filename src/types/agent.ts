@@ -62,5 +62,4 @@ interface MessageBroadcast {
 	createdAt: number;
 }
 
-
 export type { AgentMessage, UseElizaChatParams, UseElizaChatReturn, MessageBroadcast };
