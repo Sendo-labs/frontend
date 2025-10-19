@@ -27,7 +27,8 @@ async function Content() {
 	const workerClientService = new WorkerClientService(agentId);
 	const workerAnalysis = await workerClientService.getWorkerAnalysis();
 	if (workerAnalysis.length > 0) {
-		const analysisActions = await workerClientService.getWorkerActionsByAnalysisId(workerAnalysis[0].id);
+		const lastAnalysis = workerAnalysis.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0];
+		const analysisActions = await workerClientService.getWorkerActionsByAnalysisId(lastAnalysis.id);
 		return <Worker agentId={agentId} initialWorkerAnalysis={workerAnalysis} initialAnalysisActions={analysisActions} />;
 	}
 	return <Worker agentId={agentId} initialWorkerAnalysis={[]} initialAnalysisActions={[]} />;

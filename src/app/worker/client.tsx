@@ -77,13 +77,29 @@ interface WorkerProps {
 
 export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysisActions }: WorkerProps) {
 	const workerClientService = new WorkerClientService(agentId);
-	const [config, setConfig] = useState<Config | null>(null);
 	const [actions, setActions] = useState<WorkerAction[] | null>(null);
 	const [history, setHistory] = useState<HistoryAction[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
 	const [selectedPluginToConnect, setSelectedPluginToConnect] = useState<Plugin | null>(null);
+	
+	const config: Config = {
+		mode: 'suggest',
+		rules: [
+			{ id: 'sell_dust', enabled: true, params: { min_usd: 15 } },
+			{ id: 'take_profit', enabled: true, params: { target_pct: 25 } },
+			{
+				id: 'rebalance',
+				enabled: false,
+				params: { target: { SOL: 0.6, USDC: 0.4 } },
+			},
+		],
+		connections: {
+			oauth: ['jupiter'],
+			api_keys: ['defi_provider_x'],
+		},
+	}
 
 	const { data: workerAnalysis, isLoading: isWorkerAnalysisLoading } = useQuery({
 		queryKey: QUERY_KEYS.WORKER_ANALYSIS.list(),
@@ -91,51 +107,32 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 		initialData: initialWorkerAnalysis,
 	});
 
+	const lastWorkerAnalysis = () => {
+		if (!workerAnalysis || workerAnalysis.length === 0) {
+			return null;
+		}
+		return workerAnalysis.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0];
+	}
+
 	const { data: workerActions, isLoading: isWorkerActionsLoading } = useQuery({
 		queryKey: QUERY_KEYS.WORKER_ACTIONS.list(),
-		queryFn: () => workerClientService.getWorkerActionsByAnalysisId(workerAnalysis[0].id),
+		queryFn: () => {
+			const lastAnalysis = lastWorkerAnalysis();
+			if (!lastAnalysis) {
+				return [];
+			}
+			return workerClientService.getWorkerActionsByAnalysisId(lastAnalysis.id);
+		},
 		initialData: initialAnalysisActions,
 	});
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: no need to define dependencies
-	useEffect(() => {
-		fetchWorkerConfig();
-		// fetchProposals();
-	}, []);
-
-	const fetchWorkerConfig = async () => {
-		setTimeout(() => {
-			setConfig({
-				mode: 'suggest',
-				rules: [
-					{ id: 'sell_dust', enabled: true, params: { min_usd: 15 } },
-					{ id: 'take_profit', enabled: true, params: { target_pct: 25 } },
-					{
-						id: 'rebalance',
-						enabled: false,
-						params: { target: { SOL: 0.6, USDC: 0.4 } },
-					},
-				],
-				connections: {
-					oauth: ['jupiter'],
-					api_keys: ['defi_provider_x'],
-				},
-			});
-			setIsLoading(false);
-		}, 1000);
-	};
-
 	const handleModeChange = (newMode: 'suggest' | 'auto') => {
-		if (config) {
-			setConfig({ ...config, mode: newMode });
-		}
+		config.mode = newMode;
 	};
 
 	const handleRuleUpdate = (ruleId: string, updates: Partial<Rule>) => {
-		if (config) {
-			const updatedRules = config.rules.map((rule) => (rule.id === ruleId ? { ...rule, ...updates } : rule));
-			setConfig({ ...config, rules: updatedRules });
-		}
+		const updatedRules = config.rules.map((rule) => (rule.id === ruleId ? { ...rule, ...updates } : rule));
+		config.rules = updatedRules;
 	};
 
 	const handleActionResponse = async (action: WorkerAction, accepted: boolean) => {
@@ -184,7 +181,6 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 
 	const handleRefresh = () => {
 		setIsLoading(true);
-		fetchWorkerConfig();
 	};
 
 	const handleAddConnection = (plugin: Plugin) => {
@@ -194,25 +190,16 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 
 	const handleConnectionComplete = () => {
 		setSelectedPluginToConnect(null);
-		fetchWorkerConfig();
 		alert('Connection added successfully! ✅');
 	};
 
 	const handleRemoveConnection = (connectionId: string) => {
 		if (confirm('Remove this connection?')) {
-			if (config) {
-				const updatedConnections = { ...config.connections };
-
-				if (updatedConnections.oauth) {
-					updatedConnections.oauth = updatedConnections.oauth.filter((id) => id !== connectionId);
-				}
-				if (updatedConnections.api_keys) {
-					updatedConnections.api_keys = updatedConnections.api_keys.filter((id) => id !== connectionId);
-				}
-
-				setConfig({ ...config, connections: updatedConnections });
-				alert('Connection removed! 🗑️');
-			}
+			const updatedConnections = { ...config.connections };
+			updatedConnections.oauth = updatedConnections.oauth.filter((id) => id !== connectionId);
+			updatedConnections.api_keys = updatedConnections.api_keys.filter((id) => id !== connectionId);
+			config.connections = updatedConnections;
+			alert('Connection removed! 🗑️');
 		}
 	};
 
@@ -265,7 +252,7 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 					{config && <WorkerToggle mode={config.mode} onModeChange={handleModeChange} />}
 				</motion.div>
 
-				{/* Analysis Section - Full Width */}
+				{/* Analysis Section */}
 				<motion.div
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -283,7 +270,7 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.2, duration: 0.8 }}
 						>
-							{config && workerActions && (
+							{workerActions && (
 								<ActionList
 									actions={workerActions}
 									onAccept={(action) => handleActionResponse(action, true)}
