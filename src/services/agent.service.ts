@@ -36,12 +36,14 @@ export class AgentService extends EventEmitter {
 	private socket: Socket | null = null;
 	private activeSessions = new Map<string, SessionInfo>();
 	private agentId: string;
+	private userId: string;
 	private baseUrl: string;
 	private isConnected = false;
 
-	constructor(agentId: string) {
+	constructor(agentId: string, userId: string) {
 		super();
 		this.agentId = agentId;
+		this.userId = userId;
 		this.baseUrl = elizaService.getBaseUrl();
 		this.initializeWebSocket();
 	}
@@ -347,6 +349,6 @@ export class AgentService extends EventEmitter {
 /**
  * Create an AgentService instance
  */
-export function createAgentService(agentId: string): AgentService {
-	return new AgentService(agentId);
+export function createAgentService(agentId: string, userId: string): AgentService {
+	return new AgentService(agentId, userId);
 }

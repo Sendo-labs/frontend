@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 
 interface ActionListProps {
 	agentId: string;
+	userId: string;
 	actions: WorkerAction[] | null;
 	onValidateAll: () => void;
 	isExecuting: boolean;
@@ -37,14 +38,17 @@ const PRIORITY_TEXT: Record<string, string> = {
 	LOW: 'text-foreground/60',
 };
 
-export default function ActionList({ agentId, actions, onValidateAll, isExecuting, mode }: ActionListProps) {
-	const agentService = createAgentService(agentId);
+export default function ActionList({ agentId, userId, actions, onValidateAll, isExecuting, mode }: ActionListProps) {
+	const agentService = createAgentService(agentId, userId);
 	const queryClient = useQueryClient();
 
 	const { mutate: acceptAction, isPending: isAcceptingAction } = useMutation({
 		mutationFn: (action: WorkerAction) => agentService.acceptActions([action]),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.WORKER_ACTIONS.list([agentId]) });
+			toast.success('Action accepted successfully', {
+				description: 'The action has been executed',
+			});
+			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.WORKER_ACTIONS.all });
 		},
 		onError: (error) => {
 			toast.error('An error occurred while accepting the action', { description: error.message });
@@ -54,7 +58,10 @@ export default function ActionList({ agentId, actions, onValidateAll, isExecutin
 	const { mutate: rejectAction, isPending: isRejectingAction } = useMutation({
 		mutationFn: (action: WorkerAction) => agentService.rejectActions([action]),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.WORKER_ACTIONS.list([agentId]) });
+			toast.success('Action rejected successfully', {
+				description: 'The action has been cancelled',
+			});
+			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.WORKER_ACTIONS.all });
 		},
 		onError: (error) => {
 			toast.error('An error occurred while rejecting the action', { description: error.message });

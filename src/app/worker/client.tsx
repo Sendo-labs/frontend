@@ -83,7 +83,7 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
 	const [selectedPluginToConnect, setSelectedPluginToConnect] = useState<Plugin | null>(null);
-
+	const userId = 'test_user';
 	const config: Config = {
 		mode: 'suggest',
 		rules: [
@@ -249,6 +249,7 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 							{workerActions && (
 								<ActionList
 									agentId={agentId}
+									userId={userId}
 									actions={workerActions.filter((action) => action.status === 'pending')}
 									onValidateAll={handleValidateAll}
 									isExecuting={isExecuting}
