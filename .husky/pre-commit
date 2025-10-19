@@ -1,0 +1,2 @@
+echo "🔍 Formatting code..."
+bun run format
