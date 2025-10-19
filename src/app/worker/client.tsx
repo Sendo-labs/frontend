@@ -45,12 +45,6 @@ interface Config {
 	connections: Connections;
 }
 
-interface HistoryAction extends WorkerAction {
-	executedAt: Date;
-	accepted: boolean;
-	status: 'accepted' | 'rejected';
-}
-
 interface Plugin {
 	id: string;
 	name: string;
@@ -78,7 +72,6 @@ interface WorkerProps {
 export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysisActions }: WorkerProps) {
 	const workerClientService = new WorkerClientService(agentId);
 	const [actions, setActions] = useState<WorkerAction[] | null>(null);
-	const [history, setHistory] = useState<HistoryAction[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
@@ -142,15 +135,6 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 
 		setTimeout(() => {
 			// Move all proposals to history as accepted
-			const acceptedActions: HistoryAction[] = actions.map((action) => ({
-				...action,
-				executedAt: new Date(),
-				accepted: true,
-				status: 'accepted',
-			}));
-
-			setHistory([...acceptedActions, ...history]);
-			setActions([]);
 			setIsExecuting(false);
 		}, 2000);
 	};
@@ -263,7 +247,7 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ delay: 0.3, duration: 0.8 }}
 						>
-							<ActionHistory history={history} />
+							<ActionHistory actions={workerActions?.filter((action) => action.status !== 'pending') || []} />
 						</motion.div>
 					</div>
 

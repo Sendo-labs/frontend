@@ -32,7 +32,7 @@ export interface WorkerAction {
 	};
 	estimatedImpact: string;
 	estimatedGas: string;
-	status: 'pending' | 'accepted' | 'rejected' | 'executing' | 'completed' | 'failed';
+	status: 'pending' | 'accept' | 'rejected' | 'executing' | 'completed' | 'failed';
 	result: string | null;
 	createdAt: string;
 }

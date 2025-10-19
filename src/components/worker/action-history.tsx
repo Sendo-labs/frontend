@@ -5,14 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
 import type { WorkerAction } from '@/services/worker-client.service';
 
-interface HistoryAction extends WorkerAction {
-	executedAt: Date;
-	accepted: boolean;
-	status: 'accepted' | 'rejected';
-}
-
 interface ActionHistoryProps {
-	history: HistoryAction[];
+	actions: WorkerAction[];
 }
 
 const ACTION_ICONS: Record<string, LucideIcon> = {
@@ -23,7 +17,7 @@ const ACTION_ICONS: Record<string, LucideIcon> = {
 	SWAP: TrendingDown,
 };
 
-export default function ActionHistory({ history }: ActionHistoryProps) {
+export default function ActionHistory({ actions }: ActionHistoryProps) {
 	const formatTime = (date: Date) => {
 		const now = new Date();
 		const diff = Math.floor((now.getTime() - date.getTime()) / 1000); // seconds
@@ -39,10 +33,10 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 			<div className='flex items-center gap-2 mb-4'>
 				<History className='w-5 h-5 text-foreground/60' />
 				<h2 className='text-xl font-bold text-foreground uppercase title-font'>HISTORY</h2>
-				{history.length > 0 && <span className='text-sm text-foreground/40'>({history.length})</span>}
+				{actions.length > 0 && <span className='text-sm text-foreground/40'>({actions.length})</span>}
 			</div>
 
-			{history.length === 0 ? (
+			{actions.length === 0 ? (
 				<div className='bg-foreground/5 border border-foreground/10 p-8 text-center' style={{ borderRadius: 0 }}>
 					<History className='w-12 h-12 text-foreground/20 mx-auto mb-3' />
 					<p className='text-foreground/40 text-sm'>
@@ -52,10 +46,10 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 			) : (
 				<div className='space-y-3'>
 					<AnimatePresence>
-						{history.map((action) => {
+						{actions.map((action) => {
 							const Icon = ACTION_ICONS[action.actionType] || AlertCircle;
-							const isAccepted = action.accepted;
-
+							const isAccepted = action.status === 'accept';
+							const isRejected = action.status === 'rejected';
 							return (
 								<motion.div
 									key={action.id}
@@ -64,20 +58,26 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 									exit={{ opacity: 0, y: 20 }}
 									transition={{ duration: 0.3 }}
 									className={`border p-4 opacity-70 hover:opacity-90 transition-opacity ${
-										isAccepted ? 'bg-sendo-green/5 border-sendo-green/20' : 'bg-sendo-red/5 border-sendo-red/20'
+										isAccepted
+											? 'bg-sendo-green/5 border-sendo-green/20'
+											: isRejected
+												? 'bg-sendo-red/5 border-sendo-red/20'
+												: 'bg-foreground/5 border-foreground/20'
 									}`}
 									style={{ borderRadius: 0 }}
 								>
 									<div className='flex items-start gap-3'>
 										<div
 											className={`w-10 h-10 flex items-center justify-center flex-shrink-0 ${
-												isAccepted ? 'bg-sendo-green/20' : 'bg-sendo-red/20'
+												isAccepted ? 'bg-sendo-green/20' : isRejected ? 'bg-sendo-red/20' : 'bg-foreground/20'
 											}`}
 											style={{
 												clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 											}}
 										>
-											<Icon className={`w-5 h-5 ${isAccepted ? 'text-sendo-green' : 'text-sendo-red'}`} />
+											<Icon
+												className={`w-5 h-5 ${isAccepted ? 'text-sendo-green' : isRejected ? 'text-sendo-red' : 'text-foreground'}`}
+											/>
 										</div>
 
 										<div className='flex-1 min-w-0'>
@@ -87,7 +87,7 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 												</h3>
 												<div
 													className={`flex items-center gap-1 text-xs font-bold ${
-														isAccepted ? 'text-sendo-green' : 'text-sendo-red'
+														isAccepted ? 'text-sendo-green' : isRejected ? 'text-sendo-red' : 'text-foreground'
 													}`}
 												>
 													{isAccepted ? (
@@ -109,11 +109,15 @@ export default function ActionHistory({ history }: ActionHistoryProps) {
 											<div className='flex items-center justify-between'>
 												<div className='flex flex-wrap gap-2 text-xs'>
 													{action.params.token && <span className='text-foreground/40'>{action.params.token}</span>}
-													<span className={`font-bold ${isAccepted ? 'text-sendo-green/60' : 'text-sendo-red/60'}`}>
-														${action.params.amount.toFixed(2)}
-													</span>
+													{action.params.amount && (
+														<span
+															className={`font-bold ${isAccepted ? 'text-sendo-green/60' : isRejected ? 'text-sendo-red/60' : 'text-foreground/60'}`}
+														>
+															${action.params.amount.toFixed(2)}
+														</span>
+													)}
 												</div>
-												<span className='text-xs text-foreground/30'>{formatTime(action.executedAt)}</span>
+												<span className='text-xs text-foreground/30'>{formatTime(new Date(action.createdAt))}</span>
 											</div>
 										</div>
 									</div>
