@@ -83,7 +83,7 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
 	const [selectedPluginToConnect, setSelectedPluginToConnect] = useState<Plugin | null>(null);
-	
+
 	const config: Config = {
 		mode: 'suggest',
 		rules: [
@@ -99,7 +99,7 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 			oauth: ['jupiter'],
 			api_keys: ['defi_provider_x'],
 		},
-	}
+	};
 
 	const { data: workerAnalysis, isLoading: isWorkerAnalysisLoading } = useQuery({
 		queryKey: QUERY_KEYS.WORKER_ANALYSIS.list(),
@@ -112,7 +112,7 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 			return null;
 		}
 		return workerAnalysis.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0];
-	}
+	};
 
 	const { data: workerActions, isLoading: isWorkerActionsLoading } = useQuery({
 		queryKey: QUERY_KEYS.WORKER_ACTIONS.list(),
