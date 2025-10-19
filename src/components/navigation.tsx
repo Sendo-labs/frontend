@@ -60,6 +60,7 @@ export default function Navigation() {
 							</nav>
 
 							<button
+								type='button'
 								onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
 								className='md:hidden text-muted-foreground hover:text-foreground p-2'
 								aria-label='Toggle mobile menu'

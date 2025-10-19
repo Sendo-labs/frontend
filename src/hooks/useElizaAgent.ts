@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getElizaClient } from '@/lib/eliza/client';
+import { elizaService } from '@/services/eliza.service';
 
 interface Agent {
 	id: string;
@@ -22,7 +22,7 @@ export function useElizaAgent(): UseElizaAgentReturn {
 	const [agent, setAgent] = useState<Agent | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	const elizaClient = getElizaClient();
+	const elizaClient = elizaService.getClient();
 
 	useEffect(() => {
 		const fetchAgent = async () => {

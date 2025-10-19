@@ -46,6 +46,7 @@ export default function Home() {
 				<div className='fixed right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-4'>
 					{Array.from({ length: totalSections }).map((_, index) => (
 						<button
+							type='button'
 							key={index}
 							onClick={() => setCurrentSection(index)}
 							className={`w-3 h-3 transition-all duration-300 ${
