@@ -2,87 +2,9 @@ import { EventEmitter } from 'node:events';
 import { type Socket, io } from 'socket.io-client';
 import { elizaService } from '@/services/eliza.service';
 import type { WorkerAction } from '@/services/worker-client.service';
-
-/**
- * Session information tracked for each accepted action
- */
-interface SessionInfo {
-	sessionId: string;
-	channelId: string;
-	actionId: string;
-	expectedActionType: string;
-	serverId: string;
-}
-
-/**
- * ElizaOS Session creation response
- */
-interface SessionResponse {
-	sessionId: string;
-	expiresAt: string;
-	timeoutConfig: {
-		inactivityMs: number;
-		maxDurationMs: number;
-	};
-}
-
-/**
- * ElizaOS Session details response
- */
-interface SessionDetails {
-	sessionId: string;
-	channelId: string;
-	agentId: string;
-	userId: string;
-	serverId: string;
-	expiresAt: string;
-}
-
-/**
- * Message broadcast from ElizaOS WebSocket
- */
-interface MessageBroadcast {
-	id: string;
-	text: string;
-	channelId: string;
-	senderId: string;
-	senderName: string;
-	rawMessage?: {
-		actions?: string[];
-		content?: unknown;
-	};
-	metadata?: {
-		actionId?: string;
-		actionType?: string;
-		source?: string;
-	};
-	content?: {
-		actions?: string[];
-		[key: string]: unknown;
-	};
-	createdAt: number;
-}
-
-/**
- * Action decision (accept or reject)
- */
-interface ActionDecision {
-	actionId: string;
-	decision: 'accept' | 'reject';
-}
-
-/**
- * Action result to update in Worker API
- */
-interface ActionResult {
-	status: 'completed' | 'failed';
-	result?: {
-		text: string;
-		data?: unknown;
-		timestamp: string;
-	};
-	error?: string;
-}
+import type { SessionInfo, SessionResponse, SessionDetails } from '@/types/sessions';
+import type { ActionDecision, ActionResult } from '@/types/user-actions';
+import type { MessageBroadcast } from '@/types/agent';
 
 /**
  * AgentService - Manages sessions, WebSocket, and action execution

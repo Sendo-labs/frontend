@@ -1,5 +1,8 @@
 import type { UUID } from 'crypto';
 
+/**
+ * Agent message
+ */
 interface AgentMessage {
 	id: UUID;
 	senderId: UUID;
@@ -12,11 +15,17 @@ interface AgentMessage {
 	updatedAt?: Date;
 }
 
+/**
+ * Parameters for useElizaChat hook
+ */
 interface UseElizaChatParams {
 	agentId?: string;
 	channelId?: string;
 }
 
+/**
+ * Return type for useElizaChat hook
+ */
 interface UseElizaChatReturn {
 	messages: AgentMessage[];
 	isLoading: boolean;
@@ -28,4 +37,30 @@ interface UseElizaChatReturn {
 	animatedMessageId: string | null;
 }
 
-export type { AgentMessage, UseElizaChatParams, UseElizaChatReturn };
+/**
+ * Message broadcast from ElizaOS WebSocket
+ */
+interface MessageBroadcast {
+	id: string;
+	text: string;
+	channelId: string;
+	senderId: string;
+	senderName: string;
+	rawMessage?: {
+		actions?: string[];
+		content?: unknown;
+	};
+	metadata?: {
+		actionId?: string;
+		actionType?: string;
+		source?: string;
+	};
+	content?: {
+		actions?: string[];
+		[key: string]: unknown;
+	};
+	createdAt: number;
+}
+
+
+export type { AgentMessage, UseElizaChatParams, UseElizaChatReturn, MessageBroadcast };

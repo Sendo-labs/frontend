@@ -1,3 +1,6 @@
+/**
+ * Config field
+ */
 interface ConfigField {
 	name: string;
 	label: string;
@@ -7,6 +10,9 @@ interface ConfigField {
 	description: string;
 }
 
+/**
+ * Plugin
+ */
 interface Plugin {
 	id: string;
 	name: string;
@@ -23,6 +29,9 @@ interface Plugin {
 	configFields?: ConfigField[];
 }
 
+/**
+ * Plugin categories
+ */
 interface PluginCategories {
 	sponsored: Plugin[];
 	liquidity: Plugin[];
