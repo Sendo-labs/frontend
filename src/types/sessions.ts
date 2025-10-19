@@ -14,10 +14,20 @@ interface SessionInfo {
  */
 interface SessionResponse {
 	sessionId: string;
+	agentId: string;
+	userId: string;
+	createdAt: string;
+	metadata: {
+		actionId?: string;
+		actionType?: string;
+		source?: string;
+	};
 	expiresAt: string;
 	timeoutConfig: {
-		inactivityMs: number;
-		maxDurationMs: number;
+		timeoutMinutes: number;
+		autoRenew: boolean;
+		maxDurationMinutes: number;
+		warningThresholdMinutes: number;
 	};
 }
 

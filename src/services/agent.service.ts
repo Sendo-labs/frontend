@@ -5,6 +5,22 @@ import type { WorkerAction } from '@/services/worker-client.service';
 import type { SessionInfo, SessionResponse, SessionDetails } from '@/types/sessions';
 import type { ActionDecision, ActionResult } from '@/types/user-actions';
 import type { MessageBroadcast } from '@/types/agent';
+import type { MessageResponse } from '@elizaos/api-client';
+
+interface DecideResponse {
+	processed: number;
+	accepted: {
+		id: string;
+		analysisId: string;
+		actionType: string;
+		status: string;
+		decidedAt: string;
+	}[];
+	rejected: {
+		actionId: string;
+		status: string;
+	}[];
+}
 
 /**
  * AgentService - Manages sessions, WebSocket, and action execution
@@ -73,22 +89,23 @@ export class AgentService extends EventEmitter {
 			decision: 'accept',
 		}));
 
-		const decideResponse = await fetch(`${this.baseUrl}/api/agents/${this.agentId}/plugins/worker/actions/decide`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ decisions }),
-		});
+		console.log('[AgentService] Deciding actions:', decisions);
 
-		if (!decideResponse.ok) {
-			throw new Error(`[AgentService] Failed to decide actions: ${decideResponse.statusText}`);
-		}
+		const decideResponse = await elizaService.apiRequest<{ data: DecideResponse }>(
+			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/actions/decide`,
+			'POST',
+			{ decisions },
+		);
 
-		const { data } = await decideResponse.json();
-		const acceptedActions = data.accepted as WorkerAction[];
+		const { accepted } = decideResponse.data;
 
 		// 2. Execute each accepted action (create session + send message)
-		for (const action of acceptedActions) {
-			await this.executeAction(action);
+		for (const action of accepted) {
+			const fullAction = actions.find((a) => a.id === action.id)!;
+			if (!fullAction) {
+				throw new Error(`[AgentService] Action ${action.id} not found`);
+			}
+			await this.executeAction(fullAction);
 		}
 	}
 
@@ -105,11 +122,14 @@ export class AgentService extends EventEmitter {
 			decision: 'reject',
 		}));
 
-		const decideResponse = await fetch(`${this.baseUrl}/api/agents/${this.agentId}/plugins/worker/actions/decide`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ decisions }),
-		});
+		const decideResponse = await fetch(
+			`${this.baseUrl}/api/agents/${this.agentId}/plugins/plugin-sendo-worker/actions/decide`,
+			{
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ decisions }),
+			},
+		);
 
 		if (!decideResponse.ok) {
 			throw new Error(`[AgentService] Failed to reject actions: ${decideResponse.statusText}`);
@@ -133,36 +153,27 @@ export class AgentService extends EventEmitter {
 	private async executeAction(action: WorkerAction): Promise<void> {
 		try {
 			// 1. Create session
-			const sessionResponse = await fetch(`${this.baseUrl}/api/messaging/sessions`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					agentId: this.agentId,
-					userId: this.agentId,
-					metadata: {
-						actionId: action.id,
-						actionType: action.actionType,
-						source: 'sendo-worker',
-					},
-				}),
+			const sessionResponse = await elizaService.apiRequest<SessionResponse>(`api/messaging/sessions`, 'POST', {
+				agentId: this.agentId,
+				userId: this.agentId,
+				metadata: {
+					actionId: action.id,
+					actionType: action.actionType,
+					source: 'sendo-worker',
+				},
 			});
 
-			if (!sessionResponse.ok) {
-				throw new Error(`[AgentService] Failed to create session: ${sessionResponse.statusText}`);
-			}
-
-			const sessionData = (await sessionResponse.json()) as SessionResponse;
-			const { sessionId } = sessionData;
+			const { sessionId } = sessionResponse;
 
 			// 2. Get session details (includes channelId)
-			const sessionDetailsResponse = await fetch(`${this.baseUrl}/api/messaging/sessions/${sessionId}`);
+			const sessionDetailsResponse = await elizaService.apiRequest<SessionDetails>(
+				`api/messaging/sessions/${sessionId}`,
+				'GET',
+			);
 
-			if (!sessionDetailsResponse.ok) {
-				throw new Error(`Failed to get session details: ${sessionDetailsResponse.statusText}`);
-			}
+			console.log('[AgentService] Session details response:', sessionDetailsResponse);
 
-			const sessionDetails = (await sessionDetailsResponse.json()) as SessionDetails;
-			const { channelId, serverId } = sessionDetails;
+			const { channelId, serverId } = sessionDetailsResponse;
 
 			// 3. Track this session
 			this.activeSessions.set(action.id, {
@@ -191,22 +202,18 @@ export class AgentService extends EventEmitter {
 			console.log(`[AgentService] Joined channel ${channelId} for action ${action.id}`);
 
 			// 5. Send the trigger message
-			const messageResponse = await fetch(`${this.baseUrl}/api/messaging/sessions/${sessionId}/messages`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
+			const messageResponse = await elizaService.apiRequest<{ data: { message: MessageResponse } }>(
+				`api/messaging/sessions/${sessionId}/messages`,
+				'POST',
+				{
 					content: action.triggerMessage,
 					metadata: {
 						actionId: action.id,
 						actionType: action.actionType,
 						source: 'sendo-worker',
 					},
-				}),
-			});
-
-			if (!messageResponse.ok) {
-				throw new Error(`Failed to send message: ${messageResponse.statusText}`);
-			}
+				},
+			);
 
 			console.log(`[AgentService] Action ${action.id} sent to agent`);
 
@@ -274,18 +281,11 @@ export class AgentService extends EventEmitter {
 				},
 			};
 
-			const updateResponse = await fetch(
-				`${this.baseUrl}/api/agents/${this.agentId}/plugins/worker/action/${actionId}/result`,
-				{
-					method: 'PATCH',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(result),
-				},
+			await elizaService.apiRequest<{ data: { action: WorkerAction } }>(
+				`api/agents/${this.agentId}/plugins/plugin-sendo-worker/action/${actionId}/result`,
+				'PATCH',
+				result,
 			);
-
-			if (!updateResponse.ok) {
-				throw new Error(`Failed to update action result: ${updateResponse.statusText}`);
-			}
 
 			// Clean up session
 			this.activeSessions.delete(actionId);

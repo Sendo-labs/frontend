@@ -4,11 +4,14 @@ import { TrendingDown, DollarSign, AlertCircle, CheckCircle, Clock, Zap, Check, 
 import { Button } from '@/components/ui/button';
 import type { LucideIcon } from 'lucide-react';
 import type { WorkerAction } from '@/services/worker-client.service';
+import { createAgentService } from '@/services/agent.service';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEYS } from '@/lib/query-keys';
+import { toast } from 'sonner';
 
 interface ActionListProps {
+	agentId: string;
 	actions: WorkerAction[] | null;
-	onAccept: (action: WorkerAction) => void;
-	onReject: (action: WorkerAction) => void;
 	onValidateAll: () => void;
 	isExecuting: boolean;
 	mode: 'suggest' | 'auto';
@@ -34,7 +37,30 @@ const PRIORITY_TEXT: Record<string, string> = {
 	LOW: 'text-foreground/60',
 };
 
-export default function ActionList({ actions, onAccept, onReject, onValidateAll, isExecuting, mode }: ActionListProps) {
+export default function ActionList({ agentId, actions, onValidateAll, isExecuting, mode }: ActionListProps) {
+	const agentService = createAgentService(agentId);
+	const queryClient = useQueryClient();
+
+	const { mutate: acceptAction, isPending: isAcceptingAction } = useMutation({
+		mutationFn: (action: WorkerAction) => agentService.acceptActions([action]),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.WORKER_ACTIONS.list([agentId]) });
+		},
+		onError: (error) => {
+			toast.error('An error occurred while accepting the action', { description: error.message });
+		},
+	});
+
+	const { mutate: rejectAction, isPending: isRejectingAction } = useMutation({
+		mutationFn: (action: WorkerAction) => agentService.rejectActions([action]),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.WORKER_ACTIONS.list([agentId]) });
+		},
+		onError: (error) => {
+			toast.error('An error occurred while rejecting the action', { description: error.message });
+		},
+	});
+
 	if (!actions || actions.length === 0) {
 		return (
 			<div>
@@ -69,10 +95,10 @@ export default function ActionList({ actions, onAccept, onReject, onValidateAll,
 					</h2>
 				</div>
 				<div className='flex items-center gap-3'>
-					<div className='flex items-center gap-2'>
+					{/* <div className='flex items-center gap-2'>
 						<Clock className='w-4 h-4 text-foreground/40' />
 						<span className='text-xs text-foreground/40'>Updated 2 min ago</span>
-					</div>
+					</div> */}
 					{mode === 'suggest' && actions.length > 1 && (
 						<Button
 							onClick={onValidateAll}
@@ -149,16 +175,16 @@ export default function ActionList({ actions, onAccept, onReject, onValidateAll,
 								{mode === 'suggest' && (
 									<div className='flex gap-2 flex-shrink-0'>
 										<Button
-											onClick={() => onAccept(action)}
-											disabled={isExecuting}
+											onClick={() => acceptAction(action)}
+											disabled={isExecuting || isAcceptingAction}
 											className='bg-sendo-green hover:bg-sendo-green/80 text-black h-10 w-10 p-0 flex items-center justify-center'
 											style={{ borderRadius: 0 }}
 										>
 											<Check className='w-5 h-5' />
 										</Button>
 										<Button
-											onClick={() => onReject(action)}
-											disabled={isExecuting}
+											onClick={() => rejectAction(action)}
+											disabled={isExecuting || isRejectingAction}
 											className='bg-sendo-red hover:bg-sendo-red/80 text-white h-10 w-10 p-0 flex items-center justify-center'
 											style={{ borderRadius: 0 }}
 										>

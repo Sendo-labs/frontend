@@ -107,7 +107,11 @@ class ElizaService {
 	 * @param {any} body - The body of the request
 	 * @returns {Promise<T>} - The response from the API
 	 */
-	public async apiRequest<T>(path: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE', body?: any): Promise<T> {
+	public async apiRequest<T>(
+		path: string,
+		method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
+		body?: any,
+	): Promise<T> {
 		const config = this.getConfig();
 		if (!config) {
 			throw new Error('Eliza client is not initialized');

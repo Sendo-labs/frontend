@@ -135,30 +135,6 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 		config.rules = updatedRules;
 	};
 
-	const handleActionResponse = async (action: WorkerAction, accepted: boolean) => {
-		setIsExecuting(true);
-
-		setTimeout(() => {
-			// Remove from proposals
-			if (actions) {
-				setActions(actions.filter((p) => p.id !== action.id));
-			}
-
-			// Add to history with timestamp and status
-			setHistory([
-				{
-					...action,
-					executedAt: new Date(),
-					accepted: accepted,
-					status: accepted ? 'accepted' : 'rejected',
-				},
-				...history,
-			]);
-
-			setIsExecuting(false);
-		}, 1500);
-	};
-
 	const handleValidateAll = async () => {
 		if (!actions || actions.length === 0) return;
 
@@ -272,9 +248,8 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 						>
 							{workerActions && (
 								<ActionList
-									actions={workerActions}
-									onAccept={(action) => handleActionResponse(action, true)}
-									onReject={(action) => handleActionResponse(action, false)}
+									agentId={agentId}
+									actions={workerActions.filter((action) => action.status === 'pending')}
 									onValidateAll={handleValidateAll}
 									isExecuting={isExecuting}
 									mode={config.mode}
