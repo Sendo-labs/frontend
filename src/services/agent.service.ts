@@ -1,26 +1,15 @@
 import { EventEmitter } from 'node:events';
 import { type Socket, io } from 'socket.io-client';
 import { elizaService } from '@/services/eliza.service';
-import type { WorkerAction } from '@/services/worker-client.service';
+import type {
+	ActionDecision,
+	DecideActionsData,
+	GetActionData,
+	RecommendedAction,
+} from '@sendo-labs/plugin-sendo-worker';
 import type { SessionInfo, SessionResponse, SessionDetails } from '@/types/sessions';
-import type { ActionDecision, ActionResult } from '@/types/user-actions';
 import type { MessageBroadcast } from '@/types/agent';
 import type { MessageResponse } from '@elizaos/api-client';
-
-interface DecideResponse {
-	processed: number;
-	accepted: {
-		id: string;
-		analysisId: string;
-		actionType: string;
-		status: string;
-		decidedAt: string;
-	}[];
-	rejected: {
-		actionId: string;
-		status: string;
-	}[];
-}
 
 /**
  * AgentService - Manages sessions, WebSocket, and action execution
@@ -80,7 +69,7 @@ export class AgentService extends EventEmitter {
 	 * Accept multiple actions
 	 * Creates sessions and sends messages for each accepted action
 	 */
-	async acceptActions(actions: WorkerAction[]): Promise<void> {
+	async acceptActions(actions: RecommendedAction[]): Promise<void> {
 		if (actions.length === 0) {
 			throw new Error('[AgentService] No actions provided');
 		}
@@ -93,7 +82,7 @@ export class AgentService extends EventEmitter {
 
 		console.log('[AgentService] Deciding actions:', decisions);
 
-		const decideResponse = await elizaService.apiRequest<{ data: DecideResponse }>(
+		const decideResponse = await elizaService.apiRequest<{ data: DecideActionsData }>(
 			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/actions/decide`,
 			'POST',
 			{ decisions },
@@ -114,7 +103,7 @@ export class AgentService extends EventEmitter {
 	/**
 	 * Reject multiple actions
 	 */
-	async rejectActions(actions: WorkerAction[]): Promise<void> {
+	async rejectActions(actions: RecommendedAction[]): Promise<void> {
 		if (actions.length === 0) {
 			throw new Error('[AgentService] No actions provided');
 		}
@@ -124,24 +113,16 @@ export class AgentService extends EventEmitter {
 			decision: 'reject',
 		}));
 
-		const decideResponse = await fetch(
-			`${this.baseUrl}/api/agents/${this.agentId}/plugins/plugin-sendo-worker/actions/decide`,
-			{
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ decisions }),
-			},
+		const decideResponse = await elizaService.apiRequest<{ data: DecideActionsData }>(
+			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/actions/decide`,
+			'POST',
+			{ decisions },
 		);
 
-		if (!decideResponse.ok) {
-			throw new Error(`[AgentService] Failed to reject actions: ${decideResponse.statusText}`);
-		}
-
-		const { data } = await decideResponse.json();
-		const rejectedActions = data.rejected;
+		const { rejected } = decideResponse.data;
 
 		// Emit rejected events
-		for (const action of rejectedActions) {
+		for (const action of rejected) {
 			this.emit('action:rejected', {
 				actionId: action.actionId,
 			});
@@ -152,7 +133,7 @@ export class AgentService extends EventEmitter {
 	 * Execute a single action
 	 * Creates a session, joins the channel, and sends the trigger message
 	 */
-	private async executeAction(action: WorkerAction): Promise<void> {
+	private async executeAction(action: RecommendedAction): Promise<void> {
 		try {
 			// 1. Create session
 			const sessionResponse = await elizaService.apiRequest<SessionResponse>(`api/messaging/sessions`, 'POST', {
@@ -274,7 +255,7 @@ export class AgentService extends EventEmitter {
 
 		// Update action result in Worker API
 		try {
-			const result: ActionResult = {
+			const result = {
 				status: 'completed',
 				result: {
 					text: message.text,
@@ -283,8 +264,8 @@ export class AgentService extends EventEmitter {
 				},
 			};
 
-			await elizaService.apiRequest<{ data: { action: WorkerAction } }>(
-				`api/agents/${this.agentId}/plugins/plugin-sendo-worker/action/${actionId}/result`,
+			await elizaService.apiRequest<{ data: { action: GetActionData } }>(
+				`api/agents/${this.agentId}/plugins/plugin-sendo-worker/action/${actionId}`,
 				'PATCH',
 				result,
 			);

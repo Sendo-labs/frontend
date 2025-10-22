@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, TrendingDown, TrendingUp, Crown, Skull } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { FullScreenLoader } from '@/components/shared/loader';
 
 interface LeaderboardEntry {
 	wallet: string;
@@ -170,17 +171,7 @@ export default function Leaderboard() {
 	};
 
 	if (isLoading) {
-		return (
-			<div className='min-h-screen bg-background flex items-center justify-center'>
-				<div className='text-center'>
-					<div
-						className='w-16 h-16 border-4 border-sendo-orange border-t-transparent mx-auto mb-4'
-						style={{ borderRadius: 0 }}
-					/>
-					<p className='text-foreground/60 text-sm uppercase title-font'>Loading Leaderboard...</p>
-				</div>
-			</div>
-		);
+		return <FullScreenLoader text='Loading Leaderboard Data...' />;
 	}
 
 	const currentData = activeTab === 'shame' ? leaderboardData?.shame : leaderboardData?.fame;
