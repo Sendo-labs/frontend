@@ -1,5 +1,10 @@
 import { elizaService } from '@/services/eliza.service';
-import type { AnalysisResult, GetAnalysesData, GetAnalysisActionsData, GetAnalysisByIdData } from '@sendo-labs/plugin-sendo-worker';
+import type {
+	AnalysisResult,
+	GetAnalysesData,
+	GetAnalysisActionsData,
+	GetAnalysisByIdData,
+} from '@sendo-labs/plugin-sendo-worker';
 import type { RecommendedAction, GetActionData } from '@sendo-labs/plugin-sendo-worker';
 
 export class WorkerClientService {
