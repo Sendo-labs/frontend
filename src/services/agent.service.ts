@@ -1,9 +1,8 @@
 import { EventEmitter } from 'node:events';
 import { type Socket, io } from 'socket.io-client';
 import { elizaService } from '@/services/eliza.service';
-import type { WorkerAction } from '@/services/worker-client.service';
+import type { ActionDecision, ActionResultUpdate, RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
 import type { SessionInfo, SessionResponse, SessionDetails } from '@/types/sessions';
-import type { ActionDecision, ActionResult } from '@/types/user-actions';
 import type { MessageBroadcast } from '@/types/agent';
 import type { MessageResponse } from '@elizaos/api-client';
 
@@ -80,7 +79,7 @@ export class AgentService extends EventEmitter {
 	 * Accept multiple actions
 	 * Creates sessions and sends messages for each accepted action
 	 */
-	async acceptActions(actions: WorkerAction[]): Promise<void> {
+	async acceptActions(actions: RecommendedAction[]): Promise<void> {
 		if (actions.length === 0) {
 			throw new Error('[AgentService] No actions provided');
 		}
@@ -114,7 +113,7 @@ export class AgentService extends EventEmitter {
 	/**
 	 * Reject multiple actions
 	 */
-	async rejectActions(actions: WorkerAction[]): Promise<void> {
+	async rejectActions(actions: RecommendedAction[]): Promise<void> {
 		if (actions.length === 0) {
 			throw new Error('[AgentService] No actions provided');
 		}
@@ -152,7 +151,7 @@ export class AgentService extends EventEmitter {
 	 * Execute a single action
 	 * Creates a session, joins the channel, and sends the trigger message
 	 */
-	private async executeAction(action: WorkerAction): Promise<void> {
+	private async executeAction(action: RecommendedAction): Promise<void> {
 		try {
 			// 1. Create session
 			const sessionResponse = await elizaService.apiRequest<SessionResponse>(`api/messaging/sessions`, 'POST', {
@@ -274,7 +273,7 @@ export class AgentService extends EventEmitter {
 
 		// Update action result in Worker API
 		try {
-			const result: ActionResult = {
+			const result: ActionResultUpdate = {
 				status: 'completed',
 				result: {
 					text: message.text,
@@ -283,7 +282,7 @@ export class AgentService extends EventEmitter {
 				},
 			};
 
-			await elizaService.apiRequest<{ data: { action: WorkerAction } }>(
+			await elizaService.apiRequest<{ data: { action: RecommendedAction } }>(
 				`api/agents/${this.agentId}/plugins/plugin-sendo-worker/action/${actionId}/result`,
 				'PATCH',
 				result,

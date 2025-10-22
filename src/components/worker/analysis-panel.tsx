@@ -1,10 +1,10 @@
 'use client';
 
 import { Brain, TrendingUp, AlertTriangle, Target, Clock, Zap } from 'lucide-react';
-import type { WorkerAnalysis } from '@/services/worker-client.service';
+import type { AnalysisResult } from '@sendo-labs/plugin-sendo-worker';
 
 interface AnalysisPanelProps {
-	analysis: WorkerAnalysis | null;
+	analysis: AnalysisResult | null;
 }
 
 export default function AnalysisPanel({ analysis }: AnalysisPanelProps) {

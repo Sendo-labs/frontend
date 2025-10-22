@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
 import AnalysisPanel from '@/components/worker/analysis-panel';
 import WorkerPanel from '@/components/worker/worker-panel';
 import WorkerToggle from '@/components/worker/worker-toggle';
@@ -14,7 +13,7 @@ import ActionHistory from '@/components/worker/action-history';
 import ConnectionPanel from '@/components/worker/connection-panel';
 import AddConnectionModal from '@/components/worker/add-connection-modal';
 import ConfigurePluginModal from '@/components/worker/configure-plugin-modal';
-import type { WorkerAction, WorkerAnalysis } from '@/services/worker-client.service';
+import type { RecommendedAction, AnalysisResult } from '@sendo-labs/plugin-sendo-worker';
 import { WorkerClientService } from '@/services/worker-client.service';
 import { QUERY_KEYS } from '@/lib/query-keys';
 import { useQuery } from '@tanstack/react-query';
@@ -65,13 +64,13 @@ interface Plugin {
 
 interface WorkerProps {
 	agentId: string;
-	initialWorkerAnalysis: WorkerAnalysis[];
-	initialAnalysisActions: WorkerAction[];
+	initialWorkerAnalysis: AnalysisResult[];
+	initialAnalysisActions: RecommendedAction[];
 }
 
 export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysisActions }: WorkerProps) {
 	const workerClientService = new WorkerClientService(agentId);
-	const [actions, setActions] = useState<WorkerAction[] | null>(null);
+	const [actions, setActions] = useState<RecommendedAction[] | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);

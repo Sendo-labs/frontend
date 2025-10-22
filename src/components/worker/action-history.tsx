@@ -3,10 +3,10 @@
 import { History, TrendingDown, DollarSign, AlertCircle, CheckCircle, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
-import type { WorkerAction } from '@/services/worker-client.service';
+import type { RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
 
 interface ActionHistoryProps {
-	actions: WorkerAction[];
+	actions: RecommendedAction[];
 }
 
 const ACTION_ICONS: Record<string, LucideIcon> = {
@@ -48,7 +48,7 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 					<AnimatePresence>
 						{actions.map((action) => {
 							const Icon = ACTION_ICONS[action.actionType] || AlertCircle;
-							const isAccepted = action.status === 'accept';
+							const isAccepted = action.status === 'accepted';
 							const isRejected = action.status === 'rejected';
 							return (
 								<motion.div
@@ -108,8 +108,8 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 
 											<div className='flex items-center justify-between'>
 												<div className='flex flex-wrap gap-2 text-xs'>
-													{action.params.token && <span className='text-foreground/40'>{action.params.token}</span>}
-													{action.params.amount && (
+													{action?.params?.token && <span className='text-foreground/40'>{action.params.token}</span>}
+													{action?.params?.amount && (
 														<span
 															className={`font-bold ${isAccepted ? 'text-sendo-green/60' : isRejected ? 'text-sendo-red/60' : 'text-foreground/60'}`}
 														>
