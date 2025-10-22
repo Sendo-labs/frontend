@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Github, Twitter, Linkedin } from 'lucide-react';
 
@@ -46,13 +45,13 @@ const team: TeamMember[] = [
 
 export default function TeamSection() {
 	return (
-		<section className='relative w-full min-h-screen flex items-center justify-center bg-background py-16 md:py-0 overflow-hidden'>
+		<section className='relative w-full h-screen flex items-center justify-center bg-background py-8 md:py-12 overflow-hidden'>
 			<div className='max-w-[1400px] mx-auto w-full px-4 sm:px-6'>
 				<motion.h2
 					initial={{ opacity: 0, y: 30 }}
 					whileInView={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8 }}
-					className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-3 sm:mb-4 md:mb-6 text-foreground title-font'
+					className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-2 sm:mb-3 md:mb-4 text-foreground title-font'
 				>
 					THE{' '}
 					<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
@@ -64,12 +63,12 @@ export default function TeamSection() {
 					initial={{ opacity: 0, y: 20 }}
 					whileInView={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.2, duration: 0.8 }}
-					className='text-base sm:text-lg md:text-xl text-foreground/60 text-center mb-8 sm:mb-12 md:mb-20'
+					className='text-xs sm:text-sm md:text-base lg:text-lg text-foreground/60 text-center mb-6 sm:mb-8 md:mb-12'
 				>
 					The minds behind the mission
 				</motion.p>
 
-				<div className='grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8'>
+				<div className='grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6'>
 					{team.map((member, index) => (
 						<motion.div
 							key={index}
@@ -90,7 +89,7 @@ export default function TeamSection() {
 									/>
 									<div className='absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-60' />
 
-									<div className='absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2 sm:gap-3'>
+									<div className='absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2'>
 										{member.socials.twitter && (
 											<a
 												href={member.socials.twitter}
@@ -121,11 +120,11 @@ export default function TeamSection() {
 									</div>
 								</div>
 
-								<div className='p-3 sm:p-4 md:p-6'>
-									<h3 className='text-sm sm:text-base md:text-lg lg:text-xl font-bold text-foreground mb-1 title-font'>
+								<div className='p-2 sm:p-3 md:p-4'>
+									<h3 className='text-xs sm:text-sm md:text-base lg:text-lg font-bold text-foreground mb-0.5 sm:mb-1 title-font'>
 										{member.name}
 									</h3>
-									<p className='text-foreground/60 text-xs sm:text-sm'>{member.role}</p>
+									<p className='text-foreground/60 text-[10px] sm:text-xs md:text-sm'>{member.role}</p>
 								</div>
 							</div>
 						</motion.div>
