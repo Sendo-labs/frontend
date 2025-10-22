@@ -16,16 +16,24 @@ interface WalletStatsGridProps {
 }
 
 export default function WalletStatsGrid({ stats }: WalletStatsGridProps) {
+	// Valeurs par défaut pour éviter les erreurs undefined
+	const safeStats = {
+		signatures: stats.signatures ?? 0,
+		sol_balance: stats.sol_balance ?? 0,
+		nfts: stats.nfts ?? 0,
+		tokens: stats.tokens ?? 0,
+	};
+
 	const statCards = [
 		{
 			icon: Activity,
 			label: 'SIGNATURES',
-			value: stats.signatures.toLocaleString(),
+			value: safeStats.signatures.toLocaleString(),
 			color: 'from-sendo-orange to-sendo-red',
 		},
-		{ icon: Wallet, label: 'SOL', value: stats.sol_balance.toFixed(2), color: 'from-sendo-green to-[#00D9B5]' },
-		{ icon: ImageIcon, label: 'NFTs', value: stats.nfts, color: 'from-[#9945FF] to-sendo-green' },
-		{ icon: Coins, label: 'TOKENS', value: stats.tokens, color: 'from-sendo-orange to-sendo-red' },
+		{ icon: Wallet, label: 'SOL', value: safeStats.sol_balance.toFixed(2), color: 'from-sendo-green to-[#00D9B5]' },
+		{ icon: ImageIcon, label: 'NFTs', value: safeStats.nfts, color: 'from-[#9945FF] to-sendo-green' },
+		{ icon: Coins, label: 'TOKENS', value: safeStats.tokens, color: 'from-sendo-orange to-sendo-red' },
 	];
 
 	return (

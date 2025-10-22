@@ -17,6 +17,8 @@ import MiniChartATH from '@/components/analyzer/mini-chart-ath';
 import TokenDetailsList from '@/components/analyzer/token-details-list';
 import ShareButtons from '@/components/analyzer/share-buttons';
 import CTAActivateWorker from '@/components/analyzer/cta-activate-worker';
+import WalletAnalyzer from '@/components/analyzer/wallet-analyzer';
+import { sendoApiService } from '@/services/sendo-api.service';
 
 interface WalletAnalysisResult {
 	mini_chart: {
@@ -68,6 +70,20 @@ interface WalletAnalysisResult {
 		status: string;
 		profit_status: string;
 	}>;
+	allTokens: Array<{
+		symbol: string;
+		token_address: string;
+		missed_usd: number;
+		ath_price: number;
+		sold_price: number;
+		ath_change_pct: number;
+		volume_sol: number;
+		pnl_sol: number;
+		tokens_held: number;
+		transactions: number;
+		status: string;
+		profit_status: string;
+	}>;
 	rank: string;
 	punchline: string;
 }
@@ -95,154 +111,121 @@ export default function AnalyzerPage() {
 
 		setIsAnalyzing(true);
 
-		// Mock data - Replace with actual API call
-		setTimeout(() => {
-			setResult({
-				wallet: walletAddress,
-				total_missed_usd: 847393,
+		try {
+			// Récupérer toutes les données du wallet depuis l'API
+			const walletData = await sendoApiService.getAnalyzerWallet(walletAddress);
+			
+			// Mock data avec les vraies données de l'API
+			setTimeout(() => {
+				setResult({
+					wallet: walletAddress,
+					total_missed_usd: walletData.totalMissedUSD, // Utilise les vraies données calculées
 
-				// Wallet stats
-				stats: {
-					signatures: 2847,
-					sol_balance: 1551.82,
-					nfts: 2,
-					tokens: 47,
-				},
-
-				// Performance metrics
-				performance: {
-					total_volume_sol: 22.444,
-					total_pnl_sol: 11.692,
-					success_rate: 50,
-					tokens_analyzed: 6,
-				},
-
-				// Token distribution
-				distribution: {
-					in_profit: 3,
-					in_loss: 2,
-					fully_sold: 0,
-					still_held: 2,
-				},
-
-				// Top performers
-				best_performer: {
-					token: '5ZV3HcSD',
-					symbol: 'BONK',
-					pnl_sol: 12.222,
-					volume_sol: 14.932,
-				},
-				worst_performer: {
-					token: '7sSxTsqB',
-					symbol: 'WIF',
-					pnl_sol: -8.4216,
-					volume_sol: 1.734,
-				},
-
-				// Top pain points
-				tokens: [
-					{
-						symbol: 'BONK',
-						token_address: '5ZV3HcSD',
-						missed_usd: 234568,
-						ath_price: 0.00000045,
-						sold_price: 0.000000012,
-						ath_change_pct: -92,
-						volume_sol: 14.932,
-						pnl_sol: 12.222,
-						tokens_held: 0,
-						transactions: 8,
-						status: 'sold',
-						profit_status: 'profit',
+					// Wallet stats avec les vraies données de l'API
+					stats: {
+						signatures: walletData.signatureCount, // Utilise le nouveau signatureCount
+						sol_balance: walletData.solBalance, // Vraie balance SOL
+						nfts: walletData.nftsCount, // Vrai nombre de NFTs
+						tokens: walletData.tokensCount, // Vrai nombre de tokens
 					},
-					{
-						symbol: 'WIF',
-						token_address: '7sSxTsqB',
-						missed_usd: 189234,
-						ath_price: 3.45,
-						sold_price: 0.89,
-						ath_change_pct: -85,
-						volume_sol: 1.734,
-						pnl_sol: -8.4216,
-						tokens_held: 0,
-						transactions: 3,
-						status: 'sold',
-						profit_status: 'loss',
-					},
-					{
-						symbol: 'SAMO',
-						token_address: 'Bg34H2jy',
-						missed_usd: 156789,
-						ath_price: 0.234,
-						sold_price: 0.067,
-						ath_change_pct: -78,
-						volume_sol: 1.485,
-						pnl_sol: 0.0566,
-						tokens_held: 0,
-						transactions: 2,
-						status: 'sold',
-						profit_status: 'profit',
-					},
-					{
-						symbol: 'PUMP',
-						token_address: '7hpxmtJ1',
-						missed_usd: 98420,
-						ath_price: 0.00000089,
-						sold_price: 0,
-						ath_change_pct: -91,
-						volume_sol: 0.925,
-						pnl_sol: -0.2251,
-						tokens_held: 15535577.16,
-						transactions: 1,
-						status: 'holding',
-						profit_status: 'loss',
-					},
-					{
-						symbol: 'DEGEN',
-						token_address: 'LHywvDs4',
-						missed_usd: 67234,
-						ath_price: 0.045,
-						sold_price: 0,
-						ath_change_pct: -86,
-						volume_sol: 0.518,
-						pnl_sol: -0.2987,
-						tokens_held: 8923456.22,
-						transactions: 1,
-						status: 'holding',
-						profit_status: 'loss',
-					},
-					{
-						symbol: 'MEW',
-						token_address: 'oXMtQ4uCv',
-						missed_usd: 45120,
-						ath_price: 0.0012,
-						sold_price: 0.00089,
-						ath_change_pct: -74,
-						volume_sol: 0.518,
-						pnl_sol: 0.1334,
-						tokens_held: 0,
-						transactions: 3,
-						status: 'sold',
-						profit_status: 'profit',
-					},
-				],
 
-				rank: 'CERTIFIED BAGHOLDER 💀',
-				punchline: 'Top 0.1% of Pain',
+					// Performance metrics avec les vraies données
+					performance: {
+						total_volume_sol: parseFloat(walletData.totalVolumeUSD.replace('$', '')) / 200, // Approximation SOL/USD
+						total_pnl_sol: parseFloat(walletData.totalGainLoss.replace('%', '')) / 100,
+						success_rate: parseFloat(walletData.winRate.replace('%', '')),
+						tokens_analyzed: walletData.uniqueTokens,
+					},
 
-				mini_chart: {
-					points: [
-						[0, 1.0],
-						[1, 0.8],
-						[2, 0.6],
-						[3, 0.4],
-						[4, 0.3],
-						[5, 0.2],
-					],
-				},
-			});
-			setIsAnalyzing(false);
-		}, 2000);
+					// Token distribution avec les vraies données
+					distribution: {
+						in_profit: walletData.profitableTrades,
+						in_loss: walletData.losingTrades,
+						fully_sold: 0, // À calculer plus tard
+						still_held: 0, // À calculer plus tard
+					},
+
+					// Top performers avec les vraies données
+					best_performer: walletData.bestPerformer,
+					worst_performer: walletData.worstPerformer,
+
+					// Top pain points avec les vraies données de l'API
+					tokens: walletData.topPainPoints,
+					
+					// Tous les tokens pour la section Token Details
+					allTokens: walletData.allTokens,
+
+					rank: 'CERTIFIED BAGHOLDER 💀',
+					punchline: 'Top 0.1% of Pain',
+
+					mini_chart: {
+						points: [
+							[0, 1.0],
+							[1, 0.8],
+							[2, 0.6],
+							[3, 0.4],
+							[4, 0.3],
+							[5, 0.2],
+						],
+					},
+				});
+				setIsAnalyzing(false);
+			}, 1000);
+		} catch (error) {
+			console.error('Error fetching wallet data:', error);
+			// En cas d'erreur, utiliser les données mock avec des valeurs par défaut
+			setTimeout(() => {
+				setResult({
+					wallet: walletAddress,
+					total_missed_usd: 847393,
+					stats: {
+						signatures: 0,
+						sol_balance: 0,
+						nfts: 0,
+						tokens: 0,
+					},
+					performance: {
+						total_volume_sol: 0,
+						total_pnl_sol: 0,
+						success_rate: 0,
+						tokens_analyzed: 0,
+					},
+					distribution: {
+						in_profit: 0,
+						in_loss: 0,
+						fully_sold: 0,
+						still_held: 0,
+					},
+					best_performer: {
+						token: 'N/A',
+						symbol: 'N/A',
+						pnl_sol: 0,
+						volume_sol: 0,
+					},
+					worst_performer: {
+						token: 'N/A',
+						symbol: 'N/A',
+						pnl_sol: 0,
+						volume_sol: 0,
+					},
+					tokens: [],
+					allTokens: [],
+					rank: 'ERROR',
+					punchline: 'Unable to fetch data',
+					mini_chart: {
+						points: [
+							[0, 0],
+							[1, 0],
+							[2, 0],
+							[3, 0],
+							[4, 0],
+							[5, 0],
+						],
+					},
+				});
+				setIsAnalyzing(false);
+			}, 1000);
+		}
 	};
 
 	return (
@@ -309,7 +292,10 @@ export default function AnalyzerPage() {
 							<MiniChartATH data={result.mini_chart} />
 
 							{/* Token Details List */}
-							<TokenDetailsList tokens={result.tokens} />
+							<TokenDetailsList tokens={result.allTokens} />
+
+							{/* Wallet Analyzer with Load More */}
+							<WalletAnalyzer address={wallet} />
 
 							{/* Actions */}
 							<div className='grid md:grid-cols-2 gap-6'>
