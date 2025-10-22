@@ -72,8 +72,6 @@ interface WorkerProps {
 
 export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysisActions }: WorkerProps) {
 	const workerClientService = new WorkerClientService(agentId);
-	const [actions, setActions] = useState<RecommendedAction[] | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
 	const [selectedPluginToConnect, setSelectedPluginToConnect] = useState<Plugin | null>(null);
@@ -95,7 +93,11 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 		},
 	};
 
-	const { data: workerAnalysis, isLoading: isWorkerAnalysisLoading } = useQuery({
+	const {
+		data: workerAnalysis,
+		isLoading: isWorkerAnalysisLoading,
+		refetch: refetchWorkerAnalysis,
+	} = useQuery({
 		queryKey: QUERY_KEYS.WORKER_ANALYSIS.list(),
 		queryFn: () => workerClientService.getWorkerAnalysis(),
 		initialData: initialWorkerAnalysis,
@@ -108,7 +110,11 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 		return workerAnalysis.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0];
 	};
 
-	const { data: workerActions, isLoading: isWorkerActionsLoading } = useQuery({
+	const {
+		data: workerActions,
+		isLoading: isWorkerActionsLoading,
+		refetch: refetchWorkerActions,
+	} = useQuery({
 		queryKey: QUERY_KEYS.WORKER_ACTIONS.list(),
 		queryFn: () => {
 			const lastAnalysis = lastWorkerAnalysis();
@@ -130,7 +136,7 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 	};
 
 	const handleValidateAll = async () => {
-		if (!actions || actions.length === 0) return;
+		if (!workerActions || workerActions.length === 0) return;
 
 		setIsExecuting(true);
 
@@ -141,7 +147,8 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 	};
 
 	const handleRefresh = () => {
-		setIsLoading(true);
+		refetchWorkerAnalysis();
+		refetchWorkerActions();
 	};
 
 	const handleAddConnection = (plugin: Plugin) => {

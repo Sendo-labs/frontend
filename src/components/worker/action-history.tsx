@@ -82,8 +82,8 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 							})
 							.map((action) => {
 								const Icon = ACTION_ICONS[action.actionType] || AlertCircle;
-								const isAccepted = action.status === 'accepted';
-								const isRejected = action.status === 'rejected';
+								const isAccepted = action.status === 'completed' || action.status === 'accepted';
+								const isRejected = action.status === 'failed' || action.status === 'rejected';
 								return (
 									<motion.div
 										key={action.id}
