@@ -5,6 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
 import type { RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+  } from "@/components/ui/select"
+import { useState } from 'react';
 
 interface ActionHistoryProps {
 	actions: RecommendedAction[];
@@ -18,6 +26,16 @@ const ACTION_ICONS: Record<string, LucideIcon> = {
 	SWAP: TrendingDown,
 };
 
+const ACTION_STATUS_FILTERS: { value: RecommendedAction['status'] | 'all'; label: string }[] = [
+	{ value: 'all', label: 'All' },
+	{ value: 'accepted', label: 'Accepted' },
+	{ value: 'rejected', label: 'Rejected' },
+	{ value: 'pending', label: 'Pending' },
+	{ value: 'executing', label: 'Executing' },
+	{ value: 'completed', label: 'Completed' },
+	{ value: 'failed', label: 'Failed' },
+];
+
 export default function ActionHistory({ actions }: ActionHistoryProps) {
 	const formatTime = (date: Date) => {
 		const now = new Date();
@@ -28,6 +46,8 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 		if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
 		return `${Math.floor(diff / 86400)}d ago`;
 	};
+
+	const [filter, setFilter] = useState('all');
 
 	return (
 		<div>
@@ -46,8 +66,25 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 				</div>
 			) : (
 				<div className='space-y-3'>
+					<div className="flex items-center gap-2 mb-4 title-font">
+						<Select value={filter} onValueChange={setFilter}>
+							<SelectTrigger className="w-48">
+								<SelectValue defaultValue="all" />
+							</SelectTrigger>
+							<SelectContent className='title-font'>
+								{ACTION_STATUS_FILTERS.map((filter) => (
+									<SelectItem key={filter.value} value={filter.value}>
+										{filter.label}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					</div>
 					<AnimatePresence>
-						{actions.map((action) => {
+						{actions.filter((action) => {
+							if (filter === 'all') return true;
+							return action.status === filter;
+						}).map((action) => {
 							const Icon = ACTION_ICONS[action.actionType] || AlertCircle;
 							const isAccepted = action.status === 'accepted';
 							const isRejected = action.status === 'rejected';
@@ -144,7 +181,7 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 													)}
 												</div>
 												{action.executedAt && (
-													<span className='text-xs text-foreground/30'>{formatTime(new Date(action.executedAt))}</span>
+													<span className='text-xs text-foreground/30'>Executed {formatTime(new Date(action.executedAt))}</span>
 												)}
 											</div>
 

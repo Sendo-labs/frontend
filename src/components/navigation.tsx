@@ -15,7 +15,8 @@ const navLinks: NavLink[] = [
 	{ name: 'ANALYZER', path: '/analyzer' },
 	{ name: 'WORKER', path: '/worker' },
 	{ name: 'MARKETPLACE', path: '/marketplace' },
-	{ name: 'LEADERBOARD', path: '/leaderboard' },
+	{ name: "LEADERBOARD", path: "/leaderboard" },
+    { name: "CONTRIBUTE", path: "/onboarding" }
 ];
 
 export default function Navigation() {
