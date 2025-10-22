@@ -58,18 +58,20 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 									animate={{ opacity: 1, y: 0 }}
 									exit={{ opacity: 0, y: 20 }}
 									transition={{ duration: 0.3 }}
-									className={`border p-4 opacity-70 hover:opacity-90 transition-opacity ${isAccepted
+									className={`border p-4 opacity-70 hover:opacity-90 transition-opacity ${
+										isAccepted
 											? 'bg-sendo-green/5 border-sendo-green/20'
 											: isRejected
 												? 'bg-sendo-red/5 border-sendo-red/20'
 												: 'bg-foreground/5 border-foreground/20'
-										}`}
+									}`}
 									style={{ borderRadius: 0 }}
 								>
 									<div className='flex items-start gap-3'>
 										<div
-											className={`w-10 h-10 flex items-center justify-center flex-shrink-0 ${isAccepted ? 'bg-sendo-green/20' : isRejected ? 'bg-sendo-red/20' : 'bg-foreground/20'
-												}`}
+											className={`w-10 h-10 flex items-center justify-center flex-shrink-0 ${
+												isAccepted ? 'bg-sendo-green/20' : isRejected ? 'bg-sendo-red/20' : 'bg-foreground/20'
+											}`}
 											style={{
 												clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 											}}
@@ -85,8 +87,9 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 													{action.actionType.replace(/_/g, ' ')}
 												</h3>
 												<div
-													className={`flex items-center gap-1 text-xs font-bold ${isAccepted ? 'text-sendo-green' : isRejected ? 'text-sendo-red' : 'text-foreground'
-														}`}
+													className={`flex items-center gap-1 text-xs font-bold ${
+														isAccepted ? 'text-sendo-green' : isRejected ? 'text-sendo-red' : 'text-foreground'
+													}`}
 												>
 													{action.status === 'accepted' && (
 														<>
@@ -146,16 +149,12 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 											</div>
 
 											{action.error && action.result && (
-												<Accordion type="single" collapsible>
-													<AccordionItem value="details">
+												<Accordion type='single' collapsible>
+													<AccordionItem value='details'>
 														<AccordionTrigger>Details</AccordionTrigger>
 														<AccordionContent>
-															{action.error && (
-																<p className='text-sm text-foreground/50'>{action.error}</p>
-															)}
-															{action.result && (
-																<p className='text-sm text-foreground/50'>{action.result.data}</p>
-															)}
+															{action.error && <p className='text-sm text-foreground/50'>{action.error}</p>}
+															{action.result && <p className='text-sm text-foreground/50'>{action.result.data}</p>}
 														</AccordionContent>
 													</AccordionItem>
 												</Accordion>
