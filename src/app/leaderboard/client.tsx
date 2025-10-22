@@ -6,6 +6,7 @@ import { Trophy, TrendingDown, TrendingUp, Crown, Skull } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { FullScreenLoader } from '@/components/shared/loader';
+import PageWrapper from '@/components/shared/page-wrapper';
 
 interface LeaderboardEntry {
 	wallet: string;
@@ -177,185 +178,183 @@ export default function Leaderboard() {
 	const currentData = activeTab === 'shame' ? leaderboardData?.shame : leaderboardData?.fame;
 
 	return (
-		<div className='min-h-screen bg-background text-foreground pt-24 pb-12'>
-			<div className='max-w-[1400px] mx-auto px-4 sm:px-6 py-12 md:py-20'>
-				{/* Header */}
+		<PageWrapper>
+			{/* Header */}
+			<motion.div
+				initial={{ opacity: 0, y: 30 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.8 }}
+				className='text-center mb-12 md:mb-16'
+			>
+				<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font'>
+					LEADER
+					<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>BOARD</span>
+				</h1>
+				<p className='text-lg sm:text-xl md:text-2xl text-foreground/60 max-w-3xl mx-auto'>
+					The best and worst traders on Solana 🏆
+				</p>
+			</motion.div>
+
+			{/* Tabs */}
+			<motion.div
+				initial={{ opacity: 0, y: 30 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ delay: 0.2, duration: 0.8 }}
+				className='flex gap-4 mb-8 md:mb-12 max-w-2xl mx-auto'
+			>
+				<button
+					type='button'
+					onClick={() => setActiveTab('shame')}
+					className={`flex-1 h-14 md:h-16 flex items-center justify-center gap-2 transition-all ${
+						activeTab === 'shame'
+							? 'bg-gradient-to-r from-sendo-orange to-sendo-red'
+							: 'bg-foreground/5 hover:bg-foreground/10'
+					}`}
+					style={{
+						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+						borderRadius: 0,
+					}}
+				>
+					<Skull className='w-5 h-5 md:w-6 md:h-6' />
+					<span className='text-sm md:text-base font-bold uppercase title-font'>HALL OF SHAME</span>
+				</button>
+
+				<button
+					type='button'
+					onClick={() => setActiveTab('fame')}
+					className={`flex-1 h-14 md:h-16 flex items-center justify-center gap-2 transition-all ${
+						activeTab === 'fame'
+							? 'bg-gradient-to-r from-sendo-green to-sendo-green/80'
+							: 'bg-foreground/5 hover:bg-foreground/10'
+					}`}
+					style={{
+						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+						borderRadius: 0,
+					}}
+				>
+					<Trophy className='w-5 h-5 md:w-6 md:h-6' />
+					<span
+						className={`text-sm md:text-base font-bold uppercase title-font ${activeTab === 'fame' ? 'text-black' : ''}`}
+					>
+						HALL OF FAME
+					</span>
+				</button>
+			</motion.div>
+
+			{/* Leaderboard */}
+			<AnimatePresence mode='wait'>
 				<motion.div
+					key={activeTab}
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.8 }}
-					className='text-center mb-12 md:mb-16'
+					exit={{ opacity: 0, y: -30 }}
+					transition={{ duration: 0.5 }}
+					className='space-y-4'
 				>
-					<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font'>
-						LEADER
-						<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>BOARD</span>
-					</h1>
-					<p className='text-lg sm:text-xl md:text-2xl text-foreground/60 max-w-3xl mx-auto'>
-						The best and worst traders on Solana 🏆
-					</p>
-				</motion.div>
-
-				{/* Tabs */}
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.2, duration: 0.8 }}
-					className='flex gap-4 mb-8 md:mb-12 max-w-2xl mx-auto'
-				>
-					<button
-						type='button'
-						onClick={() => setActiveTab('shame')}
-						className={`flex-1 h-14 md:h-16 flex items-center justify-center gap-2 transition-all ${
-							activeTab === 'shame'
-								? 'bg-gradient-to-r from-sendo-orange to-sendo-red'
-								: 'bg-foreground/5 hover:bg-foreground/10'
-						}`}
-						style={{
-							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
-							borderRadius: 0,
-						}}
-					>
-						<Skull className='w-5 h-5 md:w-6 md:h-6' />
-						<span className='text-sm md:text-base font-bold uppercase title-font'>HALL OF SHAME</span>
-					</button>
-
-					<button
-						type='button'
-						onClick={() => setActiveTab('fame')}
-						className={`flex-1 h-14 md:h-16 flex items-center justify-center gap-2 transition-all ${
-							activeTab === 'fame'
-								? 'bg-gradient-to-r from-sendo-green to-sendo-green/80'
-								: 'bg-foreground/5 hover:bg-foreground/10'
-						}`}
-						style={{
-							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
-							borderRadius: 0,
-						}}
-					>
-						<Trophy className='w-5 h-5 md:w-6 md:h-6' />
-						<span
-							className={`text-sm md:text-base font-bold uppercase title-font ${activeTab === 'fame' ? 'text-black' : ''}`}
+					{currentData?.map((entry, index) => (
+						<motion.div
+							key={entry.wallet}
+							initial={{ opacity: 0, x: -30 }}
+							animate={{ opacity: 1, x: 0 }}
+							transition={{ delay: index * 0.05, duration: 0.5 }}
+							className={`relative overflow-hidden ${
+								entry.badge
+									? `bg-gradient-to-r ${getBadgeColor(entry.badge)} p-[2px]`
+									: 'bg-foreground/5 border border-foreground/10'
+							}`}
+							style={{ borderRadius: 0 }}
 						>
-							HALL OF FAME
-						</span>
-					</button>
-				</motion.div>
+							<div className='bg-background p-4 md:p-6' style={{ borderRadius: 0 }}>
+								<div className='flex items-center gap-4 md:gap-6'>
+									{/* Rank Badge */}
+									<div
+										className={`w-12 h-12 md:w-16 md:h-16 flex items-center justify-center flex-shrink-0 ${
+											entry.badge ? `bg-gradient-to-r ${getBadgeColor(entry.badge)}` : 'bg-foreground/10'
+										}`}
+										style={{
+											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+										}}
+									>
+										{index < 3 ? (
+											<Crown
+												className={`w-6 h-6 md:w-8 md:h-8 ${
+													entry.badge === 'diamond'
+														? 'text-[#0ea5e9]'
+														: entry.badge === 'gold'
+															? 'text-[#ffd700]'
+															: entry.badge === 'silver'
+																? 'text-[#e5e7eb]'
+																: 'text-[#f59e0b]'
+												}`}
+											/>
+										) : (
+											<span className='text-lg md:text-2xl font-bold text-foreground title-font'>#{index + 1}</span>
+										)}
+									</div>
 
-				{/* Leaderboard */}
-				<AnimatePresence mode='wait'>
-					<motion.div
-						key={activeTab}
-						initial={{ opacity: 0, y: 30 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: -30 }}
-						transition={{ duration: 0.5 }}
-						className='space-y-4'
-					>
-						{currentData?.map((entry, index) => (
-							<motion.div
-								key={entry.wallet}
-								initial={{ opacity: 0, x: -30 }}
-								animate={{ opacity: 1, x: 0 }}
-								transition={{ delay: index * 0.05, duration: 0.5 }}
-								className={`relative overflow-hidden ${
-									entry.badge
-										? `bg-gradient-to-r ${getBadgeColor(entry.badge)} p-[2px]`
-										: 'bg-foreground/5 border border-foreground/10'
-								}`}
-								style={{ borderRadius: 0 }}
-							>
-								<div className='bg-background p-4 md:p-6' style={{ borderRadius: 0 }}>
-									<div className='flex items-center gap-4 md:gap-6'>
-										{/* Rank Badge */}
-										<div
-											className={`w-12 h-12 md:w-16 md:h-16 flex items-center justify-center flex-shrink-0 ${
-												entry.badge ? `bg-gradient-to-r ${getBadgeColor(entry.badge)}` : 'bg-foreground/10'
-											}`}
-											style={{
-												clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
-											}}
-										>
-											{index < 3 ? (
-												<Crown
-													className={`w-6 h-6 md:w-8 md:h-8 ${
-														entry.badge === 'diamond'
-															? 'text-[#0ea5e9]'
-															: entry.badge === 'gold'
-																? 'text-[#ffd700]'
-																: entry.badge === 'silver'
-																	? 'text-[#e5e7eb]'
-																	: 'text-[#f59e0b]'
-													}`}
-												/>
-											) : (
-												<span className='text-lg md:text-2xl font-bold text-foreground title-font'>#{index + 1}</span>
-											)}
-										</div>
-
-										{/* Wallet Info */}
-										<div className='flex-1 min-w-0'>
-											<div className='flex items-center gap-2 mb-1'>
-												<p className='text-base md:text-lg font-bold text-foreground font-mono truncate'>
-													{formatWallet(entry.wallet)}
-												</p>
-											</div>
-											<p className='text-sm md:text-base text-foreground/60'>{entry.rank}</p>
-										</div>
-
-										{/* Amount */}
-										<div className='text-right flex-shrink-0'>
-											<div className='flex items-center gap-2 mb-1'>
-												{activeTab === 'shame' ? (
-													<TrendingDown className='w-5 h-5 text-sendo-red' />
-												) : (
-													<TrendingUp className='w-5 h-5 text-sendo-green' />
-												)}
-												<p
-													className={`text-xl md:text-3xl font-bold title-font ${
-														activeTab === 'shame' ? 'text-sendo-red' : 'text-sendo-green'
-													}`}
-												>
-													$
-													{activeTab === 'shame'
-														? ((entry.total_missed_usd || 0) / 1000).toFixed(1)
-														: ((entry.total_gains_usd || 0) / 1000).toFixed(1)}
-													K
-												</p>
-											</div>
-											<p className='text-xs md:text-sm text-foreground/40 uppercase'>
-												{activeTab === 'shame' ? 'MISSED' : 'GAINED'}
+									{/* Wallet Info */}
+									<div className='flex-1 min-w-0'>
+										<div className='flex items-center gap-2 mb-1'>
+											<p className='text-base md:text-lg font-bold text-foreground font-mono truncate'>
+												{formatWallet(entry.wallet)}
 											</p>
 										</div>
+										<p className='text-sm md:text-base text-foreground/60'>{entry.rank}</p>
+									</div>
+
+									{/* Amount */}
+									<div className='text-right flex-shrink-0'>
+										<div className='flex items-center gap-2 mb-1'>
+											{activeTab === 'shame' ? (
+												<TrendingDown className='w-5 h-5 text-sendo-red' />
+											) : (
+												<TrendingUp className='w-5 h-5 text-sendo-green' />
+											)}
+											<p
+												className={`text-xl md:text-3xl font-bold title-font ${
+													activeTab === 'shame' ? 'text-sendo-red' : 'text-sendo-green'
+												}`}
+											>
+												$
+												{activeTab === 'shame'
+													? ((entry.total_missed_usd || 0) / 1000).toFixed(1)
+													: ((entry.total_gains_usd || 0) / 1000).toFixed(1)}
+												K
+											</p>
+										</div>
+										<p className='text-xs md:text-sm text-foreground/40 uppercase'>
+											{activeTab === 'shame' ? 'MISSED' : 'GAINED'}
+										</p>
 									</div>
 								</div>
-							</motion.div>
-						))}
-					</motion.div>
-				</AnimatePresence>
-
-				{/* CTA */}
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.6, duration: 0.8 }}
-					className='mt-12 md:mt-16 text-center'
-				>
-					<p className='text-foreground/60 mb-4 text-sm md:text-base'>
-						{activeTab === 'shame' ? 'Think you can beat them? 💀' : 'Can you join the legends? 🏆'}
-					</p>
-					<Link href='/analyzer'>
-						<Button
-							className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 md:h-14 px-6 md:px-8'
-							style={{
-								clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
-								borderRadius: 0,
-							}}
-						>
-							<span className='text-sm md:text-base font-bold uppercase title-font'>ANALYZE YOUR WALLET</span>
-						</Button>
-					</Link>
+							</div>
+						</motion.div>
+					))}
 				</motion.div>
-			</div>
-		</div>
+			</AnimatePresence>
+
+			{/* CTA */}
+			<motion.div
+				initial={{ opacity: 0, y: 30 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ delay: 0.6, duration: 0.8 }}
+				className='mt-12 md:mt-16 text-center'
+			>
+				<p className='text-foreground/60 mb-4 text-sm md:text-base'>
+					{activeTab === 'shame' ? 'Think you can beat them? 💀' : 'Can you join the legends? 🏆'}
+				</p>
+				<Link href='/analyzer'>
+					<Button
+						className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 md:h-14 px-6 md:px-8'
+						style={{
+							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+							borderRadius: 0,
+						}}
+					>
+						<span className='text-sm md:text-base font-bold uppercase title-font'>ANALYZE YOUR WALLET</span>
+					</Button>
+				</Link>
+			</motion.div>
+		</PageWrapper>
 	);
 }
