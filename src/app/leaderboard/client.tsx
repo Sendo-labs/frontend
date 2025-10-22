@@ -205,10 +205,11 @@ export default function Leaderboard() {
 				<button
 					type='button'
 					onClick={() => setActiveTab('shame')}
-					className={`flex-1 h-14 md:h-16 flex items-center justify-center gap-2 transition-all ${activeTab === 'shame'
+					className={`flex-1 h-14 md:h-16 flex items-center justify-center gap-2 transition-all ${
+						activeTab === 'shame'
 							? 'bg-gradient-to-r from-sendo-orange to-sendo-red'
 							: 'bg-foreground/5 hover:bg-foreground/10'
-						}`}
+					}`}
 					style={{
 						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 						borderRadius: 0,
@@ -221,10 +222,11 @@ export default function Leaderboard() {
 				<button
 					type='button'
 					onClick={() => setActiveTab('fame')}
-					className={`flex-1 h-14 md:h-16 flex items-center justify-center gap-2 transition-all ${activeTab === 'fame'
+					className={`flex-1 h-14 md:h-16 flex items-center justify-center gap-2 transition-all ${
+						activeTab === 'fame'
 							? 'bg-gradient-to-r from-sendo-green to-sendo-green/80'
 							: 'bg-foreground/5 hover:bg-foreground/10'
-						}`}
+					}`}
 					style={{
 						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 						borderRadius: 0,
@@ -255,32 +257,35 @@ export default function Leaderboard() {
 							initial={{ opacity: 0, x: -30 }}
 							animate={{ opacity: 1, x: 0 }}
 							transition={{ delay: index * 0.05, duration: 0.5 }}
-							className={`relative overflow-hidden ${entry.badge
+							className={`relative overflow-hidden ${
+								entry.badge
 									? `bg-gradient-to-r ${getBadgeColor(entry.badge)} p-[2px]`
 									: 'bg-foreground/5 border border-foreground/10'
-								}`}
+							}`}
 							style={{ borderRadius: 0 }}
 						>
 							<div className='bg-background p-4 md:p-6' style={{ borderRadius: 0 }}>
 								<div className='flex items-center gap-4 md:gap-6'>
 									{/* Rank Badge */}
 									<div
-										className={`w-12 h-12 md:w-16 md:h-16 flex items-center justify-center flex-shrink-0 ${entry.badge ? `bg-gradient-to-r ${getBadgeColor(entry.badge)}` : 'bg-foreground/10'
-											}`}
+										className={`w-12 h-12 md:w-16 md:h-16 flex items-center justify-center flex-shrink-0 ${
+											entry.badge ? `bg-gradient-to-r ${getBadgeColor(entry.badge)}` : 'bg-foreground/10'
+										}`}
 										style={{
 											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 										}}
 									>
 										{index < 3 ? (
 											<Crown
-												className={`w-6 h-6 md:w-8 md:h-8 ${entry.badge === 'diamond'
+												className={`w-6 h-6 md:w-8 md:h-8 ${
+													entry.badge === 'diamond'
 														? 'text-[#0ea5e9]'
 														: entry.badge === 'gold'
 															? 'text-[#ffd700]'
 															: entry.badge === 'silver'
 																? 'text-[#e5e7eb]'
 																: 'text-[#f59e0b]'
-													}`}
+												}`}
 											/>
 										) : (
 											<span className='text-lg md:text-2xl font-bold text-foreground title-font'>#{index + 1}</span>
@@ -306,8 +311,9 @@ export default function Leaderboard() {
 												<TrendingUp className='w-5 h-5 text-sendo-green' />
 											)}
 											<p
-												className={`text-xl md:text-3xl font-bold title-font ${activeTab === 'shame' ? 'text-sendo-red' : 'text-sendo-green'
-													}`}
+												className={`text-xl md:text-3xl font-bold title-font ${
+													activeTab === 'shame' ? 'text-sendo-red' : 'text-sendo-green'
+												}`}
 											>
 												$
 												{activeTab === 'shame'
