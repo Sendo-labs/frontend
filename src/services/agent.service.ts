@@ -1,25 +1,10 @@
 import { EventEmitter } from 'node:events';
 import { type Socket, io } from 'socket.io-client';
 import { elizaService } from '@/services/eliza.service';
-import type { ActionDecision, ActionResultUpdate, RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
+import type { ActionDecision, DecideActionsData, GetActionData, RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
 import type { SessionInfo, SessionResponse, SessionDetails } from '@/types/sessions';
 import type { MessageBroadcast } from '@/types/agent';
 import type { MessageResponse } from '@elizaos/api-client';
-
-interface DecideResponse {
-	processed: number;
-	accepted: {
-		id: string;
-		analysisId: string;
-		actionType: string;
-		status: string;
-		decidedAt: string;
-	}[];
-	rejected: {
-		actionId: string;
-		status: string;
-	}[];
-}
 
 /**
  * AgentService - Manages sessions, WebSocket, and action execution
@@ -92,7 +77,7 @@ export class AgentService extends EventEmitter {
 
 		console.log('[AgentService] Deciding actions:', decisions);
 
-		const decideResponse = await elizaService.apiRequest<{ data: DecideResponse }>(
+		const decideResponse = await elizaService.apiRequest<{ data: DecideActionsData }>(
 			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/actions/decide`,
 			'POST',
 			{ decisions },
@@ -273,7 +258,7 @@ export class AgentService extends EventEmitter {
 
 		// Update action result in Worker API
 		try {
-			const result: ActionResultUpdate = {
+			const result = {
 				status: 'completed',
 				result: {
 					text: message.text,
@@ -282,8 +267,8 @@ export class AgentService extends EventEmitter {
 				},
 			};
 
-			await elizaService.apiRequest<{ data: { action: RecommendedAction } }>(
-				`api/agents/${this.agentId}/plugins/plugin-sendo-worker/action/${actionId}/result`,
+			await elizaService.apiRequest<{ data: { action: GetActionData } }>(
+				`api/agents/${this.agentId}/plugins/plugin-sendo-worker/action/${actionId}`,
 				'PATCH',
 				result,
 			);

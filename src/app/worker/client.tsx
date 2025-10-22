@@ -17,6 +17,7 @@ import type { RecommendedAction, AnalysisResult } from '@sendo-labs/plugin-sendo
 import { WorkerClientService } from '@/services/worker-client.service';
 import { QUERY_KEYS } from '@/lib/query-keys';
 import { useQuery } from '@tanstack/react-query';
+import { FullScreenLoader } from '@/components/shared/loader';
 
 interface RuleParams {
 	min_usd?: number;
@@ -164,15 +165,7 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 
 	if (isWorkerAnalysisLoading || isWorkerActionsLoading) {
 		return (
-			<div className='min-h-screen bg-background flex items-center justify-center pt-24 pb-12'>
-				<div className='text-center'>
-					<div
-						className='w-16 h-16 border-4 border-sendo-orange border-t-transparent mx-auto mb-4'
-						style={{ borderRadius: 0 }}
-					/>
-					<p className='text-foreground/60 text-sm uppercase title-font'>LOADING WORKER...</p>
-				</div>
-			</div>
+			<FullScreenLoader text='Loading Worker' />
 		);
 	}
 
