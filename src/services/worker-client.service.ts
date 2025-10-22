@@ -1,6 +1,6 @@
 import { elizaService } from '@/services/eliza.service';
-import type { AnalysisResult } from '@sendo-labs/plugin-sendo-worker';
-import type { RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
+import type { AnalysisResult, GetAnalysesData, GetAnalysisActionsData, GetAnalysisByIdData } from '@sendo-labs/plugin-sendo-worker';
+import type { RecommendedAction, GetActionData } from '@sendo-labs/plugin-sendo-worker';
 
 export class WorkerClientService {
 	private agentId: string;
@@ -18,7 +18,7 @@ export class WorkerClientService {
 	 * @returns {Promise<AnalysisResult>}
 	 */
 	async getWorkerAnalysis(): Promise<AnalysisResult[]> {
-		const response = await elizaService.apiRequest<{ data: { analyses: AnalysisResult[] } }>(
+		const response = await elizaService.apiRequest<{ data: GetAnalysesData }>(
 			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/analysis`,
 			'GET',
 		);
@@ -31,7 +31,7 @@ export class WorkerClientService {
 	 * @returns {Promise<AnalysisResult>}
 	 */
 	async getWorkerAnalysisById(id: string): Promise<AnalysisResult> {
-		const response = await elizaService.apiRequest<{ data: { analysis: AnalysisResult } }>(
+		const response = await elizaService.apiRequest<{ data: GetAnalysisByIdData }>(
 			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/analysis/${id}`,
 			'GET',
 		);
@@ -44,7 +44,7 @@ export class WorkerClientService {
 	 * @returns {Promise<RecommendedAction[]>}
 	 */
 	async getWorkerActionsByAnalysisId(analysisId: string): Promise<RecommendedAction[]> {
-		const response = await elizaService.apiRequest<{ data: { actions: RecommendedAction[] } }>(
+		const response = await elizaService.apiRequest<{ data: GetAnalysisActionsData }>(
 			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/analysis/${analysisId}/actions`,
 			'GET',
 		);
@@ -57,7 +57,7 @@ export class WorkerClientService {
 	 * @returns {Promise<RecommendedAction>}
 	 */
 	async getWorkerActionById(id: string): Promise<RecommendedAction> {
-		const response = await elizaService.apiRequest<{ data: { action: RecommendedAction } }>(
+		const response = await elizaService.apiRequest<{ data: GetActionData }>(
 			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/action/${id}`,
 			'GET',
 		);
