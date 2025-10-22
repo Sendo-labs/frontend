@@ -1,7 +1,12 @@
 import { EventEmitter } from 'node:events';
 import { type Socket, io } from 'socket.io-client';
 import { elizaService } from '@/services/eliza.service';
-import type { ActionDecision, DecideActionsData, GetActionData, RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
+import type {
+	ActionDecision,
+	DecideActionsData,
+	GetActionData,
+	RecommendedAction,
+} from '@sendo-labs/plugin-sendo-worker';
 import type { SessionInfo, SessionResponse, SessionDetails } from '@/types/sessions';
 import type { MessageBroadcast } from '@/types/agent';
 import type { MessageResponse } from '@elizaos/api-client';

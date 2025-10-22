@@ -164,9 +164,7 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 	};
 
 	if (isWorkerAnalysisLoading || isWorkerActionsLoading) {
-		return (
-			<FullScreenLoader text='Loading Worker' />
-		);
+		return <FullScreenLoader text='Loading Worker' />;
 	}
 
 	return (

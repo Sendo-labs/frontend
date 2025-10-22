@@ -171,9 +171,7 @@ export default function Leaderboard() {
 	};
 
 	if (isLoading) {
-		return (
-			<FullScreenLoader text='Loading Leaderboard Data...' />
-		);
+		return <FullScreenLoader text='Loading Leaderboard Data...' />;
 	}
 
 	const currentData = activeTab === 'shame' ? leaderboardData?.shame : leaderboardData?.fame;

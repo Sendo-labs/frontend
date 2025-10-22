@@ -19,15 +19,15 @@ export default function Loader({ text }: { text?: string }) {
 		// 	</svg>
 		// 	<span className='sr-only'>Loading...</span>
 		// </div>
-			<div className='min-h-screen bg-background flex items-center justify-center'>
-				<div className='text-center'>
-					<div
-						className='w-16 h-16 border-4 border-sendo-orange border-t-transparent mx-auto mb-4'
-						style={{ borderRadius: 0 }}
-					/>
-					<p className='text-foreground/60 text-sm uppercase title-font'>{text || 'Loading....'}</p>
-				</div>
+		<div className='min-h-screen bg-background flex items-center justify-center'>
+			<div className='text-center'>
+				<div
+					className='w-16 h-16 border-4 border-sendo-orange border-t-transparent mx-auto mb-4'
+					style={{ borderRadius: 0 }}
+				/>
+				<p className='text-foreground/60 text-sm uppercase title-font'>{text || 'Loading....'}</p>
 			</div>
+		</div>
 	);
 }
 
