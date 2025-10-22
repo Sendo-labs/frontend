@@ -93,7 +93,9 @@ export default function ContactSection() {
 						transition={{ delay: 0.4, duration: 0.8 }}
 						className='flex flex-col justify-center'
 					>
-						<h3 className='text-base sm:text-lg md:text-xl font-bold text-foreground mb-3 sm:mb-4 title-font'>FOLLOW US</h3>
+						<h3 className='text-base sm:text-lg md:text-xl font-bold text-foreground mb-3 sm:mb-4 title-font'>
+							FOLLOW US
+						</h3>
 
 						<div className='space-y-2 sm:space-y-3'>
 							<a

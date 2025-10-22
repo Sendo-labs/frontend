@@ -162,7 +162,9 @@ export default function HeroSection() {
 										<Crown
 											className={`w-3 h-3 sm:w-4 sm:h-4 ${getRankColor(looser.rank)} group-hover:scale-110 transition-transform`}
 										/>
-										<span className={`text-base sm:text-lg md:text-xl font-bold ${getRankColor(looser.rank)} title-font`}>
+										<span
+											className={`text-base sm:text-lg md:text-xl font-bold ${getRankColor(looser.rank)} title-font`}
+										>
 											#{looser.rank}
 										</span>
 									</div>

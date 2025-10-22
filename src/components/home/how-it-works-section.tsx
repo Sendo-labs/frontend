@@ -125,7 +125,9 @@ export default function HowItWorksSection() {
 												clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 											}}
 										>
-											<span className='text-base md:text-lg lg:text-xl font-bold text-white title-font'>{step.number}</span>
+											<span className='text-base md:text-lg lg:text-xl font-bold text-white title-font'>
+												{step.number}
+											</span>
 										</div>
 
 										{/* Icon */}
@@ -139,10 +141,14 @@ export default function HowItWorksSection() {
 										</div>
 
 										{/* Title */}
-										<h3 className='text-sm md:text-base lg:text-lg font-bold text-foreground mb-2 title-font'>{step.title}</h3>
+										<h3 className='text-sm md:text-base lg:text-lg font-bold text-foreground mb-2 title-font'>
+											{step.title}
+										</h3>
 
 										{/* Description */}
-										<p className='text-xs md:text-sm text-foreground/70 leading-relaxed mb-2 md:mb-3'>{step.description}</p>
+										<p className='text-xs md:text-sm text-foreground/70 leading-relaxed mb-2 md:mb-3'>
+											{step.description}
+										</p>
 
 										{/* Highlight */}
 										<div
