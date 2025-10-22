@@ -113,24 +113,16 @@ export class AgentService extends EventEmitter {
 			decision: 'reject',
 		}));
 
-		const decideResponse = await fetch(
-			`${this.baseUrl}/api/agents/${this.agentId}/plugins/plugin-sendo-worker/actions/decide`,
-			{
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ decisions }),
-			},
+		const decideResponse = await elizaService.apiRequest<{ data: DecideActionsData }>(
+			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/actions/decide`,
+			'POST',
+			{ decisions },
 		);
 
-		if (!decideResponse.ok) {
-			throw new Error(`[AgentService] Failed to reject actions: ${decideResponse.statusText}`);
-		}
-
-		const { data } = await decideResponse.json();
-		const rejectedActions = data.rejected;
+		const { rejected } = decideResponse.data;
 
 		// Emit rejected events
-		for (const action of rejectedActions) {
+		for (const action of rejected) {
 			this.emit('action:rejected', {
 				actionId: action.actionId,
 			});

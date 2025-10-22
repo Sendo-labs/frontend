@@ -1,9 +1,10 @@
 'use client';
 
-import { History, TrendingDown, DollarSign, AlertCircle, CheckCircle, X } from 'lucide-react';
+import { History, TrendingDown, DollarSign, AlertCircle, CheckCircle, X, Clock, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
 import type { RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 
 interface ActionHistoryProps {
 	actions: RecommendedAction[];
@@ -57,20 +58,18 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 									animate={{ opacity: 1, y: 0 }}
 									exit={{ opacity: 0, y: 20 }}
 									transition={{ duration: 0.3 }}
-									className={`border p-4 opacity-70 hover:opacity-90 transition-opacity ${
-										isAccepted
+									className={`border p-4 opacity-70 hover:opacity-90 transition-opacity ${isAccepted
 											? 'bg-sendo-green/5 border-sendo-green/20'
 											: isRejected
 												? 'bg-sendo-red/5 border-sendo-red/20'
 												: 'bg-foreground/5 border-foreground/20'
-									}`}
+										}`}
 									style={{ borderRadius: 0 }}
 								>
 									<div className='flex items-start gap-3'>
 										<div
-											className={`w-10 h-10 flex items-center justify-center flex-shrink-0 ${
-												isAccepted ? 'bg-sendo-green/20' : isRejected ? 'bg-sendo-red/20' : 'bg-foreground/20'
-											}`}
+											className={`w-10 h-10 flex items-center justify-center flex-shrink-0 ${isAccepted ? 'bg-sendo-green/20' : isRejected ? 'bg-sendo-red/20' : 'bg-foreground/20'
+												}`}
 											style={{
 												clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 											}}
@@ -86,19 +85,43 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 													{action.actionType.replace(/_/g, ' ')}
 												</h3>
 												<div
-													className={`flex items-center gap-1 text-xs font-bold ${
-														isAccepted ? 'text-sendo-green' : isRejected ? 'text-sendo-red' : 'text-foreground'
-													}`}
+													className={`flex items-center gap-1 text-xs font-bold ${isAccepted ? 'text-sendo-green' : isRejected ? 'text-sendo-red' : 'text-foreground'
+														}`}
 												>
-													{isAccepted ? (
+													{action.status === 'accepted' && (
 														<>
 															<CheckCircle className='w-3 h-3' />
 															<span>ACCEPTED</span>
 														</>
-													) : (
+													)}
+													{action.status === 'rejected' && (
 														<>
 															<X className='w-3 h-3' />
 															<span>REJECTED</span>
+														</>
+													)}
+													{action.status === 'pending' && (
+														<>
+															<Clock className='w-3 h-3' />
+															<span>PENDING</span>
+														</>
+													)}
+													{action.status === 'executing' && (
+														<>
+															<Loader2 className='w-3 h-3' />
+															<span>EXECUTING</span>
+														</>
+													)}
+													{action.status === 'completed' && (
+														<>
+															<CheckCircle className='w-3 h-3' />
+															<span>COMPLETED</span>
+														</>
+													)}
+													{action.status === 'failed' && (
+														<>
+															<X className='w-3 h-3' />
+															<span>FAILED</span>
 														</>
 													)}
 												</div>
@@ -108,17 +131,35 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 
 											<div className='flex items-center justify-between'>
 												<div className='flex flex-wrap gap-2 text-xs'>
-													{action?.params?.token && <span className='text-foreground/40'>{action.params.token}</span>}
-													{action?.params?.amount && (
+													{action?.estimatedGas && <span className='text-foreground/40'>{action.estimatedGas}</span>}
+													{action?.estimatedImpact && (
 														<span
 															className={`font-bold ${isAccepted ? 'text-sendo-green/60' : isRejected ? 'text-sendo-red/60' : 'text-foreground/60'}`}
 														>
-															${action.params.amount.toFixed(2)}
+															${action.estimatedImpact}
 														</span>
 													)}
 												</div>
-												<span className='text-xs text-foreground/30'>{formatTime(new Date(action.createdAt))}</span>
+												{action.executedAt && (
+													<span className='text-xs text-foreground/30'>{formatTime(new Date(action.executedAt))}</span>
+												)}
 											</div>
+
+											{action.error && action.result && (
+												<Accordion type="single" collapsible>
+													<AccordionItem value="details">
+														<AccordionTrigger>Details</AccordionTrigger>
+														<AccordionContent>
+															{action.error && (
+																<p className='text-sm text-foreground/50'>{action.error}</p>
+															)}
+															{action.result && (
+																<p className='text-sm text-foreground/50'>{action.result.data}</p>
+															)}
+														</AccordionContent>
+													</AccordionItem>
+												</Accordion>
+											)}
 										</div>
 									</div>
 								</motion.div>
