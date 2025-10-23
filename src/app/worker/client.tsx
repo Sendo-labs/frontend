@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
 import AnalysisPanel from '@/components/worker/analysis-panel';
 import WorkerPanel from '@/components/worker/worker-panel';
 import WorkerToggle from '@/components/worker/worker-toggle';
@@ -14,10 +13,12 @@ import ActionHistory from '@/components/worker/action-history';
 import ConnectionPanel from '@/components/worker/connection-panel';
 import AddConnectionModal from '@/components/worker/add-connection-modal';
 import ConfigurePluginModal from '@/components/worker/configure-plugin-modal';
-import type { WorkerAction, WorkerAnalysis } from '@/services/worker-client.service';
+import type { RecommendedAction, AnalysisResult } from '@sendo-labs/plugin-sendo-worker';
 import { WorkerClientService } from '@/services/worker-client.service';
 import { QUERY_KEYS } from '@/lib/query-keys';
 import { useQuery } from '@tanstack/react-query';
+import { FullScreenLoader } from '@/components/shared/loader';
+import PageWrapper from '@/components/shared/page-wrapper';
 
 interface RuleParams {
 	min_usd?: number;
@@ -65,14 +66,12 @@ interface Plugin {
 
 interface WorkerProps {
 	agentId: string;
-	initialWorkerAnalysis: WorkerAnalysis[];
-	initialAnalysisActions: WorkerAction[];
+	initialWorkerAnalysis: AnalysisResult[];
+	initialAnalysisActions: RecommendedAction[];
 }
 
 export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysisActions }: WorkerProps) {
 	const workerClientService = new WorkerClientService(agentId);
-	const [actions, setActions] = useState<WorkerAction[] | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
 	const [selectedPluginToConnect, setSelectedPluginToConnect] = useState<Plugin | null>(null);
@@ -94,7 +93,11 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 		},
 	};
 
-	const { data: workerAnalysis, isLoading: isWorkerAnalysisLoading } = useQuery({
+	const {
+		data: workerAnalysis,
+		isLoading: isWorkerAnalysisLoading,
+		refetch: refetchWorkerAnalysis,
+	} = useQuery({
 		queryKey: QUERY_KEYS.WORKER_ANALYSIS.list(),
 		queryFn: () => workerClientService.getWorkerAnalysis(),
 		initialData: initialWorkerAnalysis,
@@ -107,7 +110,11 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 		return workerAnalysis.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0];
 	};
 
-	const { data: workerActions, isLoading: isWorkerActionsLoading } = useQuery({
+	const {
+		data: workerActions,
+		isLoading: isWorkerActionsLoading,
+		refetch: refetchWorkerActions,
+	} = useQuery({
 		queryKey: QUERY_KEYS.WORKER_ACTIONS.list(),
 		queryFn: () => {
 			const lastAnalysis = lastWorkerAnalysis();
@@ -129,7 +136,7 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 	};
 
 	const handleValidateAll = async () => {
-		if (!actions || actions.length === 0) return;
+		if (!workerActions || workerActions.length === 0) return;
 
 		setIsExecuting(true);
 
@@ -140,7 +147,8 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 	};
 
 	const handleRefresh = () => {
-		setIsLoading(true);
+		refetchWorkerAnalysis();
+		refetchWorkerActions();
 	};
 
 	const handleAddConnection = (plugin: Plugin) => {
@@ -164,125 +172,113 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 	};
 
 	if (isWorkerAnalysisLoading || isWorkerActionsLoading) {
-		return (
-			<div className='min-h-screen bg-background flex items-center justify-center pt-24 pb-12'>
-				<div className='text-center'>
-					<div
-						className='w-16 h-16 border-4 border-sendo-orange border-t-transparent mx-auto mb-4'
-						style={{ borderRadius: 0 }}
-					/>
-					<p className='text-foreground/60 text-sm uppercase title-font'>LOADING WORKER...</p>
-				</div>
-			</div>
-		);
+		return <FullScreenLoader text='Loading Worker' />;
 	}
 
 	return (
-		<div className='min-h-screen bg-background text-foreground pt-24 pb-12'>
-			<div className='max-w-[1400px] mx-auto px-4 sm:px-6 py-12 md:py-20'>
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.8 }}
-					className='mb-12 md:mb-16'
-				>
-					<div className='flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6'>
-						<div>
-							<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-2 title-font'>
-								WORKER{' '}
-								<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
-									DASHBOARD
-								</span>
-							</h1>
-							<p className='text-lg sm:text-xl md:text-2xl text-foreground/60'>
-								Automate your trading strategy. Never miss an exit again 🎯
-							</p>
-						</div>
-
-						<Button
-							onClick={handleRefresh}
-							className='bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-orange/50 text-foreground h-12 px-6'
-							style={{ borderRadius: 0 }}
-						>
-							<RefreshCw className='w-5 h-5 mr-2' />
-							<span className='title-font'>REFRESH</span>
-						</Button>
+		<PageWrapper>
+			<motion.div
+				initial={{ opacity: 0, y: 30 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.8 }}
+				className='mb-12 md:mb-16'
+			>
+				<div className='flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6'>
+					<div>
+						<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-2 title-font'>
+							WORKER{' '}
+							<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+								DASHBOARD
+							</span>
+						</h1>
+						<p className='text-lg sm:text-xl md:text-2xl text-foreground/60'>
+							Automate your trading strategy. Never miss an exit again 🎯
+						</p>
 					</div>
 
-					{config && <WorkerToggle mode={config.mode} onModeChange={handleModeChange} />}
-				</motion.div>
+					<Button
+						onClick={handleRefresh}
+						className='bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-orange/50 text-foreground h-12 px-6'
+						style={{ borderRadius: 0 }}
+					>
+						<RefreshCw className='w-5 h-5 mr-2' />
+						<span className='title-font'>REFRESH</span>
+					</Button>
+				</div>
 
-				{/* Analysis Section */}
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.1, duration: 0.8 }}
-				>
-					<AnalysisPanel analysis={workerAnalysis && workerAnalysis.length > 0 ? workerAnalysis[0] : null} />
-				</motion.div>
+				{config && <WorkerToggle mode={config.mode} onModeChange={handleModeChange} />}
+			</motion.div>
 
-				<div className='grid lg:grid-cols-3 gap-6 md:gap-8'>
-					{/* Left Column - Actions & History */}
-					<div className='lg:col-span-2 space-y-6 md:space-y-8'>
-						{/* Actions Section */}
-						<motion.div
-							initial={{ opacity: 0, y: 30 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ delay: 0.2, duration: 0.8 }}
-						>
-							{workerActions && (
-								<ActionList
-									agentId={agentId}
-									userId={userId}
-									actions={workerActions.filter((action) => action.status === 'pending')}
-									onValidateAll={handleValidateAll}
-									isExecuting={isExecuting}
-									mode={config.mode}
-								/>
-							)}
-						</motion.div>
+			{/* Analysis Section */}
+			<motion.div
+				initial={{ opacity: 0, y: 30 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ delay: 0.1, duration: 0.8 }}
+			>
+				<AnalysisPanel analysis={workerAnalysis && workerAnalysis.length > 0 ? workerAnalysis[0] : null} />
+			</motion.div>
 
-						<motion.div
-							initial={{ opacity: 0, y: 30 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ delay: 0.3, duration: 0.8 }}
-						>
-							<ActionHistory actions={workerActions?.filter((action) => action.status !== 'pending') || []} />
-						</motion.div>
-					</div>
+			<div className='grid lg:grid-cols-3 gap-6 md:gap-8'>
+				{/* Left Column - Actions & History */}
+				<div className='lg:col-span-2 space-y-6 md:space-y-8'>
+					{/* Actions Section */}
+					<motion.div
+						initial={{ opacity: 0, y: 30 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.2, duration: 0.8 }}
+					>
+						{workerActions && (
+							<ActionList
+								agentId={agentId}
+								userId={userId}
+								actions={workerActions.filter((action) => action.status === 'pending')}
+								onValidateAll={handleValidateAll}
+								isExecuting={isExecuting}
+								mode={config.mode}
+							/>
+						)}
+					</motion.div>
 
-					{/* Right Column - Stats, Rules & Connections */}
-					<div className='space-y-6 md:space-y-8'>
-						<motion.div
-							initial={{ opacity: 0, x: 30 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ delay: 0.3, duration: 0.8 }}
-						>
-							<WorkerPanel />
-						</motion.div>
+					<motion.div
+						initial={{ opacity: 0, y: 30 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.3, duration: 0.8 }}
+					>
+						<ActionHistory actions={workerActions?.filter((action) => action.status !== 'pending') || []} />
+					</motion.div>
+				</div>
 
-						<motion.div
-							initial={{ opacity: 0, x: 30 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ delay: 0.4, duration: 0.8 }}
-						>
-							{config && <RuleBuilder rules={config.rules} onRuleUpdate={handleRuleUpdate} />}
-						</motion.div>
+				{/* Right Column - Stats, Rules & Connections */}
+				<div className='space-y-6 md:space-y-8'>
+					<motion.div
+						initial={{ opacity: 0, x: 30 }}
+						animate={{ opacity: 1, x: 0 }}
+						transition={{ delay: 0.3, duration: 0.8 }}
+					>
+						<WorkerPanel />
+					</motion.div>
 
-						<motion.div
-							initial={{ opacity: 0, x: 30 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ delay: 0.5, duration: 0.8 }}
-						>
-							{config && (
-								<ConnectionPanel
-									connections={config.connections}
-									onAddConnection={() => setShowAddConnection(true)}
-									onRemoveConnection={handleRemoveConnection}
-								/>
-							)}
-						</motion.div>
-					</div>
+					<motion.div
+						initial={{ opacity: 0, x: 30 }}
+						animate={{ opacity: 1, x: 0 }}
+						transition={{ delay: 0.4, duration: 0.8 }}
+					>
+						{config && <RuleBuilder rules={config.rules} onRuleUpdate={handleRuleUpdate} />}
+					</motion.div>
+
+					<motion.div
+						initial={{ opacity: 0, x: 30 }}
+						animate={{ opacity: 1, x: 0 }}
+						transition={{ delay: 0.5, duration: 0.8 }}
+					>
+						{config && (
+							<ConnectionPanel
+								connections={config.connections}
+								onAddConnection={() => setShowAddConnection(true)}
+								onRemoveConnection={handleRemoveConnection}
+							/>
+						)}
+					</motion.div>
 				</div>
 			</div>
 
@@ -297,6 +293,6 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 					onComplete={handleConnectionComplete}
 				/>
 			)}
-		</div>
+		</PageWrapper>
 	);
 }

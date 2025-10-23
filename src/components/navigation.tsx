@@ -16,6 +16,7 @@ const navLinks: NavLink[] = [
 	{ name: 'WORKER', path: '/worker' },
 	{ name: 'MARKETPLACE', path: '/marketplace' },
 	{ name: 'LEADERBOARD', path: '/leaderboard' },
+	{ name: 'CONTRIBUTE', path: '/onboarding' },
 ];
 
 export default function Navigation() {
@@ -25,7 +26,7 @@ export default function Navigation() {
 	const isActive = (path: string) => pathname === path;
 
 	return (
-		<div className='fixed top-0 left-0 right-0 z-50 pt-5'>
+		<div className='fixed top-0 left-0 right-0 z-[100] pt-5'>
 			<div className='max-w-[1400px] mx-auto px-4 sm:px-6'>
 				<div
 					className='w-full bg-background/80 border border-border backdrop-blur-sm'

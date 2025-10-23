@@ -1,4 +1,4 @@
-import type { UUID } from 'crypto';
+import type { UUID } from '@elizaos/core';
 
 /**
  * Agent message
@@ -38,6 +38,7 @@ interface UseElizaChatReturn {
 }
 
 /**
+ * @deprecated Migrate to ElizaOS Message type when available.
  * Message broadcast from ElizaOS WebSocket
  */
 interface MessageBroadcast {

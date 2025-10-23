@@ -3,7 +3,7 @@
 import { TrendingDown, DollarSign, AlertCircle, CheckCircle, Clock, Zap, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { LucideIcon } from 'lucide-react';
-import type { WorkerAction } from '@/services/worker-client.service';
+import type { RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
 import { createAgentService } from '@/services/agent.service';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/lib/query-keys';
@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 interface ActionListProps {
 	agentId: string;
 	userId: string;
-	actions: WorkerAction[] | null;
+	actions: RecommendedAction[] | null;
 	onValidateAll: () => void;
 	isExecuting: boolean;
 	mode: 'suggest' | 'auto';
@@ -43,7 +43,7 @@ export default function ActionList({ agentId, userId, actions, onValidateAll, is
 	const queryClient = useQueryClient();
 
 	const { mutate: acceptAction, isPending: isAcceptingAction } = useMutation({
-		mutationFn: (action: WorkerAction) => agentService.acceptActions([action]),
+		mutationFn: (action: RecommendedAction) => agentService.acceptActions([action]),
 		onSuccess: () => {
 			toast.success('Action accepted successfully', {
 				description: 'The action has been executed',
@@ -56,7 +56,7 @@ export default function ActionList({ agentId, userId, actions, onValidateAll, is
 	});
 
 	const { mutate: rejectAction, isPending: isRejectingAction } = useMutation({
-		mutationFn: (action: WorkerAction) => agentService.rejectActions([action]),
+		mutationFn: (action: RecommendedAction) => agentService.rejectActions([action]),
 		onSuccess: () => {
 			toast.success('Action rejected successfully', {
 				description: 'The action has been cancelled',
@@ -157,17 +157,17 @@ export default function ActionList({ agentId, userId, actions, onValidateAll, is
 										<p className='text-sm text-foreground/70 mb-3'>{action.reasoning}</p>
 
 										<div className='flex flex-wrap gap-2'>
-											{action.params.token && (
+											{action?.params?.token && (
 												<div className='text-xs text-foreground/60'>
 													<span className='font-semibold'>Token:</span> {action.params.token}
 												</div>
 											)}
-											{action.params.amount && (
+											{action?.params?.amount && (
 												<div className='text-xs text-foreground/60'>
 													<span className='font-semibold'>Amount:</span> {action.params.amount}
 												</div>
 											)}
-											{action.params.validator && (
+											{action?.params?.validator && (
 												<div className='text-xs text-foreground/60'>
 													<span className='font-semibold'>Validator:</span> {action.params.validator}
 												</div>

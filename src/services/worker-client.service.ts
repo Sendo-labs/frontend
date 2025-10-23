@@ -1,41 +1,11 @@
 import { elizaService } from '@/services/eliza.service';
-
-export interface WorkerAnalysis {
-	id: string;
-	agentId: string;
-	timestamp: string;
-	analysis: Analysis;
-	pluginsUsed: string[];
-	executionTimeMs: number;
-}
-
-export interface Analysis {
-	walletOverview: string;
-	marketConditions: string;
-	riskAssessment: string;
-	opportunities: string;
-}
-
-export interface WorkerAction {
-	id: string;
-	analysisId: string;
-	actionType: string;
-	pluginName: string;
-	priority: string;
-	reasoning: string;
-	confidence: number;
-	triggerMessage: string;
-	params: {
-		amount: number;
-		validator: string;
-		token: string;
-	};
-	estimatedImpact: string;
-	estimatedGas: string;
-	status: 'pending' | 'accept' | 'rejected' | 'executing' | 'completed' | 'failed';
-	result: string | null;
-	createdAt: string;
-}
+import type {
+	AnalysisResult,
+	GetAnalysesData,
+	GetAnalysisActionsData,
+	GetAnalysisByIdData,
+} from '@sendo-labs/plugin-sendo-worker';
+import type { RecommendedAction, GetActionData } from '@sendo-labs/plugin-sendo-worker';
 
 export class WorkerClientService {
 	private agentId: string;
@@ -50,10 +20,10 @@ export class WorkerClientService {
 
 	/**
 	 * Get the worker analysis
-	 * @returns {Promise<WorkerAnalysis>}
+	 * @returns {Promise<AnalysisResult>}
 	 */
-	async getWorkerAnalysis(): Promise<WorkerAnalysis[]> {
-		const response = await elizaService.apiRequest<{ data: { analyses: WorkerAnalysis[] } }>(
+	async getWorkerAnalysis(): Promise<AnalysisResult[]> {
+		const response = await elizaService.apiRequest<{ data: GetAnalysesData }>(
 			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/analysis`,
 			'GET',
 		);
@@ -63,10 +33,10 @@ export class WorkerClientService {
 	/**
 	 * Get the worker analysis by id
 	 * @param {string} id
-	 * @returns {Promise<WorkerAnalysis>}
+	 * @returns {Promise<AnalysisResult>}
 	 */
-	async getWorkerAnalysisById(id: string): Promise<WorkerAnalysis> {
-		const response = await elizaService.apiRequest<{ data: { analysis: WorkerAnalysis } }>(
+	async getWorkerAnalysisById(id: string): Promise<AnalysisResult> {
+		const response = await elizaService.apiRequest<{ data: GetAnalysisByIdData }>(
 			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/analysis/${id}`,
 			'GET',
 		);
@@ -76,10 +46,10 @@ export class WorkerClientService {
 	/**
 	 * Get the worker actions by analysis id
 	 * @param {string} analysisId
-	 * @returns {Promise<WorkerAction[]>}
+	 * @returns {Promise<RecommendedAction[]>}
 	 */
-	async getWorkerActionsByAnalysisId(analysisId: string): Promise<WorkerAction[]> {
-		const response = await elizaService.apiRequest<{ data: { actions: WorkerAction[] } }>(
+	async getWorkerActionsByAnalysisId(analysisId: string): Promise<RecommendedAction[]> {
+		const response = await elizaService.apiRequest<{ data: GetAnalysisActionsData }>(
 			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/analysis/${analysisId}/actions`,
 			'GET',
 		);
@@ -89,10 +59,10 @@ export class WorkerClientService {
 	/**
 	 * Get the worker action by id
 	 * @param {string} id
-	 * @returns {Promise<WorkerAction>}
+	 * @returns {Promise<RecommendedAction>}
 	 */
-	async getWorkerActionById(id: string): Promise<WorkerAction> {
-		const response = await elizaService.apiRequest<{ data: { action: WorkerAction } }>(
+	async getWorkerActionById(id: string): Promise<RecommendedAction> {
+		const response = await elizaService.apiRequest<{ data: GetActionData }>(
 			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/action/${id}`,
 			'GET',
 		);

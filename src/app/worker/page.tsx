@@ -5,6 +5,8 @@ import { elizaService } from '@/services/eliza.service';
 import { WorkerClientService } from '@/services/worker-client.service';
 import { WORKER_AGENT_NAME } from '@/lib/constants';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
 	title: 'Worker Dashboard',
 	description: 'Worker dashboard to manage your worker',
