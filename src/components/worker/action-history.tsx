@@ -22,7 +22,6 @@ const ACTION_ICONS: Record<string, LucideIcon> = {
 
 const ACTION_STATUS_FILTERS: { value: RecommendedAction['status'] | 'all'; label: string }[] = [
 	{ value: 'all', label: 'All' },
-	{ value: 'accepted', label: 'Accepted' },
 	{ value: 'rejected', label: 'Rejected' },
 	{ value: 'pending', label: 'Pending' },
 	{ value: 'executing', label: 'Executing' },
@@ -82,7 +81,7 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 							})
 							.map((action) => {
 								const Icon = ACTION_ICONS[action.actionType] || AlertCircle;
-								const isAccepted = action.status === 'completed' || action.status === 'accepted';
+								const isAccepted = action.status === 'completed';
 								const isRejected = action.status === 'failed' || action.status === 'rejected';
 								return (
 									<motion.div
@@ -124,12 +123,6 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 															isAccepted ? 'text-sendo-green' : isRejected ? 'text-sendo-red' : 'text-foreground'
 														}`}
 													>
-														{action.status === 'accepted' && (
-															<>
-																<CheckCircle className='w-3 h-3' />
-																<span>ACCEPTED</span>
-															</>
-														)}
 														{action.status === 'rejected' && (
 															<>
 																<X className='w-3 h-3' />
