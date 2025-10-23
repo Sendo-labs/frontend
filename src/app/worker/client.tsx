@@ -19,6 +19,17 @@ import { QUERY_KEYS } from '@/lib/query-keys';
 import { useQuery } from '@tanstack/react-query';
 import { FullScreenLoader } from '@/components/shared/loader';
 import PageWrapper from '@/components/shared/page-wrapper';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 interface RuleParams {
 	min_usd?: number;
@@ -68,10 +79,12 @@ interface WorkerProps {
 	agentId: string;
 	initialWorkerAnalysis: AnalysisResult[];
 	initialAnalysisActions: RecommendedAction[];
+	mocked?: boolean;
 }
 
-export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysisActions }: WorkerProps) {
+export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysisActions, mocked = false }: WorkerProps) {
 	const workerClientService = new WorkerClientService(agentId);
+	const [displayMockedAlert, setDisplayMockedAlert] = useState(mocked);
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
 	const [selectedPluginToConnect, setSelectedPluginToConnect] = useState<Plugin | null>(null);
@@ -292,6 +305,22 @@ export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysis
 					onClose={() => setSelectedPluginToConnect(null)}
 					onComplete={handleConnectionComplete}
 				/>
+			)}
+
+			{mocked && (
+				<AlertDialog open={displayMockedAlert}>
+					<AlertDialogContent>
+						<AlertDialogHeader>
+							<AlertDialogTitle className='text-sendo-orange title-font'>All these data are mocked</AlertDialogTitle>
+							<AlertDialogDescription>
+								No agent found. All the data are mocked for demonstration purposes.
+							</AlertDialogDescription>
+						</AlertDialogHeader>
+						<AlertDialogFooter>
+							<AlertDialogCancel onClick={() => setDisplayMockedAlert(false)}>Continue</AlertDialogCancel>
+						</AlertDialogFooter>
+					</AlertDialogContent>
+				</AlertDialog>
 			)}
 		</PageWrapper>
 	);
