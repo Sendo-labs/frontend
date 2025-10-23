@@ -160,7 +160,9 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 
 												<div className='flex items-center justify-between'>
 													<div className='flex flex-wrap gap-2 text-xs'>
-														{action.params?.estimatedGas && <span className='text-foreground/40'>{action.params.estimatedGas}</span>}
+														{action.params?.estimatedGas && (
+															<span className='text-foreground/40'>{action.params.estimatedGas}</span>
+														)}
 														{action.estimatedImpact && (
 															<span
 																className={`font-bold ${isAccepted ? 'text-sendo-green/60' : isRejected ? 'text-sendo-red/60' : 'text-foreground/60'}`}
