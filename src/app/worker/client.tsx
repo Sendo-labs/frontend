@@ -82,7 +82,12 @@ interface WorkerProps {
 	mocked?: boolean;
 }
 
-export default function Worker({ agentId, initialWorkerAnalysis, initialAnalysisActions, mocked = false }: WorkerProps) {
+export default function Worker({
+	agentId,
+	initialWorkerAnalysis,
+	initialAnalysisActions,
+	mocked = false,
+}: WorkerProps) {
 	const workerClientService = new WorkerClientService(agentId);
 	const [displayMockedAlert, setDisplayMockedAlert] = useState(mocked);
 	const [isExecuting, setIsExecuting] = useState(false);

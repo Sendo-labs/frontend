@@ -38,14 +38,23 @@ async function Content() {
 				(a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
 			)[0];
 			const analysisActions = await workerClientService.getWorkerActionsByAnalysisId(lastAnalysis.id);
-			return <Worker agentId={agentId} initialWorkerAnalysis={workerAnalysis} initialAnalysisActions={analysisActions} />;
+			return (
+				<Worker agentId={agentId} initialWorkerAnalysis={workerAnalysis} initialAnalysisActions={analysisActions} />
+			);
 		}
 
 		return <Worker agentId={agentId} initialWorkerAnalysis={[]} initialAnalysisActions={[]} />;
 	} catch (error) {
 		// Fallback to mocked data if there's any error fetching real data
 		console.warn('Error fetching worker data, using mocked data for demonstration:', error);
-		return <Worker agentId="mock-agent-id-0000-0000-0000-000000000001" initialWorkerAnalysis={MOCK_WORKER_ANALYSIS} initialAnalysisActions={MOCK_ANALYSIS_ACTIONS} mocked={true} />;
+		return (
+			<Worker
+				agentId='mock-agent-id-0000-0000-0000-000000000001'
+				initialWorkerAnalysis={MOCK_WORKER_ANALYSIS}
+				initialAnalysisActions={MOCK_ANALYSIS_ACTIONS}
+				mocked={true}
+			/>
+		);
 	}
 }
 
@@ -55,10 +64,14 @@ const MOCK_WORKER_ANALYSIS: AnalysisResult[] = [
 		agentId: 'mock-agent-id-0000-0000-0000-000000000001' as const,
 		timestamp: new Date().toISOString(),
 		analysis: {
-			walletOverview: 'Your portfolio shows strong diversification with SOL (60%), USDC (25%), and various altcoins (15%). Total value: $12,450. Recent performance shows +8.5% growth over the past week.',
-			marketConditions: 'Market conditions are favorable with SOL showing bullish momentum. DeFi yields remain attractive at 12-15% APY. Volatility is moderate, creating good entry/exit opportunities.',
-			riskAssessment: 'Portfolio risk is moderate. Consider reducing exposure to smaller cap tokens during high volatility periods. Current leverage is conservative at 1.2x.',
-			opportunities: 'Strong opportunities identified: 1) Take profit on SOL at $180+ target, 2) Rebalance into USDC for stability, 3) Consider staking rewards optimization.'
+			walletOverview:
+				'Your portfolio shows strong diversification with SOL (60%), USDC (25%), and various altcoins (15%). Total value: $12,450. Recent performance shows +8.5% growth over the past week.',
+			marketConditions:
+				'Market conditions are favorable with SOL showing bullish momentum. DeFi yields remain attractive at 12-15% APY. Volatility is moderate, creating good entry/exit opportunities.',
+			riskAssessment:
+				'Portfolio risk is moderate. Consider reducing exposure to smaller cap tokens during high volatility periods. Current leverage is conservative at 1.2x.',
+			opportunities:
+				'Strong opportunities identified: 1) Take profit on SOL at $180+ target, 2) Rebalance into USDC for stability, 3) Consider staking rewards optimization.',
 		},
 		pluginsUsed: ['plugin-swap', 'plugin-defi', 'plugin-portfolio'],
 		executionTimeMs: 2500,
@@ -69,10 +82,12 @@ const MOCK_WORKER_ANALYSIS: AnalysisResult[] = [
 		agentId: 'mock-agent-id-0000-0000-0000-000000000001' as const,
 		timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
 		analysis: {
-			walletOverview: 'Portfolio analysis from yesterday shows continued growth. SOL position increased by 3.2% while maintaining healthy diversification.',
-			marketConditions: 'Market showed sideways movement with occasional spikes. DeFi protocols maintained stable yields.',
+			walletOverview:
+				'Portfolio analysis from yesterday shows continued growth. SOL position increased by 3.2% while maintaining healthy diversification.',
+			marketConditions:
+				'Market showed sideways movement with occasional spikes. DeFi protocols maintained stable yields.',
 			riskAssessment: 'Risk levels remained stable. No significant changes in portfolio risk profile.',
-			opportunities: 'Identified potential for yield farming optimization and minor rebalancing opportunities.'
+			opportunities: 'Identified potential for yield farming optimization and minor rebalancing opportunities.',
 		},
 		pluginsUsed: ['plugin-portfolio', 'plugin-defi'],
 		executionTimeMs: 1800,
@@ -94,7 +109,7 @@ const MOCK_ANALYSIS_ACTIONS: RecommendedAction[] = [
 			fromToken: 'SOL',
 			toToken: 'USDC',
 			amount: 0.5,
-			slippage: 0.5
+			slippage: 0.5,
 		},
 		estimatedImpact: 'Expected profit: $45-50. Reduces SOL exposure by 8%.',
 		status: 'pending' as const,
@@ -113,8 +128,8 @@ const MOCK_ANALYSIS_ACTIONS: RecommendedAction[] = [
 			targetAllocation: {
 				SOL: 0.5,
 				USDC: 0.3,
-				ALTCOINS: 0.2
-			}
+				ALTCOINS: 0.2,
+			},
 		},
 		estimatedImpact: 'Improves portfolio balance and risk management.',
 		status: 'pending' as const,
@@ -132,7 +147,7 @@ const MOCK_ANALYSIS_ACTIONS: RecommendedAction[] = [
 		params: {
 			token: 'SOL',
 			amount: 2,
-			validator: 'high-yield-validator'
+			validator: 'high-yield-validator',
 		},
 		estimatedImpact: 'Additional 0.2 SOL annual rewards.',
 		status: 'pending' as const,
@@ -150,7 +165,7 @@ const MOCK_ANALYSIS_ACTIONS: RecommendedAction[] = [
 		params: {
 			fromToken: 'SOL',
 			toToken: 'USDC',
-			amount: 0.1
+			amount: 0.1,
 		},
 		estimatedImpact: 'Completed: $18 profit realized.',
 		status: 'completed' as const,
@@ -159,7 +174,7 @@ const MOCK_ANALYSIS_ACTIONS: RecommendedAction[] = [
 		result: {
 			text: 'Successfully swapped 0.1 SOL to USDC. Transaction hash: 5Kj8...',
 			data: { transactionHash: '5Kj8...', amountReceived: 18.5 },
-			timestamp: new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString()
+			timestamp: new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString(),
 		},
 		createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
 	},
