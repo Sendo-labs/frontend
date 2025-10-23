@@ -148,6 +148,7 @@ const MOCK_ANALYSIS_ACTIONS: RecommendedAction[] = [
 			token: 'SOL',
 			amount: 2,
 			validator: 'high-yield-validator',
+			estimatedGas: '0.000005 SOL',
 		},
 		estimatedImpact: 'Additional 0.2 SOL annual rewards.',
 		status: 'pending' as const,

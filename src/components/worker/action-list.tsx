@@ -172,6 +172,11 @@ export default function ActionList({ agentId, userId, actions, onValidateAll, is
 													<span className='font-semibold'>Validator:</span> {action.params.validator}
 												</div>
 											)}
+											{action.params?.estimatedGas && (
+												<div className='text-xs text-foreground/60'>
+													<span className='font-semibold'>Estimated Gas:</span> {action.params.estimatedGas}
+												</div>
+											)}
 											<div className='text-xs font-bold text-sendo-green'>
 												Confidence: {(action.confidence * 100).toFixed(0)}%
 											</div>
