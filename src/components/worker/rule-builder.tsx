@@ -89,7 +89,9 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 							<div className='px-4 pb-4 border-t border-foreground/10 pt-4'>
 								{rule.id === 'sell_dust' && (
 									<div>
-										<label className='text-xs text-foreground/60 mb-2 block'>Minimum USD Value</label>
+										<label htmlFor='min-usd-input' className='text-xs text-foreground/60 mb-2 block'>
+											Minimum USD Value
+										</label>
 										<Input
 											type='number'
 											value={rule.params.min_usd || ''}
@@ -111,7 +113,9 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 
 								{rule.id === 'take_profit' && (
 									<div>
-										<label className='text-xs text-foreground/60 mb-2 block'>Target Profit Percentage</label>
+										<label htmlFor='target-profit-percentage-input' className='text-xs text-foreground/60 mb-2 block'>
+											Target Profit Percentage
+										</label>
 										<Input
 											type='number'
 											value={rule.params.target_pct || ''}
@@ -134,7 +138,9 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 								{rule.id === 'rebalance' && (
 									<div className='space-y-3'>
 										<div>
-											<label className='text-xs text-foreground/60 mb-2 block'>SOL Target %</label>
+											<label htmlFor='sol-target-percentage-input' className='text-xs text-foreground/60 mb-2 block'>
+												SOL Target %
+											</label>
 											<Input
 												type='number'
 												value={rule.params.target?.SOL ? rule.params.target.SOL * 100 : ''}
@@ -154,7 +160,9 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 											/>
 										</div>
 										<div>
-											<label className='text-xs text-foreground/60 mb-2 block'>USDC Target %</label>
+											<label htmlFor='usdc-target-percentage-input' className='text-xs text-foreground/60 mb-2 block'>
+												USDC Target %
+											</label>
 											<Input
 												type='number'
 												value={rule.params.target?.USDC ? rule.params.target.USDC * 100 : ''}

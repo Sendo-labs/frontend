@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
+import AnalysisPanel from '@/components/worker/analysis-panel';
 import WorkerPanel from '@/components/worker/worker-panel';
 import WorkerToggle from '@/components/worker/worker-toggle';
 import RuleBuilder from '@/components/worker/rule-builder';
@@ -13,6 +13,23 @@ import ActionHistory from '@/components/worker/action-history';
 import ConnectionPanel from '@/components/worker/connection-panel';
 import AddConnectionModal from '@/components/worker/add-connection-modal';
 import ConfigurePluginModal from '@/components/worker/configure-plugin-modal';
+import type { RecommendedAction, AnalysisResult } from '@sendo-labs/plugin-sendo-worker';
+import { WorkerClientService } from '@/services/worker-client.service';
+import { QUERY_KEYS } from '@/lib/query-keys';
+import { useQuery } from '@tanstack/react-query';
+import { FullScreenLoader } from '@/components/shared/loader';
+import PageWrapper from '@/components/shared/page-wrapper';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 interface RuleParams {
 	min_usd?: number;
@@ -40,22 +57,6 @@ interface Config {
 	connections: Connections;
 }
 
-interface Proposal {
-	type: string;
-	tokens?: string[];
-	token?: string;
-	size_pct?: number;
-	est_usd: number;
-	reason: string;
-	priority: 'low' | 'medium' | 'high';
-}
-
-interface HistoryAction extends Proposal {
-	executedAt: Date;
-	accepted: boolean;
-	status: 'accepted' | 'rejected';
-}
-
 interface Plugin {
 	id: string;
 	name: string;
@@ -74,134 +75,98 @@ interface Plugin {
 	}>;
 }
 
-export default function Worker() {
-	const [config, setConfig] = useState<Config | null>(null);
-	const [proposals, setProposals] = useState<Proposal[] | null>(null);
-	const [history, setHistory] = useState<HistoryAction[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
+interface WorkerProps {
+	agentId: string;
+	initialWorkerAnalysis: AnalysisResult[];
+	initialAnalysisActions: RecommendedAction[];
+	mocked?: boolean;
+}
+
+export default function Worker({
+	agentId,
+	initialWorkerAnalysis,
+	initialAnalysisActions,
+	mocked = false,
+}: WorkerProps) {
+	const workerClientService = new WorkerClientService(agentId);
+	const [displayMockedAlert, setDisplayMockedAlert] = useState(mocked);
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
 	const [selectedPluginToConnect, setSelectedPluginToConnect] = useState<Plugin | null>(null);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: no need to define dependencies
-	useEffect(() => {
-		fetchWorkerConfig();
-		fetchProposals();
-	}, []);
-
-	const fetchWorkerConfig = async () => {
-		setTimeout(() => {
-			setConfig({
-				mode: 'suggest',
-				rules: [
-					{ id: 'sell_dust', enabled: true, params: { min_usd: 15 } },
-					{ id: 'take_profit', enabled: true, params: { target_pct: 25 } },
-					{
-						id: 'rebalance',
-						enabled: false,
-						params: { target: { SOL: 0.6, USDC: 0.4 } },
-					},
-				],
-				connections: {
-					oauth: ['jupiter'],
-					api_keys: ['defi_provider_x'],
-				},
-			});
-			setIsLoading(false);
-		}, 1000);
+	const userId = 'test_user';
+	const config: Config = {
+		mode: 'suggest',
+		rules: [
+			{ id: 'sell_dust', enabled: true, params: { min_usd: 15 } },
+			{ id: 'take_profit', enabled: true, params: { target_pct: 25 } },
+			{
+				id: 'rebalance',
+				enabled: false,
+				params: { target: { SOL: 0.6, USDC: 0.4 } },
+			},
+		],
+		connections: {
+			oauth: ['jupiter'],
+			api_keys: ['defi_provider_x'],
+		},
 	};
 
-	const fetchProposals = async () => {
-		setTimeout(() => {
-			setProposals([
-				{
-					type: 'SELL_DUST',
-					tokens: ['XYZ', 'ABC', 'DEF'],
-					est_usd: 42.1,
-					reason: 'Tokens below $15 threshold detected',
-					priority: 'low',
-				},
-				{
-					type: 'TAKE_PROFIT',
-					token: 'BONK',
-					size_pct: 15,
-					est_usd: 380.0,
-					reason: 'BONK is within 8% of ATH - take profits',
-					priority: 'high',
-				},
-				{
-					type: 'TAKE_PROFIT',
-					token: 'WIF',
-					size_pct: 20,
-					est_usd: 520.0,
-					reason: 'WIF reached your 25% profit target',
-					priority: 'medium',
-				},
-			]);
-		}, 1500);
+	const {
+		data: workerAnalysis,
+		isLoading: isWorkerAnalysisLoading,
+		refetch: refetchWorkerAnalysis,
+	} = useQuery({
+		queryKey: QUERY_KEYS.WORKER_ANALYSIS.list(),
+		queryFn: () => workerClientService.getWorkerAnalysis(),
+		initialData: initialWorkerAnalysis,
+	});
+
+	const lastWorkerAnalysis = () => {
+		if (!workerAnalysis || workerAnalysis.length === 0) {
+			return null;
+		}
+		return workerAnalysis.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0];
 	};
+
+	const {
+		data: workerActions,
+		isLoading: isWorkerActionsLoading,
+		refetch: refetchWorkerActions,
+	} = useQuery({
+		queryKey: QUERY_KEYS.WORKER_ACTIONS.list(),
+		queryFn: () => {
+			const lastAnalysis = lastWorkerAnalysis();
+			if (!lastAnalysis) {
+				return [];
+			}
+			return workerClientService.getWorkerActionsByAnalysisId(lastAnalysis.id);
+		},
+		initialData: initialAnalysisActions,
+	});
 
 	const handleModeChange = (newMode: 'suggest' | 'auto') => {
-		if (config) {
-			setConfig({ ...config, mode: newMode });
-		}
+		config.mode = newMode;
 	};
 
 	const handleRuleUpdate = (ruleId: string, updates: Partial<Rule>) => {
-		if (config) {
-			const updatedRules = config.rules.map((rule) => (rule.id === ruleId ? { ...rule, ...updates } : rule));
-			setConfig({ ...config, rules: updatedRules });
-		}
-	};
-
-	const handleActionResponse = async (proposal: Proposal, accepted: boolean) => {
-		setIsExecuting(true);
-
-		setTimeout(() => {
-			// Remove from proposals
-			if (proposals) {
-				setProposals(proposals.filter((p) => p !== proposal));
-			}
-
-			// Add to history with timestamp and status
-			setHistory([
-				{
-					...proposal,
-					executedAt: new Date(),
-					accepted: accepted,
-					status: accepted ? 'accepted' : 'rejected',
-				},
-				...history,
-			]);
-
-			setIsExecuting(false);
-		}, 1500);
+		const updatedRules = config.rules.map((rule) => (rule.id === ruleId ? { ...rule, ...updates } : rule));
+		config.rules = updatedRules;
 	};
 
 	const handleValidateAll = async () => {
-		if (!proposals || proposals.length === 0) return;
+		if (!workerActions || workerActions.length === 0) return;
 
 		setIsExecuting(true);
 
 		setTimeout(() => {
 			// Move all proposals to history as accepted
-			const acceptedProposals: HistoryAction[] = proposals.map((proposal) => ({
-				...proposal,
-				executedAt: new Date(),
-				accepted: true,
-				status: 'accepted',
-			}));
-
-			setHistory([...acceptedProposals, ...history]);
-			setProposals([]);
 			setIsExecuting(false);
 		}, 2000);
 	};
 
 	const handleRefresh = () => {
-		setIsLoading(true);
-		fetchProposals();
-		fetchWorkerConfig();
+		refetchWorkerAnalysis();
+		refetchWorkerActions();
 	};
 
 	const handleAddConnection = (plugin: Plugin) => {
@@ -211,138 +176,127 @@ export default function Worker() {
 
 	const handleConnectionComplete = () => {
 		setSelectedPluginToConnect(null);
-		fetchWorkerConfig();
 		alert('Connection added successfully! ✅');
 	};
 
 	const handleRemoveConnection = (connectionId: string) => {
 		if (confirm('Remove this connection?')) {
-			if (config) {
-				const updatedConnections = { ...config.connections };
-
-				if (updatedConnections.oauth) {
-					updatedConnections.oauth = updatedConnections.oauth.filter((id) => id !== connectionId);
-				}
-				if (updatedConnections.api_keys) {
-					updatedConnections.api_keys = updatedConnections.api_keys.filter((id) => id !== connectionId);
-				}
-
-				setConfig({ ...config, connections: updatedConnections });
-				alert('Connection removed! 🗑️');
-			}
+			const updatedConnections = { ...config.connections };
+			updatedConnections.oauth = updatedConnections.oauth.filter((id) => id !== connectionId);
+			updatedConnections.api_keys = updatedConnections.api_keys.filter((id) => id !== connectionId);
+			config.connections = updatedConnections;
+			alert('Connection removed! 🗑️');
 		}
 	};
 
-	if (isLoading) {
-		return (
-			<div className='min-h-screen bg-background flex items-center justify-center pt-24 pb-12'>
-				<div className='text-center'>
-					<div
-						className='w-16 h-16 border-4 border-sendo-orange border-t-transparent mx-auto mb-4'
-						style={{ borderRadius: 0 }}
-					/>
-					<p className='text-foreground/60 text-sm uppercase title-font'>LOADING WORKER...</p>
-				</div>
-			</div>
-		);
+	if (isWorkerAnalysisLoading || isWorkerActionsLoading) {
+		return <FullScreenLoader text='Loading Worker' />;
 	}
 
 	return (
-		<div className='min-h-screen bg-background text-foreground pt-24 pb-12'>
-			<div className='max-w-[1400px] mx-auto px-4 sm:px-6 py-12 md:py-20'>
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.8 }}
-					className='mb-12 md:mb-16'
-				>
-					<div className='flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6'>
-						<div>
-							<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-2 title-font'>
-								WORKER{' '}
-								<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
-									DASHBOARD
-								</span>
-							</h1>
-							<p className='text-lg sm:text-xl md:text-2xl text-foreground/60'>
-								Automate your trading strategy. Never miss an exit again 🎯
-							</p>
-						</div>
-
-						<Button
-							onClick={handleRefresh}
-							className='bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-orange/50 text-foreground h-12 px-6'
-							style={{ borderRadius: 0 }}
-						>
-							<RefreshCw className='w-5 h-5 mr-2' />
-							<span className='title-font'>REFRESH</span>
-						</Button>
+		<PageWrapper>
+			<motion.div
+				initial={{ opacity: 0, y: 30 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.8 }}
+				className='mb-12 md:mb-16'
+			>
+				<div className='flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6'>
+					<div>
+						<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-2 title-font'>
+							WORKER{' '}
+							<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+								DASHBOARD
+							</span>
+						</h1>
+						<p className='text-lg sm:text-xl md:text-2xl text-foreground/60'>
+							Automate your trading strategy. Never miss an exit again 🎯
+						</p>
 					</div>
 
-					{config && <WorkerToggle mode={config.mode} onModeChange={handleModeChange} />}
-				</motion.div>
+					<Button
+						onClick={handleRefresh}
+						className='bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-orange/50 text-foreground h-12 px-6'
+						style={{ borderRadius: 0 }}
+					>
+						<RefreshCw className='w-5 h-5 mr-2' />
+						<span className='title-font'>REFRESH</span>
+					</Button>
+				</div>
 
-				<div className='grid lg:grid-cols-3 gap-6 md:gap-8'>
-					{/* Left Column - Actions & History */}
-					<div className='lg:col-span-2 space-y-6 md:space-y-8'>
-						<motion.div
-							initial={{ opacity: 0, y: 30 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ delay: 0.2, duration: 0.8 }}
-						>
-							{config && (
-								<ActionList
-									proposals={proposals}
-									onAccept={(proposal) => handleActionResponse(proposal, true)}
-									onReject={(proposal) => handleActionResponse(proposal, false)}
-									onValidateAll={handleValidateAll}
-									isExecuting={isExecuting}
-									mode={config.mode}
-								/>
-							)}
-						</motion.div>
+				{config && <WorkerToggle mode={config.mode} onModeChange={handleModeChange} />}
+			</motion.div>
 
-						<motion.div
-							initial={{ opacity: 0, y: 30 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ delay: 0.3, duration: 0.8 }}
-						>
-							<ActionHistory history={history} />
-						</motion.div>
-					</div>
+			{/* Analysis Section */}
+			<motion.div
+				initial={{ opacity: 0, y: 30 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ delay: 0.1, duration: 0.8 }}
+			>
+				<AnalysisPanel analysis={workerAnalysis && workerAnalysis.length > 0 ? workerAnalysis[0] : null} />
+			</motion.div>
 
-					{/* Right Column - Stats, Rules & Connections */}
-					<div className='space-y-6 md:space-y-8'>
-						<motion.div
-							initial={{ opacity: 0, x: 30 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ delay: 0.3, duration: 0.8 }}
-						>
-							<WorkerPanel proposals={proposals} />
-						</motion.div>
+			<div className='grid lg:grid-cols-3 gap-6 md:gap-8'>
+				{/* Left Column - Actions & History */}
+				<div className='lg:col-span-2 space-y-6 md:space-y-8'>
+					{/* Actions Section */}
+					<motion.div
+						initial={{ opacity: 0, y: 30 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.2, duration: 0.8 }}
+					>
+						{workerActions && (
+							<ActionList
+								agentId={agentId}
+								userId={userId}
+								actions={workerActions.filter((action) => action.status === 'pending')}
+								onValidateAll={handleValidateAll}
+								isExecuting={isExecuting}
+								mode={config.mode}
+							/>
+						)}
+					</motion.div>
 
-						<motion.div
-							initial={{ opacity: 0, x: 30 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ delay: 0.4, duration: 0.8 }}
-						>
-							{config && <RuleBuilder rules={config.rules} onRuleUpdate={handleRuleUpdate} />}
-						</motion.div>
+					<motion.div
+						initial={{ opacity: 0, y: 30 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: 0.3, duration: 0.8 }}
+					>
+						<ActionHistory actions={workerActions?.filter((action) => action.status !== 'pending') || []} />
+					</motion.div>
+				</div>
 
-						<motion.div
-							initial={{ opacity: 0, x: 30 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ delay: 0.5, duration: 0.8 }}
-						>
-							{config && (
-								<ConnectionPanel
-									connections={config.connections}
-									onAddConnection={() => setShowAddConnection(true)}
-									onRemoveConnection={handleRemoveConnection}
-								/>
-							)}
-						</motion.div>
-					</div>
+				{/* Right Column - Stats, Rules & Connections */}
+				<div className='space-y-6 md:space-y-8'>
+					<motion.div
+						initial={{ opacity: 0, x: 30 }}
+						animate={{ opacity: 1, x: 0 }}
+						transition={{ delay: 0.3, duration: 0.8 }}
+					>
+						<WorkerPanel />
+					</motion.div>
+
+					<motion.div
+						initial={{ opacity: 0, x: 30 }}
+						animate={{ opacity: 1, x: 0 }}
+						transition={{ delay: 0.4, duration: 0.8 }}
+					>
+						{config && <RuleBuilder rules={config.rules} onRuleUpdate={handleRuleUpdate} />}
+					</motion.div>
+
+					<motion.div
+						initial={{ opacity: 0, x: 30 }}
+						animate={{ opacity: 1, x: 0 }}
+						transition={{ delay: 0.5, duration: 0.8 }}
+					>
+						{config && (
+							<ConnectionPanel
+								connections={config.connections}
+								onAddConnection={() => setShowAddConnection(true)}
+								onRemoveConnection={handleRemoveConnection}
+							/>
+						)}
+					</motion.div>
 				</div>
 			</div>
 
@@ -357,6 +311,22 @@ export default function Worker() {
 					onComplete={handleConnectionComplete}
 				/>
 			)}
-		</div>
+
+			{mocked && (
+				<AlertDialog open={displayMockedAlert}>
+					<AlertDialogContent>
+						<AlertDialogHeader>
+							<AlertDialogTitle className='text-sendo-orange title-font'>All these data are mocked</AlertDialogTitle>
+							<AlertDialogDescription>
+								No agent found. All the data are mocked for demonstration purposes.
+							</AlertDialogDescription>
+						</AlertDialogHeader>
+						<AlertDialogFooter>
+							<AlertDialogCancel onClick={() => setDisplayMockedAlert(false)}>Continue</AlertDialogCancel>
+						</AlertDialogFooter>
+					</AlertDialogContent>
+				</AlertDialog>
+			)}
+		</PageWrapper>
 	);
 }

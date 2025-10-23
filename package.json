@@ -13,6 +13,7 @@
 	},
 	"dependencies": {
 		"@elizaos/api-client": "^1.6.1",
+		"@elizaos/server": "^1.6.2",
 		"@hookform/resolvers": "^5.2.2",
 		"@radix-ui/react-accordion": "^1.2.12",
 		"@radix-ui/react-alert-dialog": "^1.1.15",
@@ -38,6 +39,7 @@
 		"@radix-ui/react-toggle": "^1.1.10",
 		"@radix-ui/react-toggle-group": "^1.1.11",
 		"@radix-ui/react-tooltip": "^1.2.8",
+		"@sendo-labs/plugin-sendo-worker": "link:@sendo-labs/plugin-sendo-worker",
 		"@tanstack/react-query": "^5.90.5",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
@@ -54,6 +56,7 @@
 		"recharts": "^3.3.0",
 		"remark-gfm": "^4.0.1",
 		"socket.io-client": "^4.8.1",
+		"sonner": "^2.0.7",
 		"tailwind-merge": "^3.3.1",
 		"zod": "^4.1.12"
 	},

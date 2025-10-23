@@ -17,6 +17,7 @@ import MiniChartATH from '@/components/analyzer/mini-chart-ath';
 import TokenDetailsList from '@/components/analyzer/token-details-list';
 import ShareButtons from '@/components/analyzer/share-buttons';
 import CTAActivateWorker from '@/components/analyzer/cta-activate-worker';
+import PageWrapper from '@/components/shared/page-wrapper';
 
 interface WalletAnalysisResult {
 	mini_chart: {
@@ -246,100 +247,98 @@ export default function AnalyzerPage() {
 	};
 
 	return (
-		<div className='min-h-screen pt-24 pb-12'>
-			<div className='max-w-[1400px] mx-auto px-4 sm:px-6 py-12 md:py-20'>
-				{/* Header */}
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.8 }}
-					className='text-center mb-12 md:mb-16'
-				>
-					<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font'>
-						WALLET{' '}
-						<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
-							ANALYZER
-						</span>
-					</h1>
-					<p className='text-lg sm:text-xl md:text-2xl text-foreground/60 max-w-3xl mx-auto'>
-						Analyze your pain 💀 See how much you lost by not selling at ATH
-					</p>
-				</motion.div>
+		<PageWrapper>
+			{/* Header */}
+			<motion.div
+				initial={{ opacity: 0, y: 30 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.8 }}
+				className='text-center mb-12 md:mb-16'
+			>
+				<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font'>
+					WALLET{' '}
+					<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+						ANALYZER
+					</span>
+				</h1>
+				<p className='text-lg sm:text-xl md:text-2xl text-foreground/60 max-w-3xl mx-auto'>
+					Analyze your pain 💀 See how much you lost by not selling at ATH
+				</p>
+			</motion.div>
 
-				{/* Wallet Input */}
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.2, duration: 0.8 }}
-				>
-					<WalletInput
-						wallet={wallet}
-						setWallet={setWallet}
-						onAnalyze={() => handleAnalyze()}
-						isAnalyzing={isAnalyzing}
-					/>
-				</motion.div>
+			{/* Wallet Input */}
+			<motion.div
+				initial={{ opacity: 0, y: 30 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ delay: 0.2, duration: 0.8 }}
+			>
+				<WalletInput
+					wallet={wallet}
+					setWallet={setWallet}
+					onAnalyze={() => handleAnalyze()}
+					isAnalyzing={isAnalyzing}
+				/>
+			</motion.div>
 
-				{/* Results */}
-				<AnimatePresence mode='wait'>
-					{result && (
-						<motion.div
-							initial={{ opacity: 0, y: 50 }}
-							animate={{ opacity: 1, y: 0 }}
-							exit={{ opacity: 0, y: -50 }}
-							transition={{ duration: 0.6 }}
-							className='mt-12 md:mt-16 space-y-6 md:space-y-8'
-						>
-							{/* Hero Recap Card */}
-							<ResultHeroCard result={result} />
-
-							{/* Wallet Stats Grid */}
-							<WalletStatsGrid stats={result.stats} />
-
-							{/* Performance Metrics */}
-							<PerformanceMetrics performance={result.performance} />
-
-							{/* Token Distribution + Best/Worst Performers */}
-							<div className='grid lg:grid-cols-2 gap-6'>
-								<TokenDistribution distribution={result.distribution} />
-								<BestWorstPerformers best={result.best_performer} worst={result.worst_performer} />
-							</div>
-
-							{/* Chart */}
-							<MiniChartATH data={result.mini_chart} />
-
-							{/* Token Details List */}
-							<TokenDetailsList tokens={result.tokens} />
-
-							{/* Actions */}
-							<div className='grid md:grid-cols-2 gap-6'>
-								<ShareButtons result={result} />
-								<CTAActivateWorker />
-							</div>
-						</motion.div>
-					)}
-				</AnimatePresence>
-
-				{/* Leaderboard CTA */}
-				{!result && (
+			{/* Results */}
+			<AnimatePresence mode='wait'>
+				{result && (
 					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 0.4, duration: 0.8 }}
-						className='mt-16 text-center'
+						initial={{ opacity: 0, y: 50 }}
+						animate={{ opacity: 1, y: 0 }}
+						exit={{ opacity: 0, y: -50 }}
+						transition={{ duration: 0.6 }}
+						className='mt-12 md:mt-16 space-y-6 md:space-y-8'
 					>
-						<Link href={createPageUrl('Leaderboard')}>
-							<Button
-								className='bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-red/50 text-foreground h-12 px-8 transition-all group'
-								style={{ borderRadius: 0 }}
-							>
-								<Crown className='w-5 h-5 mr-2 text-sendo-orange group-hover:scale-110 transition-transform' />
-								<span className='title-font'>VIEW LEADERBOARD</span>
-							</Button>
-						</Link>
+						{/* Hero Recap Card */}
+						<ResultHeroCard result={result} />
+
+						{/* Wallet Stats Grid */}
+						<WalletStatsGrid stats={result.stats} />
+
+						{/* Performance Metrics */}
+						<PerformanceMetrics performance={result.performance} />
+
+						{/* Token Distribution + Best/Worst Performers */}
+						<div className='grid lg:grid-cols-2 gap-6'>
+							<TokenDistribution distribution={result.distribution} />
+							<BestWorstPerformers best={result.best_performer} worst={result.worst_performer} />
+						</div>
+
+						{/* Chart */}
+						<MiniChartATH data={result.mini_chart} />
+
+						{/* Token Details List */}
+						<TokenDetailsList tokens={result.tokens} />
+
+						{/* Actions */}
+						<div className='grid md:grid-cols-2 gap-6'>
+							<ShareButtons result={result} />
+							<CTAActivateWorker />
+						</div>
 					</motion.div>
 				)}
-			</div>
-		</div>
+			</AnimatePresence>
+
+			{/* Leaderboard CTA */}
+			{!result && (
+				<motion.div
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ delay: 0.4, duration: 0.8 }}
+					className='mt-16 text-center'
+				>
+					<Link href={createPageUrl('Leaderboard')}>
+						<Button
+							className='bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-red/50 text-foreground h-12 px-8 transition-all group'
+							style={{ borderRadius: 0 }}
+						>
+							<Crown className='w-5 h-5 mr-2 text-sendo-orange group-hover:scale-110 transition-transform' />
+							<span className='title-font'>VIEW LEADERBOARD</span>
+						</Button>
+					</Link>
+				</motion.div>
+			)}
+		</PageWrapper>
 	);
 }

@@ -3,6 +3,7 @@ import { Geist } from 'next/font/google';
 import './globals.css';
 import Navigation from '@/components/navigation';
 import AgentPanel from '@/components/agent-panel';
+import { GlobalProviders } from '@/lib/providers';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -33,9 +34,11 @@ export default function RootLayout({
         `}</style>
 			</head>
 			<body className={`${geistSans.variable} antialiased bg-background text-foreground min-h-screen`}>
-				<Navigation />
-				<AgentPanel />
-				{children}
+				<GlobalProviders>
+					<Navigation />
+					<AgentPanel />
+					{children}
+				</GlobalProviders>
 			</body>
 		</html>
 	);

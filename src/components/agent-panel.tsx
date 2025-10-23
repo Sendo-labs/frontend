@@ -46,11 +46,13 @@ export default function AgentPanel() {
 		messagesEndRef.current?.scrollIntoView({ behavior: smooth ? 'smooth' : 'instant' });
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		scrollToBottom();
 	}, [messages]);
 
 	// Scroll to bottom immediately when chat opens
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (isOpen) {
 			setTimeout(() => scrollToBottom(false), 100);
