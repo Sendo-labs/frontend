@@ -12,8 +12,8 @@
 		"prepare": "husky"
 	},
 	"dependencies": {
-		"@elizaos/api-client": "^1.6.1",
-		"@elizaos/server": "^1.6.2",
+		"@elizaos/api-client": "^1.6.3",
+		"@elizaos/server": "^1.6.3",
 		"@hookform/resolvers": "^5.2.2",
 		"@radix-ui/react-accordion": "^1.2.12",
 		"@radix-ui/react-alert-dialog": "^1.1.15",
