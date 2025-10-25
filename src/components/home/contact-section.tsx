@@ -133,7 +133,7 @@ export default function ContactSection() {
 							</a>
 
 							<a
-								href='https://discord.gg/sendo'
+								href='https://discord.gg/Anf3rkF2s'
 								className='flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all group'
 								style={{ borderRadius: 0 }}
 							>
