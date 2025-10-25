@@ -99,7 +99,7 @@ export default function ContactSection() {
 
 						<div className='space-y-2 sm:space-y-3'>
 							<a
-								href='https://x.com/sendo_agent'
+								href='https://x.com/SendoMarket'
 								className='flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all group'
 								style={{ borderRadius: 0 }}
 							>
@@ -116,7 +116,7 @@ export default function ContactSection() {
 							</a>
 
 							<a
-								href='https://t.me/sendo_official'
+								href='https://t.me/'
 								className='flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all group'
 								style={{ borderRadius: 0 }}
 							>
