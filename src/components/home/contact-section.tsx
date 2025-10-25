@@ -150,7 +150,7 @@ export default function ContactSection() {
 							</a>
 
 							<a
-								href='mailto:contact@sendo.io'
+								href='mailto:https://tr.ee/XOQntxLcOf'
 								className='flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all group'
 								style={{ borderRadius: 0 }}
 							>
