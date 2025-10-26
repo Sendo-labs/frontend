@@ -8,7 +8,7 @@ export type PrivySession = {
 
 /**
  * INCOMPLETE: Must be improved to retreive the identity token
- * Get the server session 
+ * Get the server session
  * @returns The server session
  */
 export async function getServerSession(): Promise<PrivySession | null> {
