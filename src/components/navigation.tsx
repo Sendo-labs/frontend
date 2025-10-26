@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { LoginButton } from './auth/login';
 
 interface NavLink {
 	name: string;
@@ -58,6 +59,7 @@ export default function Navigation() {
 										{link.name}
 									</Link>
 								))}
+								<LoginButton />
 							</nav>
 
 							<button
@@ -90,6 +92,7 @@ export default function Navigation() {
 										</Link>
 									))}
 								</div>
+								<LoginButton />
 							</nav>
 						)}
 					</div>
