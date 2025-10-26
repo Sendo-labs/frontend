@@ -49,9 +49,8 @@ export default function Home() {
 							type='button'
 							key={index}
 							onClick={() => setCurrentSection(index)}
-							className={`w-3 h-3 transition-all duration-300 ${
-								currentSection === index ? 'bg-foreground w-3 h-8' : 'bg-foreground/20 hover:bg-foreground/40'
-							}`}
+							className={`w-3 h-3 transition-all duration-300 ${currentSection === index ? 'bg-foreground w-3 h-8' : 'bg-foreground/20 hover:bg-foreground/40'
+								}`}
 							style={{ borderRadius: 0 }}
 							aria-label={`Go to section ${index + 1}`}
 						/>
