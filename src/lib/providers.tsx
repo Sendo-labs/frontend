@@ -1,6 +1,7 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { PrivyProvider } from '@privy-io/react-auth';
 import type * as React from 'react';
 import { Toaster } from 'sonner';
 
@@ -22,9 +23,24 @@ interface GlobalProvidersProps {
 
 export function GlobalProviders({ children }: GlobalProvidersProps) {
 	return (
-		<QueryClientProvider client={queryClient}>
-			{children}
-			<Toaster richColors />
-		</QueryClientProvider>
+		<PrivyProvider
+			appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
+			config={{
+				loginMethods: [
+					'email',
+					'wallet',
+					// 'google',
+				],
+				appearance: {
+					theme: 'light',
+					accentColor: '#FF6B00',
+				},
+			}}
+		>
+			<QueryClientProvider client={queryClient}>
+				{children}
+				<Toaster richColors />
+			</QueryClientProvider>
+		</PrivyProvider>
 	);
 }
