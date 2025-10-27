@@ -4,6 +4,7 @@ import type {
 	GetAnalysesData,
 	GetAnalysisActionsData,
 	GetAnalysisByIdData,
+	RunAnalysisData,
 } from '@sendo-labs/plugin-sendo-worker';
 import type { RecommendedAction, GetActionData } from '@sendo-labs/plugin-sendo-worker';
 
@@ -67,5 +68,17 @@ export class WorkerClientService {
 			'GET',
 		);
 		return response.data.action;
+	}
+
+	/**
+	 * Create a new worker analysis
+	 * @returns {Promise<AnalysisResult>}
+	 */
+	async createWorkerAnalysis(): Promise<AnalysisResult> {
+		const response = await elizaService.apiRequest<{ data: RunAnalysisData }>(
+			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/analysis`,
+			'POST',
+		);
+		return response.data.analysis;
 	}
 }

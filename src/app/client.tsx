@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-
 import HeroSection from '@/components/home/hero-section';
 import ContactSection from '@/components/home/contact-section';
 import HowItWorksSection from '@/components/home/how-it-works-section';

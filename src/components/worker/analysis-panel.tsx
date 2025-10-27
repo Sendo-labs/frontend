@@ -60,18 +60,21 @@ export default function AnalysisPanel({ analysis }: AnalysisPanelProps) {
 
 			<div className='border border-foreground/10 bg-foreground/5 p-6' style={{ borderRadius: 0 }}>
 				{/* Header with execution time and plugins */}
-				<div className='flex items-center justify-between mb-6 pb-4 border-b border-foreground/10'>
-					<div className='flex items-center gap-4'>
+				<div className='flex flex-col sm:flex-row sm:items-center justify-between mb-6 pb-4 border-b border-foreground/10 gap-4'>
+					<div className='flex flex-col sm:flex-row sm:items-center gap-4'>
 						<div className='flex items-center gap-2'>
 							<Zap className='w-4 h-4 text-sendo-green' />
 							<span className='text-xs text-foreground/60'>Execution: {analysis.executionTimeMs}ms</span>
 						</div>
 						{analysis.pluginsUsed.length > 0 && (
-							<div className='flex items-center gap-2'>
-								<span className='text-xs text-foreground/40'>Plugins:</span>
-								<div className='flex gap-1'>
+							<div className='flex items-center gap-2 min-w-0'>
+								<span className='text-xs text-foreground/40 flex-shrink-0'>Plugins:</span>
+								<div className='flex gap-1 flex-wrap overflow-hidden'>
 									{analysis.pluginsUsed.map((plugin, idx) => (
-										<span key={idx} className='text-xs bg-sendo-orange/20 text-sendo-orange px-2 py-0.5 title-font'>
+										<span
+											key={idx}
+											className='text-xs bg-sendo-orange/20 text-sendo-orange px-2 py-0.5 title-font flex-shrink-0'
+										>
 											{plugin.replace('plugin-', '')}
 										</span>
 									))}

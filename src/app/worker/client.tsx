@@ -16,7 +16,7 @@ import ConfigurePluginModal from '@/components/worker/configure-plugin-modal';
 import type { RecommendedAction, AnalysisResult } from '@sendo-labs/plugin-sendo-worker';
 import { WorkerClientService } from '@/services/worker-client.service';
 import { QUERY_KEYS } from '@/lib/query-keys';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FullScreenLoader } from '@/components/shared/loader';
 import PageWrapper from '@/components/shared/page-wrapper';
 import {
@@ -28,8 +28,13 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { usePrivy } from '@privy-io/react-auth';
+import { MOCKED_WORKER_ANALYSIS, MOCK_ANALYSIS_ACTIONS } from '@/lib/agents/worker/mocks';
+import { elizaService } from '@/services/eliza.service';
+import { getWorkerCreationTemplate } from '@/lib/agents/creation-template';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 interface RuleParams {
 	min_usd?: number;
@@ -76,40 +81,43 @@ interface Plugin {
 }
 
 interface WorkerProps {
-	agentId: string;
+	agentId: string | null;
 	initialWorkerAnalysis: AnalysisResult[];
 	initialAnalysisActions: RecommendedAction[];
-	mocked?: boolean;
 }
 
-export default function Worker({
-	agentId,
-	initialWorkerAnalysis,
-	initialAnalysisActions,
-	mocked = false,
-}: WorkerProps) {
-	const workerClientService = new WorkerClientService(agentId);
+const config: Config = {
+	mode: 'suggest',
+	rules: [
+		{ id: 'sell_dust', enabled: true, params: { min_usd: 15 } },
+		{ id: 'take_profit', enabled: true, params: { target_pct: 25 } },
+		{
+			id: 'rebalance',
+			enabled: false,
+			params: { target: { SOL: 0.6, USDC: 0.4 } },
+		},
+	],
+	connections: {
+		oauth: ['jupiter'],
+		api_keys: ['defi_provider_x'],
+	},
+};
+
+export default function Worker({ agentId = null, initialWorkerAnalysis, initialAnalysisActions }: WorkerProps) {
+	const { authenticated, user, ready } = usePrivy();
+	const router = useRouter();
+	// If the user is not authenticated or the agentId is null, we use the mocked data
+	const mocked = !authenticated || agentId === null;
+	const queryClient = useQueryClient();
+
+	const workerClientService = agentId ? new WorkerClientService(agentId) : null;
 	const [displayMockedAlert, setDisplayMockedAlert] = useState(mocked);
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
 	const [selectedPluginToConnect, setSelectedPluginToConnect] = useState<Plugin | null>(null);
-	const userId = 'test_user';
-	const config: Config = {
-		mode: 'suggest',
-		rules: [
-			{ id: 'sell_dust', enabled: true, params: { min_usd: 15 } },
-			{ id: 'take_profit', enabled: true, params: { target_pct: 25 } },
-			{
-				id: 'rebalance',
-				enabled: false,
-				params: { target: { SOL: 0.6, USDC: 0.4 } },
-			},
-		],
-		connections: {
-			oauth: ['jupiter'],
-			api_keys: ['defi_provider_x'],
-		},
-	};
+	const [agentCreationLoading, setAgentCreationLoading] = useState(false);
+
+	const userId = authenticated ? user?.id : null;
 
 	const {
 		data: workerAnalysis,
@@ -117,15 +125,18 @@ export default function Worker({
 		refetch: refetchWorkerAnalysis,
 	} = useQuery({
 		queryKey: QUERY_KEYS.WORKER_ANALYSIS.list(),
-		queryFn: () => workerClientService.getWorkerAnalysis(),
-		initialData: initialWorkerAnalysis,
+		queryFn: () => workerClientService?.getWorkerAnalysis() ?? [],
+		placeholderData: initialWorkerAnalysis,
+		enabled: !mocked,
 	});
 
-	const lastWorkerAnalysis = () => {
-		if (!workerAnalysis || workerAnalysis.length === 0) {
+	const displayWorkerAnalysis = mocked ? MOCKED_WORKER_ANALYSIS : workerAnalysis;
+
+	const lastWorkerAnalysis = (analysisData: typeof workerAnalysis) => {
+		if (!analysisData || analysisData.length === 0) {
 			return null;
 		}
-		return workerAnalysis.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0];
+		return [...analysisData].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0];
 	};
 
 	const {
@@ -135,17 +146,32 @@ export default function Worker({
 	} = useQuery({
 		queryKey: QUERY_KEYS.WORKER_ACTIONS.list(),
 		queryFn: () => {
-			const lastAnalysis = lastWorkerAnalysis();
+			const lastAnalysis = lastWorkerAnalysis(workerAnalysis);
 			if (!lastAnalysis) {
 				return [];
 			}
-			return workerClientService.getWorkerActionsByAnalysisId(lastAnalysis.id);
+			return workerClientService?.getWorkerActionsByAnalysisId(lastAnalysis.id) ?? [];
 		},
-		initialData: initialAnalysisActions,
+		placeholderData: initialAnalysisActions,
+		enabled: !mocked,
 	});
 
-	const handleModeChange = (newMode: 'suggest' | 'auto') => {
-		config.mode = newMode;
+	const displayWorkerActions = mocked ? MOCK_ANALYSIS_ACTIONS : workerActions;
+
+	const { mutate: createAnalysis, isPending: isCreatingAnalysis } = useMutation({
+		mutationFn: () => workerClientService?.createWorkerAnalysis() ?? Promise.resolve(null),
+		onSuccess: () => {
+			toast.success('Analysis created successfully');
+			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.WORKER_ANALYSIS.all });
+			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.WORKER_ACTIONS.all });
+		},
+		onError: (error) => {
+			toast.error('An error occurred while creating the analysis', { description: error.message });
+		},
+	});
+
+	const handleCreateAnalysis = () => {
+		createAnalysis();
 	};
 
 	const handleRuleUpdate = (ruleId: string, updates: Partial<Rule>) => {
@@ -154,7 +180,7 @@ export default function Worker({
 	};
 
 	const handleValidateAll = async () => {
-		if (!workerActions || workerActions.length === 0) return;
+		if (!displayWorkerActions || displayWorkerActions.length === 0) return;
 
 		setIsExecuting(true);
 
@@ -189,9 +215,29 @@ export default function Worker({
 		}
 	};
 
-	if (isWorkerAnalysisLoading || isWorkerActionsLoading) {
+	if (!ready || isWorkerAnalysisLoading || isWorkerActionsLoading) {
 		return <FullScreenLoader text='Loading Worker' />;
 	}
+
+	const createAgent = async () => {
+		try {
+			setAgentCreationLoading(true);
+			if (!userId) {
+				throw new Error('User ID is required to create an agent');
+			}
+			const character = getWorkerCreationTemplate(userId);
+			const agent = await elizaService.createAgent(character);
+			if (!agent) {
+				throw new Error('Failed to create agent');
+			}
+			toast.success('Agent created successfully');
+			router.push(`/worker`);
+		} catch (error) {
+			toast.error('Failed to create agent', { description: error instanceof Error ? error.message : 'Unknown error' });
+		} finally {
+			setAgentCreationLoading(false);
+		}
+	};
 
 	return (
 		<PageWrapper>
@@ -224,7 +270,7 @@ export default function Worker({
 					</Button>
 				</div>
 
-				{config && <WorkerToggle mode={config.mode} onModeChange={handleModeChange} />}
+				{config && <WorkerToggle onCreateAnalysis={handleCreateAnalysis} isCreatingAnalysis={isCreatingAnalysis} />}
 			</motion.div>
 
 			{/* Analysis Section */}
@@ -233,7 +279,9 @@ export default function Worker({
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ delay: 0.1, duration: 0.8 }}
 			>
-				<AnalysisPanel analysis={workerAnalysis && workerAnalysis.length > 0 ? workerAnalysis[0] : null} />
+				<AnalysisPanel
+					analysis={displayWorkerAnalysis && displayWorkerAnalysis.length > 0 ? displayWorkerAnalysis[0] : null}
+				/>
 			</motion.div>
 
 			<div className='grid lg:grid-cols-3 gap-6 md:gap-8'>
@@ -245,11 +293,11 @@ export default function Worker({
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.2, duration: 0.8 }}
 					>
-						{workerActions && (
+						{displayWorkerActions && (
 							<ActionList
 								agentId={agentId}
-								userId={userId}
-								actions={workerActions.filter((action) => action.status === 'pending')}
+								userId={userId ?? null}
+								actions={displayWorkerActions.filter((action) => action.status === 'pending')}
 								onValidateAll={handleValidateAll}
 								isExecuting={isExecuting}
 								mode={config.mode}
@@ -262,7 +310,7 @@ export default function Worker({
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.3, duration: 0.8 }}
 					>
-						<ActionHistory actions={workerActions?.filter((action) => action.status !== 'pending') || []} />
+						<ActionHistory actions={displayWorkerActions?.filter((action) => action.status !== 'pending') || []} />
 					</motion.div>
 				</div>
 
@@ -318,15 +366,23 @@ export default function Worker({
 						<AlertDialogHeader>
 							<AlertDialogTitle className='text-sendo-orange title-font'>All these data are mocked</AlertDialogTitle>
 							<AlertDialogDescription>
-								No agent found. All the data are mocked for demonstration purposes.
+								{authenticated
+									? 'No agent found. All the data are mocked for demonstration purposes. To see the real data, please create your agent.'
+									: 'You are not authenticated. Please sign in for full access.'}
 							</AlertDialogDescription>
 						</AlertDialogHeader>
 						<AlertDialogFooter>
 							<AlertDialogCancel onClick={() => setDisplayMockedAlert(false)}>Continue</AlertDialogCancel>
+							{authenticated && (
+								<AlertDialogAction onClick={createAgent} disabled={agentCreationLoading}>
+									Create Agent
+								</AlertDialogAction>
+							)}
 						</AlertDialogFooter>
 					</AlertDialogContent>
 				</AlertDialog>
 			)}
+			{isCreatingAnalysis && <FullScreenLoader text='Creating Analysis' blur={true} />}
 		</PageWrapper>
 	);
 }
