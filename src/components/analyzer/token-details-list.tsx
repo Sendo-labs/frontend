@@ -14,7 +14,11 @@ interface TokenData {
 	pnl_sol: number;
 	tokens_held: number;
 	ath_price: number;
+	purchase_price: number;
+	sold_price: number;
+	price_diff_pct?: number;
 	transactions: number;
+	total_tokens_traded: number;
 }
 
 interface TokenDetailsListProps {
@@ -131,10 +135,10 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 						</div>
 
 						{/* Stats Grid */}
-						<div className='grid grid-cols-2 sm:grid-cols-4 gap-4 pt-3 border-t border-foreground/10'>
+						<div className='grid grid-cols-2 sm:grid-cols-3 gap-4 pt-3 border-t border-foreground/10'>
 							<div>
-								<p className='text-foreground/40 text-xs mb-1'>Volume Total</p>
-								<p className='text-foreground font-bold text-sm'>{token.volume_sol.toFixed(3)} SOL</p>
+								<p className='text-foreground/40 text-xs mb-1'>Total Value Traded</p>
+								<p className='text-foreground font-bold text-sm'>{token.volume_sol.toFixed(4)} SOL</p>
 							</div>
 							<div>
 								<p className='text-foreground/40 text-xs mb-1'>PnL Realized</p>
@@ -146,12 +150,23 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 								</p>
 							</div>
 							<div>
-								<p className='text-foreground/40 text-xs mb-1'>Tokens Held</p>
-								<p className='text-foreground font-bold text-sm'>{token.tokens_held.toLocaleString()}</p>
+								<p className='text-foreground/40 text-xs mb-1'>Purchase Price</p>
+								<p className='text-foreground font-bold text-sm'>${token.purchase_price.toFixed(8)}</p>
 							</div>
 							<div>
-								<p className='text-foreground/40 text-xs mb-1'>ATH</p>
-								<p className='text-foreground font-bold text-sm'>{token.ath_price.toFixed(8)} SOL</p>
+								<p className='text-foreground/40 text-xs mb-1'>ATH Price</p>
+								<p className='text-sendo-red font-bold text-sm'>
+									${token.ath_price.toFixed(8)}
+									{token.price_diff_pct !== undefined && token.price_diff_pct !== 0 && (
+										<span className='text-sendo-red/70 ml-2'>
+											(+{token.price_diff_pct.toFixed(2)}%)
+										</span>
+									)}
+								</p>
+							</div>
+							<div>
+								<p className='text-foreground/40 text-xs mb-1'>Tokens Held</p>
+								<p className='text-foreground font-bold text-sm'>{token.tokens_held.toLocaleString()}</p>
 							</div>
 						</div>
 
