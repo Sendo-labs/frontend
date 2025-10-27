@@ -1,4 +1,5 @@
 export const WORKER_AGENT_NAME = 'sendo-worker';
+export const CHAT_AGENT_NAME = 'sendo-chat';
 
 export const SOCIAL_LINKS = {
 	Twitter: {

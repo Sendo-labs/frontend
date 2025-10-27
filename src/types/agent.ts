@@ -19,8 +19,9 @@ interface AgentMessage {
  * Parameters for useElizaChat hook
  */
 interface UseElizaChatParams {
-	agentId?: string;
+	agentId: string | null;
 	channelId?: string;
+	userId: string | null;
 }
 
 /**

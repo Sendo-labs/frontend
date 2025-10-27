@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import './globals.css';
 import Navigation from '@/components/navigation';
-import AgentPanel from '@/components/agent-panel';
+import AgentPanel from '@/components/agent-chat';
 import { GlobalProviders } from '@/lib/providers';
 
 const geistSans = Geist({
