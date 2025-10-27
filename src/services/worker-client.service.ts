@@ -1,84 +1,68 @@
-import { elizaService } from '@/services/eliza.service';
 import type {
 	AnalysisResult,
+	GetActionData,
 	GetAnalysesData,
 	GetAnalysisActionsData,
 	GetAnalysisByIdData,
-	RunAnalysisData,
+	RecommendedAction,
 } from '@sendo-labs/plugin-sendo-worker';
-import type { RecommendedAction, GetActionData } from '@sendo-labs/plugin-sendo-worker';
+import { elizaService } from '@/services/eliza.service';
 
+/**
+ * WorkerClientService - Simplified client for Worker plugin API
+ * Handles all Worker-related API calls for a specific agent
+ */
 export class WorkerClientService {
-	private agentId: string;
+	private readonly agentId: string;
+	private readonly basePluginPath: string;
 
 	constructor(agentId: string) {
-		const elizaServerUrl = elizaService.getBaseUrl();
-		if (!elizaServerUrl) {
+		if (!elizaService.getBaseUrl()) {
 			throw new Error('[WorkerClientService] NEXT_PUBLIC_ELIZA_SERVER_URL is not set');
 		}
 		this.agentId = agentId;
+		this.basePluginPath = `api/agents/${this.agentId}/plugins/plugin-sendo-worker`;
 	}
 
 	/**
-	 * Get the worker analysis
-	 * @returns {Promise<AnalysisResult>}
+	 * Get all analyses for this agent
 	 */
-	async getWorkerAnalysis(): Promise<AnalysisResult[]> {
-		const response = await elizaService.apiRequest<{ data: GetAnalysesData }>(
-			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/analysis`,
-			'GET',
-		);
-		return response.data.analyses;
+	async getAnalyses(): Promise<AnalysisResult[]> {
+		const response = await this.request<GetAnalysesData>('/analysis', 'GET');
+		return response.analyses;
 	}
 
 	/**
-	 * Get the worker analysis by id
-	 * @param {string} id
-	 * @returns {Promise<AnalysisResult>}
+	 * Get a specific analysis by ID
 	 */
-	async getWorkerAnalysisById(id: string): Promise<AnalysisResult> {
-		const response = await elizaService.apiRequest<{ data: GetAnalysisByIdData }>(
-			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/analysis/${id}`,
-			'GET',
-		);
-		return response.data.analysis;
+	async getAnalysisById(id: string): Promise<AnalysisResult> {
+		const response = await this.request<GetAnalysisByIdData>(`/analysis/${id}`, 'GET');
+		return response.analysis;
 	}
 
 	/**
-	 * Get the worker actions by analysis id
-	 * @param {string} analysisId
-	 * @returns {Promise<RecommendedAction[]>}
+	 * Get all actions for a specific analysis
 	 */
-	async getWorkerActionsByAnalysisId(analysisId: string): Promise<RecommendedAction[]> {
-		const response = await elizaService.apiRequest<{ data: GetAnalysisActionsData }>(
-			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/analysis/${analysisId}/actions`,
-			'GET',
-		);
-		return response.data.actions;
+	async getActionsByAnalysisId(analysisId: string): Promise<RecommendedAction[]> {
+		const response = await this.request<GetAnalysisActionsData>(`/analysis/${analysisId}/actions`, 'GET');
+		return response.actions;
 	}
 
 	/**
-	 * Get the worker action by id
-	 * @param {string} id
-	 * @returns {Promise<RecommendedAction>}
+	 * Get a specific action by ID
 	 */
-	async getWorkerActionById(id: string): Promise<RecommendedAction> {
-		const response = await elizaService.apiRequest<{ data: GetActionData }>(
-			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/action/${id}`,
-			'GET',
-		);
-		return response.data.action;
+	async getActionById(id: string): Promise<RecommendedAction> {
+		const response = await this.request<GetActionData>(`/action/${id}`, 'GET');
+		return response.action;
 	}
 
 	/**
-	 * Create a new worker analysis
-	 * @returns {Promise<AnalysisResult>}
+	 * Make a request to the Worker plugin API
+	 * Centralizes path construction and error handling
 	 */
-	async createWorkerAnalysis(): Promise<AnalysisResult> {
-		const response = await elizaService.apiRequest<{ data: RunAnalysisData }>(
-			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/analysis`,
-			'POST',
-		);
-		return response.data.analysis;
+	private async request<T>(path: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH', body?: any): Promise<T> {
+		const fullPath = `${this.basePluginPath}${path}`;
+		const response = await elizaService.apiRequest<{ data: T }>(fullPath, method, body);
+		return response.data;
 	}
 }

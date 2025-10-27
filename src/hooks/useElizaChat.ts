@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { io, Socket } from 'socket.io-client';
-import { UUID } from 'crypto';
-import { AgentMessage, UseElizaChatParams, UseElizaChatReturn } from '@/types/agent';
 import type { Message } from '@elizaos/api-client';
+import type { UUID } from 'crypto';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { io, type Socket } from 'socket.io-client';
 import { elizaService } from '@/services/eliza.service';
+import type { AgentMessage, UseElizaChatParams, UseElizaChatReturn } from '@/types/agent';
 
 /**
  * Hook to manage chat with an Eliza agent

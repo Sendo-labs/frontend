@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import Worker from './client';
 import { QueryBoundary } from '@/components/shared/query-boundary';
+import { getWorkerAgentId } from '@/lib/agents/utils';
+import { getServerSession } from '@/lib/auth/session';
 import { elizaService } from '@/services/eliza.service';
 import { WorkerClientService } from '@/services/worker-client.service';
-import { getServerSession } from '@/lib/auth/session';
-import { getWorkerAgentId } from '@/lib/agents/utils';
+import Worker from './client';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,13 +40,13 @@ async function Content() {
 	}
 
 	const workerClientService = new WorkerClientService(agentId);
-	const workerAnalysis = await workerClientService.getWorkerAnalysis();
+	const workerAnalysis = await workerClientService.getAnalyses();
 
 	if (workerAnalysis.length > 0) {
 		const lastAnalysis = workerAnalysis.sort(
 			(a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
 		)[0];
-		const analysisActions = await workerClientService.getWorkerActionsByAnalysisId(lastAnalysis.id);
+		const analysisActions = await workerClientService.getActionsByAnalysisId(lastAnalysis.id);
 		return <Worker agentId={agentId} initialWorkerAnalysis={workerAnalysis} initialAnalysisActions={analysisActions} />;
 	}
 

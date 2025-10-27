@@ -1,6 +1,6 @@
+import type { User } from '@privy-io/node';
 import { cookies } from 'next/headers';
 import privy from './privy';
-import type { User } from '@privy-io/node';
 
 export type PrivySession = {
 	user: User;

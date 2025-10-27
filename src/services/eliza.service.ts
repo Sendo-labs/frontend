@@ -1,5 +1,5 @@
-import { ElizaClient } from '@elizaos/api-client';
 import type { Agent, ApiClientConfig } from '@elizaos/api-client';
+import { ElizaClient } from '@elizaos/api-client';
 import type { Character } from '@elizaos/core';
 
 /**
@@ -30,34 +30,38 @@ class ElizaService {
 	 * @returns {ApiClientConfig}
 	 */
 	private createClientConfig(): ApiClientConfig {
+		const { apiKey, baseUrl } = this.getEnvConfig();
+
+		return {
+			baseUrl,
+			timeout: 30000,
+			headers: { Accept: 'application/json' },
+			...(apiKey && { apiKey }),
+		};
+	}
+
+	private getEnvConfig(): { apiKey: string; baseUrl: string } {
 		const apiKey = process.env.NEXT_PUBLIC_ELIZA_SERVER_AUTH_TOKEN;
 		const baseUrl = process.env.NEXT_PUBLIC_ELIZA_SERVER_URL;
 
 		if (!apiKey || !baseUrl) {
-			throw new Error('NEXT_PUBLIC_ELIZA_SERVER_AUTH_TOKEN and NEXT_PUBLIC_ELIZA_SERVER_URL are required');
+			throw new Error(
+				'Missing environment variables: NEXT_PUBLIC_ELIZA_SERVER_AUTH_TOKEN and NEXT_PUBLIC_ELIZA_SERVER_URL are required',
+			);
 		}
 
-		const config: ApiClientConfig = {
-			baseUrl: baseUrl,
-			timeout: 30000,
-			headers: {
-				Accept: 'application/json',
-			},
-		};
-
-		// Include apiKey (X-API-KEY header)
-		if (apiKey) {
-			config.apiKey = apiKey;
-		}
-
-		return config;
+		return { apiKey, baseUrl };
 	}
 
-	/**
-	 * Get or create the Eliza client instance
-	 * @returns {ElizaClient}
-	 */
-	public getClient(): ElizaClient {
+	getBaseUrl(): string {
+		return this.getEnvConfig().baseUrl;
+	}
+
+	getConfig(): ApiClientConfig | null {
+		return this.config;
+	}
+
+	getClient(): ElizaClient {
 		if (!this.elizaClient) {
 			this.config = this.createClientConfig();
 			this.elizaClient = ElizaClient.create(this.config);
@@ -65,40 +69,13 @@ class ElizaService {
 		return this.elizaClient;
 	}
 
-	/**
-	 * Get the current configuration
-	 * @returns {ApiClientConfig | null}
-	 */
-	public getConfig(): ApiClientConfig | null {
-		return this.config;
+	isInitialized(): boolean {
+		return this.elizaClient !== null;
 	}
 
-	/**
-	 * Get the base URL from environment variables
-	 * @returns {string}
-	 */
-	public getBaseUrl(): string {
-		const baseUrl = process.env.NEXT_PUBLIC_ELIZA_SERVER_URL;
-		if (!baseUrl) {
-			throw new Error('NEXT_PUBLIC_ELIZA_SERVER_URL is not set');
-		}
-		return baseUrl;
-	}
-
-	/**
-	 * Reset the Eliza client (useful for API key changes or configuration updates)
-	 */
-	public reset(): void {
+	reset(): void {
 		this.elizaClient = null;
 		this.config = null;
-	}
-
-	/**
-	 * Check if the client is initialized
-	 * @returns {boolean}
-	 */
-	public isInitialized(): boolean {
-		return this.elizaClient !== null;
 	}
 
 	/**
@@ -108,30 +85,27 @@ class ElizaService {
 	 * @param {any} body - The body of the request
 	 * @returns {Promise<T>} - The response from the API
 	 */
-	public async apiRequest<T>(
-		path: string,
-		method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
-		body?: any,
-	): Promise<T> {
-		const config = this.getConfig();
-		if (!config) {
-			throw new Error('Eliza client is not initialized');
-		}
+	async apiRequest<T>(path: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH', body?: any): Promise<T> {
+		const config = this.config || this.createClientConfig();
+		const url = `${config.baseUrl}${path}`;
+
 		try {
-			const response = await fetch(`${config.baseUrl}${path}`, {
+			const response = await fetch(url, {
 				method,
-				headers: new Headers({
+				headers: {
 					'Content-Type': 'application/json',
 					'X-API-KEY': config.apiKey || '',
-				}),
-				body: JSON.stringify(body),
+				},
+				...(body && { body: JSON.stringify(body) }),
 			});
+
 			if (!response.ok) {
-				throw new Error(`Failed to make API request to ${path}: ${response.statusText}`);
+				throw new Error(`API request failed: ${response.status} ${response.statusText}`);
 			}
+
 			return response.json() as Promise<T>;
 		} catch (error) {
-			console.error(`[ElizaService] Failed to make API request to ${path}:`, error);
+			console.error(`[ElizaService] API request to ${path} failed:`, error);
 			throw error;
 		}
 	}
@@ -141,25 +115,28 @@ class ElizaService {
 	 * @param {Character} character - The character to create the agent from
 	 * @returns {Promise<Agent>} - The created agent
 	 */
-	public async createAgent(character: Character): Promise<Agent> {
+	async createAgent(character: Character): Promise<Agent> {
 		try {
-			const response = await this.getClient()?.agents.createAgent({
+			const agent = await this.getClient().agents.createAgent({
 				characterJson: character,
 			});
-			if (!response) {
+
+			if (!agent) {
 				throw new Error('Failed to create agent');
 			}
-			const startResponse = await this.getClient()?.agents.startAgent(response.id);
+
+			const startResponse = await this.getClient().agents.startAgent(agent.id);
+
 			if (!startResponse?.status) {
-				throw new Error('Failed to start agent');
+				throw new Error(`Failed to start agent ${agent.id}`);
 			}
-			return response;
+
+			return agent;
 		} catch (error) {
-			console.error('[ElizaService] Failed to create and start agent:', error);
+			console.error('[ElizaService] Agent creation failed:', error);
 			throw error;
 		}
 	}
 }
 
-// Singleton instance
 export const elizaService = ElizaService.getInstance();

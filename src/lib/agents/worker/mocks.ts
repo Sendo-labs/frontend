@@ -1,5 +1,4 @@
-import type { AnalysisResult } from '@sendo-labs/plugin-sendo-worker';
-import type { RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
+import type { AnalysisResult, RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
 
 export const MOCKED_WORKER_ANALYSIS: AnalysisResult[] = [
 	{

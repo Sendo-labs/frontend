@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { elizaService } from '@/services/eliza.service';
 
 interface Agent {
