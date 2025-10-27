@@ -10,8 +10,8 @@ import { QUERY_KEYS } from '@/lib/query-keys';
 import { toast } from 'sonner';
 
 interface ActionListProps {
-	agentId: string;
-	userId: string;
+	agentId: string | null;
+	userId: string | null;
 	actions: RecommendedAction[] | null;
 	onValidateAll: () => void;
 	isExecuting: boolean;
@@ -39,11 +39,11 @@ const PRIORITY_TEXT: Record<string, string> = {
 };
 
 export default function ActionList({ agentId, userId, actions, onValidateAll, isExecuting, mode }: ActionListProps) {
-	const agentService = createAgentService(agentId, userId);
+	const agentService = agentId && userId ? createAgentService(agentId, userId) : null;
 	const queryClient = useQueryClient();
 
 	const { mutate: acceptAction, isPending: isAcceptingAction } = useMutation({
-		mutationFn: (action: RecommendedAction) => agentService.acceptActions([action]),
+		mutationFn: (action: RecommendedAction) => agentService?.acceptActions([action]) ?? Promise.resolve(),
 		onSuccess: () => {
 			toast.success('Action accepted successfully', {
 				description: 'The action has been executed',
@@ -56,7 +56,7 @@ export default function ActionList({ agentId, userId, actions, onValidateAll, is
 	});
 
 	const { mutate: rejectAction, isPending: isRejectingAction } = useMutation({
-		mutationFn: (action: RecommendedAction) => agentService.rejectActions([action]),
+		mutationFn: (action: RecommendedAction) => agentService?.rejectActions([action]) ?? Promise.resolve(),
 		onSuccess: () => {
 			toast.success('Action rejected successfully', {
 				description: 'The action has been cancelled',

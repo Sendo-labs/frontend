@@ -30,6 +30,11 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { usePrivy } from '@privy-io/react-auth';
+import { MOCKED_WORKER_ANALYSIS, MOCK_ANALYSIS_ACTIONS } from '@/lib/agents/worker/mocks';
+import { elizaService } from '@/services/eliza.service';
+import { getWorkerCreationTemplate } from '@/lib/agents/creation-template';
+import { toast } from 'sonner';
 
 interface RuleParams {
 	min_usd?: number;
@@ -76,24 +81,31 @@ interface Plugin {
 }
 
 interface WorkerProps {
-	agentId: string;
+	agentId: string | null;
 	initialWorkerAnalysis: AnalysisResult[];
 	initialAnalysisActions: RecommendedAction[];
-	mocked?: boolean;
 }
 
 export default function Worker({
-	agentId,
+	agentId = null,
 	initialWorkerAnalysis,
 	initialAnalysisActions,
-	mocked = false,
 }: WorkerProps) {
-	const workerClientService = new WorkerClientService(agentId);
+	const { authenticated, user } = usePrivy();
+	// If the user is not authenticated or the agentId is null, we use the mocked data
+	const mocked = !authenticated || agentId === null;
+	if (mocked) {
+		initialWorkerAnalysis = MOCKED_WORKER_ANALYSIS;
+		initialAnalysisActions = MOCK_ANALYSIS_ACTIONS;
+	}
+	const workerClientService = agentId ? new WorkerClientService(agentId) : null;
 	const [displayMockedAlert, setDisplayMockedAlert] = useState(mocked);
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
 	const [selectedPluginToConnect, setSelectedPluginToConnect] = useState<Plugin | null>(null);
-	const userId = 'test_user';
+	
+	const userId = authenticated ? user?.id : null;
+
 	const config: Config = {
 		mode: 'suggest',
 		rules: [
@@ -117,7 +129,7 @@ export default function Worker({
 		refetch: refetchWorkerAnalysis,
 	} = useQuery({
 		queryKey: QUERY_KEYS.WORKER_ANALYSIS.list(),
-		queryFn: () => workerClientService.getWorkerAnalysis(),
+		queryFn: () => workerClientService?.getWorkerAnalysis() ?? [],
 		initialData: initialWorkerAnalysis,
 	});
 
@@ -139,7 +151,7 @@ export default function Worker({
 			if (!lastAnalysis) {
 				return [];
 			}
-			return workerClientService.getWorkerActionsByAnalysisId(lastAnalysis.id);
+			return workerClientService?.getWorkerActionsByAnalysisId(lastAnalysis.id) ?? [];
 		},
 		initialData: initialAnalysisActions,
 	});
@@ -192,6 +204,23 @@ export default function Worker({
 	if (isWorkerAnalysisLoading || isWorkerActionsLoading) {
 		return <FullScreenLoader text='Loading Worker' />;
 	}
+
+	const createAgent = async () => {
+		try {
+			if (!userId) {
+				throw new Error('User ID is required to create an agent');
+			}
+			const character = getWorkerCreationTemplate(userId);
+			const agent = await elizaService.createAgent(character);
+			if (!agent) {
+				throw new Error('Failed to create agent');
+			}
+			toast.success('Agent created successfully');
+		} catch (error) {
+			console.error('[Worker] Failed to create agent:', error);
+			toast.error('Failed to create agent', { description: error instanceof Error ? error.message : 'Unknown error' });
+		}
+	};
 
 	return (
 		<PageWrapper>
@@ -248,7 +277,7 @@ export default function Worker({
 						{workerActions && (
 							<ActionList
 								agentId={agentId}
-								userId={userId}
+								userId={userId ?? null}
 								actions={workerActions.filter((action) => action.status === 'pending')}
 								onValidateAll={handleValidateAll}
 								isExecuting={isExecuting}
@@ -316,13 +345,14 @@ export default function Worker({
 				<AlertDialog open={displayMockedAlert}>
 					<AlertDialogContent>
 						<AlertDialogHeader>
-							<AlertDialogTitle className='text-sendo-orange title-font'>All these data are mocked</AlertDialogTitle>
+							<AlertDialogTitle className='text-sendo-orange title-font'>{authenticated ? 'All these data are mocked' : 'You are not authenticated'}</AlertDialogTitle>
 							<AlertDialogDescription>
-								No agent found. All the data are mocked for demonstration purposes.
+								{authenticated ? 'No agent found. All the data are mocked for demonstration purposes. To see the real data, please create your agent.' : 'You are not authenticated. Please sign in for full access.'}
 							</AlertDialogDescription>
 						</AlertDialogHeader>
 						<AlertDialogFooter>
 							<AlertDialogCancel onClick={() => setDisplayMockedAlert(false)}>Continue</AlertDialogCancel>
+							{authenticated && <AlertDialogAction onClick={createAgent}>Create Agent</AlertDialogAction>}
 						</AlertDialogFooter>
 					</AlertDialogContent>
 				</AlertDialog>

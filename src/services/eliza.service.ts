@@ -1,5 +1,6 @@
 import { ElizaClient } from '@elizaos/api-client';
-import type { ApiClientConfig } from '@elizaos/api-client';
+import type { Agent, ApiClientConfig } from '@elizaos/api-client';
+import type { Character } from '@elizaos/core';
 
 /**
  * ElizaService - Service class for managing Eliza API client
@@ -131,6 +132,26 @@ class ElizaService {
 			return response.json() as Promise<T>;
 		} catch (error) {
 			console.error(`[ElizaService] Failed to make API request to ${path}:`, error);
+			throw error;
+		}
+	}
+
+	/**
+	 * Create a new agent
+	 * @param {Character} character - The character to create the agent from
+	 * @returns {Promise<Agent>} - The created agent
+	 */
+	public async createAgent(character: Character): Promise<Agent> {
+		try {
+			const response = await this.getClient()?.agents.createAgent({
+				characterJson: character,
+			});
+			if (!response) {
+				throw new Error('Failed to create agent');
+			}
+			return response;
+		} catch (error) {
+			console.error('[ElizaService] Failed to create agent:', error);
 			throw error;
 		}
 	}

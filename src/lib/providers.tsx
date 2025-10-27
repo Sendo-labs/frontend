@@ -36,6 +36,7 @@ export function GlobalProviders({ children }: GlobalProvidersProps) {
 					accentColor: '#FF6B00',
 				},
 			}}
+			
 		>
 			<QueryClientProvider client={queryClient}>
 				{children}
