@@ -333,6 +333,10 @@ function transformAPIToResult(data: TradesAPIResponse, walletAddress: string): W
 	const totalVolumeSOLString =
 		data.summary.volume.totalVolumeSOL || data.summary.volume.totalVolumeUSD?.replace('$', '') || '0';
 	const totalVolumeSOL = parseFloat(totalVolumeSOLString.replace(' SOL', '').replace('$', ''));
+	console.log('[useTradesAnalysis] Volume extraction:', {
+		totalVolumeSOLString,
+		totalVolumeSOL,
+	});
 
 	// Calculate totalPnL by summing all token PnL values (already converted from percentage to value)
 	const totalPnL = tokens.reduce((sum, token) => sum + token.pnl_sol, 0);
@@ -547,6 +551,10 @@ export function useTradesAnalysis(walletAddress: string): UseTradesAnalysisRetur
 				summary: {
 					...data.summary,
 					tokens: mergedTokens,
+				},
+				pagination: {
+					...data.pagination,
+					totalLoaded: newTotalSignatures, // Use cumulative count
 				},
 				global: allData?.global,
 				trades: mergedTrades,
