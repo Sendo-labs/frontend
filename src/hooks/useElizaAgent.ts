@@ -2,63 +2,82 @@
 
 import { useEffect, useState } from 'react';
 import { elizaService } from '@/services/eliza.service';
+import { CHAT_CHARACTER } from '@/lib/agents/chat/character';
 
-interface Agent {
+interface LocalAgent {
 	id: string;
 	name: string;
 	[key: string]: unknown;
 }
 
+interface UseElizaAgentParams {
+	userId: string | null;
+}
+
 interface UseElizaAgentReturn {
-	agent: Agent | null;
+	agent: LocalAgent | null;
 	isLoading: boolean;
 	error: string | null;
 }
 
 /**
- * Hook to fetch the SENDO agent from Eliza server
+ * Hook to fetch or create the chat agent for a specific user
  */
-export function useElizaAgent(): UseElizaAgentReturn {
-	const [agent, setAgent] = useState<Agent | null>(null);
+export function useElizaAgent({ userId }: UseElizaAgentParams): UseElizaAgentReturn {
+	const [agent, setAgent] = useState<LocalAgent | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const elizaClient = elizaService.getClient();
 
 	useEffect(() => {
-		const fetchAgent = async () => {
+		if (!userId) {
+			setIsLoading(false);
+			return;
+		}
+
+		const fetchOrCreateAgent = async () => {
 			try {
-				console.log('[useElizaAgent] Fetching SENDO agent...');
+				console.log('[useElizaAgent] Fetching or creating chat agent for user:', userId);
+
+				// First, try to list all agents and find an existing chat agent
 				const response = await elizaClient.agents.listAgents();
 				console.log('[useElizaAgent] Raw response:', response);
 
 				// Handle response format: could be {agents: [...]}, {data: {agents: [...]}} or {data: [...]}
-				const agents =
-					(response as unknown as { agents?: Agent[] }).agents ||
-					(response as unknown as { data?: { agents?: Agent[] } }).data?.agents ||
-					(response as unknown as { data?: Agent[] }).data ||
+				const allAgents =
+					(response as unknown as { agents?: LocalAgent[] }).agents ||
+					(response as unknown as { data?: { agents?: LocalAgent[] } }).data?.agents ||
+					(response as unknown as { data?: LocalAgent[] }).data ||
 					[];
-				console.log('[useElizaAgent] Agents found:', agents);
+				console.log('[useElizaAgent] All agents found:', allAgents);
 
-				// Get the first agent (SENDO)
-				const sendoAgent = Array.isArray(agents) ? agents[0] : null;
+				// Try to find existing chat agent by name
+				const chatAgent = Array.isArray(allAgents) ? allAgents.find((a) => a.name === 'sendo-chat') : null;
 
-				if (!sendoAgent) {
-					throw new Error('SENDO agent not found. Make sure the Eliza server is running.');
+				if (chatAgent) {
+					console.log('[useElizaAgent] Found existing chat agent:', chatAgent.name);
+					setAgent(chatAgent);
+					setError(null);
+					setIsLoading(false);
+					return;
 				}
 
-				console.log('[useElizaAgent] SENDO agent loaded:', sendoAgent.name);
-				setAgent(sendoAgent);
+				// No agent found, create it
+				console.log('[useElizaAgent] Creating new chat agent...');
+				const newAgent = await elizaService.createAgent(CHAT_CHARACTER);
+				console.log('[useElizaAgent] Agent created:', newAgent.name, 'ID:', newAgent.id);
+				setAgent(newAgent as unknown as LocalAgent);
 				setError(null);
 			} catch (err) {
-				console.error('[useElizaAgent] Error fetching agent:', err);
-				setError((err as Error).message || 'Failed to load SENDO agent');
+				console.error('[useElizaAgent] Error fetching/creating agent:', err);
+				setError((err as Error).message || 'Failed to load chat agent');
 			} finally {
 				setIsLoading(false);
 			}
 		};
 
-		fetchAgent();
-	}, [elizaClient]);
+		fetchOrCreateAgent();
+	}, [userId, elizaClient]);
 
 	return { agent, isLoading, error };
 }

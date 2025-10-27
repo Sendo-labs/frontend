@@ -1,7 +1,7 @@
-import { WORKER_AGENT_NAME } from '@/lib/constants';
+import { CHAT_AGENT_NAME } from '@/lib/constants';
 import type { Character } from '@elizaos/core';
 
-export const WORKER_CHARACTER: Character = {
+export const CHAT_CHARACTER: Character = {
 	adjectives: ['Perspicace', 'Stratégique', 'Analytique', 'Éducatif', 'Fiable', 'Data-driven'],
 	bio: [
 		"Conseiller crypto spécialisé dans l'optimisation de portefeuille et l'analyse de profil d'investisseur",
@@ -131,7 +131,7 @@ export const WORKER_CHARACTER: Character = {
 			},
 		],
 	],
-	name: WORKER_AGENT_NAME,
+	name: CHAT_AGENT_NAME,
 	plugins: [
 		'@elizaos/plugin-sql',
 		'@elizaos/plugin-bootstrap',
@@ -139,11 +139,6 @@ export const WORKER_CHARACTER: Character = {
 		'@elizaos/plugin-knowledge',
 		'@elizaos/plugin-discord',
 		'@elizaos/plugin-openai',
-		'@elizaos/plugin-solana',
-		'@elizaos/plugin-jupiter',
-		'@sendo-labs/plugin-cryptoscore',
-		'@sendo-labs/plugin-sendo-analyser',
-		'@sendo-labs/plugin-sendo-worker',
 	],
 	postExamples: [
 		'Comment optimiser mon portefeuille crypto ?',
@@ -175,5 +170,5 @@ export const WORKER_CHARACTER: Character = {
 		'Market timing',
 		'Due diligence crypto',
 	],
-	username: 'Worker',
+	username: 'Chat',
 };

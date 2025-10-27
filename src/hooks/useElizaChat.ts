@@ -6,15 +6,17 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { io, type Socket } from 'socket.io-client';
 import { elizaService } from '@/services/eliza.service';
 import type { AgentMessage, UseElizaChatParams, UseElizaChatReturn } from '@/types/agent';
+import { stringToUuid } from '@elizaos/core';
 
 /**
  * Hook to manage chat with an Eliza agent
  */
-export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaChatParams): UseElizaChatReturn {
+export function useElizaChat({ agentId, channelId: initialChannelId, userId }: UseElizaChatParams): UseElizaChatReturn {
 	const [messages, setMessages] = useState<AgentMessage[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isAgentThinking, setIsAgentThinking] = useState(false);
 	const [channelId, setChannelId] = useState<string | null>(initialChannelId || null);
+	const [serverId, setServerId] = useState<string | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [animatedMessageId, setAnimatedMessageId] = useState<string | null>(null);
 	const socketRef = useRef<Socket | null>(null);
@@ -36,15 +38,20 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 					console.log('[useElizaChat] Creating new DM channel for agent:', agentId);
 
 					// For DM channels, we need the current user ID (must be a valid UUID)
-					// In a real app, this would come from auth context
-					const userId = '00000000-0000-0000-0000-000000000001'; // TODO: Replace with real user ID from auth
+					if (!userId) {
+						throw new Error('User ID is required to create DM channel');
+					}
 
 					const channel = await elizaClient.messaging.getOrCreateDmChannel({
-						participantIds: [userId, agentId as UUID],
+						participantIds: [stringToUuid(userId), agentId as UUID],
 					});
 
 					console.log('[useElizaChat] Channel created:', channel.id);
 					setChannelId(channel.id);
+					
+					// Use a default serverId for DM channels (null UUID represents the default server)
+					setServerId('00000000-0000-0000-0000-000000000000');
+					console.log('[useElizaChat] Server ID set to default');
 				}
 			} catch (err) {
 				console.error('[useElizaChat] Error creating channel:', err);
@@ -53,7 +60,7 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 		};
 
 		initChannel();
-	}, [agentId, channelId, elizaClient]);
+	}, [agentId, channelId, userId, elizaClient]);
 
 	// Load existing messages
 	useEffect(() => {
@@ -81,6 +88,12 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 					rawMessage: msg.rawMessage,
 				}));
 
+				// Set default serverId if not already set
+				if (!serverId) {
+					setServerId('00000000-0000-0000-0000-000000000000');
+					console.log('[useElizaChat] Server ID set to default from messages');
+				}
+
 				// Sort messages by createdAt to ensure chronological order (oldest first)
 				normalizedMessages.sort((a, b) => {
 					const dateA = new Date(a.createdAt).getTime();
@@ -97,7 +110,7 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 		};
 
 		loadMessages();
-	}, [channelId, elizaClient]);
+	}, [channelId, elizaClient, serverId]);
 
 	// Setup WebSocket for real-time messages
 	useEffect(() => {
@@ -116,17 +129,27 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 			console.log('[useElizaChat] WebSocket connected, socket ID:', socket.id);
 			console.log('[useElizaChat] Joining channel:', channelId);
 
-			const userId = '00000000-0000-0000-0000-000000000001';
+			if (!userId) {
+				console.error('[useElizaChat] Cannot join channel without userId');
+				return;
+			}
 
 			// Use the same format as the official Eliza client
 			// SOCKET_MESSAGE_TYPE.ROOM_JOINING = 1
+			const roomJoiningPayload: any = {
+				channelId: channelId,
+				roomId: channelId, // For backward compatibility
+				entityId: stringToUuid(userId),
+			};
+			
+			// Add serverId if available
+			if (serverId) {
+				roomJoiningPayload.serverId = serverId;
+			}
+			
 			socket.emit('message', {
 				type: 1,
-				payload: {
-					channelId: channelId,
-					roomId: channelId, // For backward compatibility
-					entityId: userId,
-				},
+				payload: roomJoiningPayload,
 			});
 
 			console.log('[useElizaChat] Emitted ROOM_JOINING event for channel:', channelId);
@@ -257,7 +280,7 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 				socket.disconnect();
 			}
 		};
-	}, [channelId, agentId]);
+	}, [channelId, agentId, userId, serverId]);
 
 	// Send a message via WebSocket
 	const sendMessage = useCallback(
@@ -273,20 +296,28 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 			try {
 				console.log('[useElizaChat] Sending message via WebSocket:', content);
 
-				const userId = '00000000-0000-0000-0000-000000000001';
-				const serverId = '00000000-0000-0000-0000-000000000000';
+				if (!userId) {
+					throw new Error('User ID is required to send message');
+				}
+
+				if (!serverId) {
+					throw new Error('Server ID is required to send message');
+				}
+
+				if (!channelId) {
+					throw new Error('Channel ID is required to send message');
+				}
+
 				const messageId = crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
 
-				// Send message via WebSocket
-				// SOCKET_MESSAGE_TYPE.SEND_MESSAGE = 2
-				socketRef.current.emit('message', {
+				const payload = {
 					type: 2,
 					payload: {
-						senderId: userId,
+						senderId: stringToUuid(userId),
 						channelId: channelId,
 						serverId: serverId,
 						message: content.trim(),
-						source: 'client_chat', // IMPORTANT: Must be 'client_chat' for action notifications to work!
+						source: 'client_chat',
 						messageId: messageId,
 						metadata: {
 							channelType: 'DM',
@@ -294,7 +325,11 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 							targetUserId: agentId,
 						},
 					},
-				});
+				};
+
+				// Send message via WebSocket
+				// SOCKET_MESSAGE_TYPE.SEND_MESSAGE = 2
+				socketRef.current.emit('message', payload);
 
 				console.log('[useElizaChat] Message sent via WebSocket:', messageId);
 
@@ -308,7 +343,7 @@ export function useElizaChat({ agentId, channelId: initialChannelId }: UseElizaC
 				throw err;
 			}
 		},
-		[channelId, agentId],
+		[channelId, agentId, userId, serverId],
 	);
 
 	// Clear all messages in the channel

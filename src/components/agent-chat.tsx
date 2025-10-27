@@ -9,7 +9,9 @@ import { AnimatedMarkdown } from '@/components/ui/animated-markdown';
 import { Tool } from '@/components/ui/tool';
 import { useElizaAgent } from '@/hooks/useElizaAgent';
 import { useElizaChat } from '@/hooks/useElizaChat';
-import { AgentMessage } from '@/types/agent';
+import type{ AgentMessage } from '@/types/agent';
+import { usePrivy } from '@privy-io/react-auth';
+import { LoginButton } from './auth/login';
 
 interface ToolPart {
 	type: string;
@@ -20,15 +22,20 @@ interface ToolPart {
 	errorText: string | null;
 }
 
-export default function AgentPanel() {
+export default function AgentChat() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [input, setInput] = useState('');
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLTextAreaElement>(null);
 	const [animatedMessagesSet, setAnimatedMessagesSet] = useState(new Set<string>());
 
-	// Fetch agent from Eliza server
-	const { agent, isLoading: agentLoading, error: agentError } = useElizaAgent();
+	const { ready, authenticated, user } = usePrivy();
+
+	// Get userId from privy user (use wallet address as fallback)
+	const userId = user?.id;
+
+	// Fetch or create agent for the authenticated user
+	const { agent, isLoading: agentLoading, error: agentError } = useElizaAgent({ userId: userId || null });
 
 	// Chat hook
 	const {
@@ -39,20 +46,21 @@ export default function AgentPanel() {
 		error: chatError,
 		animatedMessageId,
 	} = useElizaChat({
-		agentId: agent?.id,
+		agentId: agent?.id || null,
+		userId: userId || null,
 	});
 
 	const scrollToBottom = (smooth = true) => {
 		messagesEndRef.current?.scrollIntoView({ behavior: smooth ? 'smooth' : 'instant' });
 	};
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Only scroll when messages change
 	useEffect(() => {
 		scrollToBottom();
 	}, [messages]);
 
 	// Scroll to bottom immediately when chat opens
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Only scroll when isOpen changes
 	useEffect(() => {
 		if (isOpen) {
 			setTimeout(() => scrollToBottom(false), 100);
@@ -155,7 +163,7 @@ export default function AgentPanel() {
 						onTouchMove={(e) => e.stopPropagation()}
 					>
 						{/* Backdrop */}
-						<div className='absolute inset-0 bg-black/60' onClick={() => setIsOpen(false)} />
+						<button className='absolute inset-0 bg-black/60' onClick={() => setIsOpen(false)} type='button' />
 
 						{/* Drawer */}
 						<motion.div
@@ -163,8 +171,7 @@ export default function AgentPanel() {
 							animate={{ x: 0, opacity: 1 }}
 							exit={{ x: 400, opacity: 0 }}
 							transition={{ duration: 0.3, ease: 'easeOut' }}
-							className='chat-drawer relative w-full md:w-[400px] h-[80vh] md:h-[600px] md:m-6 bg-background border-2 border-sendo-orange/30 flex flex-col'
-							style={{ borderRadius: 0 }}
+							className='chat-drawer relative w-full md:w-[400px] h-[80vh] md:h-[600px] md:m-6 bg-background border-2 border-sendo-orange/30 flex flex-col rounded-none'
 							onClick={(e) => e.stopPropagation()}
 						>
 							{/* Header */}
@@ -172,26 +179,24 @@ export default function AgentPanel() {
 								<div className='flex items-center gap-3'>
 									<div
 										className='w-10 h-10 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center'
-										style={{
-											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
-										}}
+										style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
 									>
 										<Sparkles className='w-5 h-5 text-white' />
 									</div>
 									<div>
 										<h3 className='text-white font-bold text-sm uppercase title-font'>
-											{agent?.name || 'sEnDO'}{' '}
+											sEnDO {' '}
 											<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
 												AGENT
 											</span>
 										</h3>
 										<p className='text-sendo-green text-xs flex items-center gap-1'>
 											{agentLoading ? (
-												<span className='w-1.5 h-1.5 bg-sendo-green animate-pulse' style={{ borderRadius: 0 }} />
+												<span className='w-1.5 h-1.5 bg-sendo-green animate-pulse rounded-none' />
 											) : agent ? (
-												<span className='w-1.5 h-1.5 bg-sendo-green animate-pulse' style={{ borderRadius: 0 }} />
+												<span className='w-1.5 h-1.5 bg-sendo-green animate-pulse rounded-none' />
 											) : (
-												<span className='w-1.5 h-1.5 bg-sendo-red animate-pulse' style={{ borderRadius: 0 }} />
+												<span className='w-1.5 h-1.5 bg-sendo-red animate-pulse rounded-none' />
 											)}
 											{agentLoading ? (
 												'CONNECTING...'
@@ -206,7 +211,6 @@ export default function AgentPanel() {
 								<button
 									onClick={() => setIsOpen(false)}
 									className='w-8 h-8 bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center transition-colors'
-									style={{ borderRadius: 0 }}
 									type='button'
 								>
 									<X className='w-5 h-5 text-foreground/60' />
@@ -220,23 +224,40 @@ export default function AgentPanel() {
 								</div>
 							)}
 
+							{/* Login Required State */}
+							{!authenticated && (
+								<div className='flex items-center justify-center h-full'>
+									<div className='text-center max-w-xs'>
+										<Sparkles className='w-12 h-12 text-sendo-orange mx-auto mb-4' />
+										<h4 className='text-white font-bold mb-2 title-font'>LOGIN REQUIRED</h4>
+										<p className='text-foreground/60 text-sm mb-6'>
+											Login to start chatting with your agent.
+										</p>
+										<div className='flex justify-center'>
+											<LoginButton />
+										</div>
+									</div>
+								</div>
+							)}
+
 							{/* Messages */}
-							<div className='flex-1 overflow-y-auto p-4 space-y-4'>
-								{agentLoading ? (
-									<div className='flex items-center justify-center h-full'>
-										<div className='text-center'>
-											<Loader2 className='w-8 h-8 text-sendo-orange mx-auto mb-2 animate-spin' />
-											<p className='text-foreground/60 text-sm'>Connecting to agent...</p>
+							{authenticated && (
+								<div className='flex-1 overflow-y-auto p-4 space-y-4'>
+									{agentLoading ? (
+										<div className='flex items-center justify-center h-full'>
+											<div className='text-center'>
+												<Loader2 className='w-8 h-8 text-sendo-orange mx-auto mb-2 animate-spin' />
+												<p className='text-foreground/60 text-sm'>Connecting to agent...</p>
+											</div>
 										</div>
-									</div>
-								) : !agent ? (
-									<div className='flex items-center justify-center h-full'>
-										<div className='text-center'>
-											<p className='text-foreground/60 text-sm'>Agent not available</p>
-											<p className='text-foreground/40 text-xs mt-2'>Check server connection</p>
+									) : !agent ? (
+										<div className='flex items-center justify-center h-full'>
+											<div className='text-center'>
+												<p className='text-foreground/60 text-sm'>Agent not available</p>
+												<p className='text-foreground/40 text-xs mt-2'>Check server connection</p>
+											</div>
 										</div>
-									</div>
-								) : messages.length === 0 ? (
+									) : messages.length === 0 ? (
 									<div className='flex items-center justify-center h-full'>
 										<div className='text-center max-w-xs'>
 											<Sparkles className='w-12 h-12 text-sendo-orange mx-auto mb-4' />
@@ -258,9 +279,7 @@ export default function AgentPanel() {
 													className={`w-8 h-8 flex items-center justify-center flex-shrink-0 ${
 														isUser ? 'bg-foreground/10' : 'bg-gradient-to-r from-sendo-orange to-sendo-red'
 													}`}
-													style={{
-														clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
-													}}
+													style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)' }}
 												>
 													{isUser ? (
 														<span className='text-foreground text-xs'>👤</span>
@@ -271,12 +290,11 @@ export default function AgentPanel() {
 
 												<div className={`flex-1 max-w-[80%] ${isUser ? 'flex justify-end' : ''}`}>
 													<div
-														className={`p-3 ${
+														className={`p-3 rounded-none ${
 															isUser
 																? 'bg-gradient-to-r from-sendo-orange to-sendo-red text-white'
 																: 'bg-foreground/5 text-foreground'
 														}`}
-														style={{ borderRadius: 0 }}
 													>
 														{isActionMessage ? (
 															<Tool toolPart={convertToToolPart(message)} />
@@ -319,24 +337,24 @@ export default function AgentPanel() {
 									<div className='flex gap-3'>
 										<div
 											className='w-8 h-8 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center flex-shrink-0'
-											style={{
-												clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
-											}}
+											style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)' }}
 										>
 											<Sparkles className='w-4 h-4 text-white' />
 										</div>
-										<div className='bg-foreground/5 p-3 flex items-center gap-2' style={{ borderRadius: 0 }}>
+										<div className='bg-foreground/5 p-3 flex items-center gap-2 rounded-none'>
 											<Loader2 className='w-4 h-4 text-sendo-orange animate-spin' />
 											<span className='text-foreground/60 text-sm'>Thinking...</span>
 										</div>
 									</div>
 								)}
 
-								<div ref={messagesEndRef} />
-							</div>
+									<div ref={messagesEndRef} />
+								</div>
+							)}
 
 							{/* Input */}
-							<div className='border-t border-foreground/10 p-4 bg-background'>
+							{authenticated && (
+								<div className='border-t border-foreground/10 p-4 bg-background'>
 								<div className='flex items-end gap-2'>
 									<Textarea
 										ref={inputRef}
@@ -344,21 +362,17 @@ export default function AgentPanel() {
 										onChange={(e) => setInput(e.target.value)}
 										onKeyDown={handleKeyPress}
 										placeholder={agent ? 'Ask me anything...' : 'Connecting...'}
-										className='h-full bg-foreground/5 border-foreground/10 text-foreground placeholder:text-foreground/30 resize-none min-h-0'
+										className='h-full bg-foreground/5 border-foreground/10 text-foreground placeholder:text-foreground/30 resize-none min-h-0 rounded-none'
 										disabled={isLoading || isAgentThinking || !agent}
 										rows={2}
-										style={{ borderRadius: 0 }}
 									/>
 
 									<Button
 										onClick={handleSend}
 										disabled={!input.trim() || isLoading || isAgentThinking || !agent}
 										size='icon'
-										className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 flex-shrink-0 h-[72px] w-12 disabled:opacity-50'
-										style={{
-											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
-											borderRadius: 0,
-										}}
+										className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 flex-shrink-0 h-[72px] w-12 disabled:opacity-50 rounded-none'
+										style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
 									>
 										{isLoading ? (
 											<Loader2 className='w-5 h-5 animate-spin' />
@@ -368,7 +382,8 @@ export default function AgentPanel() {
 									</Button>
 								</div>
 								<p className='text-foreground/40 text-[10px] mt-2'>Press Enter to send • Shift+Enter for new line</p>
-							</div>
+								</div>
+							)}
 						</motion.div>
 					</motion.div>
 				)}
