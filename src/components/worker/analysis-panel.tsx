@@ -21,7 +21,7 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 						</span>
 					</h2>
 				</div>
-				<div className='bg-foreground/5 border border-foreground/10 p-12 text-center' style={{ borderRadius: 0 }}>
+				<div className='bg-foreground/5 border border-foreground/10 p-12 text-center rounded-none'>
 					{isLoading ? (
 						<>
 							<div className='w-16 h-16 border-4 border-sendo-orange border-t-transparent mx-auto mb-4 rounded-none animate-spin' />
@@ -69,7 +69,7 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 				</div>
 			</div>
 
-			<div className='border border-foreground/10 bg-foreground/5 p-6' style={{ borderRadius: 0 }}>
+			<div className='border border-foreground/10 bg-foreground/5 p-6 rounded-none'>
 				{/* Header with execution time and plugins */}
 				<div className='flex flex-col sm:flex-row sm:items-center justify-between mb-6 pb-4 border-b border-foreground/10 gap-4'>
 					<div className='flex flex-col sm:flex-row sm:items-center gap-4'>
