@@ -28,13 +28,13 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { usePrivy } from '@privy-io/react-auth';
 import { MOCKED_WORKER_ANALYSIS, MOCK_ANALYSIS_ACTIONS } from '@/lib/agents/worker/mocks';
 import { elizaService } from '@/services/eliza.service';
 import { getWorkerCreationTemplate } from '@/lib/agents/creation-template';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 interface RuleParams {
 	min_usd?: number;
@@ -86,38 +86,37 @@ interface WorkerProps {
 	initialAnalysisActions: RecommendedAction[];
 }
 
+const config: Config = {
+	mode: 'suggest',
+	rules: [
+		{ id: 'sell_dust', enabled: true, params: { min_usd: 15 } },
+		{ id: 'take_profit', enabled: true, params: { target_pct: 25 } },
+		{
+			id: 'rebalance',
+			enabled: false,
+			params: { target: { SOL: 0.6, USDC: 0.4 } },
+		},
+	],
+	connections: {
+		oauth: ['jupiter'],
+		api_keys: ['defi_provider_x'],
+	},
+};
+
 export default function Worker({ agentId = null, initialWorkerAnalysis, initialAnalysisActions }: WorkerProps) {
-	const { authenticated, user } = usePrivy();
+	const { authenticated, user, ready } = usePrivy();
+	const router = useRouter();
 	// If the user is not authenticated or the agentId is null, we use the mocked data
 	const mocked = !authenticated || agentId === null;
-	if (mocked) {
-		initialWorkerAnalysis = MOCKED_WORKER_ANALYSIS;
-		initialAnalysisActions = MOCK_ANALYSIS_ACTIONS;
-	}
+	
 	const workerClientService = agentId ? new WorkerClientService(agentId) : null;
 	const [displayMockedAlert, setDisplayMockedAlert] = useState(mocked);
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
 	const [selectedPluginToConnect, setSelectedPluginToConnect] = useState<Plugin | null>(null);
-
+	const [agentCreationLoading, setAgentCreationLoading] = useState(false);
+	
 	const userId = authenticated ? user?.id : null;
-
-	const config: Config = {
-		mode: 'suggest',
-		rules: [
-			{ id: 'sell_dust', enabled: true, params: { min_usd: 15 } },
-			{ id: 'take_profit', enabled: true, params: { target_pct: 25 } },
-			{
-				id: 'rebalance',
-				enabled: false,
-				params: { target: { SOL: 0.6, USDC: 0.4 } },
-			},
-		],
-		connections: {
-			oauth: ['jupiter'],
-			api_keys: ['defi_provider_x'],
-		},
-	};
 
 	const {
 		data: workerAnalysis,
@@ -126,14 +125,17 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 	} = useQuery({
 		queryKey: QUERY_KEYS.WORKER_ANALYSIS.list(),
 		queryFn: () => workerClientService?.getWorkerAnalysis() ?? [],
-		initialData: initialWorkerAnalysis,
+		placeholderData: initialWorkerAnalysis,
+		enabled: !mocked,
 	});
+	
+	const displayWorkerAnalysis = mocked ? MOCKED_WORKER_ANALYSIS : workerAnalysis;
 
-	const lastWorkerAnalysis = () => {
-		if (!workerAnalysis || workerAnalysis.length === 0) {
+	const lastWorkerAnalysis = (analysisData: typeof workerAnalysis) => {		
+		if (!analysisData || analysisData.length === 0) {
 			return null;
 		}
-		return workerAnalysis.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0];
+		return [...analysisData].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0];
 	};
 
 	const {
@@ -143,14 +145,17 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 	} = useQuery({
 		queryKey: QUERY_KEYS.WORKER_ACTIONS.list(),
 		queryFn: () => {
-			const lastAnalysis = lastWorkerAnalysis();
+			const lastAnalysis = lastWorkerAnalysis(workerAnalysis);
 			if (!lastAnalysis) {
 				return [];
 			}
 			return workerClientService?.getWorkerActionsByAnalysisId(lastAnalysis.id) ?? [];
 		},
-		initialData: initialAnalysisActions,
+		placeholderData: initialAnalysisActions,
+		enabled: !mocked,
 	});
+	
+	const displayWorkerActions = mocked ? MOCK_ANALYSIS_ACTIONS : workerActions;
 
 	const handleModeChange = (newMode: 'suggest' | 'auto') => {
 		config.mode = newMode;
@@ -162,7 +167,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 	};
 
 	const handleValidateAll = async () => {
-		if (!workerActions || workerActions.length === 0) return;
+		if (!displayWorkerActions || displayWorkerActions.length === 0) return;
 
 		setIsExecuting(true);
 
@@ -197,12 +202,13 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 		}
 	};
 
-	if (isWorkerAnalysisLoading || isWorkerActionsLoading) {
+	if (!ready || isWorkerAnalysisLoading || isWorkerActionsLoading) {
 		return <FullScreenLoader text='Loading Worker' />;
 	}
 
 	const createAgent = async () => {
 		try {
+			setAgentCreationLoading(true);
 			if (!userId) {
 				throw new Error('User ID is required to create an agent');
 			}
@@ -212,9 +218,11 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 				throw new Error('Failed to create agent');
 			}
 			toast.success('Agent created successfully');
+			router.push(`/worker`);
 		} catch (error) {
-			console.error('[Worker] Failed to create agent:', error);
 			toast.error('Failed to create agent', { description: error instanceof Error ? error.message : 'Unknown error' });
+		} finally {
+			setAgentCreationLoading(false);
 		}
 	};
 
@@ -258,7 +266,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ delay: 0.1, duration: 0.8 }}
 			>
-				<AnalysisPanel analysis={workerAnalysis && workerAnalysis.length > 0 ? workerAnalysis[0] : null} />
+				<AnalysisPanel analysis={displayWorkerAnalysis && displayWorkerAnalysis.length > 0 ? displayWorkerAnalysis[0] : null} />
 			</motion.div>
 
 			<div className='grid lg:grid-cols-3 gap-6 md:gap-8'>
@@ -270,11 +278,11 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.2, duration: 0.8 }}
 					>
-						{workerActions && (
+						{displayWorkerActions && (
 							<ActionList
 								agentId={agentId}
 								userId={userId ?? null}
-								actions={workerActions.filter((action) => action.status === 'pending')}
+								actions={displayWorkerActions.filter((action) => action.status === 'pending')}
 								onValidateAll={handleValidateAll}
 								isExecuting={isExecuting}
 								mode={config.mode}
@@ -287,7 +295,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.3, duration: 0.8 }}
 					>
-						<ActionHistory actions={workerActions?.filter((action) => action.status !== 'pending') || []} />
+						<ActionHistory actions={displayWorkerActions?.filter((action) => action.status !== 'pending') || []} />
 					</motion.div>
 				</div>
 
@@ -342,7 +350,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 					<AlertDialogContent>
 						<AlertDialogHeader>
 							<AlertDialogTitle className='text-sendo-orange title-font'>
-								{authenticated ? 'All these data are mocked' : 'You are not authenticated'}
+								All these data are mocked
 							</AlertDialogTitle>
 							<AlertDialogDescription>
 								{authenticated
@@ -352,7 +360,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 						</AlertDialogHeader>
 						<AlertDialogFooter>
 							<AlertDialogCancel onClick={() => setDisplayMockedAlert(false)}>Continue</AlertDialogCancel>
-							{authenticated && <AlertDialogAction onClick={createAgent}>Create Agent</AlertDialogAction>}
+							{authenticated && <AlertDialogAction onClick={createAgent} disabled={agentCreationLoading}>Create Agent</AlertDialogAction>}
 						</AlertDialogFooter>
 					</AlertDialogContent>
 				</AlertDialog>

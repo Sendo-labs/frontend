@@ -3,8 +3,8 @@ import Worker from './client';
 import { QueryBoundary } from '@/components/shared/query-boundary';
 import { elizaService } from '@/services/eliza.service';
 import { WorkerClientService } from '@/services/worker-client.service';
-import { WORKER_AGENT_NAME } from '@/lib/constants';
 import { getServerSession } from '@/lib/auth/session';
+import { getWorkerAgentId } from '@/lib/agents/utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,10 +29,14 @@ async function Content() {
 	}
 
 	const agents = await elizaService.getClient().agents.listAgents();
-	const agentId = agents.agents.find((agent) => agent.name === WORKER_AGENT_NAME)?.id;
+	const agentId = agents.agents.find((agent) => agent.id === getWorkerAgentId(signedInUser.user.id))?.id;
 
 	if (!agentId) {
-		throw new Error('WORKER agent not found');
+		return <Worker agentId={null} initialWorkerAnalysis={[]} initialAnalysisActions={[]} />;
+	}
+
+	if (agents.agents.find((agent) => agent.id === agentId)?.status !== 'active') {
+		await elizaService.getClient().agents.startAgent(agentId);
 	}
 
 	const workerClientService = new WorkerClientService(agentId);

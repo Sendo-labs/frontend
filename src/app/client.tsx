@@ -3,13 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-
 import HeroSection from '@/components/home/hero-section';
 import ContactSection from '@/components/home/contact-section';
 import HowItWorksSection from '@/components/home/how-it-works-section';
 import StatisticsSection from '@/components/home/statistics-section';
 import TeamSection from '@/components/home/team-section';
-import { TestIdentityToken } from '@/components/auth/test-identity-token';
 
 // 5 sections au total: hero + how it works + stats + team + contact
 const totalSections = 5;
@@ -41,7 +39,6 @@ export default function Home() {
 
 	return (
 		<>
-			<TestIdentityToken />
 			{/* Desktop Version - Snap Scroll */}
 			<div className='hidden md:block relative w-full h-screen overflow-hidden'>
 				{/* Navigation Dots */}

@@ -137,7 +137,7 @@ class ElizaService {
 	}
 
 	/**
-	 * Create a new agent
+	 * Create and start a new agent
 	 * @param {Character} character - The character to create the agent from
 	 * @returns {Promise<Agent>} - The created agent
 	 */
@@ -149,9 +149,13 @@ class ElizaService {
 			if (!response) {
 				throw new Error('Failed to create agent');
 			}
+			const startResponse = await this.getClient()?.agents.startAgent(response.id);
+			if (!startResponse?.status) {
+				throw new Error('Failed to start agent');
+			}
 			return response;
 		} catch (error) {
-			console.error('[ElizaService] Failed to create agent:', error);
+			console.error('[ElizaService] Failed to create and start agent:', error);
 			throw error;
 		}
 	}
