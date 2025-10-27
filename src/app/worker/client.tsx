@@ -108,14 +108,14 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 	const router = useRouter();
 	// If the user is not authenticated or the agentId is null, we use the mocked data
 	const mocked = !authenticated || agentId === null;
-	
+
 	const workerClientService = agentId ? new WorkerClientService(agentId) : null;
 	const [displayMockedAlert, setDisplayMockedAlert] = useState(mocked);
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
 	const [selectedPluginToConnect, setSelectedPluginToConnect] = useState<Plugin | null>(null);
 	const [agentCreationLoading, setAgentCreationLoading] = useState(false);
-	
+
 	const userId = authenticated ? user?.id : null;
 
 	const {
@@ -128,10 +128,10 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 		placeholderData: initialWorkerAnalysis,
 		enabled: !mocked,
 	});
-	
+
 	const displayWorkerAnalysis = mocked ? MOCKED_WORKER_ANALYSIS : workerAnalysis;
 
-	const lastWorkerAnalysis = (analysisData: typeof workerAnalysis) => {		
+	const lastWorkerAnalysis = (analysisData: typeof workerAnalysis) => {
 		if (!analysisData || analysisData.length === 0) {
 			return null;
 		}
@@ -154,7 +154,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 		placeholderData: initialAnalysisActions,
 		enabled: !mocked,
 	});
-	
+
 	const displayWorkerActions = mocked ? MOCK_ANALYSIS_ACTIONS : workerActions;
 
 	const handleModeChange = (newMode: 'suggest' | 'auto') => {
@@ -266,7 +266,9 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ delay: 0.1, duration: 0.8 }}
 			>
-				<AnalysisPanel analysis={displayWorkerAnalysis && displayWorkerAnalysis.length > 0 ? displayWorkerAnalysis[0] : null} />
+				<AnalysisPanel
+					analysis={displayWorkerAnalysis && displayWorkerAnalysis.length > 0 ? displayWorkerAnalysis[0] : null}
+				/>
 			</motion.div>
 
 			<div className='grid lg:grid-cols-3 gap-6 md:gap-8'>
@@ -349,9 +351,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 				<AlertDialog open={displayMockedAlert}>
 					<AlertDialogContent>
 						<AlertDialogHeader>
-							<AlertDialogTitle className='text-sendo-orange title-font'>
-								All these data are mocked
-							</AlertDialogTitle>
+							<AlertDialogTitle className='text-sendo-orange title-font'>All these data are mocked</AlertDialogTitle>
 							<AlertDialogDescription>
 								{authenticated
 									? 'No agent found. All the data are mocked for demonstration purposes. To see the real data, please create your agent.'
@@ -360,7 +360,11 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 						</AlertDialogHeader>
 						<AlertDialogFooter>
 							<AlertDialogCancel onClick={() => setDisplayMockedAlert(false)}>Continue</AlertDialogCancel>
-							{authenticated && <AlertDialogAction onClick={createAgent} disabled={agentCreationLoading}>Create Agent</AlertDialogAction>}
+							{authenticated && (
+								<AlertDialogAction onClick={createAgent} disabled={agentCreationLoading}>
+									Create Agent
+								</AlertDialogAction>
+							)}
 						</AlertDialogFooter>
 					</AlertDialogContent>
 				</AlertDialog>
