@@ -9,7 +9,7 @@ import { AnimatedMarkdown } from '@/components/ui/animated-markdown';
 import { Tool } from '@/components/ui/tool';
 import { useElizaAgent } from '@/hooks/useElizaAgent';
 import { useElizaChat } from '@/hooks/useElizaChat';
-import type{ AgentMessage } from '@/types/agent';
+import type { AgentMessage } from '@/types/agent';
 import { usePrivy } from '@privy-io/react-auth';
 import { LoginButton } from './auth/login';
 
@@ -185,7 +185,7 @@ export default function AgentChat() {
 									</div>
 									<div>
 										<h3 className='text-white font-bold text-sm uppercase title-font'>
-											sEnDO {' '}
+											sEnDO{' '}
 											<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
 												AGENT
 											</span>
@@ -230,9 +230,7 @@ export default function AgentChat() {
 									<div className='text-center max-w-xs'>
 										<Sparkles className='w-12 h-12 text-sendo-orange mx-auto mb-4' />
 										<h4 className='text-white font-bold mb-2 title-font'>LOGIN REQUIRED</h4>
-										<p className='text-foreground/60 text-sm mb-6'>
-											Login to start chatting with your agent.
-										</p>
+										<p className='text-foreground/60 text-sm mb-6'>Login to start chatting with your agent.</p>
 										<div className='flex justify-center'>
 											<LoginButton />
 										</div>
@@ -258,95 +256,99 @@ export default function AgentChat() {
 											</div>
 										</div>
 									) : messages.length === 0 ? (
-									<div className='flex items-center justify-center h-full'>
-										<div className='text-center max-w-xs'>
-											<Sparkles className='w-12 h-12 text-sendo-orange mx-auto mb-4' />
-											<h4 className='text-white font-bold mb-2'>Welcome to sEnDO Agent!</h4>
-											<p className='text-foreground/60 text-sm'>
-												I'm your AI assistant powered by ElizaOS. Ask me anything about your wallet, trading strategies,
-												or crypto!
-											</p>
+										<div className='flex items-center justify-center h-full'>
+											<div className='text-center max-w-xs'>
+												<Sparkles className='w-12 h-12 text-sendo-orange mx-auto mb-4' />
+												<h4 className='text-white font-bold mb-2'>Welcome to sEnDO Agent!</h4>
+												<p className='text-foreground/60 text-sm'>
+													I'm your AI assistant powered by ElizaOS. Ask me anything about your wallet, trading
+													strategies, or crypto!
+												</p>
+											</div>
 										</div>
-									</div>
-								) : (
-									messages.map((message) => {
-										const isUser = message.senderId !== agent.id;
-										const isActionMessage = message.type === 'agent_action' || message.source === 'agent_action';
+									) : (
+										messages.map((message) => {
+											const isUser = message.senderId !== agent.id;
+											const isActionMessage = message.type === 'agent_action' || message.source === 'agent_action';
 
-										return (
-											<div key={message.id} className={`flex gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
-												<div
-													className={`w-8 h-8 flex items-center justify-center flex-shrink-0 ${
-														isUser ? 'bg-foreground/10' : 'bg-gradient-to-r from-sendo-orange to-sendo-red'
-													}`}
-													style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)' }}
-												>
-													{isUser ? (
-														<span className='text-foreground text-xs'>👤</span>
-													) : (
-														<Sparkles className='w-4 h-4 text-white' />
-													)}
-												</div>
-
-												<div className={`flex-1 max-w-[80%] ${isUser ? 'flex justify-end' : ''}`}>
+											return (
+												<div key={message.id} className={`flex gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
 													<div
-														className={`p-3 rounded-none ${
-															isUser
-																? 'bg-gradient-to-r from-sendo-orange to-sendo-red text-white'
-																: 'bg-foreground/5 text-foreground'
+														className={`w-8 h-8 flex items-center justify-center flex-shrink-0 ${
+															isUser ? 'bg-foreground/10' : 'bg-gradient-to-r from-sendo-orange to-sendo-red'
 														}`}
+														style={{
+															clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
+														}}
 													>
-														{isActionMessage ? (
-															<Tool toolPart={convertToToolPart(message)} />
+														{isUser ? (
+															<span className='text-foreground text-xs'>👤</span>
 														) : (
-															<>
-																<div className='text-sm leading-relaxed'>
-																	{!isUser &&
-																	message.id === animatedMessageId &&
-																	!animatedMessagesSet.has(message.id) ? (
-																		<AnimatedMarkdown
-																			shouldAnimate={true}
-																			messageId={message.id}
-																			maxDurationMs={5000}
-																			onUpdate={() => scrollToBottom(true)}
-																		>
-																			{message.text}
-																		</AnimatedMarkdown>
-																	) : (
-																		<AnimatedMarkdown shouldAnimate={false}>{message.text}</AnimatedMarkdown>
-																	)}
-																</div>
-																{message.createdAt && (
-																	<p className='text-[10px] mt-2 opacity-60'>
-																		{new Date(message.createdAt).toLocaleTimeString([], {
-																			hour: '2-digit',
-																			minute: '2-digit',
-																		})}
-																	</p>
-																)}
-															</>
+															<Sparkles className='w-4 h-4 text-white' />
 														)}
 													</div>
-												</div>
-											</div>
-										);
-									})
-								)}
 
-								{isAgentThinking && (
-									<div className='flex gap-3'>
-										<div
-											className='w-8 h-8 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center flex-shrink-0'
-											style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)' }}
-										>
-											<Sparkles className='w-4 h-4 text-white' />
+													<div className={`flex-1 max-w-[80%] ${isUser ? 'flex justify-end' : ''}`}>
+														<div
+															className={`p-3 rounded-none ${
+																isUser
+																	? 'bg-gradient-to-r from-sendo-orange to-sendo-red text-white'
+																	: 'bg-foreground/5 text-foreground'
+															}`}
+														>
+															{isActionMessage ? (
+																<Tool toolPart={convertToToolPart(message)} />
+															) : (
+																<>
+																	<div className='text-sm leading-relaxed'>
+																		{!isUser &&
+																		message.id === animatedMessageId &&
+																		!animatedMessagesSet.has(message.id) ? (
+																			<AnimatedMarkdown
+																				shouldAnimate={true}
+																				messageId={message.id}
+																				maxDurationMs={5000}
+																				onUpdate={() => scrollToBottom(true)}
+																			>
+																				{message.text}
+																			</AnimatedMarkdown>
+																		) : (
+																			<AnimatedMarkdown shouldAnimate={false}>{message.text}</AnimatedMarkdown>
+																		)}
+																	</div>
+																	{message.createdAt && (
+																		<p className='text-[10px] mt-2 opacity-60'>
+																			{new Date(message.createdAt).toLocaleTimeString([], {
+																				hour: '2-digit',
+																				minute: '2-digit',
+																			})}
+																		</p>
+																	)}
+																</>
+															)}
+														</div>
+													</div>
+												</div>
+											);
+										})
+									)}
+
+									{isAgentThinking && (
+										<div className='flex gap-3'>
+											<div
+												className='w-8 h-8 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center flex-shrink-0'
+												style={{
+													clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
+												}}
+											>
+												<Sparkles className='w-4 h-4 text-white' />
+											</div>
+											<div className='bg-foreground/5 p-3 flex items-center gap-2 rounded-none'>
+												<Loader2 className='w-4 h-4 text-sendo-orange animate-spin' />
+												<span className='text-foreground/60 text-sm'>Thinking...</span>
+											</div>
 										</div>
-										<div className='bg-foreground/5 p-3 flex items-center gap-2 rounded-none'>
-											<Loader2 className='w-4 h-4 text-sendo-orange animate-spin' />
-											<span className='text-foreground/60 text-sm'>Thinking...</span>
-										</div>
-									</div>
-								)}
+									)}
 
 									<div ref={messagesEndRef} />
 								</div>
@@ -355,33 +357,33 @@ export default function AgentChat() {
 							{/* Input */}
 							{authenticated && (
 								<div className='border-t border-foreground/10 p-4 bg-background'>
-								<div className='flex items-end gap-2'>
-									<Textarea
-										ref={inputRef}
-										value={input}
-										onChange={(e) => setInput(e.target.value)}
-										onKeyDown={handleKeyPress}
-										placeholder={agent ? 'Ask me anything...' : 'Connecting...'}
-										className='h-full bg-foreground/5 border-foreground/10 text-foreground placeholder:text-foreground/30 resize-none min-h-0 rounded-none'
-										disabled={isLoading || isAgentThinking || !agent}
-										rows={2}
-									/>
+									<div className='flex items-end gap-2'>
+										<Textarea
+											ref={inputRef}
+											value={input}
+											onChange={(e) => setInput(e.target.value)}
+											onKeyDown={handleKeyPress}
+											placeholder={agent ? 'Ask me anything...' : 'Connecting...'}
+											className='h-full bg-foreground/5 border-foreground/10 text-foreground placeholder:text-foreground/30 resize-none min-h-0 rounded-none'
+											disabled={isLoading || isAgentThinking || !agent}
+											rows={2}
+										/>
 
-									<Button
-										onClick={handleSend}
-										disabled={!input.trim() || isLoading || isAgentThinking || !agent}
-										size='icon'
-										className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 flex-shrink-0 h-[72px] w-12 disabled:opacity-50 rounded-none'
-										style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
-									>
-										{isLoading ? (
-											<Loader2 className='w-5 h-5 animate-spin' />
-										) : (
-											<Send className='w-5 h-5 text-foreground' />
-										)}
-									</Button>
-								</div>
-								<p className='text-foreground/40 text-[10px] mt-2'>Press Enter to send • Shift+Enter for new line</p>
+										<Button
+											onClick={handleSend}
+											disabled={!input.trim() || isLoading || isAgentThinking || !agent}
+											size='icon'
+											className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 flex-shrink-0 h-[72px] w-12 disabled:opacity-50 rounded-none'
+											style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
+										>
+											{isLoading ? (
+												<Loader2 className='w-5 h-5 animate-spin' />
+											) : (
+												<Send className='w-5 h-5 text-foreground' />
+											)}
+										</Button>
+									</div>
+									<p className='text-foreground/40 text-[10px] mt-2'>Press Enter to send • Shift+Enter for new line</p>
 								</div>
 							)}
 						</motion.div>

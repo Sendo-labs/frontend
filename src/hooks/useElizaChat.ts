@@ -48,7 +48,7 @@ export function useElizaChat({ agentId, channelId: initialChannelId, userId }: U
 
 					console.log('[useElizaChat] Channel created:', channel.id);
 					setChannelId(channel.id);
-					
+
 					// Use a default serverId for DM channels (null UUID represents the default server)
 					setServerId('00000000-0000-0000-0000-000000000000');
 					console.log('[useElizaChat] Server ID set to default');
@@ -141,12 +141,12 @@ export function useElizaChat({ agentId, channelId: initialChannelId, userId }: U
 				roomId: channelId, // For backward compatibility
 				entityId: stringToUuid(userId),
 			};
-			
+
 			// Add serverId if available
 			if (serverId) {
 				roomJoiningPayload.serverId = serverId;
 			}
-			
+
 			socket.emit('message', {
 				type: 1,
 				payload: roomJoiningPayload,
