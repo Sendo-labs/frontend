@@ -1,6 +1,6 @@
 'use client';
 
-import { TrendingDown, DollarSign, AlertCircle, CheckCircle, Clock, Zap, Check, X } from 'lucide-react';
+import { TrendingDown, DollarSign, AlertCircle, CheckCircle, Zap, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { LucideIcon } from 'lucide-react';
 import type { RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
@@ -11,7 +11,6 @@ import { toast } from 'sonner';
 
 interface ActionListProps {
 	agentId: string | null;
-	userId: string | null;
 	actions: RecommendedAction[] | null;
 	onValidateAll: () => void;
 	isExecuting: boolean;
@@ -38,8 +37,8 @@ const PRIORITY_TEXT: Record<string, string> = {
 	LOW: 'text-foreground/60',
 };
 
-export default function ActionList({ agentId, userId, actions, onValidateAll, isExecuting, mode }: ActionListProps) {
-	const agentService = agentId && userId ? createAgentService(agentId, userId) : null;
+export default function ActionList({ agentId, actions, onValidateAll, isExecuting, mode }: ActionListProps) {
+	const agentService = agentId ? createAgentService(agentId) : null;
 	const queryClient = useQueryClient();
 
 	const { mutate: acceptAction, isPending: isAcceptingAction } = useMutation({

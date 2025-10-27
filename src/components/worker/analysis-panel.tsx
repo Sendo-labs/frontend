@@ -1,13 +1,14 @@
 'use client';
 
-import { Brain, TrendingUp, AlertTriangle, Target, Clock, Zap } from 'lucide-react';
 import type { AnalysisResult } from '@sendo-labs/plugin-sendo-worker';
+import { AlertTriangle, Brain, Clock, Target, TrendingUp, Zap } from 'lucide-react';
 
 interface AnalysisPanelProps {
 	analysis: AnalysisResult | null;
+	isLoading?: boolean;
 }
 
-export default function AnalysisPanel({ analysis }: AnalysisPanelProps) {
+export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisPanelProps) {
 	if (!analysis) {
 		return (
 			<div className='mb-8'>
@@ -21,9 +22,19 @@ export default function AnalysisPanel({ analysis }: AnalysisPanelProps) {
 					</h2>
 				</div>
 				<div className='bg-foreground/5 border border-foreground/10 p-12 text-center' style={{ borderRadius: 0 }}>
-					<Brain className='w-12 h-12 text-foreground/20 mx-auto mb-4' />
-					<h3 className='text-xl font-bold text-foreground mb-2 title-font'>No Analysis Yet</h3>
-					<p className='text-foreground/60'>Waiting for the first portfolio analysis...</p>
+					{isLoading ? (
+						<>
+							<div className='w-16 h-16 border-4 border-sendo-orange border-t-transparent mx-auto mb-4 rounded-none animate-spin' />
+							<h3 className='text-xl font-bold text-foreground mb-2 title-font'>Creating Analysis...</h3>
+							<p className='text-foreground/60'>The worker is analyzing your portfolio</p>
+						</>
+					) : (
+						<>
+							<Brain className='w-12 h-12 text-foreground/20 mx-auto mb-4' />
+							<h3 className='text-xl font-bold text-foreground mb-2 title-font'>No Analysis Yet</h3>
+							<p className='text-foreground/60'>Waiting for the first portfolio analysis...</p>
+						</>
+					)}
 				</div>
 			</div>
 		);
