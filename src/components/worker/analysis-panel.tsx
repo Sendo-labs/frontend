@@ -71,7 +71,10 @@ export default function AnalysisPanel({ analysis }: AnalysisPanelProps) {
 								<span className='text-xs text-foreground/40 flex-shrink-0'>Plugins:</span>
 								<div className='flex gap-1 flex-wrap overflow-hidden'>
 									{analysis.pluginsUsed.map((plugin, idx) => (
-										<span key={idx} className='text-xs bg-sendo-orange/20 text-sendo-orange px-2 py-0.5 title-font flex-shrink-0'>
+										<span
+											key={idx}
+											className='text-xs bg-sendo-orange/20 text-sendo-orange px-2 py-0.5 title-font flex-shrink-0'
+										>
 											{plugin.replace('plugin-', '')}
 										</span>
 									))}
