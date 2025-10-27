@@ -83,8 +83,7 @@ export default function AnalyzerPage() {
 	const [analyzingWallet, setAnalyzingWallet] = useState('');
 
 	// Use the trades analysis hook
-	const { result, isLoading, isLoadingMore, hasMore, error, loadMore } =
-		useTradesAnalysis(analyzingWallet);
+	const { result, isLoading, isLoadingMore, hasMore, error, loadMore } = useTradesAnalysis(analyzingWallet);
 
 	// Log result changes for debugging
 	React.useEffect(() => {
@@ -92,7 +91,7 @@ export default function AnalyzerPage() {
 			console.log('[AnalyzerPage] Result updated:', {
 				tokensCount: result.tokens.length,
 				totalMissedUSD: result.total_missed_usd,
-				tokens: result.tokens.map(t => ({
+				tokens: result.tokens.map((t) => ({
 					symbol: t.symbol,
 					transactions: t.transactions,
 				})),

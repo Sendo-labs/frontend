@@ -116,11 +116,7 @@ export class TradesService {
 	/**
 	 * Fetch trades for a wallet address
 	 */
-	public async fetchTrades(
-		address: string,
-		cursor?: string,
-		limit: number = 35,
-	): Promise<TradesAPIResponse> {
+	public async fetchTrades(address: string, cursor?: string, limit: number = 35): Promise<TradesAPIResponse> {
 		console.log('[TradesService] Fetching trades for:', address);
 		console.log('[TradesService] Cursor:', cursor);
 		console.log('[TradesService] Limit:', limit);
@@ -147,11 +143,14 @@ export class TradesService {
 			console.log('[TradesService] ===== RAW API RESPONSE =====');
 			console.log('[TradesService] Trades count:', data.trades?.length || 0);
 			console.log('[TradesService] Summary tokens count:', data.summary?.tokens?.length || 0);
-			console.log('[TradesService] Summary tokens:', data.summary?.tokens?.map((t: any) => ({
-				mint: t.mint?.slice(0, 10),
-				trades: t.trades,
-				totalVolume: t.totalVolumeUSD,
-			})) || []);
+			console.log(
+				'[TradesService] Summary tokens:',
+				data.summary?.tokens?.map((t: any) => ({
+					mint: t.mint?.slice(0, 10),
+					trades: t.trades,
+					totalVolume: t.totalVolumeUSD,
+				})) || [],
+			);
 			console.log('[TradesService] Pagination:', {
 				hasMore: data.pagination?.hasMore,
 				nextCursor: data.pagination?.nextCursor?.slice(0, 20),
@@ -168,4 +167,3 @@ export class TradesService {
 }
 
 export const tradesService = TradesService.getInstance();
-

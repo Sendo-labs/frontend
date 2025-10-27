@@ -158,9 +158,7 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 								<p className='text-sendo-red font-bold text-sm'>
 									${token.ath_price.toFixed(8)}
 									{token.price_diff_pct !== undefined && token.price_diff_pct !== 0 && (
-										<span className='text-sendo-red/70 ml-2'>
-											(+{token.price_diff_pct.toFixed(2)}%)
-										</span>
+										<span className='text-sendo-red/70 ml-2'>(+{token.price_diff_pct.toFixed(2)}%)</span>
 									)}
 								</p>
 							</div>

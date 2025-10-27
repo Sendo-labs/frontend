@@ -66,10 +66,10 @@ function calculateSummaryFromAllTrades(
 
 	for (const tx of allTrades) {
 		if (!tx.trades) continue;
-		
+
 		for (const trade of tx.trades) {
 			const mint = trade.mint;
-			
+
 			if (!tokensMap.has(mint)) {
 				tokensMap.set(mint, {
 					mint,
@@ -116,7 +116,7 @@ function calculateSummaryFromAllTrades(
 	}
 
 	// Convert to array of tokens
-	const tokens = Array.from(tokensMap.values()).map(token => ({
+	const tokens = Array.from(tokensMap.values()).map((token) => ({
 		symbol: token.mint.slice(0, 4).toUpperCase(),
 		token_address: token.mint,
 		missed_usd: Math.round(Math.abs(token.totalMissedATH)),
@@ -135,7 +135,7 @@ function calculateSummaryFromAllTrades(
 	}));
 
 	totalMissedUSD = Math.round(tokens.reduce((sum, t) => sum + t.missed_usd, 0));
-	const profitableCount = tokens.filter(t => t.pnl_sol > 0).length;
+	const profitableCount = tokens.filter((t) => t.pnl_sol > 0).length;
 	const successRate = tokens.length > 0 ? Math.round((profitableCount / tokens.length) * 100) : 0;
 
 	console.log('[useTradesAnalysis] Calculated summary:', {
@@ -152,8 +152,8 @@ function calculateSummaryFromAllTrades(
 	const tokenCount = globalData?.tokens?.total || 0;
 
 	// Calculate distribution based on tokens
-	const inProfit = tokens.filter(t => t.pnl_sol > 0).length;
-	const inLoss = tokens.filter(t => t.pnl_sol < 0).length;
+	const inProfit = tokens.filter((t) => t.pnl_sol > 0).length;
+	const inLoss = tokens.filter((t) => t.pnl_sol < 0).length;
 	const fullySold = tokens.length; // Assume all are sold for now
 	const stillHeld = 0; // Assume all are sold for now
 
@@ -173,38 +173,62 @@ function calculateSummaryFromAllTrades(
 		wallet: walletAddress,
 		total_missed_usd: totalMissedUSD,
 		stats: { signatures: signatureCount, sol_balance: walletBalance, nfts: nftCount, tokens: tokenCount },
-		performance: { total_volume_sol: totalVolumeSOL, total_pnl_sol: totalPnLSOL, success_rate: successRate, tokens_analyzed: tokens.length },
+		performance: {
+			total_volume_sol: totalVolumeSOL,
+			total_pnl_sol: totalPnLSOL,
+			success_rate: successRate,
+			tokens_analyzed: tokens.length,
+		},
 		distribution: { in_profit: inProfit, in_loss: inLoss, fully_sold: fullySold, still_held: stillHeld },
-		best_performer: { token: bestToken.token_address || '', symbol: bestToken.symbol || '', pnl_sol: bestToken.pnl_sol || 0, volume_sol: bestToken.volume_sol || 0 },
-		worst_performer: { token: worstToken.token_address || '', symbol: worstToken.symbol || '', pnl_sol: worstToken.pnl_sol || 0, volume_sol: worstToken.volume_sol || 0 },
+		best_performer: {
+			token: bestToken.token_address || '',
+			symbol: bestToken.symbol || '',
+			pnl_sol: bestToken.pnl_sol || 0,
+			volume_sol: bestToken.volume_sol || 0,
+		},
+		worst_performer: {
+			token: worstToken.token_address || '',
+			symbol: worstToken.symbol || '',
+			pnl_sol: worstToken.pnl_sol || 0,
+			volume_sol: worstToken.volume_sol || 0,
+		},
 		tokens,
 		rank: 'CERTIFIED BAGHOLDER 💀',
 		punchline: 'Top Analysis',
-		mini_chart: { points: [[0, 1.0], [1, 0.8], [2, 0.6], [3, 0.4], [4, 0.3], [5, 0.2]] },
+		mini_chart: {
+			points: [
+				[0, 1.0],
+				[1, 0.8],
+				[2, 0.6],
+				[3, 0.4],
+				[4, 0.3],
+				[5, 0.2],
+			],
+		},
 	};
 }
 
 /**
  * Transform API response to frontend format
  */
-function transformAPIToResult(
-	data: TradesAPIResponse,
-	walletAddress: string,
-): WalletAnalysisResult {
-		console.log('[useTradesAnalysis] ===== START TRANSFORMATION =====');
-		console.log('[useTradesAnalysis] Input data:', {
-			tokensCount: data.summary.tokens?.length,
-			tradesCount: data.trades?.length,
-			paginationHasMore: data.pagination?.hasMore,
-		});
-		console.log('[useTradesAnalysis] Summary tokens details:', data.summary.tokens.map((t) => ({
+function transformAPIToResult(data: TradesAPIResponse, walletAddress: string): WalletAnalysisResult {
+	console.log('[useTradesAnalysis] ===== START TRANSFORMATION =====');
+	console.log('[useTradesAnalysis] Input data:', {
+		tokensCount: data.summary.tokens?.length,
+		tradesCount: data.trades?.length,
+		paginationHasMore: data.pagination?.hasMore,
+	});
+	console.log(
+		'[useTradesAnalysis] Summary tokens details:',
+		data.summary.tokens.map((t) => ({
 			mint: t.mint.slice(0, 10),
 			trades: t.trades,
 			totalGainLoss: t.totalGainLoss,
 			totalVolumeUSD: t.totalVolumeUSD,
 			totalMissedATH: t.totalMissedATH,
-		})));
-		console.log('[useTradesAnalysis] ALL token mints:', data.summary.tokens.map(t => t.mint).join(', '));
+		})),
+	);
+	console.log('[useTradesAnalysis] ALL token mints:', data.summary.tokens.map((t) => t.mint).join(', '));
 
 	// Wallet stats from global
 	const walletBalance = parseFloat(data.global.balance.value) / 1e9;
@@ -240,9 +264,13 @@ function transformAPIToResult(
 		}
 		if (!state.fullySold) stillHeld++;
 	});
-	
+
 	console.log('[useTradesAnalysis] Distribution calculation in transformAPIToResult:', {
-		tokenStates: Array.from(tokenStates.entries()).map(([mint, state]) => ({ mint: mint.slice(0, 8), pnl: state.pnl, fullySold: state.fullySold })),
+		tokenStates: Array.from(tokenStates.entries()).map(([mint, state]) => ({
+			mint: mint.slice(0, 8),
+			pnl: state.pnl,
+			fullySold: state.fullySold,
+		})),
 		inProfit,
 		inLoss,
 		fullySold,
@@ -250,24 +278,37 @@ function transformAPIToResult(
 	});
 
 	// Get best/worst performers (with fallback)
-	const best = data.summary.bestTrade || { mint: '', gainLoss: '0', gainLossSOL: undefined, signature: '', blockTime: '' };
-	const worst = data.summary.worstTrade || { mint: '', gainLoss: '0', gainLossSOL: undefined, signature: '', blockTime: '' };
+	const best = data.summary.bestTrade || {
+		mint: '',
+		gainLoss: '0',
+		gainLossSOL: undefined,
+		signature: '',
+		blockTime: '',
+	};
+	const worst = data.summary.worstTrade || {
+		mint: '',
+		gainLoss: '0',
+		gainLossSOL: undefined,
+		signature: '',
+		blockTime: '',
+	};
 
 	// Transform tokens for display (handle empty array)
 	const tokens = (data.summary.tokens || []).map((token) => {
 		// totalGainLoss is a percentage, convert to value in same unit as volume
 		const pnl_sol = (token.totalGainLoss / 100) * token.totalVolumeUSD;
-		
+
 		// Calculate prices in USD
 		// averagePurchasePrice and averageAthPrice are unit prices per token in USD
 		const purchase_price_usd = token.averagePurchasePrice; // Unit price per token in USD
 		const ath_price_usd = token.averageAthPrice; // ATH unit price per token in USD
-		
+
 		// Calculate percentage difference between purchase and ATH
-		const price_diff_pct = token.averagePurchasePrice > 0
-			? ((token.averageAthPrice - token.averagePurchasePrice) / token.averagePurchasePrice) * 100
-			: 0;
-		
+		const price_diff_pct =
+			token.averagePurchasePrice > 0
+				? ((token.averageAthPrice - token.averagePurchasePrice) / token.averagePurchasePrice) * 100
+				: 0;
+
 		return {
 			symbol: token.mint.slice(0, 4).toUpperCase(),
 			token_address: token.mint,
@@ -289,15 +330,17 @@ function transformAPIToResult(
 
 	// Calculate performance metrics
 	// Use totalVolumeSOL from API if available, otherwise fallback to totalVolumeUSD
-	const totalVolumeSOLString = data.summary.volume.totalVolumeSOL || data.summary.volume.totalVolumeUSD?.replace('$', '') || '0';
+	const totalVolumeSOLString =
+		data.summary.volume.totalVolumeSOL || data.summary.volume.totalVolumeUSD?.replace('$', '') || '0';
 	const totalVolumeSOL = parseFloat(totalVolumeSOLString.replace(' SOL', '').replace('$', ''));
-	
+
 	// Calculate totalPnL by summing all token PnL values (already converted from percentage to value)
 	const totalPnL = tokens.reduce((sum, token) => sum + token.pnl_sol, 0);
 	const profitableCount = (data.summary.tokens || []).filter((t) => t.totalGainLoss > 0).length;
-	const successRate = (data.summary.tokens || []).length > 0
-		? Math.round((profitableCount / (data.summary.tokens || []).length) * 100)
-		: 0;
+	const successRate =
+		(data.summary.tokens || []).length > 0
+			? Math.round((profitableCount / (data.summary.tokens || []).length) * 100)
+			: 0;
 
 	console.log('[useTradesAnalysis] Transformed tokens:', {
 		count: tokens.length,
@@ -312,9 +355,7 @@ function transformAPIToResult(
 	});
 
 	console.log('[useTradesAnalysis] ===== FINAL RESULT =====', {
-		totalMissedUSD: Math.round(
-			data.summary.tokens.reduce((sum, t) => sum + Math.abs(t.totalMissedATH), 0),
-		),
+		totalMissedUSD: Math.round(data.summary.tokens.reduce((sum, t) => sum + Math.abs(t.totalMissedATH), 0)),
 		tokensCount: tokens.length,
 		statsSignatures: signatureCount,
 		statsSolBalance: walletBalance,
@@ -322,9 +363,7 @@ function transformAPIToResult(
 
 	return {
 		wallet: walletAddress,
-		total_missed_usd: Math.round(
-			(data.summary.tokens || []).reduce((sum, t) => sum + Math.abs(t.totalMissedATH), 0),
-		),
+		total_missed_usd: Math.round((data.summary.tokens || []).reduce((sum, t) => sum + Math.abs(t.totalMissedATH), 0)),
 		stats: { signatures: signatureCount, sol_balance: walletBalance, nfts: nftCount, tokens: tokenCount },
 		performance: {
 			total_volume_sol: totalVolumeSOL,
@@ -339,7 +378,7 @@ function transformAPIToResult(
 			// Use gainLossSOL if available, otherwise parse gainLoss (percentage)
 			pnl_sol: best.gainLossSOL
 				? parseFloat(best.gainLossSOL.replace(' SOL', ''))
-				: parseFloat(best.gainLoss?.replace('%', '') || '0') * totalVolumeSOL / 100,
+				: (parseFloat(best.gainLoss?.replace('%', '') || '0') * totalVolumeSOL) / 100,
 			volume_sol: totalVolumeSOL,
 		},
 		worst_performer: {
@@ -348,7 +387,7 @@ function transformAPIToResult(
 			// Use gainLossSOL if available, otherwise parse gainLoss (percentage)
 			pnl_sol: worst.gainLossSOL
 				? parseFloat(worst.gainLossSOL.replace(' SOL', ''))
-				: parseFloat(worst.gainLoss?.replace('%', '') || '0') * totalVolumeSOL / 100,
+				: (parseFloat(worst.gainLoss?.replace('%', '') || '0') * totalVolumeSOL) / 100,
 			volume_sol: totalVolumeSOL,
 		},
 		tokens,
@@ -384,27 +423,26 @@ export function useTradesAnalysis(walletAddress: string): UseTradesAnalysisRetur
 	/**
 	 * Fetch initial data
 	 */
-	const fetchInitialData = useCallback(
-		async (address: string) => {
-			if (!address.trim()) return;
+	const fetchInitialData = useCallback(async (address: string) => {
+		if (!address.trim()) return;
 
-			console.log('[useTradesAnalysis] Fetching initial data for:', address);
-			setIsLoading(true);
-			setError(null);
+		console.log('[useTradesAnalysis] Fetching initial data for:', address);
+		setIsLoading(true);
+		setError(null);
 
-			try {
-				const data = await tradesService.fetchTrades(address);
-				console.log('[useTradesAnalysis] Initial data received:', {
-					tradesCount: data.trades?.length || 0,
-					tokensCount: data.summary?.tokens?.length || 0,
-				});
+		try {
+			const data = await tradesService.fetchTrades(address);
+			console.log('[useTradesAnalysis] Initial data received:', {
+				tradesCount: data.trades?.length || 0,
+				tokensCount: data.summary?.tokens?.length || 0,
+			});
 
-				// Transform to frontend format
-				const transformed = transformAPIToResult(data, address);
-				console.log('[useTradesAnalysis] Initial transformation done:', {
-					tokensCount: transformed.tokens.length,
-					totalMissedUSD: transformed.total_missed_usd,
-				});
+			// Transform to frontend format
+			const transformed = transformAPIToResult(data, address);
+			console.log('[useTradesAnalysis] Initial transformation done:', {
+				tokensCount: transformed.tokens.length,
+				totalMissedUSD: transformed.total_missed_usd,
+			});
 
 			setAllData(data);
 			setAllTrades(data.trades);
@@ -412,15 +450,13 @@ export function useTradesAnalysis(walletAddress: string): UseTradesAnalysisRetur
 			setTotalSignaturesCount(data.pagination.totalLoaded); // Initialize with first batch
 			setNextCursor(data.pagination.hasMore ? data.pagination.nextCursor : null);
 			setResult(transformed);
-			} catch (err) {
-				console.error('[useTradesAnalysis] Error fetching initial data:', err);
-				setError(err instanceof Error ? err : new Error('Unknown error'));
-			} finally {
-				setIsLoading(false);
-			}
-		},
-		[],
-	);
+		} catch (err) {
+			console.error('[useTradesAnalysis] Error fetching initial data:', err);
+			setError(err instanceof Error ? err : new Error('Unknown error'));
+		} finally {
+			setIsLoading(false);
+		}
+	}, []);
 
 	/**
 	 * Load more trades
@@ -437,10 +473,13 @@ export function useTradesAnalysis(walletAddress: string): UseTradesAnalysisRetur
 				tradesCount: data.trades.length,
 				newTotalTrades: allTrades.length + data.trades.length,
 			});
-			console.log('[useTradesAnalysis] Raw API response summary tokens:', data.summary.tokens.map(t => ({
-				mint: t.mint.slice(0, 8),
-				trades: t.trades,
-			})));
+			console.log(
+				'[useTradesAnalysis] Raw API response summary tokens:',
+				data.summary.tokens.map((t) => ({
+					mint: t.mint.slice(0, 8),
+					trades: t.trades,
+				})),
+			);
 
 			// Merge trades
 			const mergedTrades = [...allTrades, ...data.trades];
@@ -451,85 +490,85 @@ export function useTradesAnalysis(walletAddress: string): UseTradesAnalysisRetur
 			});
 			setAllTrades(mergedTrades);
 
-		// Merge tokens from API and deduplicate by mint
-		const newTokens = data.summary?.tokens || [];
-		const tokensMap = new Map();
-		
-		// Add existing tokens to map
-		allTokens.forEach(token => {
-			tokensMap.set(token.mint, { ...token });
-		});
-		
-		// Add or update tokens from new data
-		newTokens.forEach(token => {
-			const existing = tokensMap.get(token.mint);
-			if (existing) {
-				// Merge data: add trades count, sum volumes, etc.
-				tokensMap.set(token.mint, {
-					...existing,
-					trades: existing.trades + token.trades,
-					totalTokensTraded: existing.totalTokensTraded + token.totalTokensTraded,
-					totalVolumeUSD: existing.totalVolumeUSD + token.totalVolumeUSD,
-					totalGainLoss: existing.totalGainLoss + token.totalGainLoss,
-					totalMissedATH: existing.totalMissedATH + token.totalMissedATH,
-					// Recalculate averages
-					averageGainLoss: (existing.totalGainLoss + token.totalGainLoss) / (existing.trades + token.trades),
-					averageVolumeUSD: (existing.totalVolumeUSD + token.totalVolumeUSD) / (existing.trades + token.trades),
-					averagePurchasePrice: (existing.averagePurchasePrice + token.averagePurchasePrice) / 2,
-					averageAthPrice: (existing.averageAthPrice + token.averageAthPrice) / 2,
-				});
-			} else {
-				// New token
-				tokensMap.set(token.mint, { ...token });
-			}
-		});
-		
-		const mergedTokens = Array.from(tokensMap.values());
-		console.log('[useTradesAnalysis] Merged tokens (deduplicated):', {
-			oldCount: allTokens.length,
-			newTokens: newTokens.length,
-			totalMerged: mergedTokens.length,
-			uniqueMints: mergedTokens.map(t => t.mint.slice(0, 8)).join(', '),
-		});
-		setAllTokens(mergedTokens);
-		
-		// Increment total signatures count (each batch adds to the total)
-		const newTotalSignatures = totalSignaturesCount + data.pagination.totalLoaded;
-		console.log('[useTradesAnalysis] Total signatures:', {
-			current: totalSignaturesCount,
-			newBatch: data.pagination.totalLoaded,
-			total: newTotalSignatures,
-		});
-		setTotalSignaturesCount(newTotalSignatures);
-		
-		// Transform merged tokens to frontend format
-		const mergedAPIData = {
-			...data,
-			summary: {
-				...data.summary,
-				tokens: mergedTokens,
-			},
-			global: allData?.global,
-			trades: mergedTrades,
-		};
-		const transformed = transformAPIToResult(mergedAPIData, walletAddress);
-		console.log('[useTradesAnalysis] Transformed after load more:', {
-			tokensCount: transformed.tokens.length,
-			tokens: transformed.tokens.map(t => ({
-				symbol: t.symbol,
-				transactions: t.transactions,
-			})),
-		});
+			// Merge tokens from API and deduplicate by mint
+			const newTokens = data.summary?.tokens || [];
+			const tokensMap = new Map();
 
-		setResult(transformed);
-		setNextCursor(data.pagination.hasMore ? data.pagination.nextCursor : null);
-	} catch (err) {
-		console.error('[useTradesAnalysis] Error loading more:', err);
-		setError(err instanceof Error ? err : new Error('Unknown error'));
-	} finally {
-		setIsLoadingMore(false);
-	}
-}, [nextCursor, walletAddress, allData, allTrades, allTokens, totalSignaturesCount]);
+			// Add existing tokens to map
+			allTokens.forEach((token) => {
+				tokensMap.set(token.mint, { ...token });
+			});
+
+			// Add or update tokens from new data
+			newTokens.forEach((token) => {
+				const existing = tokensMap.get(token.mint);
+				if (existing) {
+					// Merge data: add trades count, sum volumes, etc.
+					tokensMap.set(token.mint, {
+						...existing,
+						trades: existing.trades + token.trades,
+						totalTokensTraded: existing.totalTokensTraded + token.totalTokensTraded,
+						totalVolumeUSD: existing.totalVolumeUSD + token.totalVolumeUSD,
+						totalGainLoss: existing.totalGainLoss + token.totalGainLoss,
+						totalMissedATH: existing.totalMissedATH + token.totalMissedATH,
+						// Recalculate averages
+						averageGainLoss: (existing.totalGainLoss + token.totalGainLoss) / (existing.trades + token.trades),
+						averageVolumeUSD: (existing.totalVolumeUSD + token.totalVolumeUSD) / (existing.trades + token.trades),
+						averagePurchasePrice: (existing.averagePurchasePrice + token.averagePurchasePrice) / 2,
+						averageAthPrice: (existing.averageAthPrice + token.averageAthPrice) / 2,
+					});
+				} else {
+					// New token
+					tokensMap.set(token.mint, { ...token });
+				}
+			});
+
+			const mergedTokens = Array.from(tokensMap.values());
+			console.log('[useTradesAnalysis] Merged tokens (deduplicated):', {
+				oldCount: allTokens.length,
+				newTokens: newTokens.length,
+				totalMerged: mergedTokens.length,
+				uniqueMints: mergedTokens.map((t) => t.mint.slice(0, 8)).join(', '),
+			});
+			setAllTokens(mergedTokens);
+
+			// Increment total signatures count (each batch adds to the total)
+			const newTotalSignatures = totalSignaturesCount + data.pagination.totalLoaded;
+			console.log('[useTradesAnalysis] Total signatures:', {
+				current: totalSignaturesCount,
+				newBatch: data.pagination.totalLoaded,
+				total: newTotalSignatures,
+			});
+			setTotalSignaturesCount(newTotalSignatures);
+
+			// Transform merged tokens to frontend format
+			const mergedAPIData = {
+				...data,
+				summary: {
+					...data.summary,
+					tokens: mergedTokens,
+				},
+				global: allData?.global,
+				trades: mergedTrades,
+			};
+			const transformed = transformAPIToResult(mergedAPIData, walletAddress);
+			console.log('[useTradesAnalysis] Transformed after load more:', {
+				tokensCount: transformed.tokens.length,
+				tokens: transformed.tokens.map((t) => ({
+					symbol: t.symbol,
+					transactions: t.transactions,
+				})),
+			});
+
+			setResult(transformed);
+			setNextCursor(data.pagination.hasMore ? data.pagination.nextCursor : null);
+		} catch (err) {
+			console.error('[useTradesAnalysis] Error loading more:', err);
+			setError(err instanceof Error ? err : new Error('Unknown error'));
+		} finally {
+			setIsLoadingMore(false);
+		}
+	}, [nextCursor, walletAddress, allData, allTrades, allTokens, totalSignaturesCount]);
 
 	// Auto-fetch when wallet address changes
 	useEffect(() => {
@@ -547,4 +586,3 @@ export function useTradesAnalysis(walletAddress: string): UseTradesAnalysisRetur
 		loadMore,
 	};
 }
-
