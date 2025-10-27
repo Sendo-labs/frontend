@@ -16,7 +16,7 @@ import ConfigurePluginModal from '@/components/worker/configure-plugin-modal';
 import type { RecommendedAction, AnalysisResult } from '@sendo-labs/plugin-sendo-worker';
 import { WorkerClientService } from '@/services/worker-client.service';
 import { QUERY_KEYS } from '@/lib/query-keys';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FullScreenLoader } from '@/components/shared/loader';
 import PageWrapper from '@/components/shared/page-wrapper';
 import {
@@ -108,6 +108,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 	const router = useRouter();
 	// If the user is not authenticated or the agentId is null, we use the mocked data
 	const mocked = !authenticated || agentId === null;
+	const queryClient = useQueryClient();
 
 	const workerClientService = agentId ? new WorkerClientService(agentId) : null;
 	const [displayMockedAlert, setDisplayMockedAlert] = useState(mocked);
@@ -157,8 +158,20 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 
 	const displayWorkerActions = mocked ? MOCK_ANALYSIS_ACTIONS : workerActions;
 
-	const handleModeChange = (newMode: 'suggest' | 'auto') => {
-		config.mode = newMode;
+	const { mutate: createAnalysis, isPending: isCreatingAnalysis } = useMutation({
+		mutationFn: () => workerClientService?.createWorkerAnalysis() ?? Promise.resolve(null),
+		onSuccess: () => {
+			toast.success('Analysis created successfully');
+			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.WORKER_ANALYSIS.all });
+			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.WORKER_ACTIONS.all });
+		},
+		onError: (error) => {
+			toast.error('An error occurred while creating the analysis', { description: error.message });
+		},
+	});
+
+	const handleCreateAnalysis = () => {
+		createAnalysis();
 	};
 
 	const handleRuleUpdate = (ruleId: string, updates: Partial<Rule>) => {
@@ -257,7 +270,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 					</Button>
 				</div>
 
-				{config && <WorkerToggle mode={config.mode} onModeChange={handleModeChange} />}
+				{config && <WorkerToggle onCreateAnalysis={handleCreateAnalysis} isCreatingAnalysis={isCreatingAnalysis} />}
 			</motion.div>
 
 			{/* Analysis Section */}
@@ -369,6 +382,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 					</AlertDialogContent>
 				</AlertDialog>
 			)}
+			{isCreatingAnalysis && <FullScreenLoader text='Creating Analysis' blur={true} />}
 		</PageWrapper>
 	);
 }

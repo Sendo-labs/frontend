@@ -102,10 +102,6 @@ export default function ActionList({ agentId, userId, actions, onValidateAll, is
 					</h2>
 				</div>
 				<div className='flex items-center gap-3'>
-					{/* <div className='flex items-center gap-2'>
-						<Clock className='w-4 h-4 text-foreground/40' />
-						<span className='text-xs text-foreground/40'>Updated 2 min ago</span>
-					</div> */}
 					{mode === 'suggest' && actions.length > 1 && (
 						<Button
 							onClick={onValidateAll}
