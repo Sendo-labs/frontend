@@ -41,7 +41,7 @@ export default function Home() {
 
 	return (
 		<>
-		<TestIdentityToken />
+			<TestIdentityToken />
 			{/* Desktop Version - Snap Scroll */}
 			<div className='hidden md:block relative w-full h-screen overflow-hidden'>
 				{/* Navigation Dots */}

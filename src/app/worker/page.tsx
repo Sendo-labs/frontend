@@ -43,12 +43,10 @@ async function Content() {
 			(a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
 		)[0];
 		const analysisActions = await workerClientService.getWorkerActionsByAnalysisId(lastAnalysis.id);
-		return (
-			<Worker agentId={agentId} initialWorkerAnalysis={workerAnalysis} initialAnalysisActions={analysisActions} />
-		);
+		return <Worker agentId={agentId} initialWorkerAnalysis={workerAnalysis} initialAnalysisActions={analysisActions} />;
 	}
 
-		return <Worker agentId={agentId} initialWorkerAnalysis={[]} initialAnalysisActions={[]} />;
+	return <Worker agentId={agentId} initialWorkerAnalysis={[]} initialAnalysisActions={[]} />;
 }
 
 export default Page;

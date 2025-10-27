@@ -86,11 +86,7 @@ interface WorkerProps {
 	initialAnalysisActions: RecommendedAction[];
 }
 
-export default function Worker({
-	agentId = null,
-	initialWorkerAnalysis,
-	initialAnalysisActions,
-}: WorkerProps) {
+export default function Worker({ agentId = null, initialWorkerAnalysis, initialAnalysisActions }: WorkerProps) {
 	const { authenticated, user } = usePrivy();
 	// If the user is not authenticated or the agentId is null, we use the mocked data
 	const mocked = !authenticated || agentId === null;
@@ -103,7 +99,7 @@ export default function Worker({
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
 	const [selectedPluginToConnect, setSelectedPluginToConnect] = useState<Plugin | null>(null);
-	
+
 	const userId = authenticated ? user?.id : null;
 
 	const config: Config = {
@@ -345,9 +341,13 @@ export default function Worker({
 				<AlertDialog open={displayMockedAlert}>
 					<AlertDialogContent>
 						<AlertDialogHeader>
-							<AlertDialogTitle className='text-sendo-orange title-font'>{authenticated ? 'All these data are mocked' : 'You are not authenticated'}</AlertDialogTitle>
+							<AlertDialogTitle className='text-sendo-orange title-font'>
+								{authenticated ? 'All these data are mocked' : 'You are not authenticated'}
+							</AlertDialogTitle>
 							<AlertDialogDescription>
-								{authenticated ? 'No agent found. All the data are mocked for demonstration purposes. To see the real data, please create your agent.' : 'You are not authenticated. Please sign in for full access.'}
+								{authenticated
+									? 'No agent found. All the data are mocked for demonstration purposes. To see the real data, please create your agent.'
+									: 'You are not authenticated. Please sign in for full access.'}
 							</AlertDialogDescription>
 						</AlertDialogHeader>
 						<AlertDialogFooter>

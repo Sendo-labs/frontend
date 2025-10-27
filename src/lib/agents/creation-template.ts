@@ -1,5 +1,5 @@
-import { WORKER_AGENT_NAME } from "../constants";
-import { type Character } from "@elizaos/core";
+import { WORKER_AGENT_NAME } from '../constants';
+import { type Character } from '@elizaos/core';
 
 export function getWorkerCreationTemplate(userId: string): Character {
 	return {
