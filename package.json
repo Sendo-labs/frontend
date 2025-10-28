@@ -12,6 +12,9 @@
 		"prepare": "husky"
 	},
 	"dependencies": {
+		"@aws-sdk/client-secrets-manager": "^3.919.0",
+		"@aws-sdk/client-ssm": "^3.919.0",
+		"@aws-sdk/credential-provider-sso": "^3.919.0",
 		"@elizaos/api-client": "^1.6.3",
 		"@elizaos/server": "^1.6.3",
 		"@hookform/resolvers": "^5.2.2",

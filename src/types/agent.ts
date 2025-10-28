@@ -64,4 +64,16 @@ interface MessageBroadcast {
 	createdAt: number;
 }
 
-export type { AgentMessage, UseElizaChatParams, UseElizaChatReturn, MessageBroadcast };
+// Secret Manager user secrets
+interface UserSecrets {
+	[key: string]: string;
+}
+
+interface SecretTags {
+	Plan?: string;
+	NbAgent?: number;
+	Feature?: string;
+	Username?: string;
+}
+
+export type { AgentMessage, UseElizaChatParams, UseElizaChatReturn, MessageBroadcast, UserSecrets, SecretTags };

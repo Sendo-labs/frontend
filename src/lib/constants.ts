@@ -1,6 +1,9 @@
 export const WORKER_AGENT_NAME = 'sendo-worker';
 export const CHAT_AGENT_NAME = 'sendo-chat';
 
+// Kenny service base URL - this should be configured per environment
+export const KENNY_BASE_URL = process.env.NEXT_PUBLIC_KENNY_BASE_URL || 'https://api.usekenny.com';
+
 export const SOCIAL_LINKS = {
 	Twitter: {
 		url: 'https://x.com/SendoMarket',
