@@ -168,12 +168,7 @@ export default function Onboarding() {
 							</div>
 
 							{/* CTA */}
-							<a
-								href={SOCIAL_LINKS.Discord.url}
-								target='_blank'
-								rel='noopener noreferrer'
-								className='justify-self-end'
-							>
+							<a href={SOCIAL_LINKS.Discord.url} target='_blank' rel='noopener noreferrer' className='justify-self-end'>
 								<Button
 									className='bg-gradient-to-r from-[#5865F2] to-[#4752c4] hover:shadow-lg hover:shadow-[#5865F2]/50 text-white h-12 px-6 group/btn'
 									style={{
