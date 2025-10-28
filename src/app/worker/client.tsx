@@ -383,11 +383,10 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 						<AlertDialogFooter>
 							<AlertDialogCancel onClick={() => setDisplayMockedAlert(false)}>Continue</AlertDialogCancel>
 							{authenticated && (
-								<FeatureAccessCode trigger={
-									<AlertDialogAction disabled={agentCreationLoading}>
-										Create Agent
-									</AlertDialogAction>
-								} onSuccess={createAgent} />
+								<FeatureAccessCode
+									trigger={<AlertDialogAction disabled={agentCreationLoading}>Create Agent</AlertDialogAction>}
+									onSuccess={createAgent}
+								/>
 							)}
 						</AlertDialogFooter>
 					</AlertDialogContent>
