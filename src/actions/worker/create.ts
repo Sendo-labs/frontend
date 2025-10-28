@@ -13,10 +13,9 @@ export async function createWorkerAgent(userId: string) {
 	return withAction<void>(async () => {
 		const character = getWorkerCreationTemplate(userId);
 		const result = await createAgent(character);
-		
+
 		if (!result.success) {
 			throw new Error(result.error || 'Failed to create worker agent');
 		}
 	});
 }
-

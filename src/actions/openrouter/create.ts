@@ -1,11 +1,10 @@
 'use server';
 
-import ssmParameterService from "@/services/aws/ssm.service";
-import { withAction } from "@/lib/wrapper/with-action";
-import type { OpenRouterSecret } from "@/types/openrouter";
-import { getRelatedSecret, getUserOpenRouterKeyPath } from "./utils";
-import { openRouterService } from "@/services/openrouter.service";
-
+import ssmParameterService from '@/services/aws/ssm.service';
+import { withAction } from '@/lib/wrapper/with-action';
+import type { OpenRouterSecret } from '@/types/openrouter';
+import { getRelatedSecret, getUserOpenRouterKeyPath } from './utils';
+import { openRouterService } from '@/services/openrouter.service';
 
 /**
  * Create a new OpenRouter API key for a user
@@ -18,14 +17,14 @@ export async function createUserOpenRouterKey(username: string) {
 			name: `${username}-sendo-free`,
 		});
 
-        const result = await storeUserOpenRouterKey(username, {
-            apiKey: response.key,
-            hash: response.hash,
-        });
+		const result = await storeUserOpenRouterKey(username, {
+			apiKey: response.key,
+			hash: response.hash,
+		});
 
-        if (!result.success) {
-            throw new Error('Failed to store OpenRouter API key');
-        }
+		if (!result.success) {
+			throw new Error('Failed to store OpenRouter API key');
+		}
 
 		return response.key;
 	});

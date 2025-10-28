@@ -13,11 +13,11 @@ import { getSecretTags } from './utils';
  * @returns The created user secrets
  */
 export async function createUserSecret(secretValue: string) {
-    return withAction<void>(async (session) => {
-        const secretName = getUserSecretName(session.user.id);
+	return withAction<void>(async (session) => {
+		const secretName = getUserSecretName(session.user.id);
 		await secretManagerService.createSecret(secretName, secretValue);
-        return;
-    })
+		return;
+	});
 }
 
 /**

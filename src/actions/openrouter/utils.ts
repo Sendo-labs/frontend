@@ -10,12 +10,12 @@ const KEYS = ['api_key', 'hash'];
  * @returns The parameter name for the user OpenRouter key
  */
 export function getUserOpenRouterKeyPath(username: string, basePrefix = ''): string[] {
-    const sanitizedUsername = sanitizeUserId(username);
-    const keys: string[] = [];
-    for (const key of KEYS) {
-        keys.push(`${basePrefix}/openrouter/${sanitizedUsername}/${key}`);
-    }
-    return keys;
+	const sanitizedUsername = sanitizeUserId(username);
+	const keys: string[] = [];
+	for (const key of KEYS) {
+		keys.push(`${basePrefix}/openrouter/${sanitizedUsername}/${key}`);
+	}
+	return keys;
 }
 
 /**
@@ -25,12 +25,12 @@ export function getUserOpenRouterKeyPath(username: string, basePrefix = ''): str
  * @returns The parameter name for the system OpenRouter key
  */
 export function getSystemOpenRouterKeyPath(keyPath: string, basePrefix = ''): string {
-    // If keyPath starts with '/', treat it as absolute path
-    if (keyPath.startsWith('/')) {
-        return `${basePrefix}${keyPath}`;
-    }
-    // Otherwise, treat it as relative to openrouter system keys
-    return `${basePrefix}/openrouter/system/${keyPath}`;
+	// If keyPath starts with '/', treat it as absolute path
+	if (keyPath.startsWith('/')) {
+		return `${basePrefix}${keyPath}`;
+	}
+	// Otherwise, treat it as relative to openrouter system keys
+	return `${basePrefix}/openrouter/system/${keyPath}`;
 }
 
 /**
@@ -40,5 +40,5 @@ export function getSystemOpenRouterKeyPath(keyPath: string, basePrefix = ''): st
  * @returns The related secret
  */
 export function getRelatedSecret(parameterName: string, secret: OpenRouterSecret): string {
-    return parameterName.includes('api_key') ? secret.apiKey : secret.hash;
+	return parameterName.includes('api_key') ? secret.apiKey : secret.hash;
 }

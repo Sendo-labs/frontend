@@ -11,7 +11,7 @@
  * @returns The current AWS profile string
  */
 export function getAwsProfile(): string {
-    return process.env.PROFILE || process.env.AWS_DEFAULT_PROFILE || 'pre-prod';
+	return process.env.PROFILE || process.env.AWS_DEFAULT_PROFILE || 'pre-prod';
 }
 
 /**
@@ -19,7 +19,7 @@ export function getAwsProfile(): string {
  * @returns true if current profile is 'pre-prod'
  */
 export function isPreProdProfile(): boolean {
-    return getAwsProfile() === 'pre-prod';
+	return getAwsProfile() === 'pre-prod';
 }
 
 /**
@@ -27,7 +27,7 @@ export function isPreProdProfile(): boolean {
  * @returns true if current profile is 'prod'
  */
 export function isProdProfile(): boolean {
-    return getAwsProfile() === 'prod';
+	return getAwsProfile() === 'prod';
 }
 
 /**
@@ -37,5 +37,5 @@ export function isProdProfile(): boolean {
  * @returns The appropriate resource name for current profile
  */
 export function getProfileBasedResource(preProdName: string, prodName: string): string {
-    return isPreProdProfile() ? preProdName : prodName;
+	return isPreProdProfile() ? preProdName : prodName;
 }

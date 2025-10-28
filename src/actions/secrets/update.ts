@@ -1,10 +1,10 @@
 'use server';
 
-import { withAction } from "@/lib/wrapper/with-action";
-import { secretManagerService } from "@/services/aws/secret-manager.service";
-import { getUserSecretName } from "@/lib/utils";
-import { SecretTags, UserSecrets } from "@/types/agent";
-import { getSecretTags } from "./utils";
+import { withAction } from '@/lib/wrapper/with-action';
+import { secretManagerService } from '@/services/aws/secret-manager.service';
+import { getUserSecretName } from '@/lib/utils';
+import { SecretTags, UserSecrets } from '@/types/agent';
+import { getSecretTags } from './utils';
 
 /**
  * Update the user secret in the secret manager

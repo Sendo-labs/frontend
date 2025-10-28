@@ -34,7 +34,7 @@ async function Content() {
 	if (!agents.success) {
 		throw new Error(agents.error);
 	}
-	
+
 	const agent = agents.data?.find((agent) => agent.name === WORKER_AGENT_NAME);
 
 	// Case 2: User authenticated but no agent → show mocked data + create button
@@ -50,7 +50,7 @@ async function Content() {
 
 	const kennyService = KennyService.getInstance(KENNY_BASE_URL, openRouterApiKey);
 	const workerClientService = new WorkerClientService(String(agent.id), kennyService);
-	
+
 	try {
 		const workerAnalysis = await workerClientService.getAnalyses();
 
@@ -60,10 +60,10 @@ async function Content() {
 			)[0];
 			const analysisActions = await workerClientService.getActionsByAnalysisId(lastAnalysis.id);
 			return (
-				<Worker 
-					agentId={String(agent.id)} 
-					initialWorkerAnalysis={workerAnalysis} 
-					initialAnalysisActions={analysisActions} 
+				<Worker
+					agentId={String(agent.id)}
+					initialWorkerAnalysis={workerAnalysis}
+					initialAnalysisActions={analysisActions}
 				/>
 			);
 		}

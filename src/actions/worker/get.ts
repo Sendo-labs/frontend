@@ -21,7 +21,7 @@ export async function getWorkerAnalyses(agentId?: string) {
 			throw new Error('Failed to get user agents');
 		}
 
-		const agent = agentId 
+		const agent = agentId
 			? agents.data.find((a) => String(a.id) === agentId)
 			: agents.data.find((a) => a.name === WORKER_AGENT_NAME);
 
@@ -55,7 +55,7 @@ export async function getWorkerActions(analysisId: string, agentId?: string) {
 			throw new Error('Failed to get user agents');
 		}
 
-		const agent = agentId 
+		const agent = agentId
 			? agents.data.find((a) => String(a.id) === agentId)
 			: agents.data.find((a) => a.name === WORKER_AGENT_NAME);
 

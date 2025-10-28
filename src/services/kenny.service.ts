@@ -1,12 +1,12 @@
 export class KennyService {
-    private static instance: KennyService | null = null;
-    private baseUrl: string;
-    private apiKey: string;
+	private static instance: KennyService | null = null;
+	private baseUrl: string;
+	private apiKey: string;
 
-    private constructor(baseUrl: string, apiKey: string) {
-        this.baseUrl = baseUrl;
-        this.apiKey = apiKey;
-    }
+	private constructor(baseUrl: string, apiKey: string) {
+		this.baseUrl = baseUrl;
+		this.apiKey = apiKey;
+	}
 
 	/**
 	 * Get the singleton instance of KennyService
@@ -18,15 +18,15 @@ export class KennyService {
 		return KennyService.instance;
 	}
 
-    getBaseUrl(): string {
-        return this.baseUrl;
-    }
+	getBaseUrl(): string {
+		return this.baseUrl;
+	}
 
-    getApiKey(): string {
-        return this.apiKey;
-    }
+	getApiKey(): string {
+		return this.apiKey;
+	}
 
-    /**
+	/**
 	 * Make a request to the Kenny API using fetch including the API key in the headers
 	 * @param {string} path - The path to the API endpoint
 	 * @param {string} method - The HTTP method to use

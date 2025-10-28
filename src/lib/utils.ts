@@ -13,7 +13,7 @@ export const getUserSecretName = (userId: string) => {
 	const cleanedUserId = sanitizeUserId(userId);
 
 	return `${cleanedUserId}`;
-}
+};
 
 /**
  * Sanitize user id
@@ -21,7 +21,7 @@ export const getUserSecretName = (userId: string) => {
  * @returns Sanitized user id
  */
 export function sanitizeUserId(userId: string): string {
-    // Replace all invalid characters with hyphen
-    // AWS SSM allows: letters, numbers, and . - _ /
-    return userId.replace(/[^a-zA-Z0-9._\-\/]/g, '-');
+	// Replace all invalid characters with hyphen
+	// AWS SSM allows: letters, numbers, and . - _ /
+	return userId.replace(/[^a-zA-Z0-9._\-\/]/g, '-');
 }
