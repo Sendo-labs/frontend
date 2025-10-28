@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Github, MessageCircle, Trophy, Coins, Code, Users, Zap, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import PageWrapper from '@/components/shared/page-wrapper';
+import { SOCIAL_LINKS } from '@/lib/constants';
 
 export default function Onboarding() {
 	return (
@@ -23,11 +24,11 @@ export default function Onboarding() {
 					</span>
 				</h1>
 
-				<p className='text-lg sm:text-xl md:text-2xl text-[#F2EDE7]/80 mb-4 max-w-3xl mx-auto'>
+				<p className='text-lg sm:text-xl md:text-2xl text-foreground/80 mb-4 max-w-3xl mx-auto'>
 					Want to contribute to Sendo's development?
 				</p>
 
-				<p className='text-base sm:text-lg text-[#F2EDE7]/60 max-w-4xl mx-auto'>
+				<p className='text-base sm:text-lg text-foreground/60 max-w-4xl mx-auto'>
 					Contribute to an open-source ecosystem, earn XP based on your contributions, and receive a share of mission
 					rewards.
 				</p>
@@ -40,25 +41,25 @@ export default function Onboarding() {
 				transition={{ delay: 0.2, duration: 0.8 }}
 				className='grid grid-cols-3 gap-4 md:gap-6 mb-20'
 			>
-				<div className='bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 p-4 sm:p-6 text-center rounded-none'>
+				<div className='bg-foreground/5 border border-foreground/10 p-4 sm:p-6 text-center rounded-none'>
 					<div className='text-3xl sm:text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent title-font'>
 						100%
 					</div>
-					<p className='text-xs sm:text-sm text-[#F2EDE7]/60 uppercase'>Open Source</p>
+					<p className='text-xs sm:text-sm text-foreground/60 uppercase'>Open Source</p>
 				</div>
 
-				<div className='bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 p-4 sm:p-6 text-center rounded-none'>
+				<div className='bg-foreground/5 border border-foreground/10 p-4 sm:p-6 text-center rounded-none'>
 					<div className='text-3xl sm:text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-sendo-green to-sendo-green bg-clip-text text-transparent title-font'>
 						XP
 					</div>
-					<p className='text-xs sm:text-sm text-[#F2EDE7]/60 uppercase'>Based Rewards</p>
+					<p className='text-xs sm:text-sm text-foreground/60 uppercase'>Based Rewards</p>
 				</div>
 
-				<div className='bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 p-4 sm:p-6 text-center rounded-none'>
+				<div className='bg-foreground/5 border border-foreground/10 p-4 sm:p-6 text-center rounded-none'>
 					<div className='text-3xl sm:text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent title-font'>
 						24/7
 					</div>
-					<p className='text-xs sm:text-sm text-[#F2EDE7]/60 uppercase'>Community</p>
+					<p className='text-xs sm:text-sm text-foreground/60 uppercase'>Community</p>
 				</div>
 			</motion.div>
 
@@ -82,7 +83,7 @@ export default function Onboarding() {
 						initial={{ opacity: 0, x: -50 }}
 						whileInView={{ opacity: 1, x: 0 }}
 						transition={{ delay: 0.1, duration: 0.6 }}
-						className='relative bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 hover:bg-[#F2EDE7]/10 hover:border-sendo-orange/50 transition-all group'
+						className='relative bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all group'
 						style={{ borderRadius: 0 }}
 					>
 						<div className='grid md:grid-cols-[auto_1fr_auto] gap-4 md:gap-6 p-6 md:p-8 items-center'>
@@ -104,8 +105,8 @@ export default function Onboarding() {
 
 							{/* Content */}
 							<div>
-								<h3 className='text-xl md:text-2xl font-bold text-[#F2EDE7] mb-2 title-font'>CHOOSE YOUR MISSION</h3>
-								<p className='text-sm md:text-base text-[#F2EDE7]/70'>
+								<h3 className='text-xl md:text-2xl font-bold text-foreground mb-2 title-font'>CHOOSE YOUR MISSION</h3>
+								<p className='text-sm md:text-base text-foreground/70'>
 									Browse our GitHub Project board and pick a mission that matches your skills. From bug fixes to new
 									features, there's something for everyone.
 								</p>
@@ -137,7 +138,7 @@ export default function Onboarding() {
 						initial={{ opacity: 0, x: 50 }}
 						whileInView={{ opacity: 1, x: 0 }}
 						transition={{ delay: 0.2, duration: 0.6 }}
-						className='relative bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 hover:bg-[#F2EDE7]/10 hover:border-[#5865F2]/50 transition-all group'
+						className='relative bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-[#5865F2]/50 transition-all group'
 						style={{ borderRadius: 0 }}
 					>
 						<div className='grid md:grid-cols-[auto_1fr_auto] gap-4 md:gap-6 p-6 md:p-8 items-center'>
@@ -159,8 +160,8 @@ export default function Onboarding() {
 
 							{/* Content */}
 							<div>
-								<h3 className='text-xl md:text-2xl font-bold text-[#F2EDE7] mb-2 title-font'>JOIN THE COMMUNITY</h3>
-								<p className='text-sm md:text-base text-[#F2EDE7]/70'>
+								<h3 className='text-xl md:text-2xl font-bold text-foreground mb-2 title-font'>JOIN THE COMMUNITY</h3>
+								<p className='text-sm md:text-base text-foreground/70'>
 									Connect with the team on Discord. Introduce yourself, discuss your chosen mission, and get it assigned
 									to you.
 								</p>
@@ -168,7 +169,7 @@ export default function Onboarding() {
 
 							{/* CTA */}
 							<a
-								href='https://discord.gg/dXn3vmtY'
+								href={SOCIAL_LINKS.Discord.url}
 								target='_blank'
 								rel='noopener noreferrer'
 								className='justify-self-end'
@@ -192,7 +193,7 @@ export default function Onboarding() {
 						initial={{ opacity: 0, x: -50 }}
 						whileInView={{ opacity: 1, x: 0 }}
 						transition={{ delay: 0.3, duration: 0.6 }}
-						className='relative bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 hover:bg-[#F2EDE7]/10 hover:border-[#14F195]/50 transition-all group'
+						className='relative bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-[#14F195]/50 transition-all group'
 						style={{ borderRadius: 0 }}
 					>
 						<div className='grid md:grid-cols-[auto_1fr_auto] gap-4 md:gap-6 p-6 md:p-8 items-center'>
@@ -214,8 +215,8 @@ export default function Onboarding() {
 
 							{/* Content */}
 							<div>
-								<h3 className='text-xl md:text-2xl font-bold text-[#F2EDE7] mb-2 title-font'>COMPLETE & EARN XP</h3>
-								<p className='text-sm md:text-base text-[#F2EDE7]/70'>
+								<h3 className='text-xl md:text-2xl font-bold text-foreground mb-2 title-font'>COMPLETE & EARN XP</h3>
+								<p className='text-sm md:text-base text-foreground/70'>
 									Complete your mission and earn XP points. Track your progress on the leaderboard (for developers) or
 									Zealy (for non-coders).
 								</p>
@@ -273,7 +274,7 @@ export default function Onboarding() {
 						initial={{ opacity: 0, y: 30 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.1, duration: 0.6 }}
-						className='bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 hover:border-[#FFD700]/50 p-6 md:p-8 transition-all group'
+						className='bg-foreground/5 border border-foreground/10 hover:border-[#FFD700]/50 p-6 md:p-8 transition-all group'
 						style={{ borderRadius: 0 }}
 					>
 						<div
@@ -282,12 +283,12 @@ export default function Onboarding() {
 						>
 							<Coins className='w-8 h-8 text-black' />
 						</div>
-						<h3 className='text-lg md:text-xl font-bold text-[#F2EDE7] mb-3 text-center title-font'>
+						<h3 className='text-lg md:text-xl font-bold text-foreground mb-3 text-center title-font'>
 							PROTOCOL FEES
 							<br />
 							DISTRIBUTION
 						</h3>
-						<p className='text-sm text-[#F2EDE7]/70 text-center'>
+						<p className='text-sm text-foreground/70 text-center'>
 							Initially, protocol fees will be redistributed to all XP holders proportionally to their contribution.
 						</p>
 					</motion.div>
@@ -297,7 +298,7 @@ export default function Onboarding() {
 						initial={{ opacity: 0, y: 30 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.2, duration: 0.6 }}
-						className='bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 hover:border-[#FFD700]/50 p-6 md:p-8 transition-all group'
+						className='bg-foreground/5 border border-foreground/10 hover:border-[#FFD700]/50 p-6 md:p-8 transition-all group'
 						style={{ borderRadius: 0 }}
 					>
 						<div
@@ -306,12 +307,12 @@ export default function Onboarding() {
 						>
 							<Zap className='w-8 h-8 text-black' />
 						</div>
-						<h3 className='text-lg md:text-xl font-bold text-[#F2EDE7] mb-3 text-center title-font'>
+						<h3 className='text-lg md:text-xl font-bold text-foreground mb-3 text-center title-font'>
 							MISSION-BASED
 							<br />
 							PAYMENTS
 						</h3>
-						<p className='text-sm text-[#F2EDE7]/70 text-center'>
+						<p className='text-sm text-foreground/70 text-center'>
 							Once the treasury is established, payments will be made per mission with priority access for existing
 							contributors.
 						</p>
@@ -322,7 +323,7 @@ export default function Onboarding() {
 						initial={{ opacity: 0, y: 30 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.3, duration: 0.6 }}
-						className='bg-[#F2EDE7]/5 border border-[#F2EDE7]/10 hover:border-[#FFD700]/50 p-6 md:p-8 transition-all group'
+						className='bg-foreground/5 border border-foreground/10 hover:border-[#FFD700]/50 p-6 md:p-8 transition-all group'
 						style={{ borderRadius: 0 }}
 					>
 						<div
@@ -331,12 +332,12 @@ export default function Onboarding() {
 						>
 							<Users className='w-8 h-8 text-black' />
 						</div>
-						<h3 className='text-lg md:text-xl font-bold text-[#F2EDE7] mb-3 text-center title-font'>
+						<h3 className='text-lg md:text-xl font-bold text-foreground mb-3 text-center title-font'>
 							COMMUNITY
 							<br />
 							BENEFITS
 						</h3>
-						<p className='text-sm text-[#F2EDE7]/70 text-center'>
+						<p className='text-sm text-foreground/70 text-center'>
 							Early contributors get exclusive access to new features, governance rights, and recognition in the
 							community.
 						</p>
@@ -362,7 +363,7 @@ export default function Onboarding() {
 						</span>
 					</h2>
 
-					<p className='text-base sm:text-lg text-[#F2EDE7]/70 mb-8 max-w-2xl mx-auto'>
+					<p className='text-base sm:text-lg text-foreground/70 mb-8 max-w-2xl mx-auto'>
 						Join hundreds of developers and community members building the future of crypto trading
 					</p>
 
