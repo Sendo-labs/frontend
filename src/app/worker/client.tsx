@@ -34,6 +34,7 @@ import { MOCK_ANALYSIS_ACTIONS, MOCKED_WORKER_ANALYSIS } from '@/lib/agents/work
 import { QUERY_KEYS } from '@/lib/query-keys';
 import { elizaService } from '@/services/eliza.service';
 import { WorkerClientService } from '@/services/worker-client.service';
+import FeatureAccessCode from '@/components/shared/feature-access-code';
 
 interface RuleParams {
 	min_usd?: number;
@@ -382,9 +383,11 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 						<AlertDialogFooter>
 							<AlertDialogCancel onClick={() => setDisplayMockedAlert(false)}>Continue</AlertDialogCancel>
 							{authenticated && (
-								<AlertDialogAction onClick={createAgent} disabled={agentCreationLoading}>
-									Create Agent
-								</AlertDialogAction>
+								<FeatureAccessCode trigger={
+									<AlertDialogAction disabled={agentCreationLoading}>
+										Create Agent
+									</AlertDialogAction>
+								} onSuccess={createAgent} />
 							)}
 						</AlertDialogFooter>
 					</AlertDialogContent>
