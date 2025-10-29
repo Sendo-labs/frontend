@@ -135,7 +135,6 @@ export class TradesService {
 				path,
 				'GET',
 			);
-			console.log('[TradesService] Raw API response:', response);
 
 			// The API returns { success: true, data: {...} }, so we need to unwrap it
 			const data: TradesAPIResponse =
