@@ -11,7 +11,6 @@ import { toast } from 'sonner';
 
 interface ActionListProps {
 	agentId: string | null;
-	userId?: string;
 	actions: RecommendedAction[] | null;
 	onValidateAll: () => void;
 	isExecuting: boolean;

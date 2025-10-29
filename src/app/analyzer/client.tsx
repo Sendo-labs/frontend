@@ -18,64 +18,7 @@ import TokenDetailsList from '@/components/analyzer/token-details-list';
 import ShareButtons from '@/components/analyzer/share-buttons';
 import CTAActivateWorker from '@/components/analyzer/cta-activate-worker';
 import PageWrapper from '@/components/shared/page-wrapper';
-import { useTradesAnalysis } from '@/hooks/useTradesAnalysis';
-
-interface WalletAnalysisResult {
-	mini_chart: {
-		points: Array<[number, number]>;
-	};
-	wallet: string;
-	total_missed_usd: number;
-	stats: {
-		signatures: number;
-		sol_balance: number;
-		nfts: number;
-		tokens: number;
-	};
-	performance: {
-		total_volume_sol: number;
-		total_pnl_sol: number;
-		success_rate: number;
-		tokens_analyzed: number;
-	};
-	distribution: {
-		in_profit: number;
-		in_loss: number;
-		fully_sold: number;
-		still_held: number;
-	};
-	best_performer: {
-		token: string;
-		symbol: string;
-		pnl_sol: number;
-		volume_sol: number;
-	};
-	worst_performer: {
-		token: string;
-		symbol: string;
-		pnl_sol: number;
-		volume_sol: number;
-	};
-	tokens: Array<{
-		symbol: string;
-		token_address: string;
-		missed_usd: number;
-		ath_price: number;
-		purchase_price: number;
-		sold_price: number;
-		ath_change_pct: number;
-		price_diff_pct?: number;
-		volume_sol: number;
-		pnl_sol: number;
-		tokens_held: number;
-		transactions: number;
-		total_tokens_traded: number;
-		status: string;
-		profit_status: string;
-	}>;
-	rank: string;
-	punchline: string;
-}
+import { useTradesAnalysis } from '@/hooks/use-trades-analysis';
 
 export default function AnalyzerPage() {
 	const searchParams = useSearchParams();
@@ -169,7 +112,7 @@ export default function AnalyzerPage() {
 					<strong>Error:</strong> {error.message}
 					<br />
 					<span className='text-sm text-red-400/60'>
-						Make sure your API is running at {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}
+						Make sure your API is running
 					</span>
 				</motion.div>
 			)}

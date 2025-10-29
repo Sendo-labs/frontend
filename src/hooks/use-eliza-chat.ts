@@ -8,6 +8,7 @@ import type { AgentMessage, UseElizaChatParams, UseElizaChatReturn } from '@/typ
 import { stringToUuid } from '@elizaos/core';
 import { getAnalyserOpenRouterApiKey } from '@/actions/openrouter/get';
 import { useElizaClient } from './use-eliza-client';
+import { ANALYSER_BASE_URL } from '@/lib/constants';
 
 /**
  * Hook to manage chat with an Eliza agent
@@ -136,7 +137,7 @@ export function useElizaChat({ agentId, channelId: initialChannelId, userId }: U
 				}
 
 				// Use analyzer server URL for WebSocket connection
-				const serverUrl = 'https://analyser.agents.usekenny.com';
+				const serverUrl = ANALYSER_BASE_URL;
 				console.log('[useElizaChat] Connecting to WebSocket:', serverUrl);
 
 				socket = io(serverUrl, {

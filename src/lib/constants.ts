@@ -1,5 +1,6 @@
 export const WORKER_AGENT_NAME = 'sendo-worker';
 export const ANALYSER_AGENT_NAME = 'analyser';
+export const ANALYSER_BASE_URL = 'https://analyser.agents.usekenny.com';
 
 export const SOCIAL_LINKS = {
 	Twitter: {

@@ -1,4 +1,5 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+import { ANALYSER_AGENT_NAME } from '@/lib/constants';
+import type { ElizaService } from './eliza.service';
 
 export interface TradesAPIResponse {
 	message: string;
@@ -102,15 +103,10 @@ export interface TradesAPIResponse {
 }
 
 export class TradesService {
-	private static instance: TradesService | null = null;
+	private readonly elizaService: ElizaService;
 
-	private constructor() {}
-
-	public static getInstance(): TradesService {
-		if (!TradesService.instance) {
-			TradesService.instance = new TradesService();
-		}
-		return TradesService.instance;
+	constructor(elizaService: ElizaService) {
+		this.elizaService = elizaService;
 	}
 
 	/**
@@ -126,20 +122,11 @@ export class TradesService {
 			params.append('cursor', cursor);
 		}
 
-		const url = `${API_BASE_URL}/api/v1/trades/${address}?${params.toString()}`;
-		console.log('[TradesService] Fetching from:', url);
+		const path = `/api/v1/trades/${address}?${params.toString()}`;
+		console.log('[TradesService] Fetching from:', ANALYSER_AGENT_NAME, path);
 
 		try {
-			const response = await fetch(url, {
-				method: 'GET',
-				headers: { 'Content-Type': 'application/json' },
-			});
-
-			if (!response.ok) {
-				throw new Error(`Failed to fetch trades: ${response.statusText}`);
-			}
-
-			const data = await response.json();
+			const data = await this.elizaService.apiRequest<TradesAPIResponse>(path, 'GET');
 			console.log('[TradesService] ===== RAW API RESPONSE =====');
 			console.log('[TradesService] Trades count:', data.trades?.length || 0);
 			console.log('[TradesService] Summary tokens count:', data.summary?.tokens?.length || 0);
@@ -165,5 +152,3 @@ export class TradesService {
 		}
 	}
 }
-
-export const tradesService = TradesService.getInstance();
