@@ -3,17 +3,17 @@ export class KennyService {
 	private baseUrl: string;
 	private apiKey: string;
 
-	private constructor(baseUrl: string, apiKey: string) {
-		this.baseUrl = baseUrl;
+	private constructor(userId: string, apiKey: string) {
+		this.baseUrl = `${userId}.agents.usekenny.com/`;
 		this.apiKey = apiKey;
 	}
 
 	/**
 	 * Get the singleton instance of KennyService
 	 */
-	public static getInstance(baseUrl: string, apiKey: string): KennyService {
+	public static getInstance(userId: string, apiKey: string): KennyService {
 		if (!KennyService.instance) {
-			KennyService.instance = new KennyService(baseUrl, apiKey);
+			KennyService.instance = new KennyService(userId, apiKey);
 		}
 		return KennyService.instance;
 	}
@@ -36,6 +36,7 @@ export class KennyService {
 	async apiRequest<T>(path: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH', body?: any): Promise<T> {
 		const url = `${this.baseUrl}${path}`;
 
+		console.log('url', url);
 		try {
 			const response = await fetch(url, {
 				method,

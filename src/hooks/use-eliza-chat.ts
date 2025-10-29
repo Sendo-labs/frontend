@@ -4,9 +4,9 @@ import type { Message } from '@elizaos/api-client';
 import type { UUID } from 'crypto';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { io, type Socket } from 'socket.io-client';
-import { elizaService } from '@/services/eliza.service';
 import type { AgentMessage, UseElizaChatParams, UseElizaChatReturn } from '@/types/agent';
 import { stringToUuid } from '@elizaos/core';
+import { useElizaClient } from './use-eliza-client';
 
 /**
  * Hook to manage chat with an Eliza agent
@@ -20,7 +20,7 @@ export function useElizaChat({ agentId, channelId: initialChannelId, userId }: U
 	const [error, setError] = useState<string | null>(null);
 	const [animatedMessageId, setAnimatedMessageId] = useState<string | null>(null);
 	const socketRef = useRef<Socket | null>(null);
-	const elizaClient = elizaService.getClient();
+	const elizaClient = useElizaClient();
 
 	// Debug: Log when messages change
 	useEffect(() => {

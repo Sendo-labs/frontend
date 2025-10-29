@@ -5,7 +5,8 @@ import { WorkerClientService } from '@/services/worker-client.service';
 import { KennyService } from '@/services/kenny.service';
 import Worker from './client';
 import { getUserAgents } from '@/actions/agents/get';
-import { WORKER_AGENT_NAME, KENNY_BASE_URL } from '@/lib/constants';
+import { WORKER_AGENT_NAME } from '@/lib/constants';
+import { sanitizeUserId } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -48,7 +49,7 @@ async function Content() {
 		throw new Error('OpenRouter API key not found');
 	}
 
-	const kennyService = KennyService.getInstance(KENNY_BASE_URL, openRouterApiKey);
+	const kennyService = KennyService.getInstance(sanitizeUserId(signedInUser.user.id), openRouterApiKey);
 	const workerClientService = new WorkerClientService(String(agent.id), kennyService);
 
 	try {
