@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { getChatAgent } from '@/actions/chat/get';
-import { createChatAgent } from '@/actions/chat/create';
 
 interface LocalAgent {
 	id: string;
@@ -49,23 +48,7 @@ export function useElizaAgent({ userId }: UseElizaAgentParams): UseElizaAgentRet
 					return;
 				}
 
-				// No agent found, create it
-				console.log('[useElizaAgent] Creating new chat agent...');
-				const createResult = await createChatAgent();
-
-				if (!createResult.success) {
-					throw new Error(createResult.error || 'Failed to create chat agent');
-				}
-
-				// Fetch the newly created agent
-				const newAgentResult = await getChatAgent();
-				if (newAgentResult.success && newAgentResult.data) {
-					console.log('[useElizaAgent] Agent created:', newAgentResult.data.name, 'ID:', newAgentResult.data.id);
-					setAgent(newAgentResult.data as unknown as LocalAgent);
-					setError(null);
-				} else {
-					throw new Error('Failed to fetch newly created agent');
-				}
+				throw new Error('Failed to load chat agent');
 			} catch (err) {
 				console.error('[useElizaAgent] Error fetching/creating agent:', err);
 				setError((err as Error).message || 'Failed to load chat agent');

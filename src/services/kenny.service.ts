@@ -35,8 +35,6 @@ export class KennyService {
 	 */
 	async apiRequest<T>(path: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH', body?: any): Promise<T> {
 		const url = `${this.baseUrl}${path}`;
-
-		console.log('url', url);
 		try {
 			const response = await fetch(url, {
 				method,
