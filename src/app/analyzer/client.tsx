@@ -111,9 +111,7 @@ export default function AnalyzerPage() {
 				>
 					<strong>Error:</strong> {error.message}
 					<br />
-					<span className='text-sm text-red-400/60'>
-						Make sure your API is running
-					</span>
+					<span className='text-sm text-red-400/60'>Make sure your API is running</span>
 				</motion.div>
 			)}
 			{/* Results */}
