@@ -66,3 +66,17 @@ export async function hasOpenRouterKey(username: string) {
 		return false;
 	}, false);
 }
+
+/**
+ * Get the Analyser OpenRouter API key
+ * @returns The Analyser OpenRouter API key if found, null otherwise
+ */
+export async function getAnalyserOpenRouterApiKey() {
+	return withAction<string | null>(async () => {
+		const result = await getSystemOpenRouterKey('/openrouter/analyser/api_key');
+		if (!result.success || !result.data) {
+			throw new Error('Analyser OpenRouter API key not found in SSM Parameter Store');
+		}
+		return result.data;
+	}, false);
+}

@@ -10,6 +10,7 @@ import { getUserOpenRouterKey } from '../openrouter/get';
 import { createUserOpenRouterKey } from '../openrouter/create';
 import type { OpenRouterSecret } from '@/types/openrouter';
 import { sanitizeUserId } from '@/lib/utils';
+import { getWorkerAgentId } from '@/lib/agents/utils';
 
 /**
  * Create a new agent by uploading the new character on the user secret (secret manager).
@@ -46,14 +47,12 @@ export async function createAgent(character: Character) {
 
 		character = {
 			...character,
+			id: getWorkerAgentId(session.user.id),
 			settings: {
 				...(character.settings || {}),
 				secrets: updatedSecrets,
 			},
 		};
-
-		console.log('character', character);
-		console.log('updatedSecrets', updatedSecrets);
 
 		let userSecretValue: UserSecrets = {
 			[character.name]: JSON.stringify(character),

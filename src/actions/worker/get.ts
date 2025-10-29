@@ -5,7 +5,8 @@ import type { RecommendedAction, AnalysisResult } from '@sendo-labs/plugin-sendo
 import { WorkerClientService } from '@/services/worker-client.service';
 import { KennyService } from '@/services/kenny.service';
 import { getUserAgents } from '@/actions/agents/get';
-import { WORKER_AGENT_NAME, KENNY_BASE_URL } from '@/lib/constants';
+import { WORKER_AGENT_NAME } from '@/lib/constants';
+import { sanitizeUserId } from '@/lib/utils';
 
 /**
  * Get all analyses for the worker agent
@@ -14,7 +15,7 @@ import { WORKER_AGENT_NAME, KENNY_BASE_URL } from '@/lib/constants';
  * @returns The analyses
  */
 export async function getWorkerAnalyses(agentId?: string) {
-	return withAction<AnalysisResult[]>(async () => {
+	return withAction<AnalysisResult[]>(async (session) => {
 		// Get the worker agent
 		const agents = await getUserAgents();
 		if (!agents.success || !agents.data) {
@@ -34,7 +35,7 @@ export async function getWorkerAnalyses(agentId?: string) {
 			throw new Error('OpenRouter API key not found');
 		}
 
-		const kennyService = KennyService.getInstance(KENNY_BASE_URL, openRouterApiKey);
+		const kennyService = KennyService.getInstance(sanitizeUserId(session.user.id), openRouterApiKey);
 		const workerClientService = new WorkerClientService(String(agent.id), kennyService);
 		return await workerClientService.getAnalyses();
 	});
@@ -48,7 +49,7 @@ export async function getWorkerAnalyses(agentId?: string) {
  * @returns The actions
  */
 export async function getWorkerActions(analysisId: string, agentId?: string) {
-	return withAction<RecommendedAction[]>(async () => {
+	return withAction<RecommendedAction[]>(async (session) => {
 		// Get the worker agent
 		const agents = await getUserAgents();
 		if (!agents.success || !agents.data) {
@@ -68,7 +69,7 @@ export async function getWorkerActions(analysisId: string, agentId?: string) {
 			throw new Error('OpenRouter API key not found');
 		}
 
-		const kennyService = KennyService.getInstance(KENNY_BASE_URL, openRouterApiKey);
+		const kennyService = KennyService.getInstance(sanitizeUserId(session.user.id), openRouterApiKey);
 		const workerClientService = new WorkerClientService(String(agent.id), kennyService);
 		return await workerClientService.getActionsByAnalysisId(analysisId);
 	});

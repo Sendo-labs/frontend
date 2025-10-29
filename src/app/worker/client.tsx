@@ -135,7 +135,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 			// Poll every 2 seconds if user is authenticated, agent exists, but no analysis yet
 			const hasAnalysis = query.state.data && query.state.data.length > 0;
 			if (!mocked && !hasAnalysis) {
-				return 2000; // Poll every 2 seconds
+				return 30000; // Poll every 30 seconds
 			}
 			return false; // Stop polling once we have analysis
 		},
@@ -174,7 +174,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 			const hasActions = query.state.data && query.state.data.length > 0;
 			const lastAnalysis = lastWorkerAnalysis(workerAnalysis);
 			if (!mocked && lastAnalysis && !hasActions) {
-				return 2000; // Poll every 2 seconds
+				return 30000; // Poll every 30 seconds
 			}
 			return false; // Stop polling once we have actions or no analysis
 		},

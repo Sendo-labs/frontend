@@ -4,25 +4,17 @@ import type { Character } from '@elizaos/core';
 
 /**
  * ElizaService - Service class for managing Eliza API client
- * Provides a singleton pattern for Eliza client access and configuration
+ * Each service instance is tied to specific API credentials and base URL
  */
-class ElizaService {
-	private static instance: ElizaService | null = null;
+export class ElizaService {
 	private elizaClient: ElizaClient | null = null;
-	private config: ApiClientConfig | null = null;
+	private config: ApiClientConfig;
 
-	private constructor() {
-		// Private constructor to enforce singleton pattern
-	}
-
-	/**
-	 * Get the singleton instance of ElizaService
-	 */
-	public static getInstance(): ElizaService {
-		if (!ElizaService.instance) {
-			ElizaService.instance = new ElizaService();
-		}
-		return ElizaService.instance;
+	constructor(apiKey: string, baseUrl: string) {
+		this.config = {
+			baseUrl,
+			apiKey,
+		};
 	}
 
 	/**
@@ -30,34 +22,19 @@ class ElizaService {
 	 * @returns {ApiClientConfig}
 	 */
 	private createClientConfig(): ApiClientConfig {
-		const { apiKey, baseUrl } = this.getEnvConfig();
-
 		return {
-			baseUrl,
+			baseUrl: this.config.baseUrl,
 			timeout: 30000,
 			headers: { Accept: 'application/json' },
-			...(apiKey && { apiKey }),
+			apiKey: this.config.apiKey,
 		};
 	}
 
-	private getEnvConfig(): { apiKey: string; baseUrl: string } {
-		const apiKey = process.env.NEXT_PUBLIC_ELIZA_SERVER_AUTH_TOKEN;
-		const baseUrl = process.env.NEXT_PUBLIC_ELIZA_SERVER_URL;
-
-		if (!apiKey || !baseUrl) {
-			throw new Error(
-				'Missing environment variables: NEXT_PUBLIC_ELIZA_SERVER_AUTH_TOKEN and NEXT_PUBLIC_ELIZA_SERVER_URL are required',
-			);
-		}
-
-		return { apiKey, baseUrl };
-	}
-
 	getBaseUrl(): string {
-		return this.getEnvConfig().baseUrl;
+		return this.config.baseUrl;
 	}
 
-	getConfig(): ApiClientConfig | null {
+	getConfig(): ApiClientConfig {
 		return this.config;
 	}
 
@@ -75,7 +52,10 @@ class ElizaService {
 
 	reset(): void {
 		this.elizaClient = null;
-		this.config = null;
+		this.config = {
+			baseUrl: '',
+			apiKey: '',
+		};
 	}
 
 	/**
@@ -138,5 +118,3 @@ class ElizaService {
 		}
 	}
 }
-
-export const elizaService = ElizaService.getInstance();
