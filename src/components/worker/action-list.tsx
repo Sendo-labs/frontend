@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 
 interface ActionListProps {
 	agentId: string | null;
+	userId?: string;
 	actions: RecommendedAction[] | null;
 	onValidateAll: () => void;
 	isExecuting: boolean;
@@ -37,7 +38,7 @@ const PRIORITY_TEXT: Record<string, string> = {
 	LOW: 'text-foreground/60',
 };
 
-export default function ActionList({ agentId, actions, onValidateAll, isExecuting, mode }: ActionListProps) {
+export default function ActionList({ agentId, userId, actions, onValidateAll, isExecuting, mode }: ActionListProps) {
 	const agentService = agentId ? createAgentService(agentId) : null;
 	const queryClient = useQueryClient();
 

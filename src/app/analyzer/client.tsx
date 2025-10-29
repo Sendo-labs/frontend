@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Crown } from 'lucide-react';
+import { Crown, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { createPageUrl } from '@/lib/utils';
@@ -18,6 +18,7 @@ import TokenDetailsList from '@/components/analyzer/token-details-list';
 import ShareButtons from '@/components/analyzer/share-buttons';
 import CTAActivateWorker from '@/components/analyzer/cta-activate-worker';
 import PageWrapper from '@/components/shared/page-wrapper';
+import { useTradesAnalysis } from '@/hooks/useTradesAnalysis';
 
 interface WalletAnalysisResult {
 	mini_chart: {
@@ -60,12 +61,15 @@ interface WalletAnalysisResult {
 		token_address: string;
 		missed_usd: number;
 		ath_price: number;
+		purchase_price: number;
 		sold_price: number;
 		ath_change_pct: number;
+		price_diff_pct?: number;
 		volume_sol: number;
 		pnl_sol: number;
 		tokens_held: number;
 		transactions: number;
+		total_tokens_traded: number;
 		status: string;
 		profit_status: string;
 	}>;
@@ -76,8 +80,24 @@ interface WalletAnalysisResult {
 export default function AnalyzerPage() {
 	const searchParams = useSearchParams();
 	const [wallet, setWallet] = useState('');
-	const [isAnalyzing, setIsAnalyzing] = useState(false);
-	const [result, setResult] = useState<WalletAnalysisResult | null>(null);
+	const [analyzingWallet, setAnalyzingWallet] = useState('');
+
+	// Use the trades analysis hook
+	const { result, isLoading, isLoadingMore, hasMore, error, loadMore } = useTradesAnalysis(analyzingWallet);
+
+	// Log result changes for debugging
+	React.useEffect(() => {
+		if (result) {
+			console.log('[AnalyzerPage] Result updated:', {
+				tokensCount: result.tokens.length,
+				totalMissedUSD: result.total_missed_usd,
+				tokens: result.tokens.map((t) => ({
+					symbol: t.symbol,
+					transactions: t.transactions,
+				})),
+			});
+		}
+	}, [result]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: no need to define dependencies
 	useEffect(() => {
@@ -85,166 +105,24 @@ export default function AnalyzerPage() {
 
 		if (walletParam && walletParam.trim()) {
 			setWallet(walletParam);
-			setTimeout(() => {
-				handleAnalyze(walletParam);
-			}, 500);
+			setAnalyzingWallet(walletParam);
 		}
 	}, [searchParams]);
 
 	const handleAnalyze = async (walletAddress = wallet) => {
 		if (!walletAddress.trim()) return;
 
-		setIsAnalyzing(true);
-
-		// Mock data - Replace with actual API call
-		setTimeout(() => {
-			setResult({
-				wallet: walletAddress,
-				total_missed_usd: 847393,
-
-				// Wallet stats
-				stats: {
-					signatures: 2847,
-					sol_balance: 1551.82,
-					nfts: 2,
-					tokens: 47,
-				},
-
-				// Performance metrics
-				performance: {
-					total_volume_sol: 22.444,
-					total_pnl_sol: 11.692,
-					success_rate: 50,
-					tokens_analyzed: 6,
-				},
-
-				// Token distribution
-				distribution: {
-					in_profit: 3,
-					in_loss: 2,
-					fully_sold: 0,
-					still_held: 2,
-				},
-
-				// Top performers
-				best_performer: {
-					token: '5ZV3HcSD',
-					symbol: 'BONK',
-					pnl_sol: 12.222,
-					volume_sol: 14.932,
-				},
-				worst_performer: {
-					token: '7sSxTsqB',
-					symbol: 'WIF',
-					pnl_sol: -8.4216,
-					volume_sol: 1.734,
-				},
-
-				// Top pain points
-				tokens: [
-					{
-						symbol: 'BONK',
-						token_address: '5ZV3HcSD',
-						missed_usd: 234568,
-						ath_price: 0.00000045,
-						sold_price: 0.000000012,
-						ath_change_pct: -92,
-						volume_sol: 14.932,
-						pnl_sol: 12.222,
-						tokens_held: 0,
-						transactions: 8,
-						status: 'sold',
-						profit_status: 'profit',
-					},
-					{
-						symbol: 'WIF',
-						token_address: '7sSxTsqB',
-						missed_usd: 189234,
-						ath_price: 3.45,
-						sold_price: 0.89,
-						ath_change_pct: -85,
-						volume_sol: 1.734,
-						pnl_sol: -8.4216,
-						tokens_held: 0,
-						transactions: 3,
-						status: 'sold',
-						profit_status: 'loss',
-					},
-					{
-						symbol: 'SAMO',
-						token_address: 'Bg34H2jy',
-						missed_usd: 156789,
-						ath_price: 0.234,
-						sold_price: 0.067,
-						ath_change_pct: -78,
-						volume_sol: 1.485,
-						pnl_sol: 0.0566,
-						tokens_held: 0,
-						transactions: 2,
-						status: 'sold',
-						profit_status: 'profit',
-					},
-					{
-						symbol: 'PUMP',
-						token_address: '7hpxmtJ1',
-						missed_usd: 98420,
-						ath_price: 0.00000089,
-						sold_price: 0,
-						ath_change_pct: -91,
-						volume_sol: 0.925,
-						pnl_sol: -0.2251,
-						tokens_held: 15535577.16,
-						transactions: 1,
-						status: 'holding',
-						profit_status: 'loss',
-					},
-					{
-						symbol: 'DEGEN',
-						token_address: 'LHywvDs4',
-						missed_usd: 67234,
-						ath_price: 0.045,
-						sold_price: 0,
-						ath_change_pct: -86,
-						volume_sol: 0.518,
-						pnl_sol: -0.2987,
-						tokens_held: 8923456.22,
-						transactions: 1,
-						status: 'holding',
-						profit_status: 'loss',
-					},
-					{
-						symbol: 'MEW',
-						token_address: 'oXMtQ4uCv',
-						missed_usd: 45120,
-						ath_price: 0.0012,
-						sold_price: 0.00089,
-						ath_change_pct: -74,
-						volume_sol: 0.518,
-						pnl_sol: 0.1334,
-						tokens_held: 0,
-						transactions: 3,
-						status: 'sold',
-						profit_status: 'profit',
-					},
-				],
-
-				rank: 'CERTIFIED BAGHOLDER 💀',
-				punchline: 'Top 0.1% of Pain',
-
-				mini_chart: {
-					points: [
-						[0, 1.0],
-						[1, 0.8],
-						[2, 0.6],
-						[3, 0.4],
-						[4, 0.3],
-						[5, 0.2],
-					],
-				},
-			});
-			setIsAnalyzing(false);
-		}, 2000);
+		console.log('[AnalyzerPage] Analyzing wallet:', walletAddress);
+		setAnalyzingWallet(walletAddress);
 	};
+
+	const handleLoadMore = async () => {
+		console.log('[AnalyzerPage] Load more clicked');
+		await loadMore();
+	};
+
+	// Show loading state
+	const isAnalyzing = isLoading && !isLoadingMore;
 
 	return (
 		<PageWrapper>
@@ -280,6 +158,21 @@ export default function AnalyzerPage() {
 				/>
 			</motion.div>
 
+			{/* Error Message */}
+			{error && (
+				<motion.div
+					initial={{ opacity: 0, y: 20 }}
+					animate={{ opacity: 1, y: 0 }}
+					className='mt-8 p-4 bg-red-500/10 border border-red-500/30 text-red-400'
+					style={{ borderRadius: 0 }}
+				>
+					<strong>Error:</strong> {error.message}
+					<br />
+					<span className='text-sm text-red-400/60'>
+						Make sure your API is running at {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}
+					</span>
+				</motion.div>
+			)}
 			{/* Results */}
 			<AnimatePresence mode='wait'>
 				{result && (
@@ -311,6 +204,33 @@ export default function AnalyzerPage() {
 						{/* Token Details List */}
 						<TokenDetailsList tokens={result.tokens} />
 
+						{/* Load More Button */}
+						{hasMore && (
+							<motion.div
+								initial={{ opacity: 0, y: 20 }}
+								animate={{ opacity: 1, y: 0 }}
+								className='flex justify-center'
+							>
+								<Button
+									onClick={handleLoadMore}
+									disabled={isLoadingMore}
+									className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 px-8 transition-all title-font'
+									style={{
+										clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+										borderRadius: 0,
+									}}
+								>
+									{isLoadingMore ? (
+										<>
+											<Loader2 className='w-5 h-5 mr-2 animate-spin' />
+											LOADING MORE...
+										</>
+									) : (
+										'LOAD MORE TRADES'
+									)}
+								</Button>
+							</motion.div>
+						)}
 						{/* Actions */}
 						<div className='grid md:grid-cols-2 gap-6'>
 							<ShareButtons result={result} />
