@@ -4,7 +4,7 @@ import { TrendingDown, DollarSign, AlertCircle, CheckCircle, Zap, Check, X } fro
 import { Button } from '@/components/ui/button';
 import type { LucideIcon } from 'lucide-react';
 import type { RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
-import { createAgentService } from '@/services/agent.service';
+import { acceptWorkerActions, rejectWorkerActions } from '@/actions/worker/actions';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/lib/query-keys';
 import { toast } from 'sonner';
@@ -38,11 +38,15 @@ const PRIORITY_TEXT: Record<string, string> = {
 };
 
 export default function ActionList({ agentId, actions, onValidateAll, isExecuting, mode }: ActionListProps) {
-	const agentService = agentId ? createAgentService(agentId) : null;
 	const queryClient = useQueryClient();
 
 	const { mutate: acceptAction, isPending: isAcceptingAction } = useMutation({
-		mutationFn: (action: RecommendedAction) => agentService?.acceptActions([action]) ?? Promise.resolve(),
+		mutationFn: async (action: RecommendedAction) => {
+			const result = await acceptWorkerActions([action], agentId || undefined);
+			if (!result.success) {
+				throw new Error(result.error || 'Failed to accept action');
+			}
+		},
 		onSuccess: () => {
 			toast.success('Action accepted successfully', {
 				description: 'The action has been executed',
@@ -55,7 +59,12 @@ export default function ActionList({ agentId, actions, onValidateAll, isExecutin
 	});
 
 	const { mutate: rejectAction, isPending: isRejectingAction } = useMutation({
-		mutationFn: (action: RecommendedAction) => agentService?.rejectActions([action]) ?? Promise.resolve(),
+		mutationFn: async (action: RecommendedAction) => {
+			const result = await rejectWorkerActions([action], agentId || undefined);
+			if (!result.success) {
+				throw new Error(result.error || 'Failed to reject action');
+			}
+		},
 		onSuccess: () => {
 			toast.success('Action rejected successfully', {
 				description: 'The action has been cancelled',
