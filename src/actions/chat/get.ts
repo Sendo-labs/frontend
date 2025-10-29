@@ -3,7 +3,7 @@
 import { withAction } from '@/lib/wrapper/with-action';
 import type { Character } from '@elizaos/core';
 import { getUserAgents } from '@/actions/agents/get';
-import { CHAT_AGENT_NAME } from '@/lib/constants';
+import { ANALYSER_AGENT_NAME } from '@/lib/constants';
 
 /**
  * Get the chat agent for the authenticated user
@@ -18,7 +18,7 @@ export async function getChatAgent() {
 		}
 
 		// Find the chat agent by name
-		const chatAgent = agents.data.find((agent) => agent.name === CHAT_AGENT_NAME);
+		const chatAgent = agents.data.find((agent) => agent.name === ANALYSER_AGENT_NAME);
 
 		return chatAgent || null;
 	});

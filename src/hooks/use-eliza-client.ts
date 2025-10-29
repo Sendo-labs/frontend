@@ -1,32 +1,48 @@
 'use client';
 
-import { ElizaClient, type ApiClientConfig } from '@elizaos/api-client';
-import { useMemo } from 'react';
+import type { ElizaClient } from '@elizaos/api-client';
+import { useEffect, useState } from 'react';
+import { getAnalyserOpenRouterApiKey } from '@/actions/openrouter/get';
+import { ElizaService } from '@/services/eliza.service';
 
 /**
  * Hook to get the Eliza client instance for WebSocket and messaging operations
  * This is kept client-side since it's needed for real-time WebSocket connections
  */
 export function useElizaClient() {
-	const client = useMemo(() => {
-		const apiKey = process.env.NEXT_PUBLIC_ELIZA_SERVER_AUTH_TOKEN;
-		const baseUrl = process.env.NEXT_PUBLIC_ELIZA_SERVER_URL;
+	const [client, setClient] = useState<ElizaClient | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
-		if (!apiKey || !baseUrl) {
-			throw new Error(
-				'Missing environment variables: NEXT_PUBLIC_ELIZA_SERVER_AUTH_TOKEN and NEXT_PUBLIC_ELIZA_SERVER_URL are required',
-			);
-		}
+	useEffect(() => {
+		const initClient = async () => {
+			try {
+				setIsLoading(true);
+				setError(null);
 
-		const config: ApiClientConfig = {
-			baseUrl,
-			timeout: 30000,
-			headers: { Accept: 'application/json' },
-			apiKey,
+				const apiKeyResult = await getAnalyserOpenRouterApiKey();
+				if (!apiKeyResult.success || !apiKeyResult.data) {
+					throw new Error('Analyser OpenRouter API key not found');
+				}
+
+				const baseUrl = 'https://analyser.agents.usekenny.com';
+
+				// Create ElizaService instance with analyzer credentials
+				const elizaService = new ElizaService(apiKeyResult.data, baseUrl);
+				const newClient = elizaService.getClient();
+
+				console.log('[useElizaClient] Initialized client for analyzer:', baseUrl);
+				setClient(newClient);
+			} catch (err) {
+				console.error('[useElizaClient] Error initializing client:', err);
+				setError((err as Error).message || 'Failed to initialize Eliza client');
+			} finally {
+				setIsLoading(false);
+			}
 		};
 
-		return ElizaClient.create(config);
+		initClient();
 	}, []);
 
-	return client;
+	return { client, isLoading, error };
 }

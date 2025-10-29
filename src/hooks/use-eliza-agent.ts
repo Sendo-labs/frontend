@@ -1,29 +1,26 @@
 'use client';
 
+import type { Agent } from '@elizaos/api-client';
 import { useEffect, useState } from 'react';
-import { getChatAgent } from '@/actions/chat/get';
-
-interface LocalAgent {
-	id: string;
-	name: string;
-	[key: string]: unknown;
-}
+import { getAnalyserOpenRouterApiKey } from '@/actions/openrouter/get';
+import { ANALYSER_AGENT_NAME } from '@/lib/constants';
+import { ElizaService } from '@/services/eliza.service';
 
 interface UseElizaAgentParams {
 	userId: string | null;
 }
 
 interface UseElizaAgentReturn {
-	agent: LocalAgent | null;
+	agent: Agent | null;
 	isLoading: boolean;
 	error: string | null;
 }
 
 /**
- * Hook to fetch or create the chat agent for a specific user
+ * Hook to fetch or create the analyzer agent
  */
 export function useElizaAgent({ userId }: UseElizaAgentParams): UseElizaAgentReturn {
-	const [agent, setAgent] = useState<LocalAgent | null>(null);
+	const [agent, setAgent] = useState<Agent | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
@@ -35,23 +32,39 @@ export function useElizaAgent({ userId }: UseElizaAgentParams): UseElizaAgentRet
 
 		const fetchOrCreateAgent = async () => {
 			try {
-				console.log('[useElizaAgent] Fetching or creating chat agent for user:', userId);
+				console.log('[useElizaAgent] Fetching analyzer agent for user:', userId);
 
-				// First, try to get existing chat agent
-				const result = await getChatAgent();
+				// Get analyzer credentials
+				const apiKeyResult = await getAnalyserOpenRouterApiKey();
+				if (!apiKeyResult.success || !apiKeyResult.data) {
+					throw new Error('Analyser OpenRouter API key not found');
+				}
 
-				if (result.success && result.data) {
-					console.log('[useElizaAgent] Found existing chat agent:', result.data.name);
-					setAgent(result.data as unknown as LocalAgent);
+				const baseUrl = 'https://analyser.agents.usekenny.com';
+
+				// Create ElizaService instance with analyzer credentials
+				const elizaService = new ElizaService(apiKeyResult.data, baseUrl);
+				const elizaClient = elizaService.getClient();
+
+				// List all agents and find the analyzer agent
+				const response = await elizaClient.agents.listAgents();
+				console.log('[useElizaAgent] Raw response:', response);
+
+				// Try to find existing analyzer agent by name
+				const analyzerAgent = response.agents?.find((a: Agent) => a.name === ANALYSER_AGENT_NAME);
+
+				if (analyzerAgent) {
+					console.log('[useElizaAgent] Found existing analyzer agent:', analyzerAgent.name);
+					setAgent(analyzerAgent);
 					setError(null);
 					setIsLoading(false);
 					return;
 				}
 
-				throw new Error('Failed to load chat agent');
+				throw new Error('Analyzer agent not found');
 			} catch (err) {
-				console.error('[useElizaAgent] Error fetching/creating agent:', err);
-				setError((err as Error).message || 'Failed to load chat agent');
+				console.error('[useElizaAgent] Error fetching analyzer agent:', err);
+				setError((err as Error).message || 'Failed to load analyzer agent');
 			} finally {
 				setIsLoading(false);
 			}

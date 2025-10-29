@@ -4,7 +4,7 @@ export class KennyService {
 	private apiKey: string;
 
 	private constructor(userId: string, apiKey: string) {
-		this.baseUrl = `${userId}.agents.usekenny.com/`;
+		this.baseUrl = `https://${userId}.agents.usekenny.com/`;
 		this.apiKey = apiKey;
 	}
 

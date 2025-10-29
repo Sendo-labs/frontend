@@ -2,9 +2,9 @@ import { EventEmitter } from 'node:events';
 import type { MessageResponse } from '@elizaos/api-client';
 import type { ActionDecision, DecideActionsData, RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
 import { io, type Socket } from 'socket.io-client';
-import { elizaService } from '@/services/eliza.service';
 import type { MessageBroadcast } from '@/types/agent';
 import type { SessionDetails, SessionInfo, SessionResponse } from '@/types/sessions';
+import { ElizaService } from './eliza.service';
 
 /**
  * AgentService - Manages agent sessions, WebSocket connections, and action execution
@@ -24,17 +24,26 @@ export class AgentService extends EventEmitter {
 	private readonly activeSessions = new Map<string, SessionInfo>();
 	private readonly agentId: string;
 	private readonly baseUrl: string;
+	private readonly apiKey: string;
+	private readonly elizaService: ElizaService;
 	private isConnected = false;
 
-	constructor(agentId: string) {
+	constructor(agentId: string, apiKey: string, baseUrl: string) {
 		super();
 		this.agentId = agentId;
-		this.baseUrl = elizaService.getBaseUrl();
+		this.apiKey = apiKey;
+		this.baseUrl = baseUrl;
+		this.elizaService = new ElizaService(apiKey, baseUrl);
 		this.initializeWebSocket();
 	}
 
 	private initializeWebSocket(): void {
-		this.socket = io(this.baseUrl);
+		this.socket = io(this.baseUrl, {
+			transports: ['websocket', 'polling'],
+			extraHeaders: {
+				Authorization: `Bearer ${this.apiKey}`,
+			},
+		});
 
 		this.socket.on('connect', () => this.handleConnect());
 		this.socket.on('disconnect', () => this.handleDisconnect());
@@ -111,7 +120,7 @@ export class AgentService extends EventEmitter {
 	private async decideActions(decisions: ActionDecision[]): Promise<DecideActionsData> {
 		console.log('[AgentService] Deciding actions:', decisions);
 
-		const response = await elizaService.apiRequest<{ data: DecideActionsData }>(
+		const response = await this.elizaService.apiRequest<{ data: DecideActionsData }>(
 			`api/agents/${this.agentId}/plugins/plugin-sendo-worker/actions/decide`,
 			'POST',
 			{ decisions },
@@ -136,7 +145,7 @@ export class AgentService extends EventEmitter {
 	}
 
 	private async createSession(action: RecommendedAction): Promise<SessionInfo> {
-		const sessionResponse = await elizaService.apiRequest<SessionResponse>('api/messaging/sessions', 'POST', {
+		const sessionResponse = await this.elizaService.apiRequest<SessionResponse>('api/messaging/sessions', 'POST', {
 			agentId: this.agentId,
 			userId: this.agentId,
 			metadata: {
@@ -146,7 +155,7 @@ export class AgentService extends EventEmitter {
 			},
 		});
 
-		const details = await elizaService.apiRequest<SessionDetails>(
+		const details = await this.elizaService.apiRequest<SessionDetails>(
 			`api/messaging/sessions/${sessionResponse.sessionId}`,
 			'GET',
 		);
@@ -182,7 +191,7 @@ export class AgentService extends EventEmitter {
 	}
 
 	private async sendTriggerMessage(session: SessionInfo, action: RecommendedAction): Promise<void> {
-		await elizaService.apiRequest<{ data: { message: MessageResponse } }>(
+		await this.elizaService.apiRequest<{ data: { message: MessageResponse } }>(
 			`api/messaging/sessions/${session.sessionId}/messages`,
 			'POST',
 			{
@@ -234,7 +243,7 @@ export class AgentService extends EventEmitter {
 		console.log(`[AgentService] Target action ${session.expectedActionType} executed for ${actionId}`);
 
 		try {
-			await elizaService.apiRequest(
+			await this.elizaService.apiRequest(
 				`api/agents/${this.agentId}/plugins/plugin-sendo-worker/action/${actionId}`,
 				'PATCH',
 				{
@@ -276,6 +285,6 @@ export class AgentService extends EventEmitter {
 	}
 }
 
-export function createAgentService(agentId: string): AgentService {
-	return new AgentService(agentId);
+export function createAgentService(agentId: string, apiKey: string, baseUrl: string): AgentService {
+	return new AgentService(agentId, apiKey, baseUrl);
 }

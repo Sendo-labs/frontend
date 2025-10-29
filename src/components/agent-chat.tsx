@@ -29,7 +29,7 @@ export default function AgentChat() {
 	const inputRef = useRef<HTMLTextAreaElement>(null);
 	const [animatedMessagesSet, setAnimatedMessagesSet] = useState(new Set<string>());
 
-	const { ready, authenticated, user } = usePrivy();
+	const { authenticated, user } = usePrivy();
 
 	// Get userId from privy user (use wallet address as fallback)
 	const userId = user?.id;

@@ -5,19 +5,21 @@ import { withAction } from '@/lib/wrapper/with-action';
 import type { OpenRouterSecret } from '@/types/openrouter';
 import { getRelatedSecret, getUserOpenRouterKeyPath } from './utils';
 import { openRouterService } from '@/services/openrouter.service';
+import { sanitizeUserId } from '@/lib/utils';
 
 /**
  * Create a new OpenRouter API key for a user
  * @param username - The username of the user to create the key for
  * @returns The created OpenRouter API key
  */
-export async function createUserOpenRouterKey(username: string) {
-	return withAction<string>(async (session) => {
+export async function createUserOpenRouterKey(userId: string) {
+	return withAction<string>(async () => {
 		const response = await openRouterService.createAPIKey({
-			name: `${username}-sendo-free`,
+			name: `${sanitizeUserId(userId)}-sendo-free`,
+			limit: 20,
 		});
 
-		const result = await storeUserOpenRouterKey(username, {
+		const result = await storeUserOpenRouterKey(sanitizeUserId(userId), {
 			apiKey: response.key,
 			hash: response.hash,
 		});
@@ -36,14 +38,14 @@ export async function createUserOpenRouterKey(username: string) {
  * @param secret - The secret to store
  * @returns True if the key was stored, false if the key already exists
  */
-export async function storeUserOpenRouterKey(username: string, secret: OpenRouterSecret) {
+export async function storeUserOpenRouterKey(userId: string, secret: OpenRouterSecret) {
 	return withAction<void>(async () => {
-		const parameterNames = getUserOpenRouterKeyPath(username, ssmParameterService.getBasePrefix());
+		const parameterNames = getUserOpenRouterKeyPath(sanitizeUserId(userId), ssmParameterService.getBasePrefix());
 		for (const parameterName of parameterNames) {
 			await ssmParameterService.storeParameter(
 				parameterName,
 				getRelatedSecret(parameterName, secret),
-				`OpenRouter API key for ${username}`,
+				`OpenRouter API key for ${sanitizeUserId(userId)}`,
 			);
 		}
 	}, false);
