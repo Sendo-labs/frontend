@@ -81,14 +81,14 @@ export interface TradesAPIResponse {
 			total: number;
 			limit: number;
 			cursor: string;
-			items: any[];
+			items: unknown[];
 		};
 		tokens: {
 			last_indexed_slot: number;
 			total: number;
 			limit: number;
 			cursor: string;
-			token_accounts: any[];
+			token_accounts: unknown[];
 		};
 	};
 	trades: Array<{
@@ -97,9 +97,14 @@ export interface TradesAPIResponse {
 		error: string;
 		status: { Ok: null };
 		accounts: string[];
-		balances: any;
-		trades: any[];
+		balances: unknown;
+		trades: unknown[];
 	}>;
+}
+
+interface ApiWrappedResponse<T> {
+	success: boolean;
+	data: T;
 }
 
 export class TradesService {
@@ -122,17 +127,28 @@ export class TradesService {
 			params.append('cursor', cursor);
 		}
 
-		const path = `/api/v1/trades/${address}?${params.toString()}`;
+		const path = `/api/agents/${ANALYSER_AGENT_NAME}/plugins/plugin-sendo-analyser/trades/${address}?${params.toString()}`;
 		console.log('[TradesService] Fetching from:', ANALYSER_AGENT_NAME, path);
 
 		try {
-			const data = await this.elizaService.apiRequest<TradesAPIResponse>(path, 'GET');
-			console.log('[TradesService] ===== RAW API RESPONSE =====');
-			console.log('[TradesService] Trades count:', data.trades?.length || 0);
-			console.log('[TradesService] Summary tokens count:', data.summary?.tokens?.length || 0);
+			const response = await this.elizaService.apiRequest<ApiWrappedResponse<TradesAPIResponse> | TradesAPIResponse>(
+				path,
+				'GET',
+			);
+			console.log('[TradesService] Raw API response:', response);
+
+			// The API returns { success: true, data: {...} }, so we need to unwrap it
+			const data: TradesAPIResponse =
+				'success' in response && response.success
+					? (response as ApiWrappedResponse<TradesAPIResponse>).data
+					: (response as TradesAPIResponse);
+
+			console.log('[TradesService] ===== UNWRAPPED API RESPONSE =====');
+			console.log('[TradesService] Trades count:', data.trades?.length ?? 0);
+			console.log('[TradesService] Summary tokens count:', data.summary?.tokens?.length ?? 0);
 			console.log(
 				'[TradesService] Summary tokens:',
-				data.summary?.tokens?.map((t: any) => ({
+				data.summary?.tokens?.map((t) => ({
 					mint: t.mint?.slice(0, 10),
 					trades: t.trades,
 					totalVolume: t.totalVolumeUSD,
