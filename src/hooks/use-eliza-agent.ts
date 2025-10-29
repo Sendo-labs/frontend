@@ -52,7 +52,7 @@ export function useElizaAgent({ userId }: UseElizaAgentParams): UseElizaAgentRet
 				// No agent found, create it
 				console.log('[useElizaAgent] Creating new chat agent...');
 				const createResult = await createChatAgent();
-				
+
 				if (!createResult.success) {
 					throw new Error(createResult.error || 'Failed to create chat agent');
 				}

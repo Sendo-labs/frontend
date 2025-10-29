@@ -12,15 +12,14 @@ import { CHAT_AGENT_NAME } from '@/lib/constants';
 export async function getChatAgent() {
 	return withAction<Character | null>(async () => {
 		const agents = await getUserAgents();
-		
+
 		if (!agents.success || !agents.data) {
 			return null;
 		}
 
 		// Find the chat agent by name
 		const chatAgent = agents.data.find((agent) => agent.name === CHAT_AGENT_NAME);
-		
+
 		return chatAgent || null;
 	});
 }
-

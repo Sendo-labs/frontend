@@ -11,10 +11,9 @@ import { createAgent } from '@/actions/agents/create';
 export async function createChatAgent() {
 	return withAction<void>(async () => {
 		const result = await createAgent(CHAT_CHARACTER);
-		
+
 		if (!result.success) {
 			throw new Error(result.error || 'Failed to create chat agent');
 		}
 	});
 }
-

@@ -52,8 +52,8 @@ export async function createAgent(character: Character) {
 			},
 		};
 
-        console.log('character', character);
-        console.log('updatedSecrets', updatedSecrets);
+		console.log('character', character);
+		console.log('updatedSecrets', updatedSecrets);
 
 		let userSecretValue: UserSecrets = {
 			[character.name]: JSON.stringify(character),
