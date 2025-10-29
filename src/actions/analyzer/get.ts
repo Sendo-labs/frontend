@@ -10,7 +10,7 @@ import secretManagerService from '@/services/aws/secret-manager.service';
  */
 export async function getAnalyzer() {
 	return withAction<Character | null>(async () => {
-		const analyserAgent = await secretManagerService.getSecret("analyser");
+		const analyserAgent = await secretManagerService.getSecret('analyser');
 		if (!analyserAgent) {
 			return null;
 		}
