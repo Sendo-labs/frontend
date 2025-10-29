@@ -24,7 +24,7 @@ export function sanitizeUserId(userId: string): string {
 	// Extract the part after "did:privy:" if it exists, otherwise use the full userId
 	const privyMatch = userId.match(/did:privy:(.+)/);
 	const extractedId = privyMatch ? privyMatch[1] : userId;
-	
+
 	// Replace all invalid characters with hyphen
 	// AWS SSM allows: letters, numbers, and . - _ /
 	return extractedId.replace(/[^a-zA-Z0-9._\-\/]/g, '-');
