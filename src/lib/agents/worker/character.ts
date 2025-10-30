@@ -136,13 +136,9 @@ export const WORKER_CHARACTER: Character = {
 		'@elizaos/plugin-sql',
 		'@elizaos/plugin-bootstrap',
 		'@elizaos/plugin-openrouter',
-		'@elizaos/plugin-knowledge',
-		'@elizaos/plugin-discord',
 		'@elizaos/plugin-openai',
 		'@elizaos/plugin-solana',
-		'@elizaos/plugin-jupiter',
 		'@sendo-labs/plugin-cryptoscore',
-		'@sendo-labs/plugin-sendo-analyser',
 		'@sendo-labs/plugin-sendo-worker',
 	],
 	postExamples: [

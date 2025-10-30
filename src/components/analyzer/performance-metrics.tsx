@@ -20,13 +20,13 @@ export default function PerformanceMetrics({ performance }: PerformanceMetricsPr
 		{
 			icon: DollarSign,
 			label: 'TOTAL VOLUME',
-			value: `${performance.total_volume_sol.toFixed(3)} SOL`,
+			value: `${performance.total_volume_sol.toFixed(2)} SOL`,
 			color: 'text-foreground',
 		},
 		{
 			icon: TrendingUp,
 			label: 'TOTAL PNL',
-			value: `${performance.total_pnl_sol >= 0 ? '+' : ''}${performance.total_pnl_sol.toFixed(3)} SOL`,
+			value: `${performance.total_pnl_sol >= 0 ? '+' : ''}${performance.total_pnl_sol.toFixed(2)} SOL`,
 			color: performance.total_pnl_sol >= 0 ? 'text-sendo-green' : 'text-sendo-red',
 		},
 		{ icon: Target, label: 'SUCCESS RATE', value: `${performance.success_rate}%`, color: 'text-foreground' },

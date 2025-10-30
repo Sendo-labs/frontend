@@ -29,11 +29,10 @@ import ConfigurePluginModal from '@/components/worker/configure-plugin-modal';
 import ConnectionPanel from '@/components/worker/connection-panel';
 import RuleBuilder from '@/components/worker/rule-builder';
 import WorkerPanel from '@/components/worker/worker-panel';
-import { getWorkerCreationTemplate } from '@/lib/agents/creation-template';
 import { MOCK_ANALYSIS_ACTIONS, MOCKED_WORKER_ANALYSIS } from '@/lib/agents/worker/mocks';
 import { QUERY_KEYS } from '@/lib/query-keys';
-import { elizaService } from '@/services/eliza.service';
-import { WorkerClientService } from '@/services/worker-client.service';
+import { getWorkerAnalyses, getWorkerActions } from '@/actions/worker/get';
+import { createWorkerAgent } from '@/actions/worker/create';
 
 interface RuleParams {
 	min_usd?: number;
@@ -107,8 +106,6 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 	const router = useRouter();
 	// If the user is not authenticated or the agentId is null, we use the mocked data
 	const mocked = !authenticated || agentId === null;
-
-	const workerClientService = agentId ? new WorkerClientService(agentId) : null;
 	const [displayMockedAlert, setDisplayMockedAlert] = useState(mocked);
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
@@ -124,14 +121,21 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 		refetch: refetchWorkerAnalysis,
 	} = useQuery({
 		queryKey: QUERY_KEYS.WORKER_ANALYSIS.list(),
-		queryFn: () => workerClientService?.getAnalyses() ?? [],
+		queryFn: async () => {
+			if (!agentId) return [];
+			const result = await getWorkerAnalyses(agentId);
+			if (!result.success) {
+				throw new Error(result.error || 'Failed to get worker analyses');
+			}
+			return result.data || [];
+		},
 		placeholderData: initialWorkerAnalysis,
 		enabled: !mocked,
 		refetchInterval: (query) => {
 			// Poll every 2 seconds if user is authenticated, agent exists, but no analysis yet
 			const hasAnalysis = query.state.data && query.state.data.length > 0;
 			if (!mocked && !hasAnalysis) {
-				return 2000; // Poll every 2 seconds
+				return 30000; // Poll every 30 seconds
 			}
 			return false; // Stop polling once we have analysis
 		},
@@ -152,12 +156,16 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 		refetch: refetchWorkerActions,
 	} = useQuery({
 		queryKey: QUERY_KEYS.WORKER_ACTIONS.list(),
-		queryFn: () => {
+		queryFn: async () => {
 			const lastAnalysis = lastWorkerAnalysis(workerAnalysis);
-			if (!lastAnalysis) {
+			if (!lastAnalysis || !agentId) {
 				return [];
 			}
-			return workerClientService?.getActionsByAnalysisId(lastAnalysis.id) ?? [];
+			const result = await getWorkerActions(lastAnalysis.id, agentId);
+			if (!result.success) {
+				throw new Error(result.error || 'Failed to get worker actions');
+			}
+			return result.data || [];
 		},
 		placeholderData: initialAnalysisActions,
 		enabled: !mocked,
@@ -166,7 +174,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 			const hasActions = query.state.data && query.state.data.length > 0;
 			const lastAnalysis = lastWorkerAnalysis(workerAnalysis);
 			if (!mocked && lastAnalysis && !hasActions) {
-				return 2000; // Poll every 2 seconds
+				return 30000; // Poll every 30 seconds
 			}
 			return false; // Stop polling once we have actions or no analysis
 		},
@@ -235,13 +243,12 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 			if (!userId) {
 				throw new Error('User ID is required to create an agent');
 			}
-			const character = getWorkerCreationTemplate(userId);
-			const agent = await elizaService.createAgent(character);
-			if (!agent) {
-				throw new Error('Failed to create agent');
+			const result = await createWorkerAgent(userId);
+			if (!result.success) {
+				throw new Error(result.error || 'Failed to create agent');
 			}
 			toast.success('Agent created successfully');
-			router.push(`/worker`);
+			router.refresh();
 		} catch (error) {
 			toast.error('Failed to create agent', { description: error instanceof Error ? error.message : 'Unknown error' });
 		} finally {
@@ -331,7 +338,6 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 					>
 						<WorkerPanel />
 					</motion.div>
-
 					<motion.div
 						initial={{ opacity: 0, x: 30 }}
 						animate={{ opacity: 1, x: 0 }}

@@ -24,7 +24,7 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 				<div className='bg-foreground/5 border border-foreground/10 p-12 text-center rounded-none'>
 					{isLoading ? (
 						<>
-							<div className='w-16 h-16 border-4 border-sendo-orange border-t-transparent mx-auto mb-4 rounded-none animate-spin' />
+							<div className='w-16 h-16 border-4 border-sendo-orange border-t-transparent mx-auto mb-4 rounded-none' />
 							<h3 className='text-xl font-bold text-foreground mb-2 title-font'>Creating Analysis...</h3>
 							<p className='text-foreground/60'>The worker is analyzing your portfolio</p>
 						</>
