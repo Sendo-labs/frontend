@@ -92,7 +92,7 @@ export default function ResultCard({ result }: ResultCardProps) {
 								</div>
 							</div>
 							<div className='text-right'>
-								<p className='text-sendo-red font-bold text-lg'>-${token.missed_usd.toLocaleString()}</p>
+								<p className='text-sendo-red font-bold text-lg'>-${(token.missed_usd ?? 0).toLocaleString()}</p>
 							</div>
 						</div>
 					))}

@@ -104,13 +104,13 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 									<div>
 										<p className='text-foreground font-bold text-lg'>{token.symbol}</p>
 										<p className='text-foreground/40 text-sm'>
-											ATH: ${token.ath_price.toFixed(8)} • Sold: $
-											{token.sold_price ? token.sold_price.toFixed(8) : 'Still Held'}
+								ATH: ${(token.ath_price ?? 0).toFixed(8)} • Sold: $
+								{typeof token.sold_price === 'number' ? token.sold_price.toFixed(8) : 'Still Held'}
 										</p>
 									</div>
 								</div>
 								<div className='text-right'>
-									<p className='text-sendo-red font-bold text-xl title-font'>-${token.missed_usd.toLocaleString()}</p>
+								<p className='text-sendo-red font-bold text-xl title-font'>-${(token.missed_usd ?? 0).toLocaleString()}</p>
 									<p className='text-sendo-red/60 text-sm'>{token.ath_change_pct}% from ATH</p>
 								</div>
 							</div>

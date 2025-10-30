@@ -161,9 +161,29 @@ export class TradesService {
 			console.log('[TradesService] ===== END API RESPONSE =====');
 
 			return data;
-		} catch (error) {
+		} catch (error: unknown) {
 			console.error('[TradesService] Error fetching trades:', error);
-			throw error;
+			// Normalize common error shapes into a clean Error with a user-friendly message
+			let message = 'An error occurred while analyzing the wallet.';
+			// Try to extract details from common error types
+			if (typeof error === 'string') {
+				message = error;
+			} else if (error && typeof error === 'object') {
+				const anyErr = error as { message?: string; status?: number; statusText?: string; code?: string; cause?: unknown };
+				if (anyErr.message) message = anyErr.message;
+				// If we have HTTP-like info, append it
+				const httpLike = anyErr as { status?: number; statusText?: string };
+				if (typeof httpLike.status === 'number') {
+					message = `${message} (HTTP ${httpLike.status}${httpLike.statusText ? ' - ' + httpLike.statusText : ''})`;
+				}
+			}
+
+			// Provide a clearer hint for common cases
+			if (/fetch|network|Failed to fetch|NetworkError/i.test(message)) {
+				message = "Can't connect to the analysis API. Please check if the server is started.";
+			}
+
+			throw new Error(message);
 		}
 	}
 }

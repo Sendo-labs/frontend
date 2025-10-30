@@ -46,7 +46,7 @@ export default function AnalyzerPage() {
 	useEffect(() => {
 		const walletParam = searchParams.get('wallet');
 
-		if (walletParam && walletParam.trim()) {
+		if (walletParam?.trim()) {
 			setWallet(walletParam);
 			setAnalyzingWallet(walletParam);
 		}
@@ -106,12 +106,25 @@ export default function AnalyzerPage() {
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
-					className='mt-8 p-4 bg-red-500/10 border border-red-500/30 text-red-400'
-					style={{ borderRadius: 0 }}
+					className='mt-8 p-6 bg-red-500/5 border-2 border-red-500/50 relative overflow-hidden'
+					style={{ 
+						borderRadius: 0,
+						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)'
+					}}
 				>
-					<strong>Error:</strong> {error.message}
-					<br />
-					<span className='text-sm text-red-400/60'>Make sure your API is running</span>
+					<div className='absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-sendo-red' />
+					<div className='flex items-start gap-3'>
+						<span className='text-2xl'>⚠️</span>
+						<div>
+							<p className='text-red-400 font-semibold title-font mb-1'>ERROR</p>
+							<p className='text-foreground/80'>
+								{typeof error === 'string' ? error : (error as Error)?.message || 'Unknown error'}
+							</p>
+							<p className='text-sm text-foreground/40 mt-2'>
+								Please check if the analysis API is started and accessible.
+							</p>
+						</div>
+					</div>
 				</motion.div>
 			)}
 			{/* Results */}

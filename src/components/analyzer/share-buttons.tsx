@@ -1,6 +1,4 @@
 'use client';
-
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Share2, Twitter, Send, Download, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -16,19 +14,19 @@ interface ShareButtonsProps {
 
 export default function ShareButtons({ result }: ShareButtonsProps) {
 	const handleShareTwitter = () => {
-		const text = `I missed $${result.total_missed_usd.toLocaleString()} by not selling at ATH! 💀\n\nRank: ${result.rank}\n\nCheck your pain at sendo.ai`;
+		const text = `I missed $${(result.total_missed_usd ?? 0).toLocaleString()} by not selling at ATH! 💀\n\nRank: ${result.rank}\n\nCheck your pain at sendo.ai`;
 		const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
 		window.open(url, '_blank');
 	};
 
 	const handleShareTelegram = () => {
-		const text = `I missed $${result.total_missed_usd.toLocaleString()} by not selling at ATH! 💀\n\nCheck your pain at sendo.ai`;
+		const text = `I missed $${(result.total_missed_usd ?? 0).toLocaleString()} by not selling at ATH! 💀\n\nCheck your pain at sendo.ai`;
 		const url = `https://t.me/share/url?url=${encodeURIComponent('https://sendo.ai')}&text=${encodeURIComponent(text)}`;
 		window.open(url, '_blank');
 	};
 
 	const handleShareDiscord = () => {
-		const text = `I missed $${result.total_missed_usd.toLocaleString()} by not selling at ATH! 💀 Rank: ${result.rank}\n\nCheck your pain at sendo.ai`;
+		const text = `I missed $${(result.total_missed_usd ?? 0).toLocaleString()} by not selling at ATH! 💀 Rank: ${result.rank}\n\nCheck your pain at sendo.ai`;
 		navigator.clipboard.writeText(text);
 		alert('Copied to clipboard! Paste in Discord 📋');
 	};
