@@ -6,7 +6,7 @@ import type {
 	GetAnalysisByIdData,
 	RecommendedAction,
 } from '@sendo-labs/plugin-sendo-worker';
-import { KennyService } from './kenny.service';
+import type { ElizaService } from './eliza.service';
 
 /**
  * WorkerClientService - Simplified client for Worker plugin API
@@ -15,15 +15,15 @@ import { KennyService } from './kenny.service';
 export class WorkerClientService {
 	private readonly agentId: string;
 	private readonly basePluginPath: string;
-	private readonly kennyService: KennyService;
+	private readonly elizaService: ElizaService;
 
-	constructor(agentId: string, kennyService: KennyService) {
-		if (!kennyService.getBaseUrl()) {
-			throw new Error('[WorkerClientService] Kenny base URL is not set');
+	constructor(agentId: string, elizaService: ElizaService) {
+		if (!elizaService.getBaseUrl()) {
+			throw new Error('[WorkerClientService] Eliza base URL is not set');
 		}
 		this.agentId = agentId;
 		this.basePluginPath = `api/agents/${this.agentId}/plugins/plugin-sendo-worker`;
-		this.kennyService = kennyService;
+		this.elizaService = elizaService;
 	}
 
 	/**
@@ -64,7 +64,7 @@ export class WorkerClientService {
 	 */
 	private async request<T>(path: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH', body?: any): Promise<T> {
 		const fullPath = `${this.basePluginPath}${path}`;
-		const response = await this.kennyService.apiRequest<{ data: T }>(fullPath, method, body);
+		const response = await this.elizaService.apiRequest<{ data: T }>(fullPath, method, body);
 		return response.data;
 	}
 }

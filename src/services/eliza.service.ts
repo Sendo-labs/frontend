@@ -85,7 +85,7 @@ export class ElizaService {
 
 			return response.json() as Promise<T>;
 		} catch (error) {
-			console.error(`[ElizaService] API request to ${path} failed:`, error);
+			console.error(`[ElizaService] API request to ${url} failed:`, error);
 			throw error;
 		}
 	}

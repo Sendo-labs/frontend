@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import './globals.css';
 import Navigation from '@/components/navigation';
-import AgentPanel from '@/components/agent-chat';
+import AgentChat from '@/components/agent-chat';
 import { GlobalProviders } from '@/lib/providers';
 
 const geistSans = Geist({
@@ -36,7 +36,7 @@ export default function RootLayout({
 			<body className={`${geistSans.variable} antialiased bg-background text-foreground min-h-screen`}>
 				<GlobalProviders>
 					<Navigation />
-					<AgentPanel />
+					<AgentChat />
 					{children}
 				</GlobalProviders>
 			</body>

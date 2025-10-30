@@ -5,7 +5,7 @@ import type { RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
 import { createAgentService } from '@/services/agent.service';
 import { getUserAgents } from '@/actions/agents/get';
 import { WORKER_AGENT_NAME } from '@/lib/constants';
-import { sanitizeUserId } from '@/lib/utils';
+import { getWorkerAgentBaseUrl } from '@/lib/utils';
 
 /**
  * Accept worker actions
@@ -34,8 +34,7 @@ export async function acceptWorkerActions(actions: RecommendedAction[], agentId?
 			throw new Error('OpenRouter API key not found');
 		}
 
-		const userId = sanitizeUserId(session.user.id);
-		const baseUrl = `https://${userId}.agents.usekenny.com`;
+		const baseUrl = getWorkerAgentBaseUrl(session.user.id);
 
 		const agentService = createAgentService(String(agent.id), openRouterApiKey, baseUrl);
 		await agentService.acceptActions(actions);
@@ -69,8 +68,7 @@ export async function rejectWorkerActions(actions: RecommendedAction[], agentId?
 			throw new Error('OpenRouter API key not found');
 		}
 
-		const userId = sanitizeUserId(session.user.id);
-		const baseUrl = `https://${userId}.agents.usekenny.com`;
+		const baseUrl = getWorkerAgentBaseUrl(session.user.id);
 
 		const agentService = createAgentService(String(agent.id), openRouterApiKey, baseUrl);
 		await agentService.rejectActions(actions);

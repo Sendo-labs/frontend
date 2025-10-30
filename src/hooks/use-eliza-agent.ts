@@ -3,7 +3,7 @@
 import type { Agent } from '@elizaos/api-client';
 import { useEffect, useState } from 'react';
 import { getAnalyserOpenRouterApiKey } from '@/actions/openrouter/get';
-import { ANALYSER_AGENT_NAME } from '@/lib/constants';
+import { ANALYSER_AGENT_NAME, ANALYSER_BASE_URL } from '@/lib/constants';
 import { ElizaService } from '@/services/eliza.service';
 
 interface UseElizaAgentParams {
@@ -40,7 +40,7 @@ export function useElizaAgent({ userId }: UseElizaAgentParams): UseElizaAgentRet
 					throw new Error('Analyser OpenRouter API key not found');
 				}
 
-				const baseUrl = 'https://analyser.agents.usekenny.com';
+				const baseUrl = ANALYSER_BASE_URL;
 
 				// Create ElizaService instance with analyzer credentials
 				const elizaService = new ElizaService(apiKeyResult.data, baseUrl);

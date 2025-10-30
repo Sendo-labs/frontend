@@ -106,7 +106,6 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 	const router = useRouter();
 	// If the user is not authenticated or the agentId is null, we use the mocked data
 	const mocked = !authenticated || agentId === null;
-
 	const [displayMockedAlert, setDisplayMockedAlert] = useState(mocked);
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
@@ -339,7 +338,6 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 					>
 						<WorkerPanel />
 					</motion.div>
-
 					<motion.div
 						initial={{ opacity: 0, x: 30 }}
 						animate={{ opacity: 1, x: 0 }}

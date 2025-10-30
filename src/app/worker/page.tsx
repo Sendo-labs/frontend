@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import { QueryBoundary } from '@/components/shared/query-boundary';
 import { getServerSession } from '@/lib/auth/session';
 import { WorkerClientService } from '@/services/worker-client.service';
-import { KennyService } from '@/services/kenny.service';
+import { ElizaService } from '@/services/eliza.service';
 import Worker from './client';
 import { getUserAgents } from '@/actions/agents/get';
 import { WORKER_AGENT_NAME } from '@/lib/constants';
-import { sanitizeUserId } from '@/lib/utils';
+import { getWorkerAgentBaseUrl } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -49,8 +49,9 @@ async function Content() {
 		throw new Error('OpenRouter API key not found');
 	}
 
-	const kennyService = KennyService.getInstance(sanitizeUserId(signedInUser.user.id), openRouterApiKey);
-	const workerClientService = new WorkerClientService(String(agent.id), kennyService);
+	const baseUrl = getWorkerAgentBaseUrl(signedInUser.user.id);
+	const elizaService = new ElizaService(openRouterApiKey, baseUrl);
+	const workerClientService = new WorkerClientService(String(agent.id), elizaService);
 
 	try {
 		const workerAnalysis = await workerClientService.getAnalyses();
