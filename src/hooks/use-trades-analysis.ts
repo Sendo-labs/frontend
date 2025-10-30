@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import type { TradesAPIResponse } from '@/services/trades.service';
-import { getAnalyzerTrades } from '@/actions/analyzer/get-trades';
+import { getAnalyzerTrades } from '@/actions/analyzer/get';
 
 interface WalletAnalysisResult {
 	mini_chart: { points: Array<[number, number]> };
