@@ -169,7 +169,13 @@ export class TradesService {
 			if (typeof error === 'string') {
 				message = error;
 			} else if (error && typeof error === 'object') {
-				const anyErr = error as { message?: string; status?: number; statusText?: string; code?: string; cause?: unknown };
+				const anyErr = error as {
+					message?: string;
+					status?: number;
+					statusText?: string;
+					code?: string;
+					cause?: unknown;
+				};
 				if (anyErr.message) message = anyErr.message;
 				// If we have HTTP-like info, append it
 				const httpLike = anyErr as { status?: number; statusText?: string };

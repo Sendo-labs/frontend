@@ -107,9 +107,9 @@ export default function AnalyzerPage() {
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					className='mt-8 p-6 bg-red-500/5 border-2 border-red-500/50 relative overflow-hidden'
-					style={{ 
+					style={{
 						borderRadius: 0,
-						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)'
+						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
 					}}
 				>
 					<div className='absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-sendo-red' />
