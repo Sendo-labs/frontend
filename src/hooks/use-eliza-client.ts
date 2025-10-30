@@ -4,6 +4,7 @@ import type { ElizaClient } from '@elizaos/api-client';
 import { useEffect, useState } from 'react';
 import { getAnalyserOpenRouterApiKey } from '@/actions/openrouter/get';
 import { ElizaService } from '@/services/eliza.service';
+import { ANALYSER_BASE_URL } from '@/lib/constants';
 
 /**
  * Hook to get the Eliza client instance for WebSocket and messaging operations
@@ -25,7 +26,7 @@ export function useElizaClient() {
 					throw new Error('Analyser OpenRouter API key not found');
 				}
 
-				const baseUrl = 'https://analyser.agents.usekenny.com';
+				const baseUrl = ANALYSER_BASE_URL;
 
 				// Create ElizaService instance with analyzer credentials
 				const elizaService = new ElizaService(apiKeyResult.data, baseUrl);

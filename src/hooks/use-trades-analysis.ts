@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
-import { tradesService, type TradesAPIResponse } from '@/services/trades.service';
+import type { TradesAPIResponse } from '@/services/trades.service';
+import { getAnalyzerTrades } from '@/actions/analyzer/get-trades';
 
 interface WalletAnalysisResult {
 	mini_chart: { points: Array<[number, number]> };
@@ -43,169 +44,6 @@ interface UseTradesAnalysisReturn {
 	hasMore: boolean;
 	error: Error | null;
 	loadMore: () => Promise<void>;
-}
-
-/**
- * Calculate summary from ALL trades (not just API summary)
- * This handles Load More correctly by analyzing all accumulated trades
- */
-function calculateSummaryFromAllTrades(
-	allTrades: any[],
-	walletAddress: string,
-	globalData?: any,
-	totalSignatures?: number,
-): WalletAnalysisResult {
-	console.log('[useTradesAnalysis] ===== CALCULATING FROM ALL TRADES =====');
-	console.log('[useTradesAnalysis] Total trades to analyze:', allTrades.length);
-
-	// Group trades by mint
-	const tokensMap = new Map();
-	let totalMissedUSD = 0;
-	let totalVolumeSOL = 0;
-	let totalPnLSOL = 0;
-
-	for (const tx of allTrades) {
-		if (!tx.trades) continue;
-
-		for (const trade of tx.trades) {
-			const mint = trade.mint;
-
-			if (!tokensMap.has(mint)) {
-				tokensMap.set(mint, {
-					mint,
-					trades: 0,
-					totalVolumeUSD: 0,
-					totalGainLoss: 0,
-					totalMissedATH: 0,
-					bestGainLoss: 0,
-					worstGainLoss: 0,
-				});
-			}
-
-			const stats = tokensMap.get(mint);
-			stats.trades++;
-
-			// Calculate volume from SOL balance change
-			if (tx.balances?.solBalance?.uiChange) {
-				const volume = Math.abs(tx.balances.solBalance.uiChange);
-				stats.totalVolumeUSD += volume;
-				totalVolumeSOL += volume;
-			}
-
-			// Calculate PnL and missed ATH
-			if (trade.priceAnalysis) {
-				const currentPrice = trade.priceAnalysis.currentPrice;
-				const athPrice = trade.priceAnalysis.athPrice;
-				const purchasePrice = trade.priceAnalysis.purchasePrice;
-
-				// Calculate gain/loss percentage
-				const gainLoss = ((currentPrice - purchasePrice) / purchasePrice) * 100;
-				stats.totalGainLoss += gainLoss / 1000; // Convert to reasonable number
-
-				// Track best/worst
-				stats.bestGainLoss = Math.max(stats.bestGainLoss, gainLoss / 1000);
-				stats.worstGainLoss = Math.min(stats.worstGainLoss, gainLoss / 1000);
-
-				// Calculate missed ATH
-				if (athPrice > 0) {
-					const missedPercent = ((athPrice - currentPrice) / athPrice) * 100;
-					stats.totalMissedATH += missedPercent;
-				}
-			}
-		}
-	}
-
-	// Convert to array of tokens
-	const tokens = Array.from(tokensMap.values()).map((token) => ({
-		symbol: token.mint.slice(0, 4).toUpperCase(),
-		token_address: token.mint,
-		missed_usd: Math.round(Math.abs(token.totalMissedATH)),
-		ath_price: 0, // TODO: Get from trades
-		purchase_price: 0, // TODO: Get from trades
-		sold_price: 0, // TODO: Get from trades
-		ath_change_pct: Math.round(token.totalMissedATH / token.trades),
-		price_diff_pct: 0, // TODO: Calculate from trades
-		volume_sol: token.totalVolumeUSD,
-		pnl_sol: token.totalGainLoss,
-		tokens_held: 0,
-		transactions: token.trades,
-		total_tokens_traded: 0, // TODO: Calculate from trades
-		status: 'sold',
-		profit_status: token.totalGainLoss > 0 ? 'profit' : 'loss',
-	}));
-
-	totalMissedUSD = Math.round(tokens.reduce((sum, t) => sum + t.missed_usd, 0));
-	const profitableCount = tokens.filter((t) => t.pnl_sol > 0).length;
-	const successRate = tokens.length > 0 ? Math.round((profitableCount / tokens.length) * 100) : 0;
-
-	console.log('[useTradesAnalysis] Calculated summary:', {
-		tokensCount: tokens.length,
-		totalVolumeSOL,
-		totalMissedUSD,
-	});
-
-	// Get wallet stats from global data
-	const walletBalance = globalData?.balance?.value ? parseFloat(globalData.balance.value) / 1e9 : 0;
-	// Use totalSignatures if provided, otherwise fallback to globalData or allTrades.length
-	const signatureCount = totalSignatures ?? (globalData?.singatureCount || allTrades.length);
-	const nftCount = globalData?.nfts?.total || 0;
-	const tokenCount = globalData?.tokens?.total || 0;
-
-	// Calculate distribution based on tokens
-	const inProfit = tokens.filter((t) => t.pnl_sol > 0).length;
-	const inLoss = tokens.filter((t) => t.pnl_sol < 0).length;
-	const fullySold = tokens.length; // Assume all are sold for now
-	const stillHeld = 0; // Assume all are sold for now
-
-	// Find best/worst performers
-	const bestToken = tokens.reduce((best, t) => (t.pnl_sol > best.pnl_sol ? t : best), tokens[0] || {});
-	const worstToken = tokens.reduce((worst, t) => (t.pnl_sol < worst.pnl_sol ? t : worst), tokens[0] || {});
-
-	console.log('[useTradesAnalysis] Distribution for calculateSummaryFromAllTrades:', {
-		inProfit,
-		inLoss,
-		fullySold,
-		stillHeld,
-		totalTokens: tokens.length,
-	});
-
-	return {
-		wallet: walletAddress,
-		total_missed_usd: totalMissedUSD,
-		stats: { signatures: signatureCount, sol_balance: walletBalance, nfts: nftCount, tokens: tokenCount },
-		performance: {
-			total_volume_sol: totalVolumeSOL,
-			total_pnl_sol: totalPnLSOL,
-			success_rate: successRate,
-			tokens_analyzed: tokens.length,
-		},
-		distribution: { in_profit: inProfit, in_loss: inLoss, fully_sold: fullySold, still_held: stillHeld },
-		best_performer: {
-			token: bestToken.token_address || '',
-			symbol: bestToken.symbol || '',
-			pnl_sol: bestToken.pnl_sol || 0,
-			volume_sol: bestToken.volume_sol || 0,
-		},
-		worst_performer: {
-			token: worstToken.token_address || '',
-			symbol: worstToken.symbol || '',
-			pnl_sol: worstToken.pnl_sol || 0,
-			volume_sol: worstToken.volume_sol || 0,
-		},
-		tokens,
-		rank: 'CERTIFIED BAGHOLDER 💀',
-		punchline: 'Top Analysis',
-		mini_chart: {
-			points: [
-				[0, 1.0],
-				[1, 0.8],
-				[2, 0.6],
-				[3, 0.4],
-				[4, 0.3],
-				[5, 0.2],
-			],
-		},
-	};
 }
 
 /**
@@ -435,7 +273,11 @@ export function useTradesAnalysis(walletAddress: string): UseTradesAnalysisRetur
 		setError(null);
 
 		try {
-			const data = await tradesService.fetchTrades(address);
+			const response = await getAnalyzerTrades(address);
+			if (!response.success || !response.data) {
+				throw new Error('success' in response && !response.success ? response.error : 'Failed to fetch trades');
+			}
+			const data = response.data;
 			console.log('[useTradesAnalysis] Initial data received:', {
 				tradesCount: data.trades?.length || 0,
 				tokensCount: data.summary?.tokens?.length || 0,
@@ -472,7 +314,11 @@ export function useTradesAnalysis(walletAddress: string): UseTradesAnalysisRetur
 		setIsLoadingMore(true);
 
 		try {
-			const data = await tradesService.fetchTrades(walletAddress, nextCursor);
+			const response = await getAnalyzerTrades(walletAddress, nextCursor);
+			if (!response.success || !response.data) {
+				throw new Error('success' in response && !response.success ? response.error : 'Failed to fetch more trades');
+			}
+			const data = response.data;
 			console.log('[useTradesAnalysis] Load more data received:', {
 				tradesCount: data.trades.length,
 				newTotalTrades: allTrades.length + data.trades.length,

@@ -1,4 +1,5 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+import { ANALYSER_AGENT_NAME } from '@/lib/constants';
+import type { ElizaService } from './eliza.service';
 
 export interface TradesAPIResponse {
 	message: string;
@@ -80,14 +81,14 @@ export interface TradesAPIResponse {
 			total: number;
 			limit: number;
 			cursor: string;
-			items: any[];
+			items: unknown[];
 		};
 		tokens: {
 			last_indexed_slot: number;
 			total: number;
 			limit: number;
 			cursor: string;
-			token_accounts: any[];
+			token_accounts: unknown[];
 		};
 	};
 	trades: Array<{
@@ -96,21 +97,21 @@ export interface TradesAPIResponse {
 		error: string;
 		status: { Ok: null };
 		accounts: string[];
-		balances: any;
-		trades: any[];
+		balances: unknown;
+		trades: unknown[];
 	}>;
 }
 
+interface ApiWrappedResponse<T> {
+	success: boolean;
+	data: T;
+}
+
 export class TradesService {
-	private static instance: TradesService | null = null;
+	private readonly elizaService: ElizaService;
 
-	private constructor() {}
-
-	public static getInstance(): TradesService {
-		if (!TradesService.instance) {
-			TradesService.instance = new TradesService();
-		}
-		return TradesService.instance;
+	constructor(elizaService: ElizaService) {
+		this.elizaService = elizaService;
 	}
 
 	/**
@@ -126,26 +127,27 @@ export class TradesService {
 			params.append('cursor', cursor);
 		}
 
-		const url = `${API_BASE_URL}/api/v1/trades/${address}?${params.toString()}`;
-		console.log('[TradesService] Fetching from:', url);
+		const path = `/api/agents/${ANALYSER_AGENT_NAME}/plugins/plugin-sendo-analyser/trades/${address}?${params.toString()}`;
+		console.log('[TradesService] Fetching from:', ANALYSER_AGENT_NAME, path);
 
 		try {
-			const response = await fetch(url, {
-				method: 'GET',
-				headers: { 'Content-Type': 'application/json' },
-			});
+			const response = await this.elizaService.apiRequest<ApiWrappedResponse<TradesAPIResponse> | TradesAPIResponse>(
+				path,
+				'GET',
+			);
 
-			if (!response.ok) {
-				throw new Error(`Failed to fetch trades: ${response.statusText}`);
-			}
+			// The API returns { success: true, data: {...} }, so we need to unwrap it
+			const data: TradesAPIResponse =
+				'success' in response && response.success
+					? (response as ApiWrappedResponse<TradesAPIResponse>).data
+					: (response as TradesAPIResponse);
 
-			const data = await response.json();
-			console.log('[TradesService] ===== RAW API RESPONSE =====');
-			console.log('[TradesService] Trades count:', data.trades?.length || 0);
-			console.log('[TradesService] Summary tokens count:', data.summary?.tokens?.length || 0);
+			console.log('[TradesService] ===== UNWRAPPED API RESPONSE =====');
+			console.log('[TradesService] Trades count:', data.trades?.length ?? 0);
+			console.log('[TradesService] Summary tokens count:', data.summary?.tokens?.length ?? 0);
 			console.log(
 				'[TradesService] Summary tokens:',
-				data.summary?.tokens?.map((t: any) => ({
+				data.summary?.tokens?.map((t) => ({
 					mint: t.mint?.slice(0, 10),
 					trades: t.trades,
 					totalVolume: t.totalVolumeUSD,
@@ -165,5 +167,3 @@ export class TradesService {
 		}
 	}
 }
-
-export const tradesService = TradesService.getInstance();

@@ -3,10 +3,10 @@
 import { withAction } from '@/lib/wrapper/with-action';
 import type { RecommendedAction, AnalysisResult } from '@sendo-labs/plugin-sendo-worker';
 import { WorkerClientService } from '@/services/worker-client.service';
-import { KennyService } from '@/services/kenny.service';
+import { ElizaService } from '@/services/eliza.service';
 import { getUserAgents } from '@/actions/agents/get';
 import { WORKER_AGENT_NAME } from '@/lib/constants';
-import { sanitizeUserId } from '@/lib/utils';
+import { getWorkerAgentBaseUrl } from '@/lib/utils';
 
 /**
  * Get all analyses for the worker agent
@@ -35,8 +35,9 @@ export async function getWorkerAnalyses(agentId?: string) {
 			throw new Error('OpenRouter API key not found');
 		}
 
-		const kennyService = KennyService.getInstance(sanitizeUserId(session.user.id), openRouterApiKey);
-		const workerClientService = new WorkerClientService(String(agent.id), kennyService);
+		const baseUrl = getWorkerAgentBaseUrl(session.user.id);
+		const elizaService = new ElizaService(openRouterApiKey, baseUrl);
+		const workerClientService = new WorkerClientService(String(agent.id), elizaService);
 		return await workerClientService.getAnalyses();
 	});
 }
@@ -69,8 +70,9 @@ export async function getWorkerActions(analysisId: string, agentId?: string) {
 			throw new Error('OpenRouter API key not found');
 		}
 
-		const kennyService = KennyService.getInstance(sanitizeUserId(session.user.id), openRouterApiKey);
-		const workerClientService = new WorkerClientService(String(agent.id), kennyService);
+		const baseUrl = getWorkerAgentBaseUrl(session.user.id);
+		const elizaService = new ElizaService(openRouterApiKey, baseUrl);
+		const workerClientService = new WorkerClientService(String(agent.id), elizaService);
 		return await workerClientService.getActionsByAnalysisId(analysisId);
 	});
 }

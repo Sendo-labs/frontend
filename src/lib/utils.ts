@@ -29,3 +29,13 @@ export function sanitizeUserId(userId: string): string {
 	// AWS SSM allows: letters, numbers, and . - _ /
 	return extractedId.replace(/[^a-zA-Z0-9._\-\/]/g, '-');
 }
+
+/**
+ * Get the worker agent base URL for a specific user
+ * @param userId - The user ID (will be sanitized automatically)
+ * @returns The base URL for the worker agent (e.g., https://user-id.agents.usekenny.com)
+ */
+export function getWorkerAgentBaseUrl(userId: string): string {
+	const sanitized = sanitizeUserId(userId);
+	return `https://${sanitized}.agents.usekenny.com`;
+}

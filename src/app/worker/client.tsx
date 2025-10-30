@@ -312,7 +312,6 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 						{displayWorkerActions && (
 							<ActionList
 								agentId={agentId}
-								userId={userId || undefined}
 								actions={displayWorkerActions.filter((action) => action.status === 'pending')}
 								onValidateAll={handleValidateAll}
 								isExecuting={isExecuting}
