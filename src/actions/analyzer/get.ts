@@ -43,5 +43,5 @@ export async function getAnalyzerTrades(address: string, cursor?: string, limit:
 		const tradesService = new TradesService(elizaService);
 
 		return await tradesService.fetchTrades(address, cursor, limit);
-	});
+	}, false);
 }
