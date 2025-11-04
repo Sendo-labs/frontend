@@ -94,7 +94,7 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 								<div
 									className={`w-10 h-10 ${
 										token.profit_status === 'profit' ? 'bg-sendo-green' : 'bg-sendo-red'
-									} flex items-center justify-center text-white font-bold text-xs title-font`}
+									} flex items-center justify-center text-white font-bold text-xs`}
 									style={{ borderRadius: 0 }}
 								>
 									{token.symbol.slice(0, 2)}
@@ -140,9 +140,7 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 							</div>
 							<div>
 								<p className='text-foreground/40 text-xs mb-1'>PnL Realized</p>
-								<p
-									className={`font-bold text-sm title-font ${token.pnl_sol >= 0 ? 'text-sendo-green' : 'text-sendo-red'}`}
-								>
+								<p className={`font-bold text-sm ${token.pnl_sol >= 0 ? 'text-sendo-green' : 'text-sendo-red'}`}>
 									{token.pnl_sol >= 0 ? '+' : ''}${token.pnl_sol.toFixed(2)}
 								</p>
 							</div>

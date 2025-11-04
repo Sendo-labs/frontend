@@ -52,7 +52,7 @@ export default function PerformanceMetrics({ performance }: PerformanceMetricsPr
 						</div>
 						<div>
 							<p className='text-xs text-foreground/40 uppercase mb-1 title-font'>{metric.label}</p>
-							<p className={`text-xl font-bold ${metric.color} title-font`}>{metric.value}</p>
+							<p className={`text-xl font-bold ${metric.color}`}>{metric.value}</p>
 						</div>
 					</div>
 				))}

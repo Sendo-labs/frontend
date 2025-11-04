@@ -44,10 +44,10 @@ export default function HeroSection() {
 	const isValidSolanaAddress = (address: string): boolean => {
 		// Vérifier que l'adresse n'est pas vide
 		if (!address.trim()) return false;
-		
+
 		// Vérifier que l'adresse contient uniquement des caractères Base58 valides
 		if (!BASE58_VALID_REGEX.test(address)) return false;
-		
+
 		// Les adresses Solana standard font généralement entre 32 et 44 caractères en Base58
 		// On accepte une plage plus large pour être flexible (32-58 caractères)
 		const length = address.length;

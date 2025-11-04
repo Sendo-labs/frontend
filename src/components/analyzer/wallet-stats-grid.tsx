@@ -44,7 +44,7 @@ export default function WalletStatsGrid({ stats }: WalletStatsGridProps) {
 					>
 						<stat.icon className='w-5 h-5 text-white' />
 					</div>
-					<div className='text-3xl md:text-4xl font-bold text-foreground mb-1 title-font'>{stat.value}</div>
+					<div className='text-3xl md:text-4xl font-bold text-foreground mb-1'>{stat.value}</div>
 					<div className='text-xs text-foreground/60 uppercase title-font'>{stat.label}</div>
 				</motion.div>
 			))}
