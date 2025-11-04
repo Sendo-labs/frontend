@@ -65,15 +65,15 @@ export default function ResultCard({ result }: ResultCardProps) {
 					>
 						<TrendingDown className='w-6 h-6 text-white' />
 					</div>
-					<h3 className='text-foreground/60 uppercase text-sm title-font'>TOTAL MISSED AT ATH</h3>
+					<h3 className='text-foreground/60 uppercase text-sm '>TOTAL MISSED AT ATH</h3>
 				</div>
 
-				<div className='text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent title-font'>
+				<div className='text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent '>
 					<CountUp end={result.total_missed_usd} />
 				</div>
 
 				<div className='space-y-3'>
-					<h4 className='text-foreground/40 text-xs uppercase mb-3 title-font'>TOP PAIN POINTS</h4>
+					<h4 className='text-foreground/40 text-xs uppercase mb-3 '>TOP PAIN POINTS</h4>
 					{result.tokens.map((token, index) => (
 						<div
 							key={index}

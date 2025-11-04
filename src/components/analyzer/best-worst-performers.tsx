@@ -39,7 +39,7 @@ export default function BestWorstPerformers({ best, worst }: BestWorstPerformers
 					</div>
 					<div className='flex justify-between'>
 						<span className='text-foreground/60 text-sm'>PnL</span>
-						<span className='text-sendo-green font-bold title-font'>+{best.pnl_sol.toFixed(4)} SOL</span>
+						<span className='text-sendo-green font-bold'>+{best.pnl_sol.toFixed(4)} SOL</span>
 					</div>
 					<div className='flex justify-between'>
 						<span className='text-foreground/60 text-sm'>Volume</span>
@@ -63,7 +63,7 @@ export default function BestWorstPerformers({ best, worst }: BestWorstPerformers
 					</div>
 					<div className='flex justify-between'>
 						<span className='text-foreground/60 text-sm'>PnL</span>
-						<span className='text-sendo-red font-bold title-font'>{worst.pnl_sol.toFixed(4)} SOL</span>
+						<span className='text-sendo-red font-bold'>{worst.pnl_sol.toFixed(4)} SOL</span>
 					</div>
 					<div className='flex justify-between'>
 						<span className='text-foreground/60 text-sm'>Volume</span>

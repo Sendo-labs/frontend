@@ -41,7 +41,7 @@ export default function TokenDistribution({ distribution }: TokenDistributionPro
 					<div key={index} className='flex items-center justify-between'>
 						<span className='text-foreground/70 text-sm'>{item.label}</span>
 						<div className='flex items-center gap-3'>
-							<span className={`font-bold text-lg ${item.color} title-font`}>{item.value}</span>
+							<span className={`font-bold text-lg ${item.color}`}>{item.value}</span>
 							<span className='text-foreground/40 text-xs w-12 text-right'>{item.pct > 0 ? `(${item.pct}%)` : ''}</span>
 						</div>
 					</div>

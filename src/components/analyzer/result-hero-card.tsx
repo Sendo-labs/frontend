@@ -77,7 +77,7 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 				</div>
 
 				{/* Big number */}
-				<div className='text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold mb-4 bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent leading-none title-font'>
+				<div className='text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold mb-4 bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent leading-none'>
 					<CountUp end={result.total_missed_usd} />
 				</div>
 
@@ -110,7 +110,7 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 									</div>
 								</div>
 								<div className='text-right'>
-									<p className='text-sendo-red font-bold text-xl title-font'>
+									<p className='text-sendo-red font-bold text-xl'>
 										-${(token.missed_usd ?? 0).toLocaleString()}
 									</p>
 									<p className='text-sendo-red/60 text-sm'>{token.ath_change_pct}% from ATH</p>
