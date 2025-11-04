@@ -36,8 +36,33 @@ export default function HeroSection() {
 		window.open(`${createPageUrl('Analyzer')}?wallet=${wallet}`, '_blank');
 	};
 
+	// Regex Base58 pour les adresses Solana (exclut 0, O, I, l pour éviter l'ambiguïté)
+	// Alphabet Base58: 123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz
+	const BASE58_REGEX = /[^1-9A-HJ-NP-Za-km-z]/g;
+	const BASE58_VALID_REGEX = /^[1-9A-HJ-NP-Za-km-z]+$/;
+
+	const isValidSolanaAddress = (address: string): boolean => {
+		// Vérifier que l'adresse n'est pas vide
+		if (!address.trim()) return false;
+		
+		// Vérifier que l'adresse contient uniquement des caractères Base58 valides
+		if (!BASE58_VALID_REGEX.test(address)) return false;
+		
+		// Les adresses Solana standard font généralement entre 32 et 44 caractères en Base58
+		// On accepte une plage plus large pour être flexible (32-58 caractères)
+		const length = address.length;
+		return length == 44;
+	};
+
+	const handleWalletChange = (value: string) => {
+		// Filtrer uniquement les caractères Base58 valides pour Solana
+		// La validation complète (longueur) est faite par isValidSolanaAddress pour le bouton
+		const filteredValue = value.replace(BASE58_REGEX, '');
+		setWalletAddress(filteredValue);
+	};
+
 	const handleAnalyze = () => {
-		if (walletAddress.trim()) {
+		if (isValidSolanaAddress(walletAddress)) {
 			window.location.href = `${createPageUrl('Analyzer')}?wallet=${walletAddress}`;
 		}
 	};
@@ -110,14 +135,14 @@ export default function HeroSection() {
 								type='text'
 								placeholder='Enter your Solana wallet...'
 								value={walletAddress}
-								onChange={(e) => setWalletAddress(e.target.value)}
-								onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
+								onChange={(e) => handleWalletChange(e.target.value)}
+								onKeyDown={(e) => e.key === 'Enter' && isValidSolanaAddress(walletAddress) && handleAnalyze()}
 								className='h-10 sm:h-12 md:h-14 text-sm sm:text-base md:text-lg bg-foreground/10 border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-sendo-orange transition-all'
 								style={{ borderRadius: 0 }}
 							/>
 							<Button
 								onClick={handleAnalyze}
-								disabled={!walletAddress.trim()}
+								disabled={!isValidSolanaAddress(walletAddress)}
 								className='h-10 sm:h-12 md:h-14 px-4 sm:px-6 md:px-8 text-sm sm:text-base md:text-lg whitespace-nowrap bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white'
 								style={{
 									fontFamily: 'TECHNOS, sans-serif',
@@ -132,7 +157,7 @@ export default function HeroSection() {
 					</div>
 
 					<p className='text-xs sm:text-sm text-foreground/40 mt-2 sm:mt-3'>
-						Example: 9W3xHj9kUK7eJXR3QMNz6T8f2A4vPkLmC5dN1sB6wX9Y
+						Example: 2fg5QD1eD7rzNNCsvnhmXFm5hqNgwTTG8p7kQ6f3rx6f
 					</p>
 
 					{/* Top 3 Loosers */}
@@ -153,7 +178,6 @@ export default function HeroSection() {
 							{topLoosers.map((looser) => (
 								<button
 									key={looser.rank}
-									onClick={() => handleLooserClick(looser.wallet)}
 									className='bg-foreground/5 border border-foreground/10 p-2 sm:p-3 md:p-4 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all cursor-pointer group'
 									style={{ borderRadius: 0 }}
 									type='button'
