@@ -140,9 +140,7 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 							</div>
 							<div>
 								<p className='text-foreground/40 text-xs mb-1'>PnL Realized</p>
-								<p
-									className={`font-bold text-sm ${token.pnl_sol >= 0 ? 'text-sendo-green' : 'text-sendo-red'}`}
-								>
+								<p className={`font-bold text-sm ${token.pnl_sol >= 0 ? 'text-sendo-green' : 'text-sendo-red'}`}>
 									{token.pnl_sol >= 0 ? '+' : ''}${token.pnl_sol.toFixed(2)}
 								</p>
 							</div>

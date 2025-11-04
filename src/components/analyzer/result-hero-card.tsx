@@ -110,9 +110,7 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 									</div>
 								</div>
 								<div className='text-right'>
-									<p className='text-sendo-red font-bold text-xl'>
-										-${(token.missed_usd ?? 0).toLocaleString()}
-									</p>
+									<p className='text-sendo-red font-bold text-xl'>-${(token.missed_usd ?? 0).toLocaleString()}</p>
 									<p className='text-sendo-red/60 text-sm'>{token.ath_change_pct}% from ATH</p>
 								</div>
 							</div>
