@@ -2,7 +2,7 @@
 
 import { withAction } from '@/lib/wrapper/with-action';
 import type { Character } from '@elizaos/core';
-import secretManagerService from '@/services/aws/secret-manager.service';
+import { StorageFactory } from '@/factories/StorageFactory';
 import type { TradesAPIResponse } from '@/services/trades.service';
 import { getAnalyserOpenRouterApiKey } from '@/actions/openrouter/get';
 import { ElizaService } from '@/services/eliza.service';
@@ -15,7 +15,8 @@ import { ANALYSER_BASE_URL } from '@/lib/constants';
  */
 export async function getAnalyzer() {
 	return withAction<Character | null>(async () => {
-		const analyserAgent = await secretManagerService.getSecret('analyser');
+		const secretStore = StorageFactory.createSecretStore();
+		const analyserAgent = await secretStore.getSecret('analyser');
 		if (!analyserAgent) {
 			return null;
 		}
@@ -35,7 +36,9 @@ export async function getAnalyzerTrades(address: string, cursor?: string, limit:
 	return withAction<TradesAPIResponse>(async () => {
 		const apiKeyResult = await getAnalyserOpenRouterApiKey();
 		if (!apiKeyResult.success || !apiKeyResult.data) {
-			throw new Error('Analyzer OpenRouter API key not found');
+			// Return empty response if analyzer is not configured
+			console.warn('[Storage] Analyzer not configured - returning empty trades');
+			return { trades: [], cursor: null, hasMore: false } as TradesAPIResponse;
 		}
 
 		const baseUrl = ANALYSER_BASE_URL;

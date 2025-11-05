@@ -1,20 +1,28 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+## Storage Abstraction Layer
 
-First, run the development server:
+This project uses a **storage abstraction layer** to decouple from AWS, making it easy to work locally without AWS dependencies.
+
+### Quick Start - Local Development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+# 1. Copy the example environment file
+cp .env.example .env.local
+
+# 2. Edit .env.local and add:
+#    STORAGE_PROVIDER=local
+#    OPENROUTER_API_KEY=your-openrouter-key
+#    (plus other required variables: Privy, Eliza, etc.)
+
+# 3. Start development
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+That's it! The app will automatically use local filesystem storage instead of AWS.
+
+
+Open [http://localhost:3100](http://localhost:3100) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
