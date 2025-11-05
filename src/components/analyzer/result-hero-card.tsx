@@ -57,7 +57,7 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 			style={{ borderRadius: 0 }}
 		>
 			{/* Background gradient */}
-			<div className='absolute inset-0 bg-gradient-to-br from-sendo-orange/10 via-transparent to-sendo-red/10 opacity-50' />
+		<div className='absolute inset-0 bg-gradient-to-br from-[#FF5C1A]/10 via-[#FF223B]/0 to-[#4A0C13]/10 opacity-50' />
 
 			{/* Decorative skull */}
 			<div className='absolute top-8 right-8 opacity-5'>
@@ -77,7 +77,7 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 				</div>
 
 				{/* Big number */}
-				<div className='text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold mb-4 bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent leading-none'>
+			<div className='text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold mb-4 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] bg-clip-text text-transparent leading-none'>
 					<CountUp end={result.total_missed_usd} />
 				</div>
 

@@ -6,7 +6,7 @@
 @theme inline {
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
-	--font-sans: var(--font-geist-sans);
+	--font-sans: var(--font-ibm-plex-mono), monospace;
 	--color-sidebar-ring: var(--sidebar-ring);
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -145,5 +145,20 @@
 }
 
 .title-font {
-	font-family: "TECHNOS", sans-serif;
+	font-family: 'IBM Plex Mono Digits', "TECHNOS", sans-serif;
+	letter-spacing: 0.1em;
+}
+
+/* Annuler l'espacement pour les très gros titres h1 uniquement */
+h1.title-font {
+	letter-spacing: 0;
+}
+
+.numeric-font {
+	font-family: var(--font-ibm-plex-mono), monospace;
+	letter-spacing: 0;
+}
+
+.ibm-font {
+	font-family: var(--font-ibm-plex-mono), monospace;
 }

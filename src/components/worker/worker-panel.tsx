@@ -16,7 +16,7 @@ export default function WorkerPanel() {
 						<TrendingUp className='w-4 h-4 text-sendo-green' />
 						<p className='text-xs text-foreground/60 uppercase'>Potential Gains</p>
 					</div>
-					<p className='text-2xl font-bold text-sendo-green title-font'>$1050.00</p>
+					<p className='text-2xl font-bold text-sendo-green title-font numeric-font'>$1050.00</p>
 				</div>
 
 				<div className='h-px bg-foreground/10' />
@@ -26,18 +26,18 @@ export default function WorkerPanel() {
 						<Zap className='w-4 h-4 text-sendo-red' />
 						<p className='text-xs text-foreground/60 uppercase'>High Priority</p>
 					</div>
-					<p className='text-2xl font-bold text-sendo-red title-font'>3</p>
+					<p className='text-2xl font-bold text-sendo-red title-font numeric-font'>3</p>
 				</div>
 
 				<div className='h-px bg-foreground/10' />
 
 				<div>
 					<p className='text-xs text-foreground/60 uppercase mb-2'>Active Rules</p>
-					<p className='text-2xl font-bold text-foreground title-font'>2/3</p>
+					<p className='text-2xl font-bold text-foreground title-font numeric-font'>2/3</p>
 				</div>
 
 				<div className='mt-4 pt-4 border-t border-foreground/10'>
-					<p className='text-xs text-foreground/40 text-center'>Worker last checked 2 minutes ago</p>
+					<p className='text-xs text-foreground/40 text-center'>Worker last checked <span className='numeric-font'>2</span> minutes ago</p>
 				</div>
 			</div>
 		</div>

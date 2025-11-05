@@ -48,7 +48,7 @@ export default function PluginCard({ plugin, isSponsored = false, onDetails, onD
 				{/* Header */}
 				<div className='flex items-start gap-4 mb-4'>
 					<div
-						className='w-14 h-14 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center text-3xl flex-shrink-0'
+						className='w-14 h-14 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center text-3xl flex-shrink-0'
 						style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)' }}
 					>
 						{plugin.icon}
@@ -108,7 +108,7 @@ export default function PluginCard({ plugin, isSponsored = false, onDetails, onD
 					</Button>
 					<Button
 						onClick={onDeploy}
-						className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-10 uppercase'
+						className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] hover:shadow-lg hover:shadow-sendo-red/50 text-white h-10 uppercase'
 						style={{
 							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 							borderRadius: 0,

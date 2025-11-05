@@ -78,7 +78,7 @@ export default function AnalyzerPage() {
 			>
 				<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font'>
 					WALLET{' '}
-					<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+				<span className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] bg-clip-text text-transparent'>
 						ANALYZER
 					</span>
 				</h1>
@@ -112,7 +112,7 @@ export default function AnalyzerPage() {
 						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
 					}}
 				>
-					<div className='absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-sendo-red' />
+					<div className='absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-red-500 to-sendo-red' />
 					<div className='flex items-start gap-3'>
 						<span className='text-2xl'>⚠️</span>
 						<div>
@@ -168,7 +168,7 @@ export default function AnalyzerPage() {
 								<Button
 									onClick={handleLoadMore}
 									disabled={isLoadingMore}
-									className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 px-8 transition-all title-font'
+						className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 px-8 transition-all title-font'
 									style={{
 										clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 										borderRadius: 0,

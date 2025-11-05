@@ -108,7 +108,7 @@ export default function HeroSection() {
 				>
 					HOW MUCH DID
 					<br />
-					<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+					<span className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] bg-clip-text text-transparent'>
 						YOU LOSE?
 					</span>
 				</motion.h1>
@@ -143,7 +143,7 @@ export default function HeroSection() {
 							<Button
 								onClick={handleAnalyze}
 								disabled={!isValidSolanaAddress(walletAddress)}
-								className='h-10 sm:h-12 md:h-14 px-4 sm:px-6 md:px-8 text-sm sm:text-base md:text-lg whitespace-nowrap bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white'
+									className='h-10 sm:h-12 md:h-14 px-4 sm:px-6 md:px-8 text-sm sm:text-base md:text-lg whitespace-nowrap bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] hover:shadow-lg hover:shadow-sendo-red/50 text-white'
 								style={{
 									fontFamily: 'TECHNOS, sans-serif',
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
@@ -186,16 +186,16 @@ export default function HeroSection() {
 										<Crown
 											className={`w-3 h-3 sm:w-4 sm:h-4 ${getRankColor(looser.rank)} group-hover:scale-110 transition-transform`}
 										/>
-										<span
-											className={`text-base sm:text-lg md:text-xl font-bold ${getRankColor(looser.rank)} title-font`}
-										>
+									<span
+										className={`text-base sm:text-lg md:text-xl font-bold ${getRankColor(looser.rank)} title-font numeric-font`}
+									>
 											#{looser.rank}
 										</span>
 									</div>
 									<p className='text-[9px] sm:text-[10px] md:text-xs text-foreground/60 font-mono mb-1 sm:mb-2'>
 										{formatWallet(looser.wallet)}
 									</p>
-									<p className='text-xs sm:text-sm md:text-base font-bold text-sendo-red group-hover:scale-105 transition-transform title-font'>
+									<p className='text-xs sm:text-sm md:text-base font-bold text-sendo-red group-hover:scale-105 transition-transform title-font numeric-font'>
 										$
 										{looser.missed >= 1000000
 											? `${(looser.missed / 1000000).toFixed(2)}M`

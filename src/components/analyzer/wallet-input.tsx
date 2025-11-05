@@ -29,7 +29,7 @@ export default function WalletInput({ wallet, setWallet, onAnalyze, isAnalyzing 
 					<Button
 						onClick={onAnalyze}
 						disabled={isAnalyzing || !wallet.trim()}
-						className='h-14 px-8 text-base font-bold bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white transition-all title-font'
+			className='h-14 px-8 text-base font-bold bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] hover:shadow-lg hover:shadow-sendo-red/50 text-white transition-all title-font'
 						style={{
 							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
 							borderRadius: 0,

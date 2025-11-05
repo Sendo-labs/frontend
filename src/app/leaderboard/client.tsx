@@ -188,7 +188,7 @@ export default function Leaderboard() {
 			>
 				<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font'>
 					LEADER
-					<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>BOARD</span>
+					<span className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] bg-clip-text text-transparent'>BOARD</span>
 				</h1>
 				<p className='text-lg sm:text-xl md:text-2xl text-foreground/60 max-w-3xl mx-auto'>
 					The best and worst traders on Solana 🏆
@@ -207,7 +207,7 @@ export default function Leaderboard() {
 					onClick={() => setActiveTab('shame')}
 					className={`flex-1 h-14 md:h-16 flex items-center justify-center gap-2 transition-all ${
 						activeTab === 'shame'
-							? 'bg-gradient-to-r from-sendo-orange to-sendo-red'
+							? 'bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13]'
 							: 'bg-foreground/5 hover:bg-foreground/10'
 					}`}
 					style={{
@@ -279,16 +279,16 @@ export default function Leaderboard() {
 											<Crown
 												className={`w-6 h-6 md:w-8 md:h-8 ${
 													entry.badge === 'diamond'
-														? 'text-[#0ea5e9]'
+														? 'text-[#0052cc]'
 														: entry.badge === 'gold'
-															? 'text-[#ffd700]'
+															? 'text-[#cc9900]'
 															: entry.badge === 'silver'
-																? 'text-[#e5e7eb]'
-																: 'text-[#f59e0b]'
+																? 'text-[#888888]'
+																: 'text-[#cc6600]'
 												}`}
 											/>
 										) : (
-											<span className='text-lg md:text-2xl font-bold text-foreground title-font'>#{index + 1}</span>
+											<span className='text-lg md:text-2xl font-bold text-foreground title-font numeric-font'>#{index + 1}</span>
 										)}
 									</div>
 
@@ -311,7 +311,7 @@ export default function Leaderboard() {
 												<TrendingUp className='w-5 h-5 text-sendo-green' />
 											)}
 											<p
-												className={`text-xl md:text-3xl font-bold title-font ${
+												className={`text-xl md:text-3xl font-bold title-font numeric-font ${
 													activeTab === 'shame' ? 'text-sendo-red' : 'text-sendo-green'
 												}`}
 											>
@@ -345,7 +345,7 @@ export default function Leaderboard() {
 				</p>
 				<Link href='/analyzer'>
 					<Button
-						className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 md:h-14 px-6 md:px-8'
+						className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 md:h-14 px-6 md:px-8'
 						style={{
 							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 							borderRadius: 0,
