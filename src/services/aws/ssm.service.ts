@@ -55,7 +55,7 @@ export class SSMParameterService {
 		parameterName: string,
 		value: string | object,
 		description?: string,
-		type = ParameterType.SECURE_STRING,
+		type: ParameterType = ParameterType.SECURE_STRING,
 	): Promise<void> {
 		try {
 			const parameterValue = typeof value === 'string' ? value : JSON.stringify(value);
