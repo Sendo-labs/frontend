@@ -22,7 +22,7 @@ bun dev
 That's it! The app will automatically use local filesystem storage instead of AWS.
 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3100](http://localhost:3100) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
