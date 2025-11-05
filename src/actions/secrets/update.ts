@@ -1,7 +1,7 @@
 'use server';
 
 import { withAction } from '@/lib/wrapper/with-action';
-import { secretManagerService } from '@/services/aws/secret-manager.service';
+import { StorageFactory } from '@/factories/StorageFactory';
 import { getUserSecretName } from '@/lib/utils';
 import { SecretTags, UserSecrets } from '@/types/agent';
 import { getSecretTags } from './utils';
@@ -14,8 +14,9 @@ import { getSecretTags } from './utils';
  */
 export async function updateUserSecret(secretContent: UserSecrets) {
 	return withAction<void>(async (session) => {
+		const secretStore = StorageFactory.createSecretStore();
 		const secretName = getUserSecretName(session.user.id);
-		await secretManagerService.putSecret(secretName, JSON.stringify(secretContent));
+		await secretStore.putSecret(secretName, JSON.stringify(secretContent));
 		return;
 	});
 }
@@ -27,9 +28,10 @@ export async function updateUserSecret(secretContent: UserSecrets) {
  */
 export async function updateSecretTagsAction(tags: SecretTags) {
 	return withAction<void>(async (session) => {
+		const secretStore = StorageFactory.createSecretStore();
 		const secretName = getUserSecretName(session.user.id);
 		const finalTags = getSecretTags(tags);
-		await secretManagerService.addSecretTags(secretName, finalTags);
+		await secretStore.addSecretTags(secretName, finalTags);
 		return;
 	});
 }

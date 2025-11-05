@@ -1,7 +1,7 @@
 'use server';
 
 import { withAction } from '@/lib/wrapper/with-action';
-import { secretManagerService } from '@/services/aws/secret-manager.service';
+import { StorageFactory } from '@/factories/StorageFactory';
 import { getUserSecretName } from '@/lib/utils';
 import { UserSecrets } from '@/types/agent';
 
@@ -11,8 +11,9 @@ import { UserSecrets } from '@/types/agent';
  */
 export async function getUserSecret() {
 	return withAction<UserSecrets | null>(async (session) => {
+		const secretStore = StorageFactory.createSecretStore();
 		const secretName = getUserSecretName(session.user.id);
-		const secretValue = await secretManagerService.getSecret(secretName);
+		const secretValue = await secretStore.getSecret(secretName);
 		return secretValue ? JSON.parse(secretValue) : null;
 	});
 }
