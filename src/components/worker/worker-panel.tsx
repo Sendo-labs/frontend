@@ -37,7 +37,9 @@ export default function WorkerPanel() {
 				</div>
 
 				<div className='mt-4 pt-4 border-t border-foreground/10'>
-					<p className='text-xs text-foreground/40 text-center'>Worker last checked <span className='numeric-font'>2</span> minutes ago</p>
+					<p className='text-xs text-foreground/40 text-center'>
+						Worker last checked <span className='numeric-font'>2</span> minutes ago
+					</p>
 				</div>
 			</div>
 		</div>

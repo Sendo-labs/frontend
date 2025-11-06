@@ -71,7 +71,9 @@ export default function StatisticsSection() {
 					className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-2 sm:mb-3 md:mb-4 text-foreground title-font'
 				>
 					THE{' '}
-					<span className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] bg-clip-text text-transparent'>DAMAGE</span>
+					<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
+						DAMAGE
+					</span>
 				</motion.h2>
 
 				<motion.p
@@ -93,14 +95,14 @@ export default function StatisticsSection() {
 							className='relative group'
 						>
 							<div className='bg-foreground/5 border border-foreground/10 p-3 sm:p-4 md:p-6 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all duration-300 h-full'>
-									<div
-									className='w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 mx-auto mb-2 sm:mb-3 md:mb-4 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center group-hover:scale-110 transition-transform duration-300'
+								<div
+									className='w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 mx-auto mb-2 sm:mb-3 md:mb-4 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center group-hover:scale-110 transition-transform duration-300'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
 								>
 									<stat.icon className='w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white' />
 								</div>
 
-									<div className='text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2 text-center title-font numeric-font'>
+								<div className='text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2 text-center title-font numeric-font'>
 									<CountUp end={stat.value} format={stat.format} />
 								</div>
 

@@ -54,7 +54,7 @@ export default function TeamSection() {
 					className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-2 sm:mb-3 md:mb-4 text-foreground title-font'
 				>
 					THE{' '}
-					<span className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] bg-clip-text text-transparent'>
+					<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
 						GUARDIANS
 					</span>
 				</motion.h2>

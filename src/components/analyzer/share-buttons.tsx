@@ -54,7 +54,7 @@ export default function ShareButtons({ result }: ShareButtonsProps) {
 				{/* Download Button */}
 				<Button
 					onClick={handleDownload}
-	className='w-full bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 title-font'
+					className='w-full bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 title-font'
 					style={{
 						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 						borderRadius: 0,

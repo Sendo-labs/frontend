@@ -52,7 +52,7 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 					<div className='border-b border-foreground/10 p-6'>
 						<div className='flex items-start gap-4'>
 							<div
-								className='w-16 h-16 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center text-4xl flex-shrink-0'
+								className='w-16 h-16 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center text-4xl flex-shrink-0'
 								style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)' }}
 							>
 								{plugin.icon}
@@ -83,7 +83,7 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 						{isOAuth ? (
 							<div className='text-center py-12'>
 								<div
-									className='w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center text-5xl'
+									className='w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center text-5xl'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%)' }}
 								>
 									{plugin.icon}
@@ -178,7 +178,7 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 												handleSubmit(event as unknown as FormEvent<HTMLFormElement>)
 								}
 								type={isOAuth ? 'button' : 'submit'}
-								className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 uppercase'
+								className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 uppercase'
 								style={{
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 									borderRadius: 0,

@@ -88,7 +88,9 @@ export default function HowItWorksSection() {
 					className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-2 md:mb-3 text-foreground title-font'
 				>
 					HOW IT{' '}
-					<span className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] bg-clip-text text-transparent'>WORKS</span>
+					<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
+						WORKS
+					</span>
 				</motion.h2>
 
 				<motion.p
@@ -120,7 +122,7 @@ export default function HowItWorksSection() {
 									>
 										{/* Number Badge */}
 										<div
-									className='absolute -top-2 -left-2 md:-top-3 md:-left-3 w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center group-hover:scale-110 transition-transform'
+											className='absolute -top-2 -left-2 md:-top-3 md:-left-3 w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center group-hover:scale-110 transition-transform'
 											style={{
 												clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 											}}
@@ -191,7 +193,7 @@ export default function HowItWorksSection() {
 										onClick={() => setCurrentStep(index)}
 										className={`h-1.5 transition-all ${
 											index === currentStep
-										? 'w-6 md:w-8 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13]'
+												? 'w-6 md:w-8 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red'
 												: 'w-1.5 bg-foreground/20 hover:bg-foreground/40'
 										}`}
 										style={{ borderRadius: 0 }}
@@ -219,7 +221,7 @@ export default function HowItWorksSection() {
 						>
 							<a
 								href='/connect-wallet'
-								className='inline-block bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] p-[2px] hover:shadow-lg hover:shadow-sendo-red/50 transition-all group'
+								className='inline-block bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red p-[2px] hover:shadow-lg hover:shadow-sendo-red/50 transition-all group'
 								style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
 							>
 								<div
@@ -265,7 +267,7 @@ export default function HowItWorksSection() {
 							<div className='relative bg-foreground/5 border border-foreground/10 p-3' style={{ borderRadius: 0 }}>
 								{/* Number Badge */}
 								<div
-							className='absolute -top-2 -left-2 w-10 h-10 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center'
+									className='absolute -top-2 -left-2 w-10 h-10 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)' }}
 								>
 									<span className='text-base font-bold text-white title-font'>{mobileStep.number}</span>
