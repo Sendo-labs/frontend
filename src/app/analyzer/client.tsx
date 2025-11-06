@@ -15,7 +15,6 @@ import TokenDistribution from '@/components/analyzer/token-distribution';
 import BestWorstPerformers from '@/components/analyzer/best-worst-performers';
 import MiniChartATH from '@/components/analyzer/mini-chart-ath';
 import TokenDetailsList from '@/components/analyzer/token-details-list';
-import ShareButtons from '@/components/analyzer/share-buttons';
 import CTAActivateWorker from '@/components/analyzer/cta-activate-worker';
 import PageWrapper from '@/components/shared/page-wrapper';
 import { useTradesAnalysis } from '@/hooks/use-trades-analysis';
@@ -185,11 +184,8 @@ export default function AnalyzerPage() {
 								</Button>
 							</motion.div>
 						)}
-						{/* Actions */}
-						<div className='grid md:grid-cols-2 gap-6'>
-							<ShareButtons result={result} />
-							<CTAActivateWorker />
-						</div>
+						{/* CTA Activate Worker */}
+						<CTAActivateWorker />
 					</motion.div>
 				)}
 			</AnimatePresence>
