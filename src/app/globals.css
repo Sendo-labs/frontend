@@ -145,6 +145,20 @@
 	body {
 		@apply bg-background text-foreground;
 	}
+	
+	/* Effet de zoom uniforme pour tous les boutons */
+	button:not(:disabled):hover,
+	[role="button"]:not(:disabled):hover,
+	a[data-slot="button"]:hover {
+		transform: scale(1.05);
+		transition: transform 0.2s ease;
+	}
+	
+	button:not(:disabled),
+	[role="button"]:not(:disabled),
+	a[data-slot="button"] {
+		transition: transform 0.2s ease;
+	}
 }
 
 .title-font {

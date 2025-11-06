@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { List } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface TokenData {
 	symbol: string;
@@ -53,28 +53,18 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 					</h3>
 				</div>
 
-				{/* Filters */}
-				<div className='flex gap-2 flex-wrap'>
-					{[
-						{ id: 'all', label: 'All' },
-						{ id: 'profit', label: 'Profit' },
-						{ id: 'loss', label: 'Loss' },
-						{ id: 'sold', label: 'Sold' },
-					].map(({ id, label }) => (
-						<Button
-							key={id}
-							onClick={() => setFilter(id)}
-							className={`h-8 px-4 text-xs transition-all title-font ${
-								filter === id
-									? 'bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red text-white'
-									: 'bg-foreground/5 text-foreground/60 hover:text-foreground hover:bg-foreground/10'
-							}`}
-							style={{ borderRadius: 0 }}
-						>
-							{label}
-						</Button>
-					))}
-				</div>
+			{/* Filters */}
+			<Select value={filter} onValueChange={setFilter}>
+				<SelectTrigger className='w-[200px] ibm-font h-9 text-sm'>
+					<SelectValue />
+				</SelectTrigger>
+				<SelectContent className='ibm-font'>
+					<SelectItem value='all'>All</SelectItem>
+					<SelectItem value='profit'>Profit</SelectItem>
+					<SelectItem value='loss'>Loss</SelectItem>
+					<SelectItem value='sold'>Sold</SelectItem>
+				</SelectContent>
+			</Select>
 			</div>
 
 			{/* Token List */}

@@ -143,9 +143,8 @@ export default function HeroSection() {
 							<Button
 								onClick={handleAnalyze}
 								disabled={!isValidSolanaAddress(walletAddress)}
-								className='h-10 sm:h-12 md:h-14 px-4 sm:px-6 md:px-8 text-sm sm:text-base md:text-lg whitespace-nowrap bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white'
+								className='h-10 sm:h-12 md:h-14 px-4 sm:px-6 md:px-8 whitespace-nowrap bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red text-white'
 								style={{
-									fontFamily: 'TECHNOS, sans-serif',
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
 									borderRadius: 0,
 								}}

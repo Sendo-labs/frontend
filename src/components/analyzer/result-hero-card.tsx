@@ -92,20 +92,22 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 
 			<div className='relative z-10'>
 				{/* Title */}
-				<div className='flex items-center gap-3 mb-6'>
-					<div
-						className='w-12 h-12 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center'
-						style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
-					>
+			<div className='flex items-center gap-3 mb-6'>
+				<div
+					className='w-12 h-12 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center'
+					style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
+				>
 						<TrendingDown className='w-7 h-7 text-white' />
 					</div>
 					<h2 className='text-lg md:text-xl text-foreground/60 uppercase title-font'>TOTAL MISSED AT ATH</h2>
 				</div>
 
-				{/* Big number */}
-				<div className='text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold mb-4 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent leading-none'>
+			{/* Big number */}
+			<div className='mb-4'>
+				<span className='inline-block text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent leading-none'>
 					<CountUp end={result.total_missed_usd} />
-				</div>
+				</span>
+			</div>
 
 				{/* Subtitle */}
 				<p className='text-lg md:text-xl text-foreground/60 mb-8'>You could've been rich... but you held 💀😭</p>
@@ -114,7 +116,7 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 				<div className='grid md:grid-cols-2 gap-6 md:gap-8'>
 					{/* Top Pain Points */}
 					<div>
-						<h3 className='text-sm text-foreground/40 uppercase mb-4 title-font'>TOP PAIN POINTS</h3>
+						<h3 className='text-sm text-foreground/60 uppercase mb-4 title-font'>TOP PAIN POINTS</h3>
 						<div className='grid gap-3'>
 							{result.tokens.slice(0, 3).map((token, index) => (
 								<div
@@ -122,11 +124,11 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 									className='flex items-center justify-between p-4 bg-foreground/5 border border-foreground/10 hover:border-sendo-red/30 transition-all'
 									style={{ borderRadius: 0 }}
 								>
-									<div className='flex items-center gap-4'>
-										<div
-											className='w-10 h-10 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center text-white font-bold title-font'
-											style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)' }}
-										>
+								<div className='flex items-center gap-4'>
+									<div
+										className='w-10 h-10 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center text-white font-bold title-font'
+										style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)' }}
+									>
 											{index + 1}
 										</div>
 										<div>
@@ -172,7 +174,7 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 								<div className='absolute inset-0 flex items-center justify-center'>
 									<Button
 										onClick={handleDownload}
-										className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 px-6 title-font'
+										className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red text-white h-12 px-6'
 										style={{
 											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 											borderRadius: 0,
@@ -188,7 +190,7 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 							<div className='grid grid-cols-3 gap-2'>
 								<Button
 									onClick={handleShareTwitter}
-									className='bg-[#1DA1F2] hover:bg-[#1a8cd8] text-white h-10 px-3 flex items-center gap-2'
+									className='bg-[#1DA1F2] text-white h-10 px-3 flex items-center gap-2'
 									style={{ borderRadius: 0 }}
 								>
 									<Twitter className='w-4 h-4' />
@@ -196,7 +198,7 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 								</Button>
 								<Button
 									onClick={handleShareTelegram}
-									className='bg-[#0088cc] hover:bg-[#0077b3] text-white h-10 px-3 flex items-center gap-2'
+									className='bg-[#0088cc] text-white h-10 px-3 flex items-center gap-2'
 									style={{ borderRadius: 0 }}
 								>
 									<Send className='w-4 h-4' />
@@ -204,7 +206,7 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 								</Button>
 								<Button
 									onClick={handleShareDiscord}
-									className='bg-[#5865F2] hover:bg-[#4752C4] text-white h-10 px-3 flex items-center gap-2'
+									className='bg-[#5865F2] text-white h-10 px-3 flex items-center gap-2'
 									style={{ borderRadius: 0 }}
 								>
 									<MessageCircle className='w-4 h-4' />
