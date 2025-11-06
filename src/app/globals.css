@@ -42,6 +42,7 @@
 	--radius-xl: calc(var(--radius) + 4px);
 	--color-sendo-orange: var(--sendo-orange);
 	--color-sendo-red: var(--sendo-red);
+	--color-sendo-dark-red: var(--sendo-dark-red);
 	--color-sendo-green: var(--sendo-green);
 }
 
@@ -91,7 +92,7 @@
 	/* SENDO Brand Colors */
 	--sendo-orange: oklch(0.6844 0.2098 38.81); /* #FF5C1A */
 	--sendo-red: oklch(0.6404 0.2452 23.56); /* #FF223B */
-	--sendo-dark-red: oklch(0.6404 0.2452 23.56); /* #4A0C13 */
+	--sendo-dark-red: oklch(0.2717 0.0915 20.01); /* #4A0C13 */
 	--sendo-green: oklch(0.8441 0.1991 156.83); /* #14F195 */
 }
 
@@ -133,7 +134,7 @@
 	/* SENDO Brand Colors */
 	--sendo-orange: oklch(0.6844 0.2098 38.81); /* #FF5C1A */
 	--sendo-red: oklch(0.6404 0.2452 23.56); /* #FF223B */
-	--sendo-dark-red: oklch(0.6404 0.2452 23.56); /* #4A0C13 */
+	--sendo-dark-red: oklch(0.2717 0.0915 20.01); /* #4A0C13 */
 	--sendo-green: oklch(0.8441 0.1991 156.83); /* #14F195 */
 }
 
