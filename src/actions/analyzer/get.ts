@@ -2,7 +2,7 @@
 
 import { withAction } from '@/lib/wrapper/with-action';
 import type { Character } from '@elizaos/core';
-import { StorageFactory } from '@/factories/StorageFactory';
+import { StorageFactory } from '@/factories/storage-factory';
 import type { TradesAPIResponse } from '@/services/trades.service';
 import { getAnalyserOpenRouterApiKey } from '@/actions/openrouter/get';
 import { ElizaService } from '@/services/eliza.service';
@@ -33,12 +33,12 @@ export async function getAnalyzer() {
  * @returns The trades API response
  */
 export async function getAnalyzerTrades(address: string, cursor?: string, limit: number = 35) {
-	return withAction<TradesAPIResponse>(async () => {
+	return withAction<TradesAPIResponse | null>(async () => {
 		const apiKeyResult = await getAnalyserOpenRouterApiKey();
 		if (!apiKeyResult.success || !apiKeyResult.data) {
 			// Return empty response if analyzer is not configured
 			console.warn('[Storage] Analyzer not configured - returning empty trades');
-			return { trades: [], cursor: null, hasMore: false } as TradesAPIResponse;
+			return null;
 		}
 
 		const baseUrl = ANALYSER_BASE_URL;

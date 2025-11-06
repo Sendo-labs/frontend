@@ -3,7 +3,7 @@
  * Wraps the existing SecretManagerService to conform to the abstract interface
  */
 
-import { ISecretStore, Tag, SecretMetadata } from '@/interfaces/storage/ISecretStore';
+import { ISecretStore, Tag, SecretMetadata } from '@/interfaces/storage/siecret-store';
 import { SecretManagerService } from '@/services/aws/secret-manager.service';
 
 export class AWSSecretStoreAdapter implements ISecretStore {

@@ -12,12 +12,12 @@
  *   PARAMETER_STORE_PREFIX=/app/env (for SSM prefix)
  */
 
-import { ISecretStore } from '@/interfaces/storage/ISecretStore';
-import { IParameterStore } from '@/interfaces/storage/IParameterStore';
-import { AWSSecretStoreAdapter } from '@/adapters/storage/AWSSecretStoreAdapter';
-import { AWSParameterStoreAdapter } from '@/adapters/storage/AWSParameterStoreAdapter';
-import { LocalSecretStoreAdapter } from '@/adapters/storage/LocalSecretStoreAdapter';
-import { LocalParameterStoreAdapter } from '@/adapters/storage/LocalParameterStoreAdapter';
+import type { ISecretStore } from '@/interfaces/storage/siecret-store';
+import type { IParameterStore } from '@/interfaces/storage/iparameter-store';
+import { AWSSecretStoreAdapter } from '@/adapters/storage/aws-secret-store.adapter';
+import { AWSParameterStoreAdapter } from '@/adapters/storage/aws-parameter-store.adapter';
+import { LocalSecretStoreAdapter } from '@/adapters/storage/local-secret-store.adapter';
+import { LocalParameterStoreAdapter } from '@/adapters/storage/local-parameter-store.adapter';
 
 export type StorageProvider = 'aws' | 'local';
 
@@ -27,12 +27,12 @@ export interface StorageConfig {
 	parameterStorePrefix?: string;
 }
 
-export class StorageFactory {
+export const StorageFactory = {
 	/**
 	 * Detect which storage provider to use based on environment
 	 * Prioritizes explicit STORAGE_PROVIDER env var, then checks for AWS credentials
 	 */
-	private static detectProvider(): StorageProvider {
+	detectProvider: (): StorageProvider => {
 		// Explicit provider override
 		const envProvider = process.env.STORAGE_PROVIDER?.toLowerCase();
 		if (envProvider === 'aws' || envProvider === 'local') {
@@ -54,13 +54,13 @@ export class StorageFactory {
 		// Default to AWS in production or when profile is configured
 		console.log('[StorageFactory] Auto-detected: Using AWS storage');
 		return 'aws';
-	}
+	},
 
 	/**
 	 * Create a SecretStore instance based on configuration
 	 */
-	static createSecretStore(config?: StorageConfig): ISecretStore {
-		const provider = config?.provider || this.detectProvider();
+	createSecretStore: (config?: StorageConfig): ISecretStore => {
+		const provider = config?.provider || StorageFactory.detectProvider();
 
 		switch (provider) {
 			case 'aws':
@@ -72,13 +72,13 @@ export class StorageFactory {
 			default:
 				throw new Error(`Unknown storage provider: ${provider}`);
 		}
-	}
+	},
 
 	/**
 	 * Create a ParameterStore instance based on configuration
 	 */
-	static createParameterStore(config?: StorageConfig): IParameterStore {
-		const provider = config?.provider || this.detectProvider();
+	createParameterStore: (config?: StorageConfig): IParameterStore => {
+		const provider = config?.provider || StorageFactory.detectProvider();
 
 		switch (provider) {
 			case 'aws':
@@ -90,26 +90,26 @@ export class StorageFactory {
 			default:
 				throw new Error(`Unknown storage provider: ${provider}`);
 		}
-	}
+	},
 
 	/**
 	 * Create both stores with the same configuration
 	 */
-	static createStores(config?: StorageConfig): {
+	createStores: (config?: StorageConfig): {
 		secretStore: ISecretStore;
 		parameterStore: IParameterStore;
-	} {
+	} => {
 		return {
-			secretStore: this.createSecretStore(config),
-			parameterStore: this.createParameterStore(config),
+			secretStore: StorageFactory.createSecretStore(config),
+			parameterStore: StorageFactory.createParameterStore(config),
 		};
-	}
+	},
 
 	/**
 	 * Get the current provider (useful for debugging/logging)
 	 */
-	static getCurrentProvider(config?: StorageConfig): StorageProvider {
-		return config?.provider || this.detectProvider();
+	getCurrentProvider: (config?: StorageConfig): StorageProvider => {
+		return config?.provider || StorageFactory.detectProvider();
 	}
 }
 
