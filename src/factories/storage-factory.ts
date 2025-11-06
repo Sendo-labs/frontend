@@ -95,7 +95,9 @@ export const StorageFactory = {
 	/**
 	 * Create both stores with the same configuration
 	 */
-	createStores: (config?: StorageConfig): {
+	createStores: (
+		config?: StorageConfig,
+	): {
 		secretStore: ISecretStore;
 		parameterStore: IParameterStore;
 	} => {
@@ -110,8 +112,8 @@ export const StorageFactory = {
 	 */
 	getCurrentProvider: (config?: StorageConfig): StorageProvider => {
 		return config?.provider || StorageFactory.detectProvider();
-	}
-}
+	},
+};
 
 /**
  * Convenience function to get storage instances
