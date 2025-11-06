@@ -12,7 +12,7 @@ export default function CTAActivateWorker() {
 			initial={{ opacity: 0, y: 30 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.6, delay: 0.6 }}
-	className='bg-gradient-to-br from-[#FF5C1A]/10 via-[#FF223B]/10 to-[#4A0C13]/10 border border-sendo-orange/30 p-6 relative overflow-hidden group hover:border-sendo-orange/50 transition-all'
+	className='bg-gradient-to-br from-sendo-orange/10 via-sendo-red/10 to-sendo-dark-red/10 border border-sendo-orange/30 p-6 relative overflow-hidden group hover:border-sendo-orange/50 transition-all'
 			style={{ borderRadius: 0 }}
 		>
 			<div className='absolute top-0 right-0 w-32 h-32 bg-sendo-orange/5 blur-3xl' />
@@ -20,7 +20,7 @@ export default function CTAActivateWorker() {
 			<div className='relative z-10'>
 				<div className='flex items-center gap-2 mb-4'>
 					<div
-		className='w-10 h-10 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center'
+		className='w-10 h-10 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center'
 						style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
 					>
 						<Zap className='w-6 h-6 text-white' />
@@ -49,7 +49,7 @@ export default function CTAActivateWorker() {
 
 				<Link href='/worker'>
 					<Button
-		className='w-full bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 group title-font'
+		className='w-full bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 group title-font'
 						style={{
 							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 							borderRadius: 0,

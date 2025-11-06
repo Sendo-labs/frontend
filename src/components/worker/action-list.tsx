@@ -83,7 +83,7 @@ export default function ActionList({ agentId, actions, onValidateAll, isExecutin
 					<Zap className='w-5 h-5 text-sendo-orange' />
 					<h2 className='text-xl font-bold text-foreground uppercase title-font'>
 						SUGGESTED{' '}
-						<span className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] bg-clip-text text-transparent'>
+						<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
 							ACTIONS
 						</span>
 					</h2>
@@ -104,7 +104,7 @@ export default function ActionList({ agentId, actions, onValidateAll, isExecutin
 					<Zap className='w-5 h-5 text-sendo-orange' />
 					<h2 className='text-xl font-bold text-foreground uppercase title-font'>
 						SUGGESTED{' '}
-						<span className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] bg-clip-text text-transparent'>
+						<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
 							ACTIONS
 						</span>
 					</h2>
@@ -138,7 +138,7 @@ export default function ActionList({ agentId, actions, onValidateAll, isExecutin
 							<div className='flex items-start justify-between gap-4'>
 								<div className='flex items-start gap-3 flex-1'>
 									<div
-										className={`w-10 h-10 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center flex-shrink-0`}
+										className={`w-10 h-10 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center flex-shrink-0`}
 										style={{
 											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 										}}

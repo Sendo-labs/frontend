@@ -16,7 +16,7 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 					<Brain className='w-5 h-5 text-sendo-orange' />
 					<h2 className='text-xl font-bold text-foreground uppercase title-font'>
 						LATEST{' '}
-					<span className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] bg-clip-text text-transparent'>
+					<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
 							ANALYSIS
 						</span>
 					</h2>
@@ -58,7 +58,7 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 					<Brain className='w-5 h-5 text-sendo-orange' />
 					<h2 className='text-xl font-bold text-foreground uppercase title-font'>
 						LATEST{' '}
-					<span className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] bg-clip-text text-transparent'>
+					<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
 							ANALYSIS
 						</span>
 					</h2>
@@ -101,7 +101,7 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 					<div className='space-y-2'>
 						<div className='flex items-center gap-2 mb-3'>
 							<div
-									className='w-8 h-8 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center'
+									className='w-8 h-8 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center'
 								style={{
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
 								}}
@@ -117,7 +117,7 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 					<div className='space-y-2'>
 						<div className='flex items-center gap-2 mb-3'>
 							<div
-									className='w-8 h-8 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center'
+									className='w-8 h-8 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center'
 								style={{
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
 								}}
@@ -133,7 +133,7 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 					<div className='space-y-2'>
 						<div className='flex items-center gap-2 mb-3'>
 							<div
-									className='w-8 h-8 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center'
+									className='w-8 h-8 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center'
 								style={{
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
 								}}
@@ -149,7 +149,7 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 					<div className='space-y-2'>
 						<div className='flex items-center gap-2 mb-3'>
 							<div
-									className='w-8 h-8 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center'
+									className='w-8 h-8 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center'
 								style={{
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
 								}}

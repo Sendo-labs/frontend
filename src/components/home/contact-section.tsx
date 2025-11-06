@@ -33,7 +33,7 @@ export default function ContactSection() {
 					className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-2 sm:mb-3 md:mb-4 text-foreground title-font'
 				>
 					GET IN{' '}
-					<span className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] bg-clip-text text-transparent'>TOUCH</span>
+					<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>TOUCH</span>
 				</motion.h2>
 
 				<motion.p
@@ -75,7 +75,7 @@ export default function ContactSection() {
 							</div>
 								<Button
 								type='submit'
-									className='w-full h-10 sm:h-12 text-foreground text-sm sm:text-base font-bold bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] hover:shadow-lg hover:shadow-sendo-red/50 transition-all'
+									className='w-full h-10 sm:h-12 text-foreground text-sm sm:text-base font-bold bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 transition-all'
 								style={{
 									fontFamily: 'TECHNOS, sans-serif',
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
@@ -105,7 +105,7 @@ export default function ContactSection() {
 								style={{ borderRadius: 0 }}
 							>
 									<div
-										className='w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
+										className='w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%)' }}
 								>
 									<svg
@@ -130,7 +130,7 @@ export default function ContactSection() {
 								style={{ borderRadius: 0 }}
 							>
 									<div
-										className='w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
+										className='w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%)' }}
 								>
 									<svg
@@ -155,7 +155,7 @@ export default function ContactSection() {
 								style={{ borderRadius: 0 }}
 							>
 									<div
-										className='w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
+										className='w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%)' }}
 								>
 									<svg
@@ -180,7 +180,7 @@ export default function ContactSection() {
 								style={{ borderRadius: 0 }}
 							>
 								<div
-										className='w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
+										className='w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%)' }}
 								>
 									<Mail className='w-4 h-4 sm:w-5 sm:h-5 text-white' />

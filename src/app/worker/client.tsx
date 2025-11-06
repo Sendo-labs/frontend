@@ -268,7 +268,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 					<div>
 						<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-2 title-font'>
 							WORKER{' '}
-						<span className='bg-gradient-to-r from-[#FF5C1A] via-[#FF223B] to-[#4A0C13] bg-clip-text text-transparent'>
+						<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
 							DASHBOARD
 						</span>
 						</h1>
