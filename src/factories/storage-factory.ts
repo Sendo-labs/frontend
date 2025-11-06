@@ -12,7 +12,7 @@
  *   PARAMETER_STORE_PREFIX=/app/env (for SSM prefix)
  */
 
-import type { ISecretStore } from '@/interfaces/storage/siecret-store';
+import type { ISecretStore } from '@/interfaces/storage/isecret-store';
 import type { IParameterStore } from '@/interfaces/storage/iparameter-store';
 import { AWSSecretStoreAdapter } from '@/adapters/storage/aws-secret-store.adapter';
 import { AWSParameterStoreAdapter } from '@/adapters/storage/aws-parameter-store.adapter';

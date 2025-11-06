@@ -1,5 +1,5 @@
 import type { SecretTags } from '@/types/agent';
-import type { Tag } from '@/interfaces/storage/siecret-store';
+import type { Tag } from '@/interfaces/storage/isecret-store';
 
 export function getSecretTags(tags: SecretTags): Tag[] {
 	return Object.entries(tags).map(([key, value]) => ({
