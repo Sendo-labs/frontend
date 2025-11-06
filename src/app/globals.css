@@ -179,3 +179,17 @@ h1.title-font {
 .ibm-font {
 	font-family: var(--font-ibm-plex-mono), monospace;
 }
+
+/* Animations pour le loader */
+@keyframes fill-left-right {
+	0% {
+		clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+	}
+	100% {
+		clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+	}
+}
+
+.animate-fill-left-right {
+	animation: fill-left-right 1.5s ease-in-out infinite;
+}
