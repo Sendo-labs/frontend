@@ -66,7 +66,7 @@ export default function TokenDetailsList({ tokens }: TokenDetailsListProps) {
 							onClick={() => setFilter(id)}
 							className={`h-8 px-4 text-xs transition-all title-font ${
 								filter === id
-								? 'bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red text-white'
+									? 'bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red text-white'
 									: 'bg-foreground/5 text-foreground/60 hover:text-foreground hover:bg-foreground/10'
 							}`}
 							style={{ borderRadius: 0 }}

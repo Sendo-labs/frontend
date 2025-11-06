@@ -78,7 +78,7 @@ export default function AnalyzerPage() {
 			>
 				<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font'>
 					WALLET{' '}
-				<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
+					<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
 						ANALYZER
 					</span>
 				</h1>
@@ -168,7 +168,7 @@ export default function AnalyzerPage() {
 								<Button
 									onClick={handleLoadMore}
 									disabled={isLoadingMore}
-						className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 px-8 transition-all title-font'
+									className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 px-8 transition-all title-font'
 									style={{
 										clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 										borderRadius: 0,

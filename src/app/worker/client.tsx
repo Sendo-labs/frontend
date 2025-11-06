@@ -268,9 +268,9 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 					<div>
 						<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-2 title-font'>
 							WORKER{' '}
-						<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
-							DASHBOARD
-						</span>
+							<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
+								DASHBOARD
+							</span>
 						</h1>
 						<p className='text-lg sm:text-xl md:text-2xl text-foreground/60'>
 							Automate your trading strategy. Never miss an exit again 🎯

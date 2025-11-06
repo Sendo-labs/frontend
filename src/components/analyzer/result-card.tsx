@@ -60,7 +60,7 @@ export default function ResultCard({ result }: ResultCardProps) {
 			<div className='relative z-10'>
 				<div className='flex items-center gap-2 mb-4'>
 					<div
-					className='w-10 h-10 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center'
+						className='w-10 h-10 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center'
 						style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
 					>
 						<TrendingDown className='w-6 h-6 text-white' />
@@ -68,7 +68,7 @@ export default function ResultCard({ result }: ResultCardProps) {
 					<h3 className='text-foreground/60 uppercase text-sm '>TOTAL MISSED AT ATH</h3>
 				</div>
 
-			<div className='text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent '>
+				<div className='text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent '>
 					<CountUp end={result.total_missed_usd} />
 				</div>
 
@@ -81,7 +81,7 @@ export default function ResultCard({ result }: ResultCardProps) {
 						>
 							<div className='flex items-center gap-3'>
 								<div
-					className='w-8 h-8 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center text-white font-bold text-sm'
+									className='w-8 h-8 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center text-white font-bold text-sm'
 									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)' }}
 								>
 									{index + 1}

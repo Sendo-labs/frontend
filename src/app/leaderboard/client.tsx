@@ -188,7 +188,9 @@ export default function Leaderboard() {
 			>
 				<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font'>
 					LEADER
-					<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>BOARD</span>
+					<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
+						BOARD
+					</span>
 				</h1>
 				<p className='text-lg sm:text-xl md:text-2xl text-foreground/60 max-w-3xl mx-auto'>
 					The best and worst traders on Solana 🏆
@@ -288,7 +290,9 @@ export default function Leaderboard() {
 												}`}
 											/>
 										) : (
-											<span className='text-lg md:text-2xl font-bold text-foreground title-font numeric-font'>#{index + 1}</span>
+											<span className='text-lg md:text-2xl font-bold text-foreground title-font numeric-font'>
+												#{index + 1}
+											</span>
 										)}
 									</div>
 

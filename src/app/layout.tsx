@@ -50,7 +50,9 @@ export default function RootLayout({
           }
         `}</style>
 			</head>
-			<body className={`${geistSans.variable} ${ibmPlexMono.variable} antialiased bg-background text-foreground min-h-screen`}>
+			<body
+				className={`${geistSans.variable} ${ibmPlexMono.variable} antialiased bg-background text-foreground min-h-screen`}
+			>
 				<GlobalProviders>
 					<Navigation />
 					<AgentChat />

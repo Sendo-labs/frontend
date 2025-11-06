@@ -87,7 +87,7 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 							<div className='flex items-start justify-between'>
 								<div className='flex items-center gap-4'>
 									<div
-									className='w-16 h-16 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center text-3xl'
+										className='w-16 h-16 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center text-3xl'
 										style={{
 											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 										}}
@@ -146,7 +146,7 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 								</Button>
 								<Button
 									onClick={onComplete}
-								className='flex-1 h-12 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white'
+									className='flex-1 h-12 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white'
 									style={{
 										clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 										borderRadius: 0,

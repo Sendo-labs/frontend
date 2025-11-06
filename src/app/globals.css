@@ -87,7 +87,7 @@
 	--sidebar-accent-foreground: oklch(0.9483 0.0097 72.66);
 	--sidebar-border: oklch(94% 0.02 80 / 10%);
 	--sidebar-ring: oklch(94% 0.02 80 / 50%);
-	
+
 	/* SENDO Brand Colors */
 	--sendo-orange: oklch(0.6844 0.2098 38.81); /* #FF5C1A */
 	--sendo-red: oklch(0.6404 0.2452 23.56); /* #FF223B */
@@ -147,7 +147,7 @@
 }
 
 .title-font {
-	font-family: 'IBM Plex Mono Digits', "TECHNOS", sans-serif;
+	font-family: "IBM Plex Mono Digits", "TECHNOS", sans-serif;
 	letter-spacing: 0.1em;
 }
 

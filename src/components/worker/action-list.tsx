@@ -168,7 +168,8 @@ export default function ActionList({ agentId, actions, onValidateAll, isExecutin
 											)}
 											{action?.params?.amount && (
 												<div className='text-xs text-foreground/60'>
-													<span className='font-semibold'>Amount:</span> <span className='numeric-font'>{action.params.amount}</span>
+													<span className='font-semibold'>Amount:</span>{' '}
+													<span className='numeric-font'>{action.params.amount}</span>
 												</div>
 											)}
 											{action?.params?.validator && (
@@ -178,7 +179,8 @@ export default function ActionList({ agentId, actions, onValidateAll, isExecutin
 											)}
 											{action.params?.estimatedGas && (
 												<div className='text-xs text-foreground/60'>
-													<span className='font-semibold'>Estimated Gas:</span> <span className='numeric-font'>{action.params.estimatedGas}</span>
+													<span className='font-semibold'>Estimated Gas:</span>{' '}
+													<span className='numeric-font'>{action.params.estimatedGas}</span>
 												</div>
 											)}
 											<div className='text-xs font-bold text-sendo-green'>
