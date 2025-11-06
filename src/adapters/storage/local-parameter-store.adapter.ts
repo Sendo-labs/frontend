@@ -6,7 +6,7 @@
 
 import fs from 'fs/promises';
 import path from 'path';
-import { IParameterStore, ParameterType, ParameterMetadata } from '@/interfaces/storage/IParameterStore';
+import { IParameterStore, ParameterType, ParameterMetadata } from '@/interfaces/storage/iparameter-store';
 
 interface StoredParameter {
 	name: string;

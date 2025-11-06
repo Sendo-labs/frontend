@@ -1,7 +1,7 @@
 'use server';
 
 import { withAction } from '@/lib/wrapper/with-action';
-import { StorageFactory } from '@/factories/StorageFactory';
+import { StorageFactory } from '@/factories/storage-factory';
 import type { OpenRouterSecret } from '@/types/openrouter';
 import { getSystemOpenRouterKeyPath, getUserOpenRouterKeyPath } from './utils';
 
