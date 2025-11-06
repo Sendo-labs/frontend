@@ -6,7 +6,7 @@
 
 import fs from 'fs/promises';
 import path from 'path';
-import { ISecretStore, Tag, SecretMetadata } from '@/interfaces/storage/ISecretStore';
+import type { ISecretStore, Tag, SecretMetadata } from '@/interfaces/storage/isecret-store';
 
 interface StoredSecret {
 	name: string;

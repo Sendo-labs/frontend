@@ -3,7 +3,7 @@
  * Wraps the existing SSMParameterService to conform to the abstract interface
  */
 
-import { IParameterStore, ParameterType, ParameterMetadata } from '@/interfaces/storage/IParameterStore';
+import type { IParameterStore, ParameterType, ParameterMetadata } from '@/interfaces/storage/iparameter-store';
 import { SSMParameterService } from '@/services/aws/ssm.service';
 import { ParameterType as AWSParameterType } from '@aws-sdk/client-ssm';
 
