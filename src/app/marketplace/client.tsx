@@ -448,7 +448,7 @@ export default function MarketplacePage() {
 				>
 					<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font'>
 						PLUGIN{' '}
-						<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+						<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
 							MARKETPLACE
 						</span>
 					</h1>
@@ -584,7 +584,7 @@ export default function MarketplacePage() {
 					initial={{ opacity: 0, y: 30 }}
 					whileInView={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.8 }}
-					className='bg-gradient-to-r from-sendo-orange/10 to-sendo-red/10 border border-sendo-orange/30 p-12 text-center'
+					className='bg-gradient-to-r from-sendo-orange/10 via-sendo-red/10 to-sendo-dark-red/10 border border-sendo-orange/30 p-12 text-center'
 					style={{ borderRadius: 0 }}
 				>
 					<h3 className='text-2xl md:text-3xl font-bold text-foreground mb-4 title-font'>WANT TO LIST YOUR PLUGIN?</h3>
@@ -593,7 +593,7 @@ export default function MarketplacePage() {
 					</p>
 					<button
 						type='button'
-						className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white px-8 py-4 text-lg font-bold transition-all uppercase cursor-pointer'
+						className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white px-8 py-4 text-lg font-bold transition-all uppercase cursor-pointer'
 						style={{
 							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
 							borderRadius: 0,

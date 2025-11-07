@@ -16,7 +16,7 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 					<Brain className='w-5 h-5 text-sendo-orange' />
 					<h2 className='text-xl font-bold text-foreground uppercase title-font'>
 						LATEST{' '}
-						<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+						<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
 							ANALYSIS
 						</span>
 					</h2>
@@ -58,14 +58,14 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 					<Brain className='w-5 h-5 text-sendo-orange' />
 					<h2 className='text-xl font-bold text-foreground uppercase title-font'>
 						LATEST{' '}
-						<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+						<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
 							ANALYSIS
 						</span>
 					</h2>
 				</div>
 				<div className='flex items-center gap-2'>
 					<Clock className='w-4 h-4 text-foreground/40' />
-					<span className='text-xs text-foreground/40'>{formatTime(analysis.timestamp)}</span>
+					<span className='text-xs text-foreground/40 numeric-font'>{formatTime(analysis.timestamp)}</span>
 				</div>
 			</div>
 
@@ -75,7 +75,9 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 					<div className='flex flex-col sm:flex-row sm:items-center gap-4'>
 						<div className='flex items-center gap-2'>
 							<Zap className='w-4 h-4 text-sendo-green' />
-							<span className='text-xs text-foreground/60'>Execution: {analysis.executionTimeMs}ms</span>
+							<span className='text-xs text-foreground/60'>
+								Execution: <span className='numeric-font'>{analysis.executionTimeMs}</span>ms
+							</span>
 						</div>
 						{analysis.pluginsUsed.length > 0 && (
 							<div className='flex items-center gap-2 min-w-0'>
@@ -84,7 +86,7 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 									{analysis.pluginsUsed.map((plugin, idx) => (
 										<span
 											key={idx}
-											className='text-xs bg-sendo-orange/20 text-sendo-orange px-2 py-0.5 title-font flex-shrink-0'
+											className='text-xs bg-sendo-orange/20 text-sendo-orange px-2 py-0.5 ibm-font flex-shrink-0'
 										>
 											{plugin.replace('plugin-', '')}
 										</span>
@@ -101,7 +103,7 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 					<div className='space-y-2'>
 						<div className='flex items-center gap-2 mb-3'>
 							<div
-								className='w-8 h-8 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center'
+								className='w-8 h-8 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center'
 								style={{
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
 								}}
@@ -117,7 +119,7 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 					<div className='space-y-2'>
 						<div className='flex items-center gap-2 mb-3'>
 							<div
-								className='w-8 h-8 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center'
+								className='w-8 h-8 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center'
 								style={{
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
 								}}
@@ -133,7 +135,7 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 					<div className='space-y-2'>
 						<div className='flex items-center gap-2 mb-3'>
 							<div
-								className='w-8 h-8 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center'
+								className='w-8 h-8 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center'
 								style={{
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
 								}}
@@ -149,7 +151,7 @@ export default function AnalysisPanel({ analysis, isLoading = false }: AnalysisP
 					<div className='space-y-2'>
 						<div className='flex items-center gap-2 mb-3'>
 							<div
-								className='w-8 h-8 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center'
+								className='w-8 h-8 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center'
 								style={{
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
 								}}

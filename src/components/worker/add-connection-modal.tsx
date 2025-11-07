@@ -328,7 +328,7 @@ export default function AddConnectionModal({ onClose, onSelectPlugin }: AddConne
 									onClick={() => setSelectedCategory(cat)}
 									className={`px-3 py-1.5 text-xs uppercase transition-all ${
 										selectedCategory === cat
-											? 'bg-gradient-to-r from-sendo-orange to-sendo-red text-white'
+											? 'bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red text-white'
 											: 'bg-foreground/5 text-foreground/60 hover:bg-foreground/10'
 									}`}
 									style={{ borderRadius: 0 }}
@@ -355,7 +355,7 @@ export default function AddConnectionModal({ onClose, onSelectPlugin }: AddConne
 									onClick={() => onSelectPlugin(plugin)}
 								>
 									<div
-										className='w-12 h-12 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center text-2xl flex-shrink-0'
+										className='w-12 h-12 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center text-2xl flex-shrink-0'
 										style={{
 											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 										}}

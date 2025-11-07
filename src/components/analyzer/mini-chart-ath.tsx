@@ -49,15 +49,15 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
 			initial={{ opacity: 0, y: 30 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.6, delay: 0.4 }}
-			className='bg-foreground/5 border border-foreground/10 p-6 md:p-8 relative overflow-hidden group hover:border-sendo-orange/50 transition-all'
+			className='bg-foreground/5 border border-foreground/10 p-4 md:p-6 relative overflow-hidden group hover:border-sendo-orange/50 transition-all'
 			style={{ borderRadius: 0 }}
 		>
-			<div className='flex items-center gap-2 mb-6'>
-				<TrendingDown className='w-5 h-5 text-sendo-red' />
-				<h3 className='text-foreground/60 uppercase text-sm title-font'>VALUE FROM ATH TO NOW</h3>
+			<div className='flex items-center gap-2 mb-4 md:mb-6'>
+				<TrendingDown className='w-4 h-4 md:w-5 md:h-5 text-sendo-red flex-shrink-0' />
+				<h3 className='text-foreground/60 uppercase text-xs md:text-sm title-font'>VALUE FROM ATH TO NOW</h3>
 			</div>
 
-			<div className='h-48 md:h-64 mb-6'>
+			<div className='h-56 md:h-64 lg:h-80 mb-4 md:mb-6'>
 				<ResponsiveContainer width='100%' height='100%'>
 					<AreaChart data={chartData}>
 						<defs>
@@ -67,11 +67,12 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
 							</linearGradient>
 						</defs>
 						<CartesianGrid strokeDasharray='3 3' stroke='#F2EDE7' strokeOpacity={0.1} />
-						<XAxis dataKey='name' stroke='#F2EDE7' strokeOpacity={0.4} style={{ fontSize: '12px' }} />
+						<XAxis dataKey='name' stroke='#F2EDE7' strokeOpacity={0.4} style={{ fontSize: '10px' }} className='md:text-xs' />
 						<YAxis
 							stroke='#F2EDE7'
 							strokeOpacity={0.4}
-							style={{ fontSize: '12px' }}
+							style={{ fontSize: '10px' }}
+							className='md:text-xs'
 							tickFormatter={(value) => `${value}%`}
 						/>
 						<Tooltip content={<CustomTooltip />} />
@@ -88,18 +89,18 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
 				</ResponsiveContainer>
 			</div>
 
-			<div className='grid grid-cols-3 gap-4 pt-6 border-t border-foreground/10'>
-				<div>
-					<p className='text-foreground/40 text-xs mb-1 uppercase title-font'>PEAK VALUE</p>
-					<p className='text-foreground font-bold text-lg'>${(peakValue / 1000).toFixed(1)}k</p>
+			<div className='grid grid-cols-3 gap-2 md:gap-4 pt-4 md:pt-6 border-t border-foreground/10'>
+				<div className='min-w-0'>
+					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>PEAK VALUE</p>
+					<p className='text-foreground font-bold text-sm md:text-lg truncate'>${(peakValue / 1000).toFixed(1)}k</p>
 				</div>
-				<div>
-					<p className='text-foreground/40 text-xs mb-1 uppercase title-font'>CURRENT VALUE</p>
-					<p className='text-foreground font-bold text-lg'>${(currentValue / 1000).toFixed(1)}k</p>
+				<div className='min-w-0'>
+					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>CURRENT VALUE</p>
+					<p className='text-foreground font-bold text-sm md:text-lg truncate'>${(currentValue / 1000).toFixed(1)}k</p>
 				</div>
-				<div>
-					<p className='text-foreground/40 text-xs mb-1 uppercase title-font'>% LOST</p>
-					<p className='text-sendo-red font-bold text-lg'>-{lossPercent}%</p>
+				<div className='min-w-0'>
+					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>% LOST</p>
+					<p className='text-sendo-red font-bold text-sm md:text-lg'>-{lossPercent}%</p>
 				</div>
 			</div>
 		</motion.div>

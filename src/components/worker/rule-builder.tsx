@@ -51,7 +51,9 @@ export default function RuleBuilder({ rules, onRuleUpdate }: RuleBuilderProps) {
 				<Settings className='w-5 h-5 text-sendo-orange' />
 				<h2 className='text-xl font-bold text-foreground uppercase title-font'>
 					AUTOMATION{' '}
-					<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>RULES</span>
+					<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
+						RULES
+					</span>
 				</h2>
 			</div>
 

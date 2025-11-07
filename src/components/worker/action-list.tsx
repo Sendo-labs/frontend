@@ -83,7 +83,7 @@ export default function ActionList({ agentId, actions, onValidateAll, isExecutin
 					<Zap className='w-5 h-5 text-sendo-orange' />
 					<h2 className='text-xl font-bold text-foreground uppercase title-font'>
 						SUGGESTED{' '}
-						<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+						<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
 							ACTIONS
 						</span>
 					</h2>
@@ -104,7 +104,7 @@ export default function ActionList({ agentId, actions, onValidateAll, isExecutin
 					<Zap className='w-5 h-5 text-sendo-orange' />
 					<h2 className='text-xl font-bold text-foreground uppercase title-font'>
 						SUGGESTED{' '}
-						<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+						<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
 							ACTIONS
 						</span>
 					</h2>
@@ -114,7 +114,7 @@ export default function ActionList({ agentId, actions, onValidateAll, isExecutin
 						<Button
 							onClick={onValidateAll}
 							disabled={isExecuting}
-							className='bg-sendo-green hover:bg-sendo-green/80 text-black h-10 px-4'
+							className='bg-sendo-green hover:bg-sendo-green/80 text-black h-9 md:h-10 px-4'
 							style={{ borderRadius: 0, fontFamily: 'TECHNOS, sans-serif' }}
 						>
 							<Check className='w-4 h-4 mr-2' />
@@ -138,7 +138,7 @@ export default function ActionList({ agentId, actions, onValidateAll, isExecutin
 							<div className='flex items-start justify-between gap-4'>
 								<div className='flex items-start gap-3 flex-1'>
 									<div
-										className={`w-10 h-10 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center flex-shrink-0`}
+										className={`w-10 h-10 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center flex-shrink-0`}
 										style={{
 											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 										}}
@@ -168,7 +168,8 @@ export default function ActionList({ agentId, actions, onValidateAll, isExecutin
 											)}
 											{action?.params?.amount && (
 												<div className='text-xs text-foreground/60'>
-													<span className='font-semibold'>Amount:</span> {action.params.amount}
+													<span className='font-semibold'>Amount:</span>{' '}
+													<span className='numeric-font'>{action.params.amount}</span>
 												</div>
 											)}
 											{action?.params?.validator && (
@@ -178,36 +179,37 @@ export default function ActionList({ agentId, actions, onValidateAll, isExecutin
 											)}
 											{action.params?.estimatedGas && (
 												<div className='text-xs text-foreground/60'>
-													<span className='font-semibold'>Estimated Gas:</span> {action.params.estimatedGas}
+													<span className='font-semibold'>Estimated Gas:</span>{' '}
+													<span className='numeric-font'>{action.params.estimatedGas}</span>
 												</div>
 											)}
 											<div className='text-xs font-bold text-sendo-green'>
-												Confidence: {(action.confidence * 100).toFixed(0)}%
+												Confidence: <span className='numeric-font'>{(action.confidence * 100).toFixed(0)}%</span>
 											</div>
 										</div>
 									</div>
 								</div>
 
-								{mode === 'suggest' && (
-									<div className='flex gap-2 flex-shrink-0'>
-										<Button
-											onClick={() => acceptAction(action)}
-											disabled={isExecuting || isAcceptingAction}
-											className='bg-sendo-green hover:bg-sendo-green/80 text-black h-10 w-10 p-0 flex items-center justify-center'
-											style={{ borderRadius: 0 }}
-										>
-											<Check className='w-5 h-5' />
-										</Button>
-										<Button
-											onClick={() => rejectAction(action)}
-											disabled={isExecuting || isRejectingAction}
-											className='bg-sendo-red hover:bg-sendo-red/80 text-white h-10 w-10 p-0 flex items-center justify-center'
-											style={{ borderRadius: 0 }}
-										>
-											<X className='w-5 h-5' />
-										</Button>
-									</div>
-								)}
+							{mode === 'suggest' && (
+								<div className='flex gap-2 flex-shrink-0'>
+									<Button
+										onClick={() => acceptAction(action)}
+										disabled={isExecuting || isAcceptingAction}
+										className='bg-sendo-green hover:bg-sendo-green/80 text-black h-9 w-9 md:h-10 md:w-10 p-0 flex items-center justify-center'
+										style={{ borderRadius: 0 }}
+									>
+										<Check className='w-4 h-4 md:w-5 md:h-5' />
+									</Button>
+									<Button
+										onClick={() => rejectAction(action)}
+										disabled={isExecuting || isRejectingAction}
+										className='bg-sendo-red hover:bg-sendo-red/80 text-white h-9 w-9 md:h-10 md:w-10 p-0 flex items-center justify-center'
+										style={{ borderRadius: 0 }}
+									>
+										<X className='w-4 h-4 md:w-5 md:h-5' />
+									</Button>
+								</div>
+							)}
 
 								{mode === 'auto' && (
 									<div className='flex items-center gap-2 text-xs text-sendo-green flex-shrink-0'>
