@@ -108,7 +108,7 @@ export default function HeroSection() {
 				>
 					HOW MUCH DID
 					<br />
-					<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
+					<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
 						YOU LOSE?
 					</span>
 				</motion.h1>
@@ -137,20 +137,19 @@ export default function HeroSection() {
 								value={walletAddress}
 								onChange={(e) => handleWalletChange(e.target.value)}
 								onKeyDown={(e) => e.key === 'Enter' && isValidSolanaAddress(walletAddress) && handleAnalyze()}
-								className='h-10 sm:h-12 md:h-14 text-sm sm:text-base md:text-lg bg-foreground/10 border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-sendo-orange transition-all'
+								className='h-10 md:h-12 text-sm md:text-base bg-foreground/10 border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-sendo-orange transition-all'
 								style={{ borderRadius: 0 }}
 							/>
 							<Button
 								onClick={handleAnalyze}
 								disabled={!isValidSolanaAddress(walletAddress)}
-								className='h-10 sm:h-12 md:h-14 px-4 sm:px-6 md:px-8 text-sm sm:text-base md:text-lg whitespace-nowrap bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white'
+								className='h-10 md:h-12 px-6 md:px-8 whitespace-nowrap bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red text-white'
 								style={{
-									fontFamily: 'TECHNOS, sans-serif',
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
 									borderRadius: 0,
 								}}
 							>
-								<Search className='w-4 h-4 sm:w-5 sm:h-5 mr-2' />
+								<Search className='w-4 h-4 md:w-5 md:h-5 mr-2' />
 								SCAN NOW
 							</Button>
 						</div>
@@ -187,7 +186,7 @@ export default function HeroSection() {
 											className={`w-3 h-3 sm:w-4 sm:h-4 ${getRankColor(looser.rank)} group-hover:scale-110 transition-transform`}
 										/>
 										<span
-											className={`text-base sm:text-lg md:text-xl font-bold ${getRankColor(looser.rank)} title-font`}
+											className={`text-base sm:text-lg md:text-xl font-bold ${getRankColor(looser.rank)} title-font numeric-font`}
 										>
 											#{looser.rank}
 										</span>
@@ -195,7 +194,7 @@ export default function HeroSection() {
 									<p className='text-[9px] sm:text-[10px] md:text-xs text-foreground/60 font-mono mb-1 sm:mb-2'>
 										{formatWallet(looser.wallet)}
 									</p>
-									<p className='text-xs sm:text-sm md:text-base font-bold text-sendo-red group-hover:scale-105 transition-transform title-font'>
+									<p className='text-xs sm:text-sm md:text-base font-bold text-sendo-red group-hover:scale-105 transition-transform title-font numeric-font'>
 										$
 										{looser.missed >= 1000000
 											? `${(looser.missed / 1000000).toFixed(2)}M`

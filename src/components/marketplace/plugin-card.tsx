@@ -48,7 +48,7 @@ export default function PluginCard({ plugin, isSponsored = false, onDetails, onD
 				{/* Header */}
 				<div className='flex items-start gap-4 mb-4'>
 					<div
-						className='w-14 h-14 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center text-3xl flex-shrink-0'
+						className='w-14 h-14 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center text-3xl flex-shrink-0'
 						style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)' }}
 					>
 						{plugin.icon}
@@ -97,36 +97,36 @@ export default function PluginCard({ plugin, isSponsored = false, onDetails, onD
 				{/* Description */}
 				<p className='text-sm text-foreground/70 mb-6 line-clamp-3'>{plugin.description}</p>
 
-				{/* Actions */}
-				<div className='grid grid-cols-2 gap-3'>
-					<Button
-						onClick={onDetails}
-						className='bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-foreground/30 text-foreground h-10 uppercase'
-						style={{ borderRadius: 0 }}
-					>
-						Details
-					</Button>
-					<Button
-						onClick={onDeploy}
-						className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-10 uppercase'
-						style={{
-							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
-							borderRadius: 0,
-						}}
-					>
-						Deploy
-					</Button>
-				</div>
+			{/* Actions */}
+			<div className='grid grid-cols-2 gap-3'>
+				<Button
+					onClick={onDetails}
+					className='bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-foreground/30 text-foreground h-9 md:h-10 uppercase'
+					style={{ borderRadius: 0 }}
+				>
+					Details
+				</Button>
+				<Button
+					onClick={onDeploy}
+					className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-9 md:h-10 uppercase'
+					style={{
+						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
+						borderRadius: 0,
+					}}
+				>
+					Deploy
+				</Button>
+			</div>
 
-				{/* Outbid button (Sponsored only) */}
-				{isSponsored && (
-					<Button
-						className='w-full mt-3 bg-[#FFD700] hover:bg-[#FFC700] text-black h-9 text-xs font-bold uppercase'
-						style={{ borderRadius: 0 }}
-					>
-						Outbid
-					</Button>
-				)}
+			{/* Outbid button (Sponsored only) */}
+			{isSponsored && (
+				<Button
+					className='w-full mt-3 bg-[#FFD700] hover:bg-[#FFC700] text-black h-8 md:h-9 text-xs font-bold uppercase'
+					style={{ borderRadius: 0 }}
+				>
+					Outbid
+				</Button>
+			)}
 			</div>
 		</motion.div>
 	);

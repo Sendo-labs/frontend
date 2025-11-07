@@ -47,7 +47,7 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 			<div className='flex items-center gap-2 mb-4'>
 				<History className='w-5 h-5 text-foreground/60' />
 				<h2 className='text-xl font-bold text-foreground uppercase title-font'>HISTORY</h2>
-				{actions.length > 0 && <span className='text-sm text-foreground/40'>({actions.length})</span>}
+				{actions.length > 0 && <span className='text-sm text-foreground/40 numeric-font'>({actions.length})</span>}
 			</div>
 
 			{actions.length === 0 ? (
@@ -59,12 +59,12 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 				</div>
 			) : (
 				<div className='space-y-3'>
-					<div className='flex items-center gap-2 mb-4 title-font'>
+					<div className='flex items-center gap-2 mb-4'>
 						<Select value={filter} onValueChange={setFilter}>
-							<SelectTrigger className='w-48'>
+							<SelectTrigger className='w-48 ibm-font'>
 								<SelectValue defaultValue='all' />
 							</SelectTrigger>
-							<SelectContent className='title-font'>
+							<SelectContent className='ibm-font'>
 								{ACTION_STATUS_FILTERS.map((filter) => (
 									<SelectItem key={filter.value} value={filter.value}>
 										{filter.label}
@@ -161,11 +161,11 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 												<div className='flex items-center justify-between'>
 													<div className='flex flex-wrap gap-2 text-xs'>
 														{action.params?.estimatedGas && (
-															<span className='text-foreground/40'>{action.params.estimatedGas}</span>
+															<span className='text-foreground/40 numeric-font'>{action.params.estimatedGas}</span>
 														)}
 														{action.estimatedImpact && (
 															<span
-																className={`font-bold ${isAccepted ? 'text-sendo-green/60' : isRejected ? 'text-sendo-red/60' : 'text-foreground/60'}`}
+																className={`font-bold numeric-font ${isAccepted ? 'text-sendo-green/60' : isRejected ? 'text-sendo-red/60' : 'text-foreground/60'}`}
 															>
 																${action.estimatedImpact}
 															</span>
@@ -173,7 +173,7 @@ export default function ActionHistory({ actions }: ActionHistoryProps) {
 													</div>
 													{action.executedAt && (
 														<span className='text-xs text-foreground/30'>
-															Executed {formatTime(new Date(action.executedAt))}
+															Executed <span className='numeric-font'>{formatTime(new Date(action.executedAt))}</span>
 														</span>
 													)}
 												</div>

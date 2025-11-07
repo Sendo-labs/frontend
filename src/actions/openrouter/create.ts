@@ -1,6 +1,6 @@
 'use server';
 
-import ssmParameterService from '@/services/aws/ssm.service';
+import { StorageFactory } from '@/factories/storage-factory';
 import { withAction } from '@/lib/wrapper/with-action';
 import type { OpenRouterSecret } from '@/types/openrouter';
 import { getRelatedSecret, getUserOpenRouterKeyPath } from './utils';
@@ -40,9 +40,10 @@ export async function createUserOpenRouterKey(userId: string) {
  */
 export async function storeUserOpenRouterKey(userId: string, secret: OpenRouterSecret) {
 	return withAction<void>(async () => {
-		const parameterNames = getUserOpenRouterKeyPath(sanitizeUserId(userId), ssmParameterService.getBasePrefix());
+		const parameterStore = StorageFactory.createParameterStore();
+		const parameterNames = getUserOpenRouterKeyPath(sanitizeUserId(userId), parameterStore.getBasePrefix());
 		for (const parameterName of parameterNames) {
-			await ssmParameterService.storeParameter(
+			await parameterStore.storeParameter(
 				parameterName,
 				getRelatedSecret(parameterName, secret),
 				`OpenRouter API key for ${sanitizeUserId(userId)}`,

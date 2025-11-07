@@ -17,7 +17,7 @@ const WorkerSwitch = React.forwardRef<HTMLButtonElement, WorkerSwitchProps>(
 				aria-checked={checked}
 				onClick={() => onCheckedChange?.(!checked)}
 				className={`relative inline-flex h-6 w-11 items-center transition-colors ${
-					checked ? 'bg-gradient-to-r from-sendo-orange to-sendo-red' : 'bg-foreground/20'
+					checked ? 'bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red' : 'bg-foreground/20'
 				} ${className}`}
 				style={{ borderRadius: 0 }}
 				ref={ref}

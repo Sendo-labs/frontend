@@ -137,7 +137,7 @@ export default function AgentChat() {
 						exit={{ scale: 0, opacity: 0 }}
 						transition={{ duration: 0.3 }}
 						onClick={() => setIsOpen(true)}
-						className='fixed bottom-6 right-6 z-40 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 flex items-center justify-center transition-all group'
+						className='fixed bottom-6 right-6 z-40 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 flex items-center justify-center transition-all group'
 						style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)' }}
 					>
 						<MessageCircle className='w-7 h-7 md:w-8 md:h-8 text-white group-hover:scale-110 transition-transform' />
@@ -175,21 +175,21 @@ export default function AgentChat() {
 							onClick={(e) => e.stopPropagation()}
 						>
 							{/* Header */}
-							<div className='flex items-center justify-between p-4 border-b border-foreground/10 bg-gradient-to-r from-sendo-orange/10 to-sendo-red/10'>
-								<div className='flex items-center gap-3'>
-									<div
-										className='w-10 h-10 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center'
-										style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
-									>
+							<div className='flex items-center justify-between p-4 border-b border-foreground/10 bg-gradient-to-r from-sendo-orange/10 via-sendo-red/10 to-sendo-dark-red/10'>
+							<div className='flex items-center gap-3'>
+								<div
+									className='w-10 h-10 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center'
+									style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
+								>
 										<Sparkles className='w-5 h-5 text-white' />
 									</div>
 									<div>
-										<h3 className='text-white font-bold text-sm uppercase title-font'>
-											sEnDO{' '}
-											<span className='bg-gradient-to-r from-sendo-orange to-sendo-red bg-clip-text text-transparent'>
-												AGENT
-											</span>
-										</h3>
+									<h3 className='text-white font-bold text-sm uppercase title-font'>
+										sEnDO{' '}
+										<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
+											AGENT
+										</span>
+									</h3>
 										<p className='text-sendo-green text-xs flex items-center gap-1'>
 											{agentLoading ? (
 												<span className='w-1.5 h-1.5 bg-sendo-green animate-pulse rounded-none' />
@@ -275,7 +275,7 @@ export default function AgentChat() {
 												<div key={message.id} className={`flex gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
 													<div
 														className={`w-8 h-8 flex items-center justify-center flex-shrink-0 ${
-															isUser ? 'bg-foreground/10' : 'bg-gradient-to-r from-sendo-orange to-sendo-red'
+															isUser ? 'bg-foreground/10' : 'bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red'
 														}`}
 														style={{
 															clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
@@ -292,7 +292,7 @@ export default function AgentChat() {
 														<div
 															className={`p-3 rounded-none ${
 																isUser
-																	? 'bg-gradient-to-r from-sendo-orange to-sendo-red text-white'
+																	? 'bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red text-white'
 																	: 'bg-foreground/5 text-foreground'
 															}`}
 														>
@@ -336,7 +336,7 @@ export default function AgentChat() {
 									{isAgentThinking && (
 										<div className='flex gap-3'>
 											<div
-												className='w-8 h-8 bg-gradient-to-r from-sendo-orange to-sendo-red flex items-center justify-center flex-shrink-0'
+												className='w-8 h-8 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center flex-shrink-0'
 												style={{
 													clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
 												}}
@@ -373,7 +373,7 @@ export default function AgentChat() {
 											onClick={handleSend}
 											disabled={!input.trim() || isLoading || isAgentThinking || !agent}
 											size='icon'
-											className='bg-gradient-to-r from-sendo-orange to-sendo-red hover:shadow-lg hover:shadow-sendo-red/50 flex-shrink-0 h-[72px] w-12 disabled:opacity-50 rounded-none'
+											className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 flex-shrink-0 h-[72px] w-12 disabled:opacity-50 rounded-none'
 											style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)' }}
 										>
 											{isLoading ? (
