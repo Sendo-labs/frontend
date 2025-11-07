@@ -20,17 +20,31 @@ export default function PerformanceMetrics({ performance }: PerformanceMetricsPr
 		{
 			icon: DollarSign,
 			label: 'TOTAL VOLUME',
+			labelMobile: ['TOTAL', 'VOLUME'],
 			value: `${performance.total_volume_sol.toFixed(2)} SOL`,
 			color: 'text-foreground',
 		},
 		{
 			icon: TrendingUp,
 			label: 'TOTAL PNL',
+			labelMobile: ['TOTAL', 'PNL'],
 			value: `${performance.total_pnl_sol >= 0 ? '+' : ''}${performance.total_pnl_sol.toFixed(2)} SOL`,
 			color: performance.total_pnl_sol >= 0 ? 'text-sendo-green' : 'text-sendo-red',
 		},
-		{ icon: Target, label: 'SUCCESS RATE', value: `${performance.success_rate}%`, color: 'text-foreground' },
-		{ icon: BarChart3, label: 'TOKENS ANALYZED', value: performance.tokens_analyzed, color: 'text-foreground' },
+		{ 
+			icon: Target, 
+			label: 'SUCCESS RATE',
+			labelMobile: ['SUCCESS', 'RATE'], 
+			value: `${performance.success_rate}%`, 
+			color: 'text-foreground' 
+		},
+		{ 
+			icon: BarChart3, 
+			label: 'TOKENS ANALYZED',
+			labelMobile: ['TOKENS', 'ANALYZED'], 
+			value: performance.tokens_analyzed, 
+			color: 'text-foreground' 
+		},
 	];
 
 	return (
@@ -38,7 +52,7 @@ export default function PerformanceMetrics({ performance }: PerformanceMetricsPr
 			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.3, duration: 0.6 }}
-			className='bg-background border border-foreground/10 p-6'
+			className='bg-background border border-foreground/10 p-4 md:p-6'
 			style={{ borderRadius: 0 }}
 		>
 			<div className='grid grid-cols-2 lg:grid-cols-4 gap-6'>
@@ -50,10 +64,17 @@ export default function PerformanceMetrics({ performance }: PerformanceMetricsPr
 						>
 							<metric.icon className='w-4 h-4 text-sendo-orange' />
 						</div>
-						<div>
-							<p className='text-xs text-foreground/40 uppercase mb-1 title-font'>{metric.label}</p>
-							<p className={`text-xl font-bold ${metric.color}`}>{metric.value}</p>
-						</div>
+					<div>
+						<p className='text-xs text-foreground/40 uppercase mb-1 title-font'>
+							<span className='hidden md:inline'>{metric.label}</span>
+							<span className='md:hidden'>
+								{metric.labelMobile?.[0]}
+								<br />
+								{metric.labelMobile?.[1]}
+							</span>
+						</p>
+						<p className={`text-xl font-bold ${metric.color}`}>{metric.value}</p>
+					</div>
 					</div>
 				))}
 			</div>

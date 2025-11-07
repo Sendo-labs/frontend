@@ -35,7 +35,7 @@ export default function WalletStatsGrid({ stats }: WalletStatsGridProps) {
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.1 * index, duration: 0.5 }}
-					className='bg-background border border-foreground/10 p-6 hover:border-sendo-orange/50 transition-all'
+					className='bg-background border border-foreground/10 p-4 md:p-6 hover:border-sendo-orange/50 transition-all'
 					style={{ borderRadius: 0 }}
 				>
 					<div

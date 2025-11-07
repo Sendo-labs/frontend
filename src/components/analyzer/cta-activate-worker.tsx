@@ -12,7 +12,7 @@ export default function CTAActivateWorker() {
 			initial={{ opacity: 0, y: 30 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.6, delay: 0.6 }}
-			className='bg-gradient-to-br from-sendo-orange/10 via-sendo-red/10 to-sendo-dark-red/10 border border-sendo-orange/30 p-6 relative overflow-hidden group hover:border-sendo-orange/50 transition-all'
+			className='bg-gradient-to-br from-sendo-orange/10 via-sendo-red/10 to-sendo-dark-red/10 border border-sendo-orange/30 p-4 md:p-6 relative overflow-hidden group hover:border-sendo-orange/50 transition-all'
 			style={{ borderRadius: 0 }}
 		>
 			<div className='absolute top-0 right-0 w-32 h-32 bg-sendo-orange/5 blur-3xl' />
@@ -47,18 +47,18 @@ export default function CTAActivateWorker() {
 					</li>
 				</ul>
 
-				<Link href='/worker'>
-					<Button
-						className='w-full bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 group title-font'
-						style={{
-							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
-							borderRadius: 0,
-						}}
-					>
-						ACTIVATE WORKER
-						<ArrowRight className='w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform' />
-					</Button>
-				</Link>
+			<Link href='/worker'>
+				<Button
+					className='w-full bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-10 md:h-12 group title-font'
+					style={{
+						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+						borderRadius: 0,
+					}}
+				>
+					ACTIVATE WORKER
+					<ArrowRight className='w-4 h-4 md:w-5 md:h-5 ml-2 group-hover:translate-x-1 transition-transform' />
+				</Button>
+			</Link>
 			</div>
 		</motion.div>
 	);

@@ -124,17 +124,17 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 											</label>
 
 											<div className='relative'>
-												<Input
-													type={field.type === 'password' && !showPassword[field.name] ? 'password' : field.type}
-													placeholder={
-														field.default ? `Default: ${field.default}` : `Enter ${field.label.toLowerCase()}`
-													}
-													value={formData[field.name] || ''}
-													onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
-													required={field.required}
-													className='bg-foreground/5 border-foreground/20 text-foreground h-12'
-													style={{ borderRadius: 0 }}
-												/>
+										<Input
+											type={field.type === 'password' && !showPassword[field.name] ? 'password' : field.type}
+											placeholder={
+												field.default ? `Default: ${field.default}` : `Enter ${field.label.toLowerCase()}`
+											}
+											value={formData[field.name] || ''}
+											onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
+											required={field.required}
+											className='bg-foreground/5 border-foreground/20 text-foreground h-10 md:h-12'
+											style={{ borderRadius: 0 }}
+										/>
 
 												{field.type === 'password' && (
 													<button
@@ -162,32 +162,32 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 
 					{/* Footer */}
 					<div className='border-t border-foreground/10 p-6'>
-						<div className='grid grid-cols-2 gap-4'>
-							<Button
-								onClick={onClose}
-								className='bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 text-foreground h-12 uppercase'
-								style={{ borderRadius: 0 }}
-							>
-								Cancel
-							</Button>
-							<Button
-								onClick={
-									isOAuth
-										? handleOAuthConnect
-										: (event: React.MouseEvent<HTMLButtonElement>) =>
-												handleSubmit(event as unknown as FormEvent<HTMLFormElement>)
-								}
-								type={isOAuth ? 'button' : 'submit'}
-								className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 uppercase'
-								style={{
-									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
-									borderRadius: 0,
-								}}
-							>
-								<CheckCircle className='w-5 h-5 mr-2' />
-								{isOAuth ? 'Connect & Deploy' : 'Deploy Plugin'}
-							</Button>
-						</div>
+				<div className='grid grid-cols-2 gap-4'>
+					<Button
+						onClick={onClose}
+						className='bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 text-foreground h-10 md:h-12 uppercase'
+						style={{ borderRadius: 0 }}
+					>
+						Cancel
+					</Button>
+					<Button
+						onClick={
+							isOAuth
+								? handleOAuthConnect
+								: (event: React.MouseEvent<HTMLButtonElement>) =>
+										handleSubmit(event as unknown as FormEvent<HTMLFormElement>)
+						}
+						type={isOAuth ? 'button' : 'submit'}
+						className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-10 md:h-12 uppercase'
+						style={{
+							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+							borderRadius: 0,
+						}}
+					>
+						<CheckCircle className='w-4 h-4 md:w-5 md:h-5 mr-2' />
+						{isOAuth ? 'Connect & Deploy' : 'Deploy Plugin'}
+					</Button>
+				</div>
 					</div>
 				</motion.div>
 			</motion.div>

@@ -28,21 +28,21 @@ export default function TokenDistribution({ distribution }: TokenDistributionPro
 			initial={{ opacity: 0, x: -20 }}
 			animate={{ opacity: 1, x: 0 }}
 			transition={{ delay: 0.4, duration: 0.6 }}
-			className='bg-background border border-foreground/10 p-6'
+			className='bg-background border border-foreground/10 p-4 md:p-6'
 			style={{ borderRadius: 0 }}
 		>
-			<div className='flex items-center gap-2 mb-6'>
-				<PieChart className='w-5 h-5 text-sendo-orange' />
-				<h3 className='text-lg font-bold text-foreground uppercase title-font'>TOKEN DISTRIBUTION</h3>
+			<div className='flex items-center gap-2 mb-4 md:mb-6'>
+				<PieChart className='w-4 h-4 md:w-5 md:h-5 text-sendo-orange flex-shrink-0' />
+				<h3 className='text-sm md:text-lg font-bold text-foreground uppercase title-font'>TOKEN DISTRIBUTION</h3>
 			</div>
 
-			<div className='space-y-4'>
+			<div className='space-y-3 md:space-y-4'>
 				{items.map((item, index) => (
-					<div key={index} className='flex items-center justify-between'>
-						<span className='text-foreground/70 text-sm'>{item.label}</span>
-						<div className='flex items-center gap-3'>
-							<span className={`font-bold text-lg ${item.color}`}>{item.value}</span>
-							<span className='text-foreground/40 text-xs w-12 text-right'>{item.pct > 0 ? `(${item.pct}%)` : ''}</span>
+					<div key={index} className='flex items-center justify-between gap-2'>
+						<span className='text-foreground/70 text-xs md:text-sm flex-shrink-0'>{item.label}</span>
+						<div className='flex items-center gap-2 md:gap-3 flex-shrink-0'>
+							<span className={`font-bold text-base md:text-lg ${item.color}`}>{item.value}</span>
+							<span className='text-foreground/40 text-[10px] md:text-xs w-10 md:w-12 text-right'>{item.pct > 0 ? `(${item.pct}%)` : ''}</span>
 						</div>
 					</div>
 				))}

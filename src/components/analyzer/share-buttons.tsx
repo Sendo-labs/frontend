@@ -50,47 +50,47 @@ export default function ShareButtons({ result }: ShareButtonsProps) {
 				<h3 className='text-foreground/60 uppercase text-sm title-font'>SHARE YOUR PAIN</h3>
 			</div>
 
-			<div className='space-y-3'>
-				{/* Download Button */}
+		<div className='space-y-3'>
+			{/* Download Button */}
+			<Button
+				onClick={handleDownload}
+				className='w-full bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-10 md:h-12 title-font'
+				style={{
+					clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+					borderRadius: 0,
+				}}
+			>
+				<Download className='w-4 h-4 mr-2' />
+				<span className='text-xs md:text-sm'>DOWNLOAD PAIN CARD 💀</span>
+			</Button>
+
+			{/* Social Share Buttons */}
+			<div className='grid grid-cols-3 gap-2'>
 				<Button
-					onClick={handleDownload}
-					className='w-full bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 title-font'
-					style={{
-						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
-						borderRadius: 0,
-					}}
+					onClick={handleShareTwitter}
+					className='bg-[#1DA1F2] hover:bg-[#1a8cd8] text-white h-8 md:h-9 px-2'
+					style={{ borderRadius: 0 }}
 				>
-					<Download className='w-4 h-4 mr-2' />
-					DOWNLOAD PAIN CARD 💀
+					<Twitter className='w-3 h-3 md:w-4 md:h-4' />
 				</Button>
-
-				{/* Social Share Buttons */}
-				<div className='grid grid-cols-3 gap-2'>
-					<Button
-						onClick={handleShareTwitter}
-						className='bg-[#1DA1F2] hover:bg-[#1a8cd8] text-white h-10 px-2'
-						style={{ borderRadius: 0 }}
-					>
-						<Twitter className='w-4 h-4' />
-					</Button>
-					<Button
-						onClick={handleShareTelegram}
-						className='bg-[#0088cc] hover:bg-[#0077b3] text-white h-10 px-2'
-						style={{ borderRadius: 0 }}
-					>
-						<Send className='w-4 h-4' />
-					</Button>
-					<Button
-						onClick={handleShareDiscord}
-						className='bg-[#5865F2] hover:bg-[#4752C4] text-white h-10 px-2'
-						style={{ borderRadius: 0 }}
-					>
-						<MessageCircle className='w-4 h-4' />
-					</Button>
-				</div>
-
-				<p className='text-foreground/40 text-xs text-center mt-3'>Challenge a friend to analyze their wallet 👀</p>
+				<Button
+					onClick={handleShareTelegram}
+					className='bg-[#0088cc] hover:bg-[#0077b3] text-white h-8 md:h-9 px-2'
+					style={{ borderRadius: 0 }}
+				>
+					<Send className='w-3 h-3 md:w-4 md:h-4' />
+				</Button>
+				<Button
+					onClick={handleShareDiscord}
+					className='bg-[#5865F2] hover:bg-[#4752C4] text-white h-8 md:h-9 px-2'
+					style={{ borderRadius: 0 }}
+				>
+					<MessageCircle className='w-3 h-3 md:w-4 md:h-4' />
+				</Button>
 			</div>
+
+			<p className='text-foreground/40 text-xs text-center mt-3'>Challenge a friend to analyze their wallet 👀</p>
+		</div>
 		</motion.div>
 	);
 }

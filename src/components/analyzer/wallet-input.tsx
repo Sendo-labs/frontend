@@ -15,21 +15,21 @@ interface WalletInputProps {
 export default function WalletInput({ wallet, setWallet, onAnalyze, isAnalyzing }: WalletInputProps) {
 	return (
 		<div className='max-w-3xl mx-auto'>
-			<div className='bg-foreground/5 border border-foreground/10 p-6 md:p-8' style={{ borderRadius: 0 }}>
+			<div className='bg-foreground/5 border border-foreground/10 p-4 md:p-6' style={{ borderRadius: 0 }}>
 				<div className='flex flex-col sm:flex-row gap-3'>
 					<Input
 						type='text'
 						placeholder='Enter your Solana wallet address...'
 						value={wallet}
 						onChange={(e) => setWallet(e.target.value)}
-						className='h-14 text-base bg-background border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-sendo-orange transition-all flex-1'
+						className='h-10 md:h-12 text-sm md:text-base bg-background border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-sendo-orange transition-all flex-1'
 						style={{ borderRadius: 0 }}
 						disabled={isAnalyzing}
 					/>
 					<Button
 						onClick={onAnalyze}
 						disabled={isAnalyzing || !wallet.trim()}
-						className='h-14 px-8 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red text-white'
+						className='h-10 md:h-12 px-6 md:px-8 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red text-white'
 						style={{
 							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
 							borderRadius: 0,
@@ -37,12 +37,12 @@ export default function WalletInput({ wallet, setWallet, onAnalyze, isAnalyzing 
 					>
 						{isAnalyzing ? (
 							<>
-								<div className='w-5 h-5 mr-2 border-2 border-white border-t-transparent' style={{ borderRadius: 0 }} />
+								<div className='w-4 h-4 md:w-5 md:h-5 mr-2 border-2 border-white border-t-transparent' style={{ borderRadius: 0 }} />
 								ANALYZING
 							</>
 						) : (
 							<>
-								<Search className='w-5 h-5 mr-2' />
+								<Search className='w-4 h-4 md:w-5 md:h-5 mr-2' />
 								SCAN WALLET
 							</>
 						)}

@@ -137,19 +137,19 @@ export default function HeroSection() {
 								value={walletAddress}
 								onChange={(e) => handleWalletChange(e.target.value)}
 								onKeyDown={(e) => e.key === 'Enter' && isValidSolanaAddress(walletAddress) && handleAnalyze()}
-								className='h-10 sm:h-12 md:h-14 text-sm sm:text-base md:text-lg bg-foreground/10 border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-sendo-orange transition-all'
+								className='h-10 md:h-12 text-sm md:text-base bg-foreground/10 border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-sendo-orange transition-all'
 								style={{ borderRadius: 0 }}
 							/>
 							<Button
 								onClick={handleAnalyze}
 								disabled={!isValidSolanaAddress(walletAddress)}
-								className='h-10 sm:h-12 md:h-14 px-4 sm:px-6 md:px-8 whitespace-nowrap bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red text-white'
+								className='h-10 md:h-12 px-6 md:px-8 whitespace-nowrap bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red text-white'
 								style={{
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
 									borderRadius: 0,
 								}}
 							>
-								<Search className='w-4 h-4 sm:w-5 sm:h-5 mr-2' />
+								<Search className='w-4 h-4 md:w-5 md:h-5 mr-2' />
 								SCAN NOW
 							</Button>
 						</div>
