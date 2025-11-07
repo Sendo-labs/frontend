@@ -1,11 +1,20 @@
 'use client';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Share2, Twitter, Send, Download, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { downloadPainCard, getShareText, type PainCardData } from '@/lib/pain-card-generator';
+import { toast } from 'sonner';
+
+interface TokenData {
+	symbol: string;
+	missed_usd: number;
+}
 
 interface ShareResultData {
 	total_missed_usd: number;
 	rank: string;
+	tokens: TokenData[];
 }
 
 interface ShareButtonsProps {
@@ -13,28 +22,59 @@ interface ShareButtonsProps {
 }
 
 export default function ShareButtons({ result }: ShareButtonsProps) {
+	const [isGenerating, setIsGenerating] = useState(false);
+
+	// Prepare pain card data
+	const painCardData: PainCardData = {
+		totalMissedUSD: result.total_missed_usd,
+		rank: result.rank,
+		topPainPoints: result.tokens.slice(0, 3).map((token, index) => ({
+			symbol: token.symbol,
+			missedUSD: token.missed_usd,
+			rank: index + 1,
+		})),
+	};
+
+	const shareText = getShareText(painCardData);
+
+	const handleDownload = async () => {
+		setIsGenerating(true);
+		try {
+			await downloadPainCard(painCardData);
+			toast.success('Pain card downloaded! 💀', {
+				description: 'Your pain is ready to share on social media',
+			});
+		} catch (error) {
+			console.error('Error downloading pain card:', error);
+			toast.error('Failed to generate pain card', {
+				description: 'Please try again',
+			});
+		} finally {
+			setIsGenerating(false);
+		}
+	};
+
 	const handleShareTwitter = () => {
-		const text = `I missed $${(result.total_missed_usd ?? 0).toLocaleString()} by not selling at ATH! 💀\n\nRank: ${result.rank}\n\nCheck your pain at sendo.ai`;
-		const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+		const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
 		window.open(url, '_blank');
+		toast.info('Share on Twitter', {
+			description: 'Download your pain card first to attach the image!',
+		});
 	};
 
 	const handleShareTelegram = () => {
-		const text = `I missed $${(result.total_missed_usd ?? 0).toLocaleString()} by not selling at ATH! 💀\n\nCheck your pain at sendo.ai`;
-		const url = `https://t.me/share/url?url=${encodeURIComponent('https://sendo.ai')}&text=${encodeURIComponent(text)}`;
+		const url = `https://t.me/share/url?url=${encodeURIComponent('https://sendo.ai')}&text=${encodeURIComponent(shareText)}`;
 		window.open(url, '_blank');
+		toast.info('Share on Telegram', {
+			description: 'Download your pain card first to attach the image!',
+		});
 	};
 
 	const handleShareDiscord = () => {
-		const text = `I missed $${(result.total_missed_usd ?? 0).toLocaleString()} by not selling at ATH! 💀 Rank: ${result.rank}\n\nCheck your pain at sendo.ai`;
-		navigator.clipboard.writeText(text);
-		alert('Copied to clipboard! Paste in Discord 📋');
-	};
-
-	const handleDownload = async () => {
-		// Mock download - in real implementation would generate image
-		console.log('Downloading pain card...');
-		alert('Pain card download coming soon! 🎨');
+		navigator.clipboard.writeText(shareText);
+		toast.success('Copied to clipboard! 📋', {
+			description: 'Download your pain card and paste both in Discord!',
+		});
 	};
 
 	return (
@@ -54,14 +94,24 @@ export default function ShareButtons({ result }: ShareButtonsProps) {
 			{/* Download Button */}
 			<Button
 				onClick={handleDownload}
+				disabled={isGenerating}
 				className='w-full bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-10 md:h-12 title-font'
 				style={{
 					clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
 					borderRadius: 0,
 				}}
 			>
-				<Download className='w-4 h-4 mr-2' />
-				<span className='text-xs md:text-sm'>DOWNLOAD PAIN CARD 💀</span>
+				{isGenerating ? (
+					<>
+						<div className='w-4 h-4 mr-2 border-2 border-white border-t-transparent rounded-full animate-spin' />
+						<span className='text-xs md:text-sm'>GENERATING...</span>
+					</>
+				) : (
+					<>
+						<Download className='w-4 h-4 mr-2' />
+						<span className='text-xs md:text-sm'>DOWNLOAD PAIN CARD 💀</span>
+					</>
+				)}
 			</Button>
 
 			{/* Social Share Buttons */}
