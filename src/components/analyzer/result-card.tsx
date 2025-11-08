@@ -42,7 +42,7 @@ function CountUp({ end, duration = 2 }: { end: number; duration?: number }) {
 		return () => cancelAnimationFrame(animationFrame);
 	}, [end, duration]);
 
-	return <span>${count.toLocaleString()}</span>;
+	return <span>${count.toLocaleString('en-US')}</span>;
 }
 
 export default function ResultCard({ result }: ResultCardProps) {
@@ -92,7 +92,7 @@ export default function ResultCard({ result }: ResultCardProps) {
 								</div>
 							</div>
 							<div className='text-right'>
-								<p className='text-sendo-red font-bold text-lg'>-${(token.missed_usd ?? 0).toLocaleString()}</p>
+								<p className='text-sendo-red font-bold text-lg'>-${(token.missed_usd ?? 0).toLocaleString('en-US')}</p>
 							</div>
 						</div>
 					))}

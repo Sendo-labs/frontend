@@ -105,7 +105,7 @@ export default function TokenDistribution({ distribution, best, worst }: TokenDi
 						<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>PnL</span>
 						<span className='text-sendo-green font-bold text-xs md:text-sm flex-shrink-0'>
 							+$
-							<CountUp end={best.pnl_usd} decimals={2} separator={false} />
+							<CountUp end={best.pnl_usd} decimals={2} separator={true} />
 						</span>
 					</div>
 					<div className='flex justify-between gap-2'>
@@ -137,7 +137,7 @@ export default function TokenDistribution({ distribution, best, worst }: TokenDi
 						<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>PnL</span>
 						<span className='text-sendo-red font-bold text-xs md:text-sm flex-shrink-0'>
 							-$
-							<CountUp end={Math.abs(worst.pnl_usd)} decimals={2} separator={false} />
+							<CountUp end={Math.abs(worst.pnl_usd)} decimals={2} separator={true} />
 						</span>
 					</div>
 					<div className='flex justify-between gap-2'>

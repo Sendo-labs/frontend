@@ -84,7 +84,7 @@ export default function TokenAnalysisList({ tokens, totalCount }: TokenAnalysisL
 								<div className='min-w-0'>
 									<p className='text-foreground/40 text-[10px] md:text-xs mb-1'>Volume (USD)</p>
 									<p className='text-foreground font-bold text-xs md:text-sm truncate'>
-										${totalVolumeUSD.toLocaleString()}
+										${totalVolumeUSD.toLocaleString('en-US')}
 									</p>
 								</div>
 								<div className='min-w-0'>
@@ -100,27 +100,29 @@ export default function TokenAnalysisList({ tokens, totalCount }: TokenAnalysisL
 											isProfit ? 'text-sendo-green' : 'text-sendo-red'
 										}`}
 									>
-										{isProfit ? '+' : ''}${totalPnlUSD.toLocaleString()}
+										{isProfit ? '+' : ''}${totalPnlUSD.toLocaleString('en-US')}
 									</p>
 								</div>
 								<div className='min-w-0'>
 									<p className='text-foreground/40 text-[10px] md:text-xs mb-1'>Missed at ATH</p>
 									<p className='text-sendo-red font-bold text-xs md:text-sm truncate'>
-										${totalMissedATH.toLocaleString()}
+										${totalMissedATH.toLocaleString('en-US')}
 									</p>
 								</div>
 								{avgPurchasePrice > 0 && (
 									<div className='min-w-0'>
 										<p className='text-foreground/40 text-[10px] md:text-xs mb-1'>Avg Purchase</p>
 										<p className='text-foreground font-bold text-xs md:text-sm truncate'>
-											${avgPurchasePrice.toFixed(8)}
+											${avgPurchasePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 3 })}
 										</p>
 									</div>
 								)}
 								{avgAthPrice > 0 && (
 									<div className='min-w-0'>
 										<p className='text-foreground/40 text-[10px] md:text-xs mb-1'>Avg ATH</p>
-										<p className='text-sendo-red font-bold text-xs md:text-sm truncate'>${avgAthPrice.toFixed(8)}</p>
+										<p className='text-sendo-red font-bold text-xs md:text-sm truncate'>
+							${avgAthPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 3 })}
+						</p>
 									</div>
 								)}
 							</div>

@@ -53,13 +53,12 @@ export function CountUp({
 	}, [end, duration]);
 
 	const formatNumber = (num: number) => {
-		const fixed = num.toFixed(decimals);
-		if (separator) {
-			const parts = fixed.split('.');
-			parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-			return parts.join('.');
-		}
-		return fixed;
+		// Use en-US locale for consistent formatting
+		return num.toLocaleString('en-US', {
+			minimumFractionDigits: decimals,
+			maximumFractionDigits: decimals,
+			useGrouping: separator,
+		});
 	};
 
 	return (

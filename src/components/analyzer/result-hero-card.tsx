@@ -144,10 +144,15 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 										<div className='min-w-0 flex-1'>
 											<p className='text-foreground font-bold text-sm md:text-lg truncate'>{token.symbol}</p>
 											<p className='text-foreground/40 text-xs md:text-sm'>
-												<span className='block md:inline'>ATH: ${(token.ath_price ?? 0).toFixed(8)}</span>
+												<span className='block md:inline'>
+												ATH: ${(token.ath_price ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 3 })}
+											</span>
 												<span className='hidden md:inline'> • </span>
 												<span className='block md:inline'>
-													Sold: ${typeof token.sold_price === 'number' ? token.sold_price.toFixed(8) : 'Still Held'}
+													Sold:{' '}
+													{typeof token.sold_price === 'number'
+														? `$${token.sold_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}`
+														: 'Still Held'}
 												</span>
 											</p>
 										</div>

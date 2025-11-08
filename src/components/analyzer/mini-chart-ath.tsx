@@ -38,13 +38,16 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
 
 	const CustomTooltip = ({ active, payload }: any) => {
 		if (active && payload && payload.length) {
+			const valueInUSD = peakValue * payload[0].payload.rawValue;
+			const formattedValue = valueInUSD >= 1000
+				? `$${(valueInUSD / 1000).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}k`
+				: `$${valueInUSD.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+
 			return (
 				<div className='bg-background border border-sendo-orange/30 p-3' style={{ borderRadius: 0 }}>
 					<p className='text-foreground text-sm font-bold'>{payload[0].payload.name}</p>
 					<p className='text-sendo-orange text-xs'>{payload[0].value.toFixed(1)}%</p>
-					<p className='text-foreground/60 text-xs'>
-						${((peakValue * payload[0].payload.rawValue) / 1000).toFixed(1)}k
-					</p>
+					<p className='text-foreground/60 text-xs'>{formattedValue}</p>
 				</div>
 			);
 		}
