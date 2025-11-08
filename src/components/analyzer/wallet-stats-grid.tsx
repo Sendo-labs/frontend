@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Activity, Wallet, Image as ImageIcon, Coins } from 'lucide-react';
+import { CountUp } from '@/components/ui/count-up';
 
 interface WalletStats {
 	signatures: number;
@@ -19,12 +20,35 @@ export default function WalletStatsGrid({ stats }: WalletStatsGridProps) {
 		{
 			icon: Activity,
 			label: 'SIGNATURES',
-			value: (stats.signatures ?? 0).toLocaleString(),
+			value: stats.signatures ?? 0,
+			decimals: 0,
+			separator: true,
 			color: 'from-sendo-orange via-sendo-red to-sendo-dark-red',
 		},
-		{ icon: Wallet, label: 'SOL', value: (stats.sol_balance ?? 0).toFixed(2), color: 'from-sendo-green to-[#00D9B5]' },
-		{ icon: ImageIcon, label: 'NFTs', value: stats.nfts ?? 0, color: 'from-[#9945FF] to-sendo-green' },
-		{ icon: Coins, label: 'TOKENS', value: stats.tokens ?? 0, color: 'from-sendo-orange via-sendo-red to-sendo-dark-red' },
+		{
+			icon: Wallet,
+			label: 'SOL',
+			value: stats.sol_balance ?? 0,
+			decimals: 2,
+			separator: false,
+			color: 'from-sendo-green to-[#00D9B5]',
+		},
+		{
+			icon: ImageIcon,
+			label: 'NFTs',
+			value: stats.nfts ?? 0,
+			decimals: 0,
+			separator: false,
+			color: 'from-[#9945FF] to-sendo-green',
+		},
+		{
+			icon: Coins,
+			label: 'TOKENS',
+			value: stats.tokens ?? 0,
+			decimals: 0,
+			separator: false,
+			color: 'from-sendo-orange via-sendo-red to-sendo-dark-red',
+		},
 	];
 
 	return (
@@ -44,7 +68,9 @@ export default function WalletStatsGrid({ stats }: WalletStatsGridProps) {
 					>
 						<stat.icon className='w-5 h-5 text-white' />
 					</div>
-					<div className='text-3xl md:text-4xl font-bold text-foreground mb-1'>{stat.value}</div>
+					<div className='text-3xl md:text-4xl font-bold text-foreground mb-1'>
+						<CountUp end={stat.value} decimals={stat.decimals} separator={stat.separator} />
+					</div>
 					<div className='text-xs text-foreground/60 uppercase title-font'>{stat.label}</div>
 				</motion.div>
 			))}

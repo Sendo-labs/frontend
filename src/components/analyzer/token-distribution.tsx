@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { PieChart } from 'lucide-react';
+import { CountUp } from '@/components/ui/count-up';
 
 interface DistributionData {
 	in_profit: number;
@@ -41,8 +42,16 @@ export default function TokenDistribution({ distribution }: TokenDistributionPro
 					<div key={index} className='flex items-center justify-between gap-2'>
 						<span className='text-foreground/70 text-xs md:text-sm flex-shrink-0'>{item.label}</span>
 						<div className='flex items-center gap-2 md:gap-3 flex-shrink-0'>
-							<span className={`font-bold text-base md:text-lg ${item.color}`}>{item.value}</span>
-							<span className='text-foreground/40 text-[10px] md:text-xs w-10 md:w-12 text-right'>{item.pct > 0 ? `(${item.pct}%)` : ''}</span>
+							<span className={`font-bold text-base md:text-lg ${item.color}`}>
+								<CountUp end={item.value} decimals={0} separator={false} />
+							</span>
+							<span className='text-foreground/40 text-[10px] md:text-xs w-10 md:w-12 text-right'>
+								{item.pct > 0 ? (
+									<>
+										(<CountUp end={item.pct} decimals={1} separator={false} />%)
+									</>
+								) : ''}
+							</span>
 						</div>
 					</div>
 				))}

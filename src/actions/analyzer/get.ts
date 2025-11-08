@@ -3,10 +3,9 @@
 import { withAction } from '@/lib/wrapper/with-action';
 import type { Character } from '@elizaos/core';
 import { StorageFactory } from '@/factories/storage-factory';
-import type { TradesAPIResponse } from '@/services/trades.service';
 import { getAnalyserOpenRouterApiKey } from '@/actions/openrouter/get';
 import { ElizaService } from '@/services/eliza.service';
-import { TradesService } from '@/services/trades.service';
+import { AnalysisClientService } from '@/services/analysis-client.service';
 import { ANALYSER_BASE_URL } from '@/lib/constants';
 
 /**
@@ -26,25 +25,63 @@ export async function getAnalyzer() {
 }
 
 /**
- * Fetch trades for a wallet address
+ * Start async wallet analysis
  * @param address - The wallet address to analyze
- * @param cursor - Optional cursor for pagination
- * @param limit - Number of trades to fetch (default: 35)
- * @returns The trades API response
+ * @returns The job info with job_id and status
  */
-export async function getAnalyzerTrades(address: string, cursor?: string, limit: number = 35) {
-	return withAction<TradesAPIResponse | null>(async () => {
+export async function startAnalysis(address: string) {
+	return withAction(async () => {
 		const apiKeyResult = await getAnalyserOpenRouterApiKey();
 		if (!apiKeyResult.success || !apiKeyResult.data) {
-			// Return empty response if analyzer is not configured
-			console.warn('[Storage] Analyzer not configured - returning empty trades');
-			return null;
+			throw new Error('Analyzer not configured');
 		}
 
 		const baseUrl = ANALYSER_BASE_URL;
 		const elizaService = new ElizaService(apiKeyResult.data, baseUrl);
-		const tradesService = new TradesService(elizaService);
+		const analysisClient = new AnalysisClientService(elizaService);
 
-		return await tradesService.fetchTrades(address, cursor, limit);
+		return await analysisClient.startAnalysis(address);
+	}, false);
+}
+
+/**
+ * Get analysis status with progress
+ * @param address - The wallet address
+ * @returns The analysis status with progress and results
+ */
+export async function getAnalysisStatus(address: string) {
+	return withAction(async () => {
+		const apiKeyResult = await getAnalyserOpenRouterApiKey();
+		if (!apiKeyResult.success || !apiKeyResult.data) {
+			throw new Error('Analyzer not configured');
+		}
+
+		const baseUrl = ANALYSER_BASE_URL;
+		const elizaService = new ElizaService(apiKeyResult.data, baseUrl);
+		const analysisClient = new AnalysisClientService(elizaService);
+
+		return await analysisClient.getAnalysisStatus(address);
+	}, false);
+}
+
+/**
+ * Get paginated analysis results
+ * @param address - The wallet address
+ * @param page - Page number (default: 1)
+ * @param limit - Number of tokens per page (default: 50)
+ * @returns The paginated analysis results
+ */
+export async function getAnalysisResults(address: string, page: number = 1, limit: number = 50) {
+	return withAction(async () => {
+		const apiKeyResult = await getAnalyserOpenRouterApiKey();
+		if (!apiKeyResult.success || !apiKeyResult.data) {
+			throw new Error('Analyzer not configured');
+		}
+
+		const baseUrl = ANALYSER_BASE_URL;
+		const elizaService = new ElizaService(apiKeyResult.data, baseUrl);
+		const analysisClient = new AnalysisClientService(elizaService);
+
+		return await analysisClient.getAnalysisResults(address, page, limit);
 	}, false);
 }

@@ -80,20 +80,24 @@ export async function hasOpenRouterKey(username: string) {
  */
 export async function getAnalyserOpenRouterApiKey() {
 	return withAction<string | null>(async () => {
+		// Try to get from Parameter Store first
 		const result = await getSystemOpenRouterKey('/openrouter/analyser/api_key');
-		if (!result.success || !result.data) {
-			// Fallback to environment variable for local development
-			// This allows the global analyzer key to come from .env.local
-			const envKey = process.env.OPENROUTER_API_KEY;
-			if (envKey) {
-				console.log('[Storage] Using global OPENROUTER_API_KEY from environment variable');
-				return envKey;
-			}
 
-			// No analyzer key available - analyzer features will be disabled
-			console.warn('[Storage] Analyser OpenRouter API key not found - analyzer features will be disabled');
-			return null;
+		// If found in Parameter Store, use it
+		if (result.success && result.data) {
+			return result.data;
 		}
-		return result.data;
+
+		// Fallback to environment variable for local development
+		// This allows the global analyzer key to come from .env.local
+		const envKey = process.env.OPENROUTER_API_KEY;
+		if (envKey) {
+			console.log('[Storage] Using global OPENROUTER_API_KEY from environment variable');
+			return envKey;
+		}
+
+		// No analyzer key available - analyzer features will be disabled
+		console.warn('[Storage] Analyser OpenRouter API key not found - analyzer features will be disabled');
+		return null;
 	}, false);
 }

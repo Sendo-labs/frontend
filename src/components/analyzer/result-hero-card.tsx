@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { TrendingDown, Skull, Share2, Twitter, Send, Download, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { CountUp } from '@/components/ui/count-up';
 import { downloadPainCard, getShareText, type PainCardData } from '@/lib/pain-card-generator';
 import { toast } from 'sonner';
 
@@ -23,32 +24,6 @@ interface ResultData {
 
 interface ResultHeroCardProps {
 	result: ResultData;
-}
-
-function CountUp({ end, duration = 2 }: { end: number; duration?: number }) {
-	const [count, setCount] = React.useState(0);
-
-	React.useEffect(() => {
-		let startTime: number | undefined;
-		let animationFrame: number;
-
-		const animate = (timestamp: number) => {
-			if (!startTime) startTime = timestamp;
-			const progress = (timestamp - startTime) / (duration * 1000);
-
-			if (progress < 1) {
-				setCount(Math.floor(end * progress));
-				animationFrame = requestAnimationFrame(animate);
-			} else {
-				setCount(end);
-			}
-		};
-
-		animationFrame = requestAnimationFrame(animate);
-		return () => cancelAnimationFrame(animationFrame);
-	}, [end, duration]);
-
-	return <span>${count.toLocaleString()}</span>;
 }
 
 export default function ResultHeroCard({ result }: ResultHeroCardProps) {
@@ -138,7 +113,7 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 		{/* Big number */}
 		<div className='mb-3 md:mb-4'>
 			<span className='inline-block text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent leading-none'>
-				<CountUp end={result.total_missed_usd} />
+				<CountUp end={result.total_missed_usd} separator={true} prefix="$" />
 			</span>
 		</div>
 
@@ -174,8 +149,12 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 									</div>
 							</div>
 							<div className='text-right flex-shrink-0'>
-								<p className='text-sendo-red font-bold text-base md:text-xl whitespace-nowrap'>-${(token.missed_usd ?? 0).toLocaleString()}</p>
-								<p className='text-sendo-red/60 text-xs md:text-sm whitespace-nowrap'>{token.ath_change_pct}% from ATH</p>
+								<p className='text-sendo-red font-bold text-base md:text-xl whitespace-nowrap'>
+									<CountUp end={token.missed_usd ?? 0} separator={true} prefix="-$" decimals={0} />
+								</p>
+								<p className='text-sendo-red/60 text-xs md:text-sm whitespace-nowrap'>
+									<CountUp end={token.ath_change_pct} decimals={2} separator={false} />% from ATH
+								</p>
 							</div>
 						</div>
 							))}

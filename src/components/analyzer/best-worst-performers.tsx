@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp, TrendingDown } from 'lucide-react';
+import { CountUp } from '@/components/ui/count-up';
 
 interface Performer {
 	token: string;
@@ -39,11 +40,15 @@ export default function BestWorstPerformers({ best, worst }: BestWorstPerformers
 				</div>
 				<div className='flex justify-between gap-2'>
 					<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>PnL</span>
-					<span className='text-sendo-green font-bold text-xs md:text-sm flex-shrink-0'>+{best.pnl_sol.toFixed(4)} SOL</span>
+					<span className='text-sendo-green font-bold text-xs md:text-sm flex-shrink-0'>
+						+<CountUp end={best.pnl_sol} decimals={4} separator={false} /> SOL
+					</span>
 				</div>
 				<div className='flex justify-between gap-2'>
 					<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>Volume</span>
-					<span className='text-foreground text-xs md:text-sm flex-shrink-0'>{best.volume_sol.toFixed(3)} SOL</span>
+					<span className='text-foreground text-xs md:text-sm flex-shrink-0'>
+						<CountUp end={best.volume_sol} decimals={3} separator={false} /> SOL
+					</span>
 				</div>
 			</div>
 			</div>
@@ -63,11 +68,15 @@ export default function BestWorstPerformers({ best, worst }: BestWorstPerformers
 				</div>
 				<div className='flex justify-between gap-2'>
 					<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>PnL</span>
-					<span className='text-sendo-red font-bold text-xs md:text-sm flex-shrink-0'>{worst.pnl_sol.toFixed(4)} SOL</span>
+					<span className='text-sendo-red font-bold text-xs md:text-sm flex-shrink-0'>
+						<CountUp end={worst.pnl_sol} decimals={4} separator={false} /> SOL
+					</span>
 				</div>
 				<div className='flex justify-between gap-2'>
 					<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>Volume</span>
-					<span className='text-foreground text-xs md:text-sm flex-shrink-0'>{worst.volume_sol.toFixed(3)} SOL</span>
+					<span className='text-foreground text-xs md:text-sm flex-shrink-0'>
+						<CountUp end={worst.volume_sol} decimals={3} separator={false} /> SOL
+					</span>
 				</div>
 			</div>
 			</div>
