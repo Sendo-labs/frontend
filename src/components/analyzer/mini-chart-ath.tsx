@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { TrendingDown } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { CountUp } from '@/components/ui/count-up';
 
 interface ChartDataPoint {
 	name: string;
@@ -104,15 +105,21 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
 			<div className='grid grid-cols-3 gap-2 md:gap-4 pt-4 md:pt-6 border-t border-foreground/10'>
 				<div className='min-w-0'>
 					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>PEAK VALUE</p>
-					<p className='text-foreground font-bold text-sm md:text-lg truncate'>${(peakValue / 1000).toFixed(1)}k</p>
+					<p className='text-foreground font-bold text-sm md:text-lg truncate'>
+						$<CountUp end={peakValue / 1000} decimals={1} separator={false} />k
+					</p>
 				</div>
 				<div className='min-w-0'>
 					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>CURRENT VALUE</p>
-					<p className='text-foreground font-bold text-sm md:text-lg truncate'>${(currentValue / 1000).toFixed(1)}k</p>
+					<p className='text-foreground font-bold text-sm md:text-lg truncate'>
+						$<CountUp end={currentValue / 1000} decimals={1} separator={false} />k
+					</p>
 				</div>
 				<div className='min-w-0'>
 					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>% LOST</p>
-					<p className='text-sendo-red font-bold text-sm md:text-lg'>-{lossPercent}%</p>
+					<p className='text-sendo-red font-bold text-sm md:text-lg'>
+						-<CountUp end={lossPercent} decimals={0} separator={false} />%
+					</p>
 				</div>
 			</div>
 		</motion.div>
