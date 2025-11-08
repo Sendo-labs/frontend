@@ -99,13 +99,14 @@ export default function AnalyzerPage() {
 		if (!results || !currentSummary) return null;
 
 		// Top 3 tokens by missed USD for ResultHeroCard - from summary (calculated from ALL tokens in DB)
-		const topTokensByMissed = currentSummary.top_pain_points?.map((pp: any) => ({
-			symbol: pp.symbol || 'Unknown',
-			ath_price: pp.ath_price,
-			sold_price: pp.sold_price || undefined,
-			ath_change_pct: pp.ath_change_pct,
-			missed_usd: pp.missed_usd,
-		})) || [];
+		const topTokensByMissed =
+			currentSummary.top_pain_points?.map((pp: any) => ({
+				symbol: pp.symbol || 'Unknown',
+				ath_price: pp.ath_price,
+				sold_price: pp.sold_price || undefined,
+				ath_change_pct: pp.ath_change_pct,
+				missed_usd: pp.missed_usd,
+			})) || [];
 
 		// WalletStatsGrid data
 		const walletStats = {
@@ -124,17 +125,21 @@ export default function AnalyzerPage() {
 		};
 
 		// Best/Worst performers - from summary (calculated from ALL tokens in DB)
-		const bestPerformer = currentSummary.best_performer ? {
-			token: currentSummary.best_performer.symbol || 'Unknown',
-			pnl_sol: currentSummary.best_performer.pnl_sol,
-			volume_sol: currentSummary.best_performer.volume_sol,
-		} : { token: 'N/A', pnl_sol: 0, volume_sol: 0 };
+		const bestPerformer = currentSummary.best_performer
+			? {
+					token: currentSummary.best_performer.symbol || 'Unknown',
+					pnl_sol: currentSummary.best_performer.pnl_sol,
+					volume_sol: currentSummary.best_performer.volume_sol,
+				}
+			: { token: 'N/A', pnl_sol: 0, volume_sol: 0 };
 
-		const worstPerformer = currentSummary.worst_performer ? {
-			token: currentSummary.worst_performer.symbol || 'Unknown',
-			pnl_sol: currentSummary.worst_performer.pnl_sol,
-			volume_sol: currentSummary.worst_performer.volume_sol,
-		} : { token: 'N/A', pnl_sol: 0, volume_sol: 0 };
+		const worstPerformer = currentSummary.worst_performer
+			? {
+					token: currentSummary.worst_performer.symbol || 'Unknown',
+					pnl_sol: currentSummary.worst_performer.pnl_sol,
+					volume_sol: currentSummary.worst_performer.volume_sol,
+				}
+			: { token: 'N/A', pnl_sol: 0, volume_sol: 0 };
 
 		// Token distribution - from summary (calculated from ALL tokens in DB)
 		const distribution = {
@@ -178,7 +183,12 @@ export default function AnalyzerPage() {
 				const [entry] = entries;
 				// Only trigger if intersecting AND we're not already loading AND we have more to load
 				if (entry.isIntersecting && results.pagination.hasMore && !isLoadingMore) {
-					console.log('[AnalyzerPage] Load more triggered by scroll, current tokens:', results.tokens.length, 'total:', results.pagination.total);
+					console.log(
+						'[AnalyzerPage] Load more triggered by scroll, current tokens:',
+						results.tokens.length,
+						'total:',
+						results.pagination.total,
+					);
 					setIsLoadingMore(true);
 					// Load next page - isLoadingMore will be reset when new tokens arrive
 					nextPage();
@@ -188,7 +198,7 @@ export default function AnalyzerPage() {
 				root: null,
 				rootMargin: '100px', // Trigger 100px before reaching the element
 				threshold: 0,
-			}
+			},
 		);
 
 		observer.observe(loadMoreRef.current);
@@ -295,9 +305,7 @@ export default function AnalyzerPage() {
 							<h2 className='text-2xl md:text-3xl font-bold title-font'>
 								TOKENS ANALYZED ({results.pagination.total})
 							</h2>
-							{!isCompleted && (
-								<span className='text-sm text-foreground/60'>Updating in real-time...</span>
-							)}
+							{!isCompleted && <span className='text-sm text-foreground/60'>Updating in real-time...</span>}
 						</div>
 
 						{/* Token Analysis List */}

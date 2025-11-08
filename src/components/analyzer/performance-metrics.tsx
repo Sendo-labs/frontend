@@ -50,7 +50,7 @@ export default function PerformanceMetrics({ performance, isProcessing }: Perfor
 			separator: false,
 			suffix: '%',
 			prefix: '',
-			color: 'text-foreground'
+			color: 'text-foreground',
 		},
 		{
 			icon: BarChart3,
@@ -61,7 +61,7 @@ export default function PerformanceMetrics({ performance, isProcessing }: Perfor
 			separator: true,
 			suffix: '',
 			prefix: '',
-			color: 'text-foreground'
+			color: 'text-foreground',
 		},
 	];
 
@@ -82,25 +82,25 @@ export default function PerformanceMetrics({ performance, isProcessing }: Perfor
 						>
 							<metric.icon className='w-4 h-4 text-sendo-orange' />
 						</div>
-					<div>
-						<p className='text-xs text-foreground/40 uppercase mb-1 title-font'>
-							<span className='hidden md:inline'>{metric.label}</span>
-							<span className='md:hidden'>
-								{metric.labelMobile?.[0]}
-								<br />
-								{metric.labelMobile?.[1]}
-							</span>
-						</p>
-						<p className={`text-xl font-bold ${metric.color}`}>
-							<CountUp
-								end={metric.value}
-								decimals={metric.decimals}
-								separator={metric.separator}
-								prefix={metric.prefix}
-								suffix={metric.suffix}
-							/>
-						</p>
-					</div>
+						<div>
+							<p className='text-xs text-foreground/40 uppercase mb-1 title-font'>
+								<span className='hidden md:inline'>{metric.label}</span>
+								<span className='md:hidden'>
+									{metric.labelMobile?.[0]}
+									<br />
+									{metric.labelMobile?.[1]}
+								</span>
+							</p>
+							<p className={`text-xl font-bold ${metric.color}`}>
+								<CountUp
+									end={metric.value}
+									decimals={metric.decimals}
+									separator={metric.separator}
+									prefix={metric.prefix}
+									suffix={metric.suffix}
+								/>
+							</p>
+						</div>
 					</div>
 				))}
 			</div>

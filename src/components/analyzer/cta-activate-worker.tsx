@@ -47,18 +47,18 @@ export default function CTAActivateWorker() {
 					</li>
 				</ul>
 
-			<Link href='/worker'>
-				<Button
-					className='w-full bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-10 md:h-12 group title-font'
-					style={{
-						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
-						borderRadius: 0,
-					}}
-				>
-					ACTIVATE WORKER
-					<ArrowRight className='w-4 h-4 md:w-5 md:h-5 ml-2 group-hover:translate-x-1 transition-transform' />
-				</Button>
-			</Link>
+				<Link href='/worker'>
+					<Button
+						className='w-full bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-10 md:h-12 group title-font'
+						style={{
+							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+							borderRadius: 0,
+						}}
+					>
+						ACTIVATE WORKER
+						<ArrowRight className='w-4 h-4 md:w-5 md:h-5 ml-2 group-hover:translate-x-1 transition-transform' />
+					</Button>
+				</Link>
 			</div>
 		</motion.div>
 	);

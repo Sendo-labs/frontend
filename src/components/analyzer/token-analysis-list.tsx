@@ -17,9 +17,7 @@ export default function TokenAnalysisList({ tokens, totalCount }: TokenAnalysisL
 			{/* Header */}
 			<div className='flex items-center gap-2 mb-6'>
 				<List className='w-5 h-5 text-sendo-orange' />
-				<h3 className='text-lg font-bold text-foreground uppercase title-font'>
-					TOKEN ANALYSIS ({displayCount})
-				</h3>
+				<h3 className='text-lg font-bold text-foreground uppercase title-font'>TOKEN ANALYSIS ({displayCount})</h3>
 			</div>
 
 			{/* Token List */}
@@ -65,9 +63,7 @@ export default function TokenAnalysisList({ tokens, totalCount }: TokenAnalysisL
 								<div className='flex flex-col items-end gap-1 flex-shrink-0'>
 									<div
 										className={`px-1.5 md:px-2 py-0.5 md:py-1 text-[10px] md:text-xs font-bold title-font whitespace-nowrap ${
-											isProfit
-												? 'bg-sendo-green/10 text-sendo-green'
-												: 'bg-sendo-red/10 text-sendo-red'
+											isProfit ? 'bg-sendo-green/10 text-sendo-green' : 'bg-sendo-red/10 text-sendo-red'
 										}`}
 										style={{ borderRadius: 0 }}
 									>
@@ -123,9 +119,7 @@ export default function TokenAnalysisList({ tokens, totalCount }: TokenAnalysisL
 								{avgAthPrice > 0 && (
 									<div className='min-w-0'>
 										<p className='text-foreground/40 text-[10px] md:text-xs mb-1'>Avg ATH</p>
-										<p className='text-sendo-red font-bold text-xs md:text-sm truncate'>
-											${avgAthPrice.toFixed(8)}
-										</p>
+										<p className='text-sendo-red font-bold text-xs md:text-sm truncate'>${avgAthPrice.toFixed(8)}</p>
 									</div>
 								)}
 							</div>

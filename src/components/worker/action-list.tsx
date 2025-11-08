@@ -190,26 +190,26 @@ export default function ActionList({ agentId, actions, onValidateAll, isExecutin
 									</div>
 								</div>
 
-							{mode === 'suggest' && (
-								<div className='flex gap-2 flex-shrink-0'>
-									<Button
-										onClick={() => acceptAction(action)}
-										disabled={isExecuting || isAcceptingAction}
-										className='bg-sendo-green hover:bg-sendo-green/80 text-black h-9 w-9 md:h-10 md:w-10 p-0 flex items-center justify-center'
-										style={{ borderRadius: 0 }}
-									>
-										<Check className='w-4 h-4 md:w-5 md:h-5' />
-									</Button>
-									<Button
-										onClick={() => rejectAction(action)}
-										disabled={isExecuting || isRejectingAction}
-										className='bg-sendo-red hover:bg-sendo-red/80 text-white h-9 w-9 md:h-10 md:w-10 p-0 flex items-center justify-center'
-										style={{ borderRadius: 0 }}
-									>
-										<X className='w-4 h-4 md:w-5 md:h-5' />
-									</Button>
-								</div>
-							)}
+								{mode === 'suggest' && (
+									<div className='flex gap-2 flex-shrink-0'>
+										<Button
+											onClick={() => acceptAction(action)}
+											disabled={isExecuting || isAcceptingAction}
+											className='bg-sendo-green hover:bg-sendo-green/80 text-black h-9 w-9 md:h-10 md:w-10 p-0 flex items-center justify-center'
+											style={{ borderRadius: 0 }}
+										>
+											<Check className='w-4 h-4 md:w-5 md:h-5' />
+										</Button>
+										<Button
+											onClick={() => rejectAction(action)}
+											disabled={isExecuting || isRejectingAction}
+											className='bg-sendo-red hover:bg-sendo-red/80 text-white h-9 w-9 md:h-10 md:w-10 p-0 flex items-center justify-center'
+											style={{ borderRadius: 0 }}
+										>
+											<X className='w-4 h-4 md:w-5 md:h-5' />
+										</Button>
+									</div>
+								)}
 
 								{mode === 'auto' && (
 									<div className='flex items-center gap-2 text-xs text-sendo-green flex-shrink-0'>

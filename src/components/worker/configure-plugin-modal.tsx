@@ -135,27 +135,27 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 								</ul>
 							</div>
 
-						<div className='flex gap-3'>
-							<Button
-								onClick={onClose}
-								variant='outline'
-								className='flex-1 h-10 md:h-12 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 text-foreground'
-								style={{ borderRadius: 0 }}
-							>
-								CANCEL
-							</Button>
-							<Button
-								onClick={onComplete}
-								className='flex-1 h-10 md:h-12 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white'
-								style={{
-									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
-									borderRadius: 0,
-									fontFamily: 'TECHNOS, sans-serif',
-								}}
-							>
-								AUTHORIZE CONNECTION
-							</Button>
-						</div>
+							<div className='flex gap-3'>
+								<Button
+									onClick={onClose}
+									variant='outline'
+									className='flex-1 h-10 md:h-12 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 text-foreground'
+									style={{ borderRadius: 0 }}
+								>
+									CANCEL
+								</Button>
+								<Button
+									onClick={onComplete}
+									className='flex-1 h-10 md:h-12 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white'
+									style={{
+										clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+										borderRadius: 0,
+										fontFamily: 'TECHNOS, sans-serif',
+									}}
+								>
+									AUTHORIZE CONNECTION
+								</Button>
+							</div>
 						</div>
 					</motion.div>
 				</motion.div>
@@ -222,26 +222,26 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 									</label>
 									{field.description && <p className='text-xs text-foreground/60 mb-3'>{field.description}</p>}
 									<div className='relative'>
-									<Input
-										type={
-											field.type === 'password' && !showPasswords[field.name]
-												? 'password'
-												: field.type === 'password'
-													? 'text'
-													: field.type
-										}
-										value={formData[field.name]}
-										onChange={(e) =>
-											setFormData({
-												...formData,
-												[field.name]: e.target.value,
-											})
-										}
-										placeholder={`Enter ${field.label.toLowerCase()}`}
-										required={field.required}
-										className='h-10 md:h-12 bg-foreground/5 border-foreground/20 text-foreground'
-										style={{ borderRadius: 0 }}
-									/>
+										<Input
+											type={
+												field.type === 'password' && !showPasswords[field.name]
+													? 'password'
+													: field.type === 'password'
+														? 'text'
+														: field.type
+											}
+											value={formData[field.name]}
+											onChange={(e) =>
+												setFormData({
+													...formData,
+													[field.name]: e.target.value,
+												})
+											}
+											placeholder={`Enter ${field.label.toLowerCase()}`}
+											required={field.required}
+											className='h-10 md:h-12 bg-foreground/5 border-foreground/20 text-foreground'
+											style={{ borderRadius: 0 }}
+										/>
 										{field.type === 'password' && (
 											<button
 												type='button'
@@ -256,39 +256,39 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 							))}
 						</div>
 
-					<div className='mt-8 flex gap-3'>
-						<Button
-							type='button'
-							onClick={onClose}
-							variant='outline'
-							className='flex-1 h-10 md:h-12 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 text-foreground'
-							style={{ borderRadius: 0 }}
-						>
-							CANCEL
-						</Button>
-						<Button
-							type='submit'
-							disabled={isSubmitting}
-							className='flex-1 h-10 md:h-12 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white'
-							style={{
-								clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
-								borderRadius: 0,
-								fontFamily: 'TECHNOS, sans-serif',
-							}}
-						>
-							{isSubmitting ? (
-								<div className='flex items-center gap-2'>
-									<div className='w-4 h-4 border-2 border-white border-t-transparent' style={{ borderRadius: 0 }} />
-									DEPLOYING...
-								</div>
-							) : (
-								<>
-									<Check className='w-4 h-4 md:w-5 md:h-5 mr-2' />
-									DEPLOY PLUGIN
-								</>
-							)}
-						</Button>
-					</div>
+						<div className='mt-8 flex gap-3'>
+							<Button
+								type='button'
+								onClick={onClose}
+								variant='outline'
+								className='flex-1 h-10 md:h-12 bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 text-foreground'
+								style={{ borderRadius: 0 }}
+							>
+								CANCEL
+							</Button>
+							<Button
+								type='submit'
+								disabled={isSubmitting}
+								className='flex-1 h-10 md:h-12 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white'
+								style={{
+									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+									borderRadius: 0,
+									fontFamily: 'TECHNOS, sans-serif',
+								}}
+							>
+								{isSubmitting ? (
+									<div className='flex items-center gap-2'>
+										<div className='w-4 h-4 border-2 border-white border-t-transparent' style={{ borderRadius: 0 }} />
+										DEPLOYING...
+									</div>
+								) : (
+									<>
+										<Check className='w-4 h-4 md:w-5 md:h-5 mr-2' />
+										DEPLOY PLUGIN
+									</>
+								)}
+							</Button>
+						</div>
 					</form>
 				</motion.div>
 			</motion.div>

@@ -48,9 +48,12 @@ export default function TokenDistribution({ distribution }: TokenDistributionPro
 							<span className='text-foreground/40 text-[10px] md:text-xs w-10 md:w-12 text-right'>
 								{item.pct > 0 ? (
 									<>
-										(<CountUp end={item.pct} decimals={1} separator={false} />%)
+										(<CountUp end={item.pct} decimals={1} separator={false} />
+										%)
 									</>
-								) : ''}
+								) : (
+									''
+								)}
 							</span>
 						</div>
 					</div>

@@ -24,11 +24,9 @@ export class AnalysisClientService {
 	public async startAnalysis(address: string): Promise<StartAnalysisResponse> {
 		const path = `/api/agents/${ANALYSER_AGENT_NAME}/plugins/plugin-sendo-analyser/analysis/start`;
 
-		const response = await this.elizaService.apiRequest<ApiWrappedResponse<StartAnalysisResponse>>(
-			path,
-			'POST',
-			{ address }
-		);
+		const response = await this.elizaService.apiRequest<ApiWrappedResponse<StartAnalysisResponse>>(path, 'POST', {
+			address,
+		});
 
 		if (!response.success || !response.data) {
 			throw new Error('Failed to start analysis');
@@ -43,10 +41,7 @@ export class AnalysisClientService {
 	public async getAnalysisStatus(address: string): Promise<AnalysisStatusResponse> {
 		const path = `/api/agents/${ANALYSER_AGENT_NAME}/plugins/plugin-sendo-analyser/analysis/${address}/status`;
 
-		const response = await this.elizaService.apiRequest<ApiWrappedResponse<AnalysisStatusResponse>>(
-			path,
-			'GET'
-		);
+		const response = await this.elizaService.apiRequest<ApiWrappedResponse<AnalysisStatusResponse>>(path, 'GET');
 
 		if (!response.success || !response.data) {
 			throw new Error('Failed to fetch analysis status');
@@ -61,7 +56,7 @@ export class AnalysisClientService {
 	public async getAnalysisResults(
 		address: string,
 		page: number = 1,
-		limit: number = 50
+		limit: number = 50,
 	): Promise<AnalysisResultsResponse> {
 		const params = new URLSearchParams({
 			page: page.toString(),
@@ -70,10 +65,7 @@ export class AnalysisClientService {
 
 		const path = `/api/agents/${ANALYSER_AGENT_NAME}/plugins/plugin-sendo-analyser/analysis/${address}/results?${params.toString()}`;
 
-		const response = await this.elizaService.apiRequest<ApiWrappedResponse<AnalysisResultsResponse>>(
-			path,
-			'GET'
-		);
+		const response = await this.elizaService.apiRequest<ApiWrappedResponse<AnalysisResultsResponse>>(path, 'GET');
 
 		if (!response.success || !response.data) {
 			throw new Error('Failed to fetch analysis results');

@@ -1,8 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type {
-	AnalysisStatusResponse,
-	AnalysisResultsResponse,
-} from '@sendo-labs/plugin-sendo-analyser';
+import type { AnalysisStatusResponse, AnalysisResultsResponse } from '@sendo-labs/plugin-sendo-analyser';
 import { startAnalysis, getAnalysisStatus, getAnalysisResults } from '@/actions/analyzer/get';
 import { toast } from 'sonner';
 
@@ -94,7 +91,11 @@ export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalys
 				const secondsSinceHeartbeat = (now.getTime() - heartbeatDate.getTime()) / 1000;
 
 				if (secondsSinceHeartbeat > 120) {
-					console.warn('[useWalletAnalysis] Heartbeat is stale (', secondsSinceHeartbeat, 's old), restarting analysis...');
+					console.warn(
+						'[useWalletAnalysis] Heartbeat is stale (',
+						secondsSinceHeartbeat,
+						's old), restarting analysis...',
+					);
 					isRestartingRef.current = true;
 
 					// Show restart toast
@@ -258,7 +259,7 @@ export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalys
 				setError(err.message || 'Failed to fetch results');
 			}
 		},
-		[walletAddress]
+		[walletAddress],
 	);
 
 	// Auto-refetch tokens when new ones are discovered during processing
@@ -270,7 +271,13 @@ export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalys
 
 		// Only refetch during processing (not completed) and when token count increases
 		if (status.status === 'processing' && tokensDiscovered > 0 && tokensDiscovered > lastTokenCountRef.current) {
-			console.log('[useWalletAnalysis] New tokens discovered:', tokensDiscovered, 'vs', lastTokenCountRef.current, '- refetching page 1');
+			console.log(
+				'[useWalletAnalysis] New tokens discovered:',
+				tokensDiscovered,
+				'vs',
+				lastTokenCountRef.current,
+				'- refetching page 1',
+			);
 			lastTokenCountRef.current = tokensDiscovered;
 			fetchResults(1);
 		}

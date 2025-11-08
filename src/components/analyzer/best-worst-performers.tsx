@@ -28,57 +28,63 @@ export default function BestWorstPerformers({ best, worst }: BestWorstPerformers
 			{/* Best Performer */}
 			<div className='bg-sendo-green/5 border border-sendo-green/20 p-3 md:p-4' style={{ borderRadius: 0 }}>
 				<div className='flex items-center gap-2 mb-3'>
-					<div className='w-7 h-7 md:w-8 md:h-8 bg-sendo-green flex items-center justify-center flex-shrink-0' style={{ borderRadius: 0 }}>
+					<div
+						className='w-7 h-7 md:w-8 md:h-8 bg-sendo-green flex items-center justify-center flex-shrink-0'
+						style={{ borderRadius: 0 }}
+					>
 						<TrendingUp className='w-4 h-4 md:w-5 md:h-5 text-black' />
 					</div>
 					<h4 className='text-xs md:text-sm font-bold text-sendo-green uppercase title-font'>BEST PERFORMER</h4>
 				</div>
-			<div className='space-y-2'>
-				<div className='flex justify-between gap-2'>
-					<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>Token</span>
-					<span className='text-foreground font-bold text-xs md:text-sm truncate text-right'>{best.token}</span>
+				<div className='space-y-2'>
+					<div className='flex justify-between gap-2'>
+						<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>Token</span>
+						<span className='text-foreground font-bold text-xs md:text-sm truncate text-right'>{best.token}</span>
+					</div>
+					<div className='flex justify-between gap-2'>
+						<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>PnL</span>
+						<span className='text-sendo-green font-bold text-xs md:text-sm flex-shrink-0'>
+							+<CountUp end={best.pnl_sol} decimals={4} separator={false} /> SOL
+						</span>
+					</div>
+					<div className='flex justify-between gap-2'>
+						<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>Volume</span>
+						<span className='text-foreground text-xs md:text-sm flex-shrink-0'>
+							<CountUp end={best.volume_sol} decimals={3} separator={false} /> SOL
+						</span>
+					</div>
 				</div>
-				<div className='flex justify-between gap-2'>
-					<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>PnL</span>
-					<span className='text-sendo-green font-bold text-xs md:text-sm flex-shrink-0'>
-						+<CountUp end={best.pnl_sol} decimals={4} separator={false} /> SOL
-					</span>
-				</div>
-				<div className='flex justify-between gap-2'>
-					<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>Volume</span>
-					<span className='text-foreground text-xs md:text-sm flex-shrink-0'>
-						<CountUp end={best.volume_sol} decimals={3} separator={false} /> SOL
-					</span>
-				</div>
-			</div>
 			</div>
 
-		{/* Worst Performer */}
-		<div className='bg-sendo-red/5 border border-sendo-red/20 p-3 md:p-4' style={{ borderRadius: 0 }}>
-			<div className='flex items-center gap-2 mb-3'>
-				<div className='w-7 h-7 md:w-8 md:h-8 bg-sendo-red flex items-center justify-center flex-shrink-0' style={{ borderRadius: 0 }}>
-					<TrendingDown className='w-4 h-4 md:w-5 md:h-5 text-white' />
+			{/* Worst Performer */}
+			<div className='bg-sendo-red/5 border border-sendo-red/20 p-3 md:p-4' style={{ borderRadius: 0 }}>
+				<div className='flex items-center gap-2 mb-3'>
+					<div
+						className='w-7 h-7 md:w-8 md:h-8 bg-sendo-red flex items-center justify-center flex-shrink-0'
+						style={{ borderRadius: 0 }}
+					>
+						<TrendingDown className='w-4 h-4 md:w-5 md:h-5 text-white' />
+					</div>
+					<h4 className='text-xs md:text-sm font-bold text-sendo-red uppercase title-font'>WORST PERFORMER</h4>
 				</div>
-				<h4 className='text-xs md:text-sm font-bold text-sendo-red uppercase title-font'>WORST PERFORMER</h4>
-			</div>
-			<div className='space-y-2'>
-				<div className='flex justify-between gap-2'>
-					<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>Token</span>
-					<span className='text-foreground font-bold text-xs md:text-sm truncate text-right'>{worst.token}</span>
+				<div className='space-y-2'>
+					<div className='flex justify-between gap-2'>
+						<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>Token</span>
+						<span className='text-foreground font-bold text-xs md:text-sm truncate text-right'>{worst.token}</span>
+					</div>
+					<div className='flex justify-between gap-2'>
+						<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>PnL</span>
+						<span className='text-sendo-red font-bold text-xs md:text-sm flex-shrink-0'>
+							<CountUp end={worst.pnl_sol} decimals={4} separator={false} /> SOL
+						</span>
+					</div>
+					<div className='flex justify-between gap-2'>
+						<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>Volume</span>
+						<span className='text-foreground text-xs md:text-sm flex-shrink-0'>
+							<CountUp end={worst.volume_sol} decimals={3} separator={false} /> SOL
+						</span>
+					</div>
 				</div>
-				<div className='flex justify-between gap-2'>
-					<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>PnL</span>
-					<span className='text-sendo-red font-bold text-xs md:text-sm flex-shrink-0'>
-						<CountUp end={worst.pnl_sol} decimals={4} separator={false} /> SOL
-					</span>
-				</div>
-				<div className='flex justify-between gap-2'>
-					<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>Volume</span>
-					<span className='text-foreground text-xs md:text-sm flex-shrink-0'>
-						<CountUp end={worst.volume_sol} decimals={3} separator={false} /> SOL
-					</span>
-				</div>
-			</div>
 			</div>
 		</motion.div>
 	);
