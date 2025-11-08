@@ -113,7 +113,8 @@ export default function TokenAnalysisList({ tokens, totalCount }: TokenAnalysisL
 									<div className='min-w-0'>
 										<p className='text-foreground/40 text-[10px] md:text-xs mb-1'>Avg Purchase</p>
 										<p className='text-foreground font-bold text-xs md:text-sm truncate'>
-											${avgPurchasePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 3 })}
+											$
+											{avgPurchasePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 3 })}
 										</p>
 									</div>
 								)}
@@ -121,8 +122,8 @@ export default function TokenAnalysisList({ tokens, totalCount }: TokenAnalysisL
 									<div className='min-w-0'>
 										<p className='text-foreground/40 text-[10px] md:text-xs mb-1'>Avg ATH</p>
 										<p className='text-sendo-red font-bold text-xs md:text-sm truncate'>
-							${avgAthPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 3 })}
-						</p>
+											${avgAthPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 3 })}
+										</p>
 									</div>
 								)}
 							</div>

@@ -145,8 +145,12 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 											<p className='text-foreground font-bold text-sm md:text-lg truncate'>{token.symbol}</p>
 											<p className='text-foreground/40 text-xs md:text-sm'>
 												<span className='block md:inline'>
-												ATH: ${(token.ath_price ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 3 })}
-											</span>
+													ATH: $
+													{(token.ath_price ?? 0).toLocaleString('en-US', {
+														minimumFractionDigits: 2,
+														maximumFractionDigits: 3,
+													})}
+												</span>
 												<span className='hidden md:inline'> • </span>
 												<span className='block md:inline'>
 													Sold:{' '}
