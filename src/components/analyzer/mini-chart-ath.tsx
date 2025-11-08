@@ -61,7 +61,7 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
 		>
 			<div className='flex items-center gap-2 mb-4 md:mb-6'>
 				<TrendingDown className='w-4 h-4 md:w-5 md:h-5 text-sendo-red flex-shrink-0' />
-				<h3 className='text-foreground/60 uppercase text-xs md:text-sm title-font'>VALUE FROM ATH TO NOW</h3>
+				<h3 className='text-foreground/60 uppercase text-xs md:text-sm title-font'>MONEY LEFT ON THE TABLE</h3>
 			</div>
 
 			<div className='h-56 md:h-64 lg:h-80 mb-4 md:mb-6'>
@@ -104,19 +104,19 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
 
 			<div className='grid grid-cols-3 gap-2 md:gap-4 pt-4 md:pt-6 border-t border-foreground/10'>
 				<div className='min-w-0'>
-					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>PEAK VALUE</p>
-					<p className='text-foreground font-bold text-sm md:text-lg truncate'>
+					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>MISSED GAINS</p>
+					<p className='text-sendo-orange font-bold text-sm md:text-lg truncate'>
 						$<CountUp end={peakValue / 1000} decimals={1} separator={false} />k
 					</p>
 				</div>
 				<div className='min-w-0'>
-					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>CURRENT VALUE</p>
-					<p className='text-foreground font-bold text-sm md:text-lg truncate'>
-						$<CountUp end={currentValue / 1000} decimals={1} separator={false} />k
+					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>ACTUAL LOSS</p>
+					<p className='text-sendo-red font-bold text-sm md:text-lg truncate'>
+						-$<CountUp end={currentValue / 1000} decimals={1} separator={false} />k
 					</p>
 				</div>
 				<div className='min-w-0'>
-					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>% LOST</p>
+					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>% LEFT BEHIND</p>
 					<p className='text-sendo-red font-bold text-sm md:text-lg'>
 						-<CountUp end={lossPercent} decimals={0} separator={false} />%
 					</p>

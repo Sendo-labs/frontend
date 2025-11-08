@@ -7,7 +7,7 @@ import { CountUp } from '@/components/ui/count-up';
 
 interface PerformanceData {
 	total_volume_sol: number;
-	total_pnl_sol: number;
+	total_pnl_usd: number;
 	success_rate: number;
 	tokens_analyzed: number;
 }
@@ -33,12 +33,12 @@ export default function PerformanceMetrics({ performance }: PerformanceMetricsPr
 			icon: TrendingUp,
 			label: 'TOTAL PNL',
 			labelMobile: ['TOTAL', 'PNL'],
-			value: performance.total_pnl_sol,
+			value: Math.abs(performance.total_pnl_usd),
 			decimals: 2,
 			separator: false,
-			suffix: ' SOL',
-			prefix: performance.total_pnl_sol >= 0 ? '+' : '',
-			color: performance.total_pnl_sol >= 0 ? 'text-sendo-green' : 'text-sendo-red',
+			suffix: '',
+			prefix: performance.total_pnl_usd >= 0 ? '+$' : '-$',
+			color: performance.total_pnl_usd >= 0 ? 'text-sendo-green' : 'text-sendo-red',
 		},
 		{
 			icon: Target,

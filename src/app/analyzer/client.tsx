@@ -118,7 +118,7 @@ export default function AnalyzerPage() {
 		// PerformanceMetrics data
 		const performanceData = {
 			total_volume_sol: currentSummary.total_volume_sol || 0,
-			total_pnl_sol: currentSummary.total_pnl || 0,
+			total_pnl_usd: currentSummary.total_pnl || 0,
 			success_rate: currentSummary.success_rate || 0,
 			tokens_analyzed: results.pagination.total || 0,
 		};
@@ -127,42 +127,45 @@ export default function AnalyzerPage() {
 		const bestPerformer = currentSummary.best_performer
 			? {
 					token: currentSummary.best_performer.symbol || 'Unknown',
-					pnl_sol: currentSummary.best_performer.pnl_sol,
+					pnl_usd: currentSummary.best_performer.pnl_usd,
 					volume_sol: currentSummary.best_performer.volume_sol,
 				}
-			: { token: 'N/A', pnl_sol: 0, volume_sol: 0 };
+			: { token: 'N/A', pnl_usd: 0, volume_sol: 0 };
 
 		const worstPerformer = currentSummary.worst_performer
 			? {
 					token: currentSummary.worst_performer.symbol || 'Unknown',
-					pnl_sol: currentSummary.worst_performer.pnl_sol,
+					pnl_usd: currentSummary.worst_performer.pnl_usd,
 					volume_sol: currentSummary.worst_performer.volume_sol,
 				}
-			: { token: 'N/A', pnl_sol: 0, volume_sol: 0 };
+			: { token: 'N/A', pnl_usd: 0, volume_sol: 0 };
 
 		// Token distribution - from summary (calculated from ALL tokens in DB)
-		const distribution = {
-			in_profit: currentSummary.tokens_in_profit || 0,
-			in_loss: currentSummary.tokens_in_loss || 0,
-			still_held: results.pagination.total || 0,
-		};
-
-		// MiniChartATH data - based on real wallet metrics
-		const successRate = currentSummary.success_rate || 0;
 		const tokensInProfit = currentSummary.tokens_in_profit || 0;
 		const tokensInLoss = currentSummary.tokens_in_loss || 0;
+		const totalTokensDiscovered = currentSummary.tokens_discovered || results.pagination.total || 0;
+		const distribution = {
+			in_profit: tokensInProfit,
+			in_loss: tokensInLoss,
+			still_held: Math.max(0, totalTokensDiscovered - tokensInProfit - tokensInLoss),
+		};
+
+		// MiniChartATH data - based on REAL wallet metrics (no estimation)
+		const successRate = currentSummary.success_rate || 0;
 		const totalTokens = tokensInProfit + tokensInLoss;
 		const totalMissedUsd = currentSummary.total_missed_usd || 0;
-		const totalPnl = currentSummary.total_pnl || 0;
+		const totalPnlUsd = currentSummary.total_pnl || 0;
 
-		// Generate a curve that represents portfolio performance
-		// Start at 100% (ATH), end at current performance level
+		// Generate a curve that represents portfolio performance decline
+		// Start at 100% (ATH), end at current performance level based on success rate
 		const currentPerformanceRatio = totalTokens > 0 ? successRate / 100 : 0.3;
 
-		// Peak value = what the portfolio would be worth if sold at ATH (total missed + current PnL)
-		// Current value = current portfolio value (PnL converted to USD)
-		const peakValueUsd = totalMissedUsd + Math.abs(totalPnl * 150); // Rough SOL to USD conversion
-		const currentValueUsd = Math.abs(totalPnl * 150);
+		// Use REAL data we have:
+		// - Peak value = Total missed gains at ATH (what you could have made)
+		// - Current value = Absolute PNL (what you actually lost/gained)
+		// This shows: "How much money you left on the table"
+		const peakValueUsd = totalMissedUsd; // Money you could have made at ATH
+		const currentValueUsd = Math.abs(totalPnlUsd); // Money you actually lost/gained
 
 		const chartData = {
 			points: [

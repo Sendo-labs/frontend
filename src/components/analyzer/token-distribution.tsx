@@ -13,7 +13,7 @@ interface DistributionData {
 
 interface Performer {
 	token: string;
-	pnl_sol: number;
+	pnl_usd: number;
 	volume_sol: number;
 }
 
@@ -104,7 +104,7 @@ export default function TokenDistribution({ distribution, best, worst }: TokenDi
 					<div className='flex justify-between gap-2'>
 						<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>PnL</span>
 						<span className='text-sendo-green font-bold text-xs md:text-sm flex-shrink-0'>
-							+<CountUp end={best.pnl_sol} decimals={4} separator={false} /> SOL
+							+$<CountUp end={best.pnl_usd} decimals={2} separator={false} />
 						</span>
 					</div>
 					<div className='flex justify-between gap-2'>
@@ -135,7 +135,7 @@ export default function TokenDistribution({ distribution, best, worst }: TokenDi
 					<div className='flex justify-between gap-2'>
 						<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>PnL</span>
 						<span className='text-sendo-red font-bold text-xs md:text-sm flex-shrink-0'>
-							<CountUp end={worst.pnl_sol} decimals={4} separator={false} /> SOL
+							-$<CountUp end={Math.abs(worst.pnl_usd)} decimals={2} separator={false} />
 						</span>
 					</div>
 					<div className='flex justify-between gap-2'>
