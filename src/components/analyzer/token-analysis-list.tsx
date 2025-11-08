@@ -25,13 +25,13 @@ export default function TokenAnalysisList({ tokens, totalCount }: TokenAnalysisL
 				{tokens.map((token, index) => {
 					const totalVolumeUSD = Number(token.totalVolumeUSD);
 					const totalVolumeSOL = Number(token.totalVolumeSOL);
-					const totalGainLoss = Number(token.totalGainLoss);  // Sum of percentages
-					const totalPnlUSD = Number(token.totalPnlUSD || 0);  // Actual PNL in USD
+					const totalGainLoss = Number(token.totalGainLoss); // Sum of percentages
+					const totalPnlUSD = Number(token.totalPnlUSD || 0); // Actual PNL in USD
 					const totalMissedATH = Number(token.totalMissedATH);
 					const avgPurchasePrice = token.averagePurchasePrice ? Number(token.averagePurchasePrice) : 0;
 					const avgAthPrice = token.averageAthPrice ? Number(token.averageAthPrice) : 0;
 
-					const isProfit = totalGainLoss >= 0;  // Use percentage to determine profit/loss
+					const isProfit = totalGainLoss >= 0; // Use percentage to determine profit/loss
 
 					return (
 						<div

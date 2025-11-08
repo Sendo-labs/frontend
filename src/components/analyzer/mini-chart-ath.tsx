@@ -112,7 +112,8 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
 				<div className='min-w-0'>
 					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>ACTUAL LOSS</p>
 					<p className='text-sendo-red font-bold text-sm md:text-lg truncate'>
-						-$<CountUp end={currentValue / 1000} decimals={1} separator={false} />k
+						-$
+						<CountUp end={currentValue / 1000} decimals={1} separator={false} />k
 					</p>
 				</div>
 				<div className='min-w-0'>
