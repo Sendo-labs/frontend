@@ -191,7 +191,7 @@ export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalys
 
 	// Fetch results for pagination
 	const fetchResults = useCallback(
-		async (page: number = 1, limit: number = PAGE_SIZE) => {
+		async (page: number = 1, limit: number = PAGE_SIZE, mode: 'replace' | 'append' | 'refresh' = 'replace') => {
 			if (!walletAddress) return;
 
 			try {
@@ -203,6 +203,7 @@ export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalys
 
 				console.log('[useWalletAnalysis] Results fetched:', {
 					page,
+					mode,
 					tokensCount: response.data.tokens.length,
 					total: response.data.pagination.total,
 				});
@@ -225,32 +226,66 @@ export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalys
 					return;
 				}
 
-				// For page 1, replace everything
-				// For page > 1, append to existing tokens (infinite scroll)
+				// Three modes:
+				// 1. 'replace': Page 1 replaces everything (initial load, user refresh)
+				// 2. 'append': Page > 1 appends to existing (infinite scroll)
+				// 3. 'refresh': During polling, merge new tokens without losing scrolled data
 				setResults((prev: any) => {
-					if (page === 1) {
+					// Mode 1: Replace (page 1, initial load)
+					if (mode === 'replace' && page === 1) {
 						return response.data;
 					}
-					// Append new tokens to existing ones
+
+					// Mode 2 & 3: Append or Refresh (need previous data)
 					if (prev) {
-						// Deduplicate tokens by ID to avoid React key warnings
-						const existingIds = new Set(prev.tokens.map((t: any) => t.id));
-						const newTokens = response.data.tokens.filter((t: any) => !existingIds.has(t.id));
-						const accumulatedTokens = [...prev.tokens, ...newTokens];
+						// Build a map of existing tokens by ID
+						const existingTokensMap = new Map(prev.tokens.map((t: any) => [t.id, t]));
+
+						// Merge logic:
+						// - For 'append': add only truly new tokens at the end
+						// - For 'refresh': update existing + add new ones while preserving order
+						let mergedTokens;
+
+						if (mode === 'refresh') {
+							// Refresh mode: Update existing tokens with fresh data, add new ones
+							const freshTokensMap = new Map(response.data.tokens.map((t: any) => [t.id, t]));
+
+							// Keep existing tokens but update them if they're in the fresh data
+							mergedTokens = prev.tokens.map((t: any) =>
+								freshTokensMap.has(t.id) ? freshTokensMap.get(t.id) : t
+							);
+
+							// Add any completely new tokens that weren't in our existing list
+							response.data.tokens.forEach((t: any) => {
+								if (!existingTokensMap.has(t.id)) {
+									mergedTokens.push(t);
+								}
+							});
+						} else {
+							// Append mode (page > 1): Just add new tokens at the end
+							const newTokens = response.data.tokens.filter((t: any) => !existingTokensMap.has(t.id));
+							mergedTokens = [...prev.tokens, ...newTokens];
+						}
 
 						return {
 							...response.data,
-							tokens: accumulatedTokens,
+							tokens: mergedTokens,
 							pagination: {
 								...response.data.pagination,
 								// Recalculate hasMore based on accumulated tokens vs total
-								hasMore: accumulatedTokens.length < response.data.pagination.total,
+								hasMore: mergedTokens.length < response.data.pagination.total,
 							},
 						};
 					}
+
+					// Fallback: no previous data, just use response
 					return response.data;
 				});
-				setCurrentPage(page);
+
+				// Only update currentPage for append mode (infinite scroll)
+				if (mode === 'append') {
+					setCurrentPage(page);
+				}
 
 				return response.data;
 			} catch (err: any) {
@@ -261,30 +296,32 @@ export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalys
 		[walletAddress],
 	);
 
-	// Auto-refetch tokens when new ones are discovered during processing
-	// This effect watches status.current_results.tokens_discovered and refetches page 1 when it increases
+	// Auto-load tokens when analysis completes or when new tokens are discovered
 	useEffect(() => {
 		if (!status || !walletAddress) return;
 
 		const tokensDiscovered = status.current_results?.tokens_discovered || 0;
 
-		// Only refetch during processing (not completed) and when token count increases
+		// When analysis completes, fetch final results if we haven't loaded any tokens yet
+		if (status.status === 'completed' && tokensDiscovered > 0 && (!results || results.tokens.length === 0)) {
+			console.log('[useWalletAnalysis] Analysis completed with', tokensDiscovered, 'tokens - fetching results');
+			fetchResults(1, PAGE_SIZE, 'replace');
+			return;
+		}
+
+		// During processing: Let IntersectionObserver handle loading based on scroll
+		// The polling already updates pagination.hasMore (line 146-159), so the scroll
+		// trigger will automatically load more pages as the user scrolls.
+		// We only need to track token count for logging purposes
 		if (status.status === 'processing' && tokensDiscovered > 0 && tokensDiscovered > lastTokenCountRef.current) {
 			console.log(
 				'[useWalletAnalysis] New tokens discovered:',
 				tokensDiscovered,
-				'vs',
+				'(was',
 				lastTokenCountRef.current,
-				'- refetching page 1',
+				') - hasMore updated, ready for scroll loading',
 			);
 			lastTokenCountRef.current = tokensDiscovered;
-			fetchResults(1);
-		}
-
-		// When analysis completes, fetch final results if we haven't loaded any tokens yet
-		if (status.status === 'completed' && tokensDiscovered > 0 && (!results || results.tokens.length === 0)) {
-			console.log('[useWalletAnalysis] Analysis completed with', tokensDiscovered, 'tokens - fetching results');
-			fetchResults(1);
 		}
 	}, [status, walletAddress, fetchResults, results]);
 
@@ -343,7 +380,7 @@ export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalys
 	// Next page
 	const nextPage = useCallback(() => {
 		if (results && results.pagination.hasMore) {
-			fetchResults(currentPage + 1);
+			fetchResults(currentPage + 1, PAGE_SIZE, 'append');
 		}
 	}, [results, currentPage, fetchResults]);
 

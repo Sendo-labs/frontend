@@ -64,6 +64,7 @@ export default function AnalyzerPage() {
 	const loadMoreRef = useRef<HTMLDivElement>(null);
 	const [isLoadingMore, setIsLoadingMore] = useState(false);
 	const previousTokenCountRef = useRef(0);
+	const isBottomVisibleRef = useRef(false);
 
 	// Show loading states
 	const isAnalyzing = isStarting || status?.status === 'processing';
@@ -200,6 +201,9 @@ export default function AnalyzerPage() {
 		const observer = new IntersectionObserver(
 			(entries) => {
 				const [entry] = entries;
+				// Track if bottom is visible (for auto-loading during polling)
+				isBottomVisibleRef.current = entry.isIntersecting;
+
 				// Only trigger if intersecting AND we're not already loading AND we have more to load
 				if (entry.isIntersecting && results.pagination.hasMore && !isLoadingMore) {
 					console.log(
@@ -228,6 +232,32 @@ export default function AnalyzerPage() {
 			}
 		};
 	}, [results?.pagination.hasMore, results?.tokens.length, results?.pagination.total, isLoadingMore, nextPage]);
+
+	// Auto-load when new tokens arrive during polling IF user is waiting at the bottom
+	useEffect(() => {
+		// Only during processing (polling active)
+		if (status?.status !== 'processing') return;
+
+		// Only if we have more to load
+		if (!results?.pagination.hasMore) return;
+
+		// Only if user is at the bottom (within 100px)
+		if (!isBottomVisibleRef.current) return;
+
+		// Only if we're not already loading
+		if (isLoadingMore) return;
+
+		// When pagination.total increases, it means new tokens are available
+		// Since user is waiting at the bottom, auto-load them
+		console.log(
+			'[AnalyzerPage] User waiting at bottom, auto-loading new tokens:',
+			results.tokens.length,
+			'/',
+			results.pagination.total,
+		);
+		setIsLoadingMore(true);
+		nextPage();
+	}, [results?.pagination.total, results?.pagination.hasMore, status?.status, isLoadingMore, nextPage, results?.tokens.length]);
 
 	return (
 		<PageWrapper>
