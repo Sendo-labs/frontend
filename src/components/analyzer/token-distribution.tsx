@@ -23,9 +23,19 @@ export default function TokenDistribution({ distribution }: TokenDistributionPro
 	const calculatePct = (value: number) => (total > 0 ? (value / total) * 100 : 0);
 
 	const items = [
-		{ label: 'In Profit', value: distribution.in_profit, color: 'text-sendo-green', pct: calculatePct(distribution.in_profit) },
+		{
+			label: 'In Profit',
+			value: distribution.in_profit,
+			color: 'text-sendo-green',
+			pct: calculatePct(distribution.in_profit),
+		},
 		{ label: 'In Loss', value: distribution.in_loss, color: 'text-sendo-red', pct: calculatePct(distribution.in_loss) },
-		{ label: 'Still Held', value: distribution.still_held, color: 'text-sendo-orange', pct: calculatePct(distribution.still_held) },
+		{
+			label: 'Still Held',
+			value: distribution.still_held,
+			color: 'text-sendo-orange',
+			pct: calculatePct(distribution.still_held),
+		},
 	];
 
 	return (
