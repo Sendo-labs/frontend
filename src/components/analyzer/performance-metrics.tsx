@@ -14,10 +14,9 @@ interface PerformanceData {
 
 interface PerformanceMetricsProps {
 	performance: PerformanceData;
-	isProcessing?: boolean;
 }
 
-export default function PerformanceMetrics({ performance, isProcessing }: PerformanceMetricsProps) {
+export default function PerformanceMetrics({ performance }: PerformanceMetricsProps) {
 	const metrics = [
 		{
 			icon: DollarSign,

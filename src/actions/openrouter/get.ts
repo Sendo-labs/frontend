@@ -52,25 +52,6 @@ export async function getSystemOpenRouterKey(keyPath: string) {
 }
 
 /**
- * Check if OpenRouter key exists for user
- * @param username - The username of the user to check the key for
- * @returns True if the key exists, false otherwise
- */
-export async function hasOpenRouterKey(username: string) {
-	return withAction<boolean>(async () => {
-		const parameterStore = StorageFactory.createParameterStore();
-		const parameterNames = getUserOpenRouterKeyPath(username, parameterStore.getBasePrefix());
-		for (const parameterName of parameterNames) {
-			const result = await parameterStore.hasParameter(parameterName);
-			if (result) {
-				return true;
-			}
-		}
-		return false;
-	}, false);
-}
-
-/**
  * Get the Analyser OpenRouter API key
  * This is a GLOBAL key shared by the whole project (for the analyzer agent).
  * In production: stored in AWS Parameter Store

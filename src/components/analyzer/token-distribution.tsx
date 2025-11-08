@@ -8,7 +8,6 @@ import { CountUp } from '@/components/ui/count-up';
 interface DistributionData {
 	in_profit: number;
 	in_loss: number;
-	fully_sold: number;
 	still_held: number;
 }
 
@@ -17,11 +16,16 @@ interface TokenDistributionProps {
 }
 
 export default function TokenDistribution({ distribution }: TokenDistributionProps) {
+	// Calculate total for percentage calculation
+	const total = distribution.in_profit + distribution.in_loss + distribution.still_held;
+
+	// Calculate percentages, avoiding division by zero
+	const calculatePct = (value: number) => (total > 0 ? (value / total) * 100 : 0);
+
 	const items = [
-		{ label: 'In Profit', value: distribution.in_profit, color: 'text-sendo-green', pct: 50 },
-		{ label: 'In Loss', value: distribution.in_loss, color: 'text-sendo-red', pct: 33.3 },
-		{ label: 'Fully Sold', value: distribution.fully_sold, color: 'text-foreground', pct: 0 },
-		{ label: 'Still Held', value: distribution.still_held, color: 'text-sendo-orange', pct: 16.7 },
+		{ label: 'In Profit', value: distribution.in_profit, color: 'text-sendo-green', pct: calculatePct(distribution.in_profit) },
+		{ label: 'In Loss', value: distribution.in_loss, color: 'text-sendo-red', pct: calculatePct(distribution.in_loss) },
+		{ label: 'Still Held', value: distribution.still_held, color: 'text-sendo-orange', pct: calculatePct(distribution.still_held) },
 	];
 
 	return (

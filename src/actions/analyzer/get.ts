@@ -1,28 +1,10 @@
 'use server';
 
 import { withAction } from '@/lib/wrapper/with-action';
-import type { Character } from '@elizaos/core';
-import { StorageFactory } from '@/factories/storage-factory';
 import { getAnalyserOpenRouterApiKey } from '@/actions/openrouter/get';
 import { ElizaService } from '@/services/eliza.service';
 import { AnalysisClientService } from '@/services/analysis-client.service';
 import { ANALYSER_BASE_URL } from '@/lib/constants';
-
-/**
- * Get the analyzer agent (global)
- * @returns The analyzer agent or null if not found
- */
-export async function getAnalyzer() {
-	return withAction<Character | null>(async () => {
-		const secretStore = StorageFactory.createSecretStore();
-		const analyserAgent = await secretStore.getSecret('analyser');
-		if (!analyserAgent) {
-			return null;
-		}
-
-		return JSON.parse(analyserAgent) as Character;
-	});
-}
 
 /**
  * Start async wallet analysis

@@ -14,7 +14,6 @@ interface UseWalletAnalysisReturn {
 	currentPage: number;
 	start: () => Promise<void>;
 	nextPage: () => void;
-	previousPage: () => void;
 }
 
 /**
@@ -348,13 +347,6 @@ export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalys
 		}
 	}, [results, currentPage, fetchResults]);
 
-	// Previous page
-	const previousPage = useCallback(() => {
-		if (currentPage > 1) {
-			fetchResults(currentPage - 1);
-		}
-	}, [currentPage, fetchResults]);
-
 	// Cleanup on unmount - dismiss toast
 	useEffect(() => {
 		return () => {
@@ -413,6 +405,5 @@ export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalys
 		currentPage,
 		start,
 		nextPage,
-		previousPage,
 	};
 }

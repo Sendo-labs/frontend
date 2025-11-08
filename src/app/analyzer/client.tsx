@@ -25,7 +25,7 @@ export default function AnalyzerPage() {
 	const [analyzingWallet, setAnalyzingWallet] = useState('');
 
 	// Use the wallet analysis hook
-	const { status, results, isStarting, error, start, nextPage } = useWalletAnalysis(analyzingWallet);
+	const { status, results, isStarting, error, nextPage } = useWalletAnalysis(analyzingWallet);
 
 	// Log result changes for debugging
 	React.useEffect(() => {
@@ -145,7 +145,6 @@ export default function AnalyzerPage() {
 		const distribution = {
 			in_profit: currentSummary.tokens_in_profit || 0,
 			in_loss: currentSummary.tokens_in_loss || 0,
-			fully_sold: 0, // Not tracked in new API
 			still_held: results.pagination.total || 0,
 		};
 
@@ -286,10 +285,7 @@ export default function AnalyzerPage() {
 
 					{/* Performance Metrics */}
 					<div className='mt-6 md:mt-8'>
-						<PerformanceMetrics
-							performance={adaptedResultData.performanceData}
-							isProcessing={status?.status === 'processing'}
-						/>
+						<PerformanceMetrics performance={adaptedResultData.performanceData} />
 					</div>
 
 					{/* Three Column Section */}
