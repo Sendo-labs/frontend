@@ -42,7 +42,9 @@ export default function TokenDistribution({ distribution }: TokenDistributionPro
 						<span className='text-foreground/70 text-xs md:text-sm flex-shrink-0'>{item.label}</span>
 						<div className='flex items-center gap-2 md:gap-3 flex-shrink-0'>
 							<span className={`font-bold text-base md:text-lg ${item.color}`}>{item.value}</span>
-							<span className='text-foreground/40 text-[10px] md:text-xs w-10 md:w-12 text-right'>{item.pct > 0 ? `(${item.pct}%)` : ''}</span>
+							<span className='text-foreground/40 text-[10px] md:text-xs w-10 md:w-12 text-right'>
+								{item.pct > 0 ? `(${item.pct}%)` : ''}
+							</span>
 						</div>
 					</div>
 				))}

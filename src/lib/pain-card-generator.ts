@@ -85,7 +85,7 @@ function drawGradientText(
 	fromColor: string,
 	toColor: string,
 	fontSize: number,
-	font: string
+	font: string,
 ) {
 	ctx.save();
 	ctx.font = `bold ${fontSize}px ${font}, monospace`;
@@ -112,10 +112,7 @@ export async function generatePainCardImage(data: PainCardData): Promise<Blob> {
 	const logoImagePath = '/pain-cards/logo-sndo.png';
 
 	try {
-		const [characterImg, logoImg] = await Promise.all([
-			loadImage(characterImagePath),
-			loadImage(logoImagePath),
-		]);
+		const [characterImg, logoImg] = await Promise.all([loadImage(characterImagePath), loadImage(logoImagePath)]);
 
 		// Create canvas
 		const canvas = document.createElement('canvas');
@@ -263,7 +260,7 @@ export async function generatePainCardImage(data: PainCardData): Promise<Blob> {
 					else reject(new Error('Failed to generate image'));
 				},
 				'image/png',
-				1.0
+				1.0,
 			);
 		});
 	} catch (error) {
@@ -298,4 +295,3 @@ export async function downloadPainCard(data: PainCardData) {
 export function getShareText(data: PainCardData): string {
 	return `I missed $${data.totalMissedUSD.toLocaleString()} by not selling at ATH! 💀\n\nRank: ${data.rank || 'Pain Holder'}\n\nCheck your pain at sendo.ai`;
 }
-

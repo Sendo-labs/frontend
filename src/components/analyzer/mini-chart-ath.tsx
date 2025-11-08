@@ -67,7 +67,13 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
 							</linearGradient>
 						</defs>
 						<CartesianGrid strokeDasharray='3 3' stroke='#F2EDE7' strokeOpacity={0.1} />
-						<XAxis dataKey='name' stroke='#F2EDE7' strokeOpacity={0.4} style={{ fontSize: '10px' }} className='md:text-xs' />
+						<XAxis
+							dataKey='name'
+							stroke='#F2EDE7'
+							strokeOpacity={0.4}
+							style={{ fontSize: '10px' }}
+							className='md:text-xs'
+						/>
 						<YAxis
 							stroke='#F2EDE7'
 							strokeOpacity={0.4}

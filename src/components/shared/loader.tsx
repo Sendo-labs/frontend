@@ -13,24 +13,27 @@ export default function Loader({ text, blur = false }: { text?: string; blur?: b
 							className='w-full h-full object-contain'
 						/>
 					</div>
-					
+
 					{/* Logo avec masque et gradient animé */}
-					<div 
+					<div
 						className='absolute inset-0'
 						style={{
-							maskImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/6ee61bcb6_SENDO_white2x.png)',
+							maskImage:
+								'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/6ee61bcb6_SENDO_white2x.png)',
 							maskSize: 'contain',
 							maskRepeat: 'no-repeat',
 							maskPosition: 'center',
-							WebkitMaskImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/6ee61bcb6_SENDO_white2x.png)',
+							WebkitMaskImage:
+								'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/6ee61bcb6_SENDO_white2x.png)',
 							WebkitMaskSize: 'contain',
 							WebkitMaskRepeat: 'no-repeat',
 							WebkitMaskPosition: 'center',
 						}}
 					>
-						<div className='absolute inset-0 animate-fill-left-right bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red' 
+						<div
+							className='absolute inset-0 animate-fill-left-right bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red'
 							style={{
-								filter: 'drop-shadow(0 0 15px rgba(255, 90, 31, 0.6))'
+								filter: 'drop-shadow(0 0 15px rgba(255, 90, 31, 0.6))',
 							}}
 						/>
 					</div>
@@ -55,24 +58,27 @@ export function FullScreenLoader({ text, blur = false }: { text?: string; blur?:
 							className='w-full h-full object-contain'
 						/>
 					</div>
-					
+
 					{/* Logo avec masque et gradient animé */}
-					<div 
+					<div
 						className='absolute inset-0'
 						style={{
-							maskImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/6ee61bcb6_SENDO_white2x.png)',
+							maskImage:
+								'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/6ee61bcb6_SENDO_white2x.png)',
 							maskSize: 'contain',
 							maskRepeat: 'no-repeat',
 							maskPosition: 'center',
-							WebkitMaskImage: 'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/6ee61bcb6_SENDO_white2x.png)',
+							WebkitMaskImage:
+								'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/6ee61bcb6_SENDO_white2x.png)',
 							WebkitMaskSize: 'contain',
 							WebkitMaskRepeat: 'no-repeat',
 							WebkitMaskPosition: 'center',
 						}}
 					>
-						<div className='absolute inset-0 animate-fill-left-right bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red' 
+						<div
+							className='absolute inset-0 animate-fill-left-right bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red'
 							style={{
-								filter: 'drop-shadow(0 0 15px rgba(255, 90, 31, 0.6))'
+								filter: 'drop-shadow(0 0 15px rgba(255, 90, 31, 0.6))',
 							}}
 						/>
 					</div>

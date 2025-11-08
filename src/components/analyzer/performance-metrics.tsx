@@ -31,19 +31,19 @@ export default function PerformanceMetrics({ performance }: PerformanceMetricsPr
 			value: `${performance.total_pnl_sol >= 0 ? '+' : ''}${performance.total_pnl_sol.toFixed(2)} SOL`,
 			color: performance.total_pnl_sol >= 0 ? 'text-sendo-green' : 'text-sendo-red',
 		},
-		{ 
-			icon: Target, 
+		{
+			icon: Target,
 			label: 'SUCCESS RATE',
-			labelMobile: ['SUCCESS', 'RATE'], 
-			value: `${performance.success_rate}%`, 
-			color: 'text-foreground' 
+			labelMobile: ['SUCCESS', 'RATE'],
+			value: `${performance.success_rate}%`,
+			color: 'text-foreground',
 		},
-		{ 
-			icon: BarChart3, 
+		{
+			icon: BarChart3,
 			label: 'TOKENS ANALYZED',
-			labelMobile: ['TOKENS', 'ANALYZED'], 
-			value: performance.tokens_analyzed, 
-			color: 'text-foreground' 
+			labelMobile: ['TOKENS', 'ANALYZED'],
+			value: performance.tokens_analyzed,
+			color: 'text-foreground',
 		},
 	];
 
@@ -64,17 +64,17 @@ export default function PerformanceMetrics({ performance }: PerformanceMetricsPr
 						>
 							<metric.icon className='w-4 h-4 text-sendo-orange' />
 						</div>
-					<div>
-						<p className='text-xs text-foreground/40 uppercase mb-1 title-font'>
-							<span className='hidden md:inline'>{metric.label}</span>
-							<span className='md:hidden'>
-								{metric.labelMobile?.[0]}
-								<br />
-								{metric.labelMobile?.[1]}
-							</span>
-						</p>
-						<p className={`text-xl font-bold ${metric.color}`}>{metric.value}</p>
-					</div>
+						<div>
+							<p className='text-xs text-foreground/40 uppercase mb-1 title-font'>
+								<span className='hidden md:inline'>{metric.label}</span>
+								<span className='md:hidden'>
+									{metric.labelMobile?.[0]}
+									<br />
+									{metric.labelMobile?.[1]}
+								</span>
+							</p>
+							<p className={`text-xl font-bold ${metric.color}`}>{metric.value}</p>
+						</div>
 					</div>
 				))}
 			</div>

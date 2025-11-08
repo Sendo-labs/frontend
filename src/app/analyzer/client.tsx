@@ -145,11 +145,11 @@ export default function AnalyzerPage() {
 						{/* Performance Metrics */}
 						<PerformanceMetrics performance={result.performance} />
 
-					{/* Token Distribution + Best/Worst Performers */}
-					<div className='grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6'>
-						<TokenDistribution distribution={result.distribution} />
-						<BestWorstPerformers best={result.best_performer} worst={result.worst_performer} />
-					</div>
+						{/* Token Distribution + Best/Worst Performers */}
+						<div className='grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6'>
+							<TokenDistribution distribution={result.distribution} />
+							<BestWorstPerformers best={result.best_performer} worst={result.worst_performer} />
+						</div>
 
 						{/* Chart */}
 						<MiniChartATH data={result.mini_chart} />
@@ -164,15 +164,15 @@ export default function AnalyzerPage() {
 								animate={{ opacity: 1, y: 0 }}
 								className='flex justify-center'
 							>
-							<Button
-								onClick={handleLoadMore}
-								disabled={isLoadingMore}
-								className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-10 md:h-12 px-6 md:px-8 transition-all title-font'
-								style={{
-									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
-									borderRadius: 0,
-								}}
-							>
+								<Button
+									onClick={handleLoadMore}
+									disabled={isLoadingMore}
+									className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-10 md:h-12 px-6 md:px-8 transition-all title-font'
+									style={{
+										clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+										borderRadius: 0,
+									}}
+								>
 									{isLoadingMore ? (
 										<>
 											<Loader2 className='w-5 h-5 mr-2 animate-spin' />

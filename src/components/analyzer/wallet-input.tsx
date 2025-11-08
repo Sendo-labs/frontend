@@ -37,7 +37,10 @@ export default function WalletInput({ wallet, setWallet, onAnalyze, isAnalyzing 
 					>
 						{isAnalyzing ? (
 							<>
-								<div className='w-4 h-4 md:w-5 md:h-5 mr-2 border-2 border-white border-t-transparent' style={{ borderRadius: 0 }} />
+								<div
+									className='w-4 h-4 md:w-5 md:h-5 mr-2 border-2 border-white border-t-transparent'
+									style={{ borderRadius: 0 }}
+								/>
 								ANALYZING
 							</>
 						) : (
