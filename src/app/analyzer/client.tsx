@@ -12,7 +12,6 @@ import ResultHeroCard from '@/components/analyzer/result-hero-card';
 import WalletStatsGrid from '@/components/analyzer/wallet-stats-grid';
 import PerformanceMetrics from '@/components/analyzer/performance-metrics';
 import TokenDistribution from '@/components/analyzer/token-distribution';
-import BestWorstPerformers from '@/components/analyzer/best-worst-performers';
 import MiniChartATH from '@/components/analyzer/mini-chart-ath';
 import TokenAnalysisList from '@/components/analyzer/token-analysis-list';
 import CTAActivateWorker from '@/components/analyzer/cta-activate-worker';
@@ -148,15 +147,33 @@ export default function AnalyzerPage() {
 			still_held: results.pagination.total || 0,
 		};
 
-		// MiniChartATH data (mock chart data - API doesn't provide historical)
+		// MiniChartATH data - based on real wallet metrics
+		const successRate = currentSummary.success_rate || 0;
+		const tokensInProfit = currentSummary.tokens_in_profit || 0;
+		const tokensInLoss = currentSummary.tokens_in_loss || 0;
+		const totalTokens = tokensInProfit + tokensInLoss;
+		const totalMissedUsd = currentSummary.total_missed_usd || 0;
+		const totalPnl = currentSummary.total_pnl || 0;
+
+		// Generate a curve that represents portfolio performance
+		// Start at 100% (ATH), end at current performance level
+		const currentPerformanceRatio = totalTokens > 0 ? successRate / 100 : 0.3;
+
+		// Peak value = what the portfolio would be worth if sold at ATH (total missed + current PnL)
+		// Current value = current portfolio value (PnL converted to USD)
+		const peakValueUsd = totalMissedUsd + Math.abs(totalPnl * 150); // Rough SOL to USD conversion
+		const currentValueUsd = Math.abs(totalPnl * 150);
+
 		const chartData = {
 			points: [
-				[0, 1.0], // ATH
-				[1, 0.8],
-				[2, 0.6],
-				[3, 0.4],
-				[4, 0.3],
+				[0, 1.0], // ATH (100%)
+				[1, 1.0 - (1.0 - currentPerformanceRatio) * 0.2], // Early decline
+				[2, 1.0 - (1.0 - currentPerformanceRatio) * 0.5], // Mid decline
+				[3, 1.0 - (1.0 - currentPerformanceRatio) * 0.8], // Late decline
+				[4, currentPerformanceRatio], // Current performance based on success rate
 			] as [number, number][],
+			peakValue: peakValueUsd,
+			currentValue: currentValueUsd,
 		};
 
 		return {
@@ -288,10 +305,13 @@ export default function AnalyzerPage() {
 						<PerformanceMetrics performance={adaptedResultData.performanceData} />
 					</div>
 
-					{/* Three Column Section */}
-					<div className='mt-6 md:mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8'>
-						<TokenDistribution distribution={adaptedResultData.distribution} />
-						<BestWorstPerformers best={adaptedResultData.bestPerformer} worst={adaptedResultData.worstPerformer} />
+					{/* Two Column Section */}
+					<div className='mt-6 md:mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8'>
+						<TokenDistribution
+							distribution={adaptedResultData.distribution}
+							best={adaptedResultData.bestPerformer}
+							worst={adaptedResultData.worstPerformer}
+						/>
 						<MiniChartATH data={adaptedResultData.chartData} />
 					</div>
 

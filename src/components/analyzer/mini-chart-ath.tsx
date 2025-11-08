@@ -14,20 +14,26 @@ interface ChartDataPoint {
 interface MiniChartATHProps {
 	data: {
 		points: number[][];
+		peakValue?: number; // ATH value in USD
+		currentValue?: number; // Current value in USD
 	};
 }
 
 export default function MiniChartATH({ data }: MiniChartATHProps) {
-	// Transform points into recharts format
+	// Transform points into recharts format with meaningful labels
+	const labels = ['ATH', '', '', '', 'Now']; // Empty strings for intermediate points
 	const chartData: ChartDataPoint[] = data.points.map((point, index) => ({
-		name: index === 0 ? 'ATH' : index === data.points.length - 1 ? 'Now' : `Day ${index}`,
+		name: labels[index] || '',
 		value: point[1] * 100, // Convert to percentage
 		rawValue: point[1],
 	}));
 
-	const peakValue = 100000; // Mock peak value in USD
-	const currentValue = peakValue * data.points[data.points.length - 1][1];
-	const lossPercent = Math.round((1 - data.points[data.points.length - 1][1]) * 100);
+	// Use provided values or calculate from performance ratio
+	const performanceRatio = data.points[data.points.length - 1][1];
+	const peakValue = data.peakValue || 100000; // Fallback to 100k if not provided
+	const currentValue = data.currentValue !== undefined ? data.currentValue : peakValue * performanceRatio;
+	// Calculate loss percent based on actual peak vs current values
+	const lossPercent = peakValue > 0 ? Math.round(((peakValue - currentValue) / peakValue) * 100) : 0;
 
 	const CustomTooltip = ({ active, payload }: any) => {
 		if (active && payload && payload.length) {
