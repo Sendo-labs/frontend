@@ -300,9 +300,7 @@ export default function AnalyzerPage() {
 							<div className='w-2 h-2 bg-amber-500 rounded-full animate-pulse' />
 						</div>
 						<div className='flex-1 min-w-0'>
-							<p className='text-sm font-medium text-amber-900'>
-								⏳ Analysis queued
-							</p>
+							<p className='text-sm font-medium text-amber-900'>⏳ Analysis queued</p>
 							<p className='text-xs text-amber-700 mt-0.5'>
 								Your wallet analysis is waiting for an available slot. We're processing multiple wallets in parallel!
 							</p>
