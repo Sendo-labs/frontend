@@ -64,16 +64,35 @@ export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalys
 
 			setStatus(newStatus);
 
+			// Update persistent toast during pending (queued)
+			if (newStatus.status === 'pending') {
+				if (toastIdRef.current) {
+					// Update existing toast with warning style (amber/yellow)
+					toast.loading('Analysis queued ⏳', {
+						id: toastIdRef.current,
+						description: 'Waiting for available slot. Your analysis will start soon!',
+						className: 'border-amber-200 bg-amber-50 text-amber-900',
+					});
+				} else {
+					// Create new persistent toast with warning style
+					toastIdRef.current = toast.loading('Analysis queued ⏳', {
+						description: 'Waiting for available slot. Your analysis will start soon!',
+						className: 'border-amber-200 bg-amber-50 text-amber-900',
+					});
+				}
+			}
+
 			// Update persistent toast during processing
 			if (newStatus.status === 'processing') {
 				const processed = newStatus.progress?.processed || 0;
 				const tokensFound = newStatus.current_results?.tokens_discovered || 0;
 
 				if (toastIdRef.current) {
-					// Update existing toast
+					// Update existing toast (remove custom styles if coming from pending)
 					toast.loading('Analyzing wallet...', {
 						id: toastIdRef.current,
 						description: `Found ${tokensFound} token${tokensFound !== 1 ? 's' : ''} • ${processed} transactions analyzed`,
+						className: '', // Reset custom styles
 					});
 				} else {
 					// Create new persistent toast

@@ -103,7 +103,7 @@ export default function AnalyzerPage() {
 			currentSummary.top_pain_points?.map((pp: any) => ({
 				symbol: pp.symbol || 'Unknown',
 				ath_price: pp.ath_price,
-				sold_price: pp.sold_price || undefined,
+				trade_price: pp.trade_price || undefined,
 				ath_change_pct: pp.ath_change_pct,
 				missed_usd: pp.missed_usd,
 			})) || [];
@@ -285,6 +285,31 @@ export default function AnalyzerPage() {
 					Analyze your pain 💀 See how much you lost by not selling at ATH
 				</p>
 			</motion.div>
+
+			{/* Queue Info Banner - Show when status is pending */}
+			{status?.status === 'pending' && (
+				<motion.div
+					initial={{ opacity: 0, y: -20 }}
+					animate={{ opacity: 1, y: 0 }}
+					exit={{ opacity: 0, y: -20 }}
+					transition={{ duration: 0.5 }}
+					className='mb-6 mx-auto max-w-2xl'
+				>
+					<div className='bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-center gap-3'>
+						<div className='flex-shrink-0'>
+							<div className='w-2 h-2 bg-amber-500 rounded-full animate-pulse' />
+						</div>
+						<div className='flex-1 min-w-0'>
+							<p className='text-sm font-medium text-amber-900'>
+								⏳ Analysis queued
+							</p>
+							<p className='text-xs text-amber-700 mt-0.5'>
+								Your wallet analysis is waiting for an available slot. We're processing multiple wallets in parallel!
+							</p>
+						</div>
+					</div>
+				</motion.div>
+			)}
 
 			{/* Wallet Input */}
 			<motion.div

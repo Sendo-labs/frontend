@@ -11,7 +11,7 @@ import { toast } from 'sonner';
 interface TokenData {
 	symbol: string;
 	ath_price: number;
-	sold_price?: number;
+	trade_price?: number;  // Average price at which trades were executed
 	ath_change_pct: number;
 	missed_usd: number;
 }
@@ -157,15 +157,15 @@ export default function ResultHeroCard({ result, isProcessing = false }: ResultH
 													ATH: $
 													{(token.ath_price ?? 0).toLocaleString('en-US', {
 														minimumFractionDigits: 2,
-														maximumFractionDigits: 3,
+														maximumFractionDigits: 8,
 													})}
 												</span>
 												<span className='hidden md:inline'> • </span>
 												<span className='block md:inline'>
-													Sold:{' '}
-													{typeof token.sold_price === 'number'
-														? `$${token.sold_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}`
-														: 'Still Held'}
+													Avg Trade:{' '}
+													{typeof token.trade_price === 'number'
+														? `$${token.trade_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}`
+														: 'N/A'}
 												</span>
 											</p>
 										</div>
