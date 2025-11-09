@@ -381,13 +381,6 @@ export default function AnalyzerPage() {
 
 					{/* Token Details List */}
 					<div className='mt-12 md:mt-16 space-y-6 md:space-y-8'>
-						<div className='flex items-center justify-between mb-6'>
-							<h2 className='text-2xl md:text-3xl font-bold title-font'>
-								TOKENS ANALYZED ({results.pagination.total})
-							</h2>
-							{!isCompleted && <span className='text-sm text-foreground/60'>Updating in real-time...</span>}
-						</div>
-
 						{/* Token Analysis List */}
 						<TokenAnalysisList tokens={results.tokens} totalCount={results.pagination.total} />
 
