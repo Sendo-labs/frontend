@@ -18,9 +18,10 @@ interface MiniChartATHProps {
 		peakValue?: number; // ATH value in USD
 		currentValue?: number; // Current value in USD
 	};
+	isProcessing?: boolean;
 }
 
-export default function MiniChartATH({ data }: MiniChartATHProps) {
+export default function MiniChartATH({ data, isProcessing = false }: MiniChartATHProps) {
 	// Transform points into recharts format with meaningful labels
 	const labels = ['ATH', '', '', '', 'Now']; // Empty strings for intermediate points
 	const chartData: ChartDataPoint[] = data.points.map((point, index) => ({
@@ -110,20 +111,49 @@ export default function MiniChartATH({ data }: MiniChartATHProps) {
 				<div className='min-w-0'>
 					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>MISSED GAINS</p>
 					<p className='text-sendo-orange font-bold text-sm md:text-lg truncate'>
-						$<CountUp end={peakValue / 1000} decimals={1} separator={false} />k
+						$
+						<CountUp
+							end={peakValue / 1000}
+							decimals={1}
+							separator={false}
+							enableContinuous={true}
+							isProcessing={isProcessing}
+							pollInterval={5000}
+							aggressiveness={0.5}
+						/>
+						k
 					</p>
 				</div>
 				<div className='min-w-0'>
 					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>ACTUAL LOSS</p>
 					<p className='text-sendo-red font-bold text-sm md:text-lg truncate'>
 						-$
-						<CountUp end={currentValue / 1000} decimals={1} separator={false} />k
+						<CountUp
+							end={currentValue / 1000}
+							decimals={1}
+							separator={false}
+							enableContinuous={true}
+							isProcessing={isProcessing}
+							pollInterval={5000}
+							aggressiveness={0.5}
+						/>
+						k
 					</p>
 				</div>
 				<div className='min-w-0'>
 					<p className='text-foreground/40 text-[10px] md:text-xs mb-1 uppercase title-font truncate'>% LEFT BEHIND</p>
 					<p className='text-sendo-red font-bold text-sm md:text-lg'>
-						-<CountUp end={lossPercent} decimals={0} separator={false} />%
+						-
+						<CountUp
+							end={lossPercent}
+							decimals={0}
+							separator={false}
+							enableContinuous={true}
+							isProcessing={isProcessing}
+							pollInterval={5000}
+							aggressiveness={0.5}
+						/>
+						%
 					</p>
 				</div>
 			</div>

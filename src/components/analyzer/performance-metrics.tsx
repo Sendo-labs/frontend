@@ -14,9 +14,10 @@ interface PerformanceData {
 
 interface PerformanceMetricsProps {
 	performance: PerformanceData;
+	isProcessing?: boolean;
 }
 
-export default function PerformanceMetrics({ performance }: PerformanceMetricsProps) {
+export default function PerformanceMetrics({ performance, isProcessing = false }: PerformanceMetricsProps) {
 	const metrics = [
 		{
 			icon: DollarSign,
@@ -97,6 +98,10 @@ export default function PerformanceMetrics({ performance }: PerformanceMetricsPr
 									separator={metric.separator}
 									prefix={metric.prefix}
 									suffix={metric.suffix}
+									enableContinuous={true}
+									isProcessing={isProcessing}
+									pollInterval={5000}
+									aggressiveness={0.5}
 								/>
 							</p>
 						</div>

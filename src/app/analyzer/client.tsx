@@ -257,7 +257,14 @@ export default function AnalyzerPage() {
 		);
 		setIsLoadingMore(true);
 		nextPage();
-	}, [results?.pagination.total, results?.pagination.hasMore, status?.status, isLoadingMore, nextPage, results?.tokens.length]);
+	}, [
+		results?.pagination.total,
+		results?.pagination.hasMore,
+		status?.status,
+		isLoadingMore,
+		nextPage,
+		results?.tokens.length,
+	]);
 
 	return (
 		<PageWrapper>
@@ -325,17 +332,17 @@ export default function AnalyzerPage() {
 				<>
 					{/* Hero Card with Total Missed */}
 					<div className='mt-12 md:mt-16'>
-						<ResultHeroCard result={adaptedResultData.heroCard} />
+						<ResultHeroCard result={adaptedResultData.heroCard} isProcessing={isAnalyzing} />
 					</div>
 
 					{/* Wallet Stats Grid */}
 					<div className='mt-6 md:mt-8'>
-						<WalletStatsGrid stats={adaptedResultData.walletStats} />
+						<WalletStatsGrid stats={adaptedResultData.walletStats} isProcessing={isAnalyzing} />
 					</div>
 
 					{/* Performance Metrics */}
 					<div className='mt-6 md:mt-8'>
-						<PerformanceMetrics performance={adaptedResultData.performanceData} />
+						<PerformanceMetrics performance={adaptedResultData.performanceData} isProcessing={isAnalyzing} />
 					</div>
 
 					{/* Two Column Section */}
@@ -344,8 +351,9 @@ export default function AnalyzerPage() {
 							distribution={adaptedResultData.distribution}
 							best={adaptedResultData.bestPerformer}
 							worst={adaptedResultData.worstPerformer}
+							isProcessing={isAnalyzing}
 						/>
-						<MiniChartATH data={adaptedResultData.chartData} />
+						<MiniChartATH data={adaptedResultData.chartData} isProcessing={isAnalyzing} />
 					</div>
 
 					{/* Token Details List */}

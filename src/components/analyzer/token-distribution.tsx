@@ -21,9 +21,10 @@ interface TokenDistributionProps {
 	distribution: DistributionData;
 	best: Performer;
 	worst: Performer;
+	isProcessing?: boolean;
 }
 
-export default function TokenDistribution({ distribution, best, worst }: TokenDistributionProps) {
+export default function TokenDistribution({ distribution, best, worst, isProcessing = false }: TokenDistributionProps) {
 	// Calculate total for percentage calculation
 	const total = distribution.in_profit + distribution.in_loss + distribution.still_held;
 
@@ -67,12 +68,29 @@ export default function TokenDistribution({ distribution, best, worst }: TokenDi
 							<span className='text-foreground/70 text-xs md:text-sm flex-shrink-0'>{item.label}</span>
 							<div className='flex items-center gap-2 md:gap-3 flex-shrink-0'>
 								<span className={`font-bold text-base md:text-lg ${item.color}`}>
-									<CountUp end={item.value} decimals={0} separator={false} />
+									<CountUp
+										end={item.value}
+										decimals={0}
+										separator={false}
+										enableContinuous={true}
+										isProcessing={isProcessing}
+										pollInterval={5000}
+										aggressiveness={0.5}
+									/>
 								</span>
 								<span className='text-foreground/40 text-[10px] md:text-xs w-10 md:w-12 text-right'>
 									{item.pct > 0 ? (
 										<>
-											(<CountUp end={item.pct} decimals={1} separator={false} />
+											(
+											<CountUp
+												end={item.pct}
+												decimals={1}
+												separator={false}
+												enableContinuous={true}
+												isProcessing={isProcessing}
+												pollInterval={5000}
+												aggressiveness={0.5}
+											/>
 											%)
 										</>
 									) : (
@@ -105,13 +123,30 @@ export default function TokenDistribution({ distribution, best, worst }: TokenDi
 						<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>PnL</span>
 						<span className='text-sendo-green font-bold text-xs md:text-sm flex-shrink-0'>
 							+$
-							<CountUp end={best.pnl_usd} decimals={2} separator={true} />
+							<CountUp
+								end={best.pnl_usd}
+								decimals={2}
+								separator={true}
+								enableContinuous={true}
+								isProcessing={isProcessing}
+								pollInterval={5000}
+								aggressiveness={0.5}
+							/>
 						</span>
 					</div>
 					<div className='flex justify-between gap-2'>
 						<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>Volume</span>
 						<span className='text-foreground text-xs md:text-sm flex-shrink-0'>
-							<CountUp end={best.volume_sol} decimals={3} separator={false} /> SOL
+							<CountUp
+								end={best.volume_sol}
+								decimals={3}
+								separator={false}
+								enableContinuous={true}
+								isProcessing={isProcessing}
+								pollInterval={5000}
+								aggressiveness={0.5}
+							/>{' '}
+							SOL
 						</span>
 					</div>
 				</div>
@@ -137,13 +172,30 @@ export default function TokenDistribution({ distribution, best, worst }: TokenDi
 						<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>PnL</span>
 						<span className='text-sendo-red font-bold text-xs md:text-sm flex-shrink-0'>
 							-$
-							<CountUp end={Math.abs(worst.pnl_usd)} decimals={2} separator={true} />
+							<CountUp
+								end={Math.abs(worst.pnl_usd)}
+								decimals={2}
+								separator={true}
+								enableContinuous={true}
+								isProcessing={isProcessing}
+								pollInterval={5000}
+								aggressiveness={0.5}
+							/>
 						</span>
 					</div>
 					<div className='flex justify-between gap-2'>
 						<span className='text-foreground/60 text-xs md:text-sm flex-shrink-0'>Volume</span>
 						<span className='text-foreground text-xs md:text-sm flex-shrink-0'>
-							<CountUp end={worst.volume_sol} decimals={3} separator={false} /> SOL
+							<CountUp
+								end={worst.volume_sol}
+								decimals={3}
+								separator={false}
+								enableContinuous={true}
+								isProcessing={isProcessing}
+								pollInterval={5000}
+								aggressiveness={0.5}
+							/>{' '}
+							SOL
 						</span>
 					</div>
 				</div>

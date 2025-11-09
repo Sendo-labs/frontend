@@ -251,9 +251,7 @@ export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalys
 							const freshTokensMap = new Map(response.data.tokens.map((t: any) => [t.id, t]));
 
 							// Keep existing tokens but update them if they're in the fresh data
-							mergedTokens = prev.tokens.map((t: any) =>
-								freshTokensMap.has(t.id) ? freshTokensMap.get(t.id) : t
-							);
+							mergedTokens = prev.tokens.map((t: any) => (freshTokensMap.has(t.id) ? freshTokensMap.get(t.id) : t));
 
 							// Add any completely new tokens that weren't in our existing list
 							response.data.tokens.forEach((t: any) => {

@@ -24,9 +24,10 @@ interface ResultData {
 
 interface ResultHeroCardProps {
 	result: ResultData;
+	isProcessing?: boolean; // Whether analysis is still running
 }
 
-export default function ResultHeroCard({ result }: ResultHeroCardProps) {
+export default function ResultHeroCard({ result, isProcessing = false }: ResultHeroCardProps) {
 	const [isGenerating, setIsGenerating] = useState(false);
 
 	// Prepare pain card data
@@ -113,7 +114,15 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 				{/* Big number */}
 				<div className='mb-3 md:mb-4'>
 					<span className='inline-block text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent leading-none'>
-						<CountUp end={result.total_missed_usd} separator={true} prefix='$' />
+						<CountUp
+							end={result.total_missed_usd}
+							separator={true}
+							prefix='$'
+							enableContinuous={true}
+							isProcessing={isProcessing}
+							pollInterval={5000}
+							aggressiveness={0.4}
+						/>
 					</span>
 				</div>
 
@@ -163,10 +172,28 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 									</div>
 									<div className='text-right flex-shrink-0'>
 										<p className='text-sendo-red font-bold text-base md:text-xl whitespace-nowrap'>
-											<CountUp end={token.missed_usd ?? 0} separator={true} prefix='-$' decimals={0} />
+											<CountUp
+												end={token.missed_usd ?? 0}
+												separator={true}
+												prefix='-$'
+												decimals={0}
+												enableContinuous={true}
+												isProcessing={isProcessing}
+												pollInterval={5000}
+												aggressiveness={0.6}
+											/>
 										</p>
 										<p className='text-sendo-red/60 text-xs md:text-sm whitespace-nowrap'>
-											<CountUp end={token.ath_change_pct} decimals={2} separator={false} />% from ATH
+											<CountUp
+												end={token.ath_change_pct}
+												decimals={2}
+												separator={false}
+												enableContinuous={true}
+												isProcessing={isProcessing}
+												pollInterval={5000}
+												aggressiveness={0.6}
+											/>
+											% from ATH
 										</p>
 									</div>
 								</div>
