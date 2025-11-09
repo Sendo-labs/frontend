@@ -11,7 +11,7 @@ import { toast } from 'sonner';
 interface TokenData {
 	symbol: string;
 	ath_price: number;
-	trade_price?: number;  // Average price at which trades were executed
+	trade_price?: number; // Average price at which trades were executed
 	ath_change_pct: number;
 	missed_usd: number;
 }
