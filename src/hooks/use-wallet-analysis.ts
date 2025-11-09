@@ -1,0 +1,463 @@
+import { useState, useEffect, useCallback, useRef } from 'react';
+import type { AnalysisStatusResponse, AnalysisResultsResponse } from '@sendo-labs/plugin-sendo-analyser';
+import { startAnalysis, getAnalysisStatus, getAnalysisResults } from '@/actions/analyzer/get';
+import { toast } from 'sonner';
+
+const POLL_INTERVAL = 5000; // 5 seconds
+const PAGE_SIZE = 10; // Number of tokens to load per page
+
+interface UseWalletAnalysisReturn {
+	status: AnalysisStatusResponse | null;
+	results: AnalysisResultsResponse | null;
+	isStarting: boolean;
+	error: string | null;
+	currentPage: number;
+	start: () => Promise<void>;
+	nextPage: () => void;
+}
+
+/**
+ * Hook to manage async wallet analysis with polling
+ */
+export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalysisReturn {
+	const [status, setStatus] = useState<AnalysisStatusResponse | null>(null);
+	const [results, setResults] = useState<AnalysisResultsResponse | null>(null);
+	const [isStarting, setIsStarting] = useState(false);
+	const [error, setError] = useState<string | null>(null);
+	const [currentPage, setCurrentPage] = useState(1);
+
+	const pollingRef = useRef<NodeJS.Timeout | null>(null);
+	const isPollingRef = useRef(false);
+	const hasInitializedRef = useRef(false);
+	const isRestartingRef = useRef(false);
+	const toastIdRef = useRef<string | number | null>(null);
+	const lastTokenCountRef = useRef<number>(0);
+
+	// Stop polling
+	const stopPolling = useCallback(() => {
+		console.log('[useWalletAnalysis] Stopping polling...');
+		if (pollingRef.current) {
+			clearInterval(pollingRef.current);
+			pollingRef.current = null;
+		}
+		isPollingRef.current = false;
+	}, []);
+
+	// Fetch status
+	const fetchStatus = useCallback(async () => {
+		if (!walletAddress) return;
+
+		try {
+			const response = await getAnalysisStatus(walletAddress);
+
+			if (!response.success) {
+				throw new Error(response.error || 'Failed to fetch status');
+			}
+
+			const newStatus = response.data;
+			console.log('[useWalletAnalysis] Status update:', {
+				status: newStatus.status,
+				progress: newStatus.progress,
+				tokens_discovered: newStatus.current_results?.tokens_discovered,
+				last_heartbeat: newStatus.last_heartbeat,
+			});
+
+			setStatus(newStatus);
+
+			// Update persistent toast during pending (queued)
+			if (newStatus.status === 'pending') {
+				if (toastIdRef.current) {
+					// Update existing toast with warning style (amber/yellow)
+					toast.loading('Analysis queued ⏳', {
+						id: toastIdRef.current,
+						description: 'Waiting for available slot. Your analysis will start soon!',
+						className: 'border-amber-200 bg-amber-50 text-amber-900',
+					});
+				} else {
+					// Create new persistent toast with warning style
+					toastIdRef.current = toast.loading('Analysis queued ⏳', {
+						description: 'Waiting for available slot. Your analysis will start soon!',
+						className: 'border-amber-200 bg-amber-50 text-amber-900',
+					});
+				}
+			}
+
+			// Update persistent toast during processing
+			if (newStatus.status === 'processing') {
+				const processed = newStatus.progress?.processed || 0;
+				const tokensFound = newStatus.current_results?.tokens_discovered || 0;
+
+				if (toastIdRef.current) {
+					// Update existing toast (remove custom styles if coming from pending)
+					toast.loading('Analyzing wallet...', {
+						id: toastIdRef.current,
+						description: `Found ${tokensFound} token${tokensFound !== 1 ? 's' : ''} • ${processed} transactions analyzed`,
+						className: '', // Reset custom styles
+					});
+				} else {
+					// Create new persistent toast
+					toastIdRef.current = toast.loading('Analyzing wallet...', {
+						description: `Found ${tokensFound} token${tokensFound !== 1 ? 's' : ''} • ${processed} transactions analyzed`,
+					});
+				}
+			}
+
+			// Check if heartbeat is older than 2 minutes (120 seconds) - analysis might be stuck
+			if (newStatus.status === 'processing' && newStatus.last_heartbeat && !isRestartingRef.current) {
+				const heartbeatDate = new Date(newStatus.last_heartbeat);
+				const now = new Date();
+				const secondsSinceHeartbeat = (now.getTime() - heartbeatDate.getTime()) / 1000;
+
+				if (secondsSinceHeartbeat > 120) {
+					console.warn(
+						'[useWalletAnalysis] Heartbeat is stale (',
+						secondsSinceHeartbeat,
+						's old), restarting analysis...',
+					);
+					isRestartingRef.current = true;
+
+					// Show restart toast
+					toast.info('Restarting analysis...', {
+						description: 'Analysis appears stuck, retrying from where it left off',
+					});
+
+					// Stop current polling
+					stopPolling();
+					// Trigger a restart by calling the API directly
+					setTimeout(async () => {
+						try {
+							console.log('[useWalletAnalysis] Restarting stuck analysis...');
+							await startAnalysis(walletAddress);
+							// Fetch fresh status
+							const statusResponse = await getAnalysisStatus(walletAddress);
+							if (statusResponse.success) {
+								setStatus(statusResponse.data);
+							}
+							// Restart polling
+							if (!isPollingRef.current) {
+								isPollingRef.current = true;
+								pollingRef.current = setInterval(async () => {
+									const resp = await getAnalysisStatus(walletAddress);
+									if (resp.success) {
+										setStatus(resp.data);
+									}
+								}, POLL_INTERVAL);
+							}
+							// Fetch results
+							setTimeout(async () => {
+								const resultsResp = await getAnalysisResults(walletAddress, 1, PAGE_SIZE);
+								if (resultsResp.success) {
+									setResults(resultsResp.data);
+								}
+							}, 500);
+						} catch (err) {
+							console.error('[useWalletAnalysis] Error restarting analysis:', err);
+						} finally {
+							isRestartingRef.current = false;
+						}
+					}, 100);
+					return newStatus;
+				}
+			}
+
+			// Update pagination.total from status (tokens_discovered) if we have results
+			// This keeps the total count up to date during processing
+			if (newStatus.current_results?.tokens_discovered) {
+				setResults((prev: any) => {
+					if (!prev) return prev;
+					return {
+						...prev,
+						pagination: {
+							...prev.pagination,
+							total: newStatus.current_results.tokens_discovered,
+							totalPages: Math.ceil(newStatus.current_results.tokens_discovered / (prev.pagination.limit || PAGE_SIZE)),
+							hasMore: prev.tokens.length < newStatus.current_results.tokens_discovered,
+						},
+					};
+				});
+			}
+
+			// Stop polling if completed or failed
+			if (newStatus.status === 'completed' || newStatus.status === 'failed') {
+				console.log('[useWalletAnalysis] Analysis finished, stopping polling');
+				stopPolling();
+
+				// Dismiss persistent loading toast
+				if (toastIdRef.current) {
+					toast.dismiss(toastIdRef.current);
+					toastIdRef.current = null;
+				}
+
+				// Show completion/failure toast
+				if (newStatus.status === 'completed') {
+					const tokensCount = newStatus.current_results?.tokens_discovered || 0;
+					toast.success('Analysis completed! 🎉', {
+						description: `Found ${tokensCount} token${tokensCount !== 1 ? 's' : ''} in your wallet`,
+					});
+				} else if (newStatus.status === 'failed') {
+					toast.error('Analysis failed', {
+						description: newStatus.error || 'Please try again',
+					});
+				}
+			}
+
+			return newStatus;
+		} catch (err: any) {
+			console.error('[useWalletAnalysis] Error fetching status:', err);
+			setError(err.message || 'Failed to fetch status');
+		}
+	}, [walletAddress, stopPolling]);
+
+	// Fetch results for pagination
+	const fetchResults = useCallback(
+		async (page: number = 1, limit: number = PAGE_SIZE, mode: 'replace' | 'append' | 'refresh' = 'replace') => {
+			if (!walletAddress) return;
+
+			try {
+				const response = await getAnalysisResults(walletAddress, page, limit);
+
+				if (!response.success) {
+					throw new Error(response.error || 'Failed to fetch results');
+				}
+
+				console.log('[useWalletAnalysis] Results fetched:', {
+					page,
+					mode,
+					tokensCount: response.data.tokens.length,
+					total: response.data.pagination.total,
+				});
+
+				// If API returns 0 tokens for page > 1, stop pagination
+				// This happens when analysis is processing but tokens aren't ready yet
+				if (response.data.tokens.length === 0 && page > 1) {
+					console.log('[useWalletAnalysis] No new tokens returned, stopping pagination');
+					// Mark hasMore as false to stop infinite scroll
+					setResults((prev: any) => {
+						if (!prev) return prev;
+						return {
+							...prev,
+							pagination: {
+								...prev.pagination,
+								hasMore: false,
+							},
+						};
+					});
+					return;
+				}
+
+				// Three modes:
+				// 1. 'replace': Page 1 replaces everything (initial load, user refresh)
+				// 2. 'append': Page > 1 appends to existing (infinite scroll)
+				// 3. 'refresh': During polling, merge new tokens without losing scrolled data
+				setResults((prev: any) => {
+					// Mode 1: Replace (page 1, initial load)
+					if (mode === 'replace' && page === 1) {
+						return response.data;
+					}
+
+					// Mode 2 & 3: Append or Refresh (need previous data)
+					if (prev) {
+						// Build a map of existing tokens by ID
+						const existingTokensMap = new Map(prev.tokens.map((t: any) => [t.id, t]));
+
+						// Merge logic:
+						// - For 'append': add only truly new tokens at the end
+						// - For 'refresh': update existing + add new ones while preserving order
+						let mergedTokens;
+
+						if (mode === 'refresh') {
+							// Refresh mode: Update existing tokens with fresh data, add new ones
+							const freshTokensMap = new Map(response.data.tokens.map((t: any) => [t.id, t]));
+
+							// Keep existing tokens but update them if they're in the fresh data
+							mergedTokens = prev.tokens.map((t: any) => (freshTokensMap.has(t.id) ? freshTokensMap.get(t.id) : t));
+
+							// Add any completely new tokens that weren't in our existing list
+							response.data.tokens.forEach((t: any) => {
+								if (!existingTokensMap.has(t.id)) {
+									mergedTokens.push(t);
+								}
+							});
+						} else {
+							// Append mode (page > 1): Just add new tokens at the end
+							const newTokens = response.data.tokens.filter((t: any) => !existingTokensMap.has(t.id));
+							mergedTokens = [...prev.tokens, ...newTokens];
+						}
+
+						return {
+							...response.data,
+							tokens: mergedTokens,
+							pagination: {
+								...response.data.pagination,
+								// Recalculate hasMore based on accumulated tokens vs total
+								hasMore: mergedTokens.length < response.data.pagination.total,
+							},
+						};
+					}
+
+					// Fallback: no previous data, just use response
+					return response.data;
+				});
+
+				// Only update currentPage for append mode (infinite scroll)
+				if (mode === 'append') {
+					setCurrentPage(page);
+				}
+
+				return response.data;
+			} catch (err: any) {
+				console.error('[useWalletAnalysis] Error fetching results:', err);
+				setError(err.message || 'Failed to fetch results');
+			}
+		},
+		[walletAddress],
+	);
+
+	// Auto-load tokens when analysis completes or when new tokens are discovered
+	useEffect(() => {
+		if (!status || !walletAddress) return;
+
+		const tokensDiscovered = status.current_results?.tokens_discovered || 0;
+
+		// When analysis completes, fetch final results if we haven't loaded any tokens yet
+		if (status.status === 'completed' && tokensDiscovered > 0 && (!results || results.tokens.length === 0)) {
+			console.log('[useWalletAnalysis] Analysis completed with', tokensDiscovered, 'tokens - fetching results');
+			fetchResults(1, PAGE_SIZE, 'replace');
+			return;
+		}
+
+		// During processing: Let IntersectionObserver handle loading based on scroll
+		// The polling already updates pagination.hasMore (line 146-159), so the scroll
+		// trigger will automatically load more pages as the user scrolls.
+		// We only need to track token count for logging purposes
+		if (status.status === 'processing' && tokensDiscovered > 0 && tokensDiscovered > lastTokenCountRef.current) {
+			console.log(
+				'[useWalletAnalysis] New tokens discovered:',
+				tokensDiscovered,
+				'(was',
+				lastTokenCountRef.current,
+				') - hasMore updated, ready for scroll loading',
+			);
+			lastTokenCountRef.current = tokensDiscovered;
+		}
+	}, [status, walletAddress, fetchResults, results]);
+
+	// Start polling - Only polls status endpoint every 5s
+	// Status contains current_results with summary, so no need to fetch results
+	// Results pagination is completely separate and managed by nextPage()
+	const startPolling = useCallback(() => {
+		if (isPollingRef.current) return;
+
+		console.log('[useWalletAnalysis] Starting status polling...');
+		isPollingRef.current = true;
+
+		pollingRef.current = setInterval(async () => {
+			// Only fetch status - it contains current_results with summary
+			// This updates the progress bar and summary stats in real-time
+			await fetchStatus();
+		}, POLL_INTERVAL);
+	}, [fetchStatus]);
+
+	// Start analysis
+	const start = useCallback(async () => {
+		if (!walletAddress) return;
+
+		setIsStarting(true);
+		setError(null);
+
+		try {
+			console.log('[useWalletAnalysis] Starting analysis for:', walletAddress);
+			const response = await startAnalysis(walletAddress);
+
+			if (!response.success) {
+				throw new Error(response.error || 'Failed to start analysis');
+			}
+
+			console.log('[useWalletAnalysis] Analysis started successfully');
+
+			// Immediately fetch status - this will create the persistent loading toast
+			await fetchStatus();
+
+			// Immediately start polling for status updates
+			startPolling();
+
+			// Wait a short bit before fetching results to let the analysis discover some tokens
+			// The polling will update the summary stats in real-time
+			setTimeout(() => {
+				fetchResults(1);
+			}, 500); // Wait 500ms for initial tokens to be discovered
+		} catch (err: any) {
+			console.error('[useWalletAnalysis] Error starting analysis:', err);
+			setError(err.message || 'Failed to start analysis');
+		} finally {
+			setIsStarting(false);
+		}
+	}, [walletAddress, startPolling, fetchResults]);
+
+	// Next page
+	const nextPage = useCallback(() => {
+		if (results && results.pagination.hasMore) {
+			fetchResults(currentPage + 1, PAGE_SIZE, 'append');
+		}
+	}, [results, currentPage, fetchResults]);
+
+	// Cleanup on unmount - dismiss toast
+	useEffect(() => {
+		return () => {
+			stopPolling();
+			// Dismiss toast when component unmounts or wallet changes
+			if (toastIdRef.current) {
+				toast.dismiss(toastIdRef.current);
+				toastIdRef.current = null;
+			}
+		};
+	}, [stopPolling, walletAddress]);
+
+	// Auto-fetch status on mount if wallet address is provided
+	// Only runs ONCE per wallet address
+	useEffect(() => {
+		if (walletAddress && !hasInitializedRef.current) {
+			console.log('[useWalletAnalysis] Auto-fetching status for:', walletAddress);
+			hasInitializedRef.current = true;
+
+			fetchStatus().then((status: AnalysisStatusResponse | undefined) => {
+				// If analysis exists and is completed, fetch first page of results
+				if (status && status.status === 'completed') {
+					fetchResults(1);
+				} else if (status && status.status === 'processing') {
+					// If already processing, start polling and fetch first page
+					startPolling();
+					fetchResults(1);
+				} else if (!status || status.status === 'not_found' || status.status === 'failed') {
+					// No analysis exists or failed - start a new one automatically
+					console.log('[useWalletAnalysis] No analysis found, starting new analysis...');
+					start();
+				}
+			});
+		}
+
+		// Reset all state when wallet changes
+		return () => {
+			if (walletAddress) {
+				console.log('[useWalletAnalysis] Wallet changed, resetting all state...');
+				hasInitializedRef.current = false;
+				lastTokenCountRef.current = 0;
+				setStatus(null);
+				setResults(null);
+				setCurrentPage(1);
+				setError(null);
+				setIsStarting(false);
+			}
+		};
+	}, [walletAddress, fetchStatus, fetchResults, startPolling, start]);
+
+	return {
+		status,
+		results,
+		isStarting,
+		error,
+		currentPage,
+		start,
+		nextPage,
+	};
+}

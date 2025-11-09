@@ -3,39 +3,53 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { DollarSign, TrendingUp, Target, BarChart3 } from 'lucide-react';
+import { CountUp } from '@/components/ui/count-up';
 
 interface PerformanceData {
 	total_volume_sol: number;
-	total_pnl_sol: number;
+	total_pnl_usd: number;
 	success_rate: number;
 	tokens_analyzed: number;
 }
 
 interface PerformanceMetricsProps {
 	performance: PerformanceData;
+	isProcessing?: boolean;
 }
 
-export default function PerformanceMetrics({ performance }: PerformanceMetricsProps) {
+export default function PerformanceMetrics({ performance, isProcessing = false }: PerformanceMetricsProps) {
 	const metrics = [
 		{
 			icon: DollarSign,
 			label: 'TOTAL VOLUME',
 			labelMobile: ['TOTAL', 'VOLUME'],
-			value: `${performance.total_volume_sol.toFixed(2)} SOL`,
+			value: performance.total_volume_sol,
+			decimals: 2,
+			separator: true,
+			suffix: ' SOL',
+			prefix: '',
 			color: 'text-foreground',
 		},
 		{
 			icon: TrendingUp,
 			label: 'TOTAL PNL',
 			labelMobile: ['TOTAL', 'PNL'],
-			value: `${performance.total_pnl_sol >= 0 ? '+' : ''}${performance.total_pnl_sol.toFixed(2)} SOL`,
-			color: performance.total_pnl_sol >= 0 ? 'text-sendo-green' : 'text-sendo-red',
+			value: Math.abs(performance.total_pnl_usd),
+			decimals: 2,
+			separator: true,
+			suffix: '',
+			prefix: performance.total_pnl_usd >= 0 ? '+$' : '-$',
+			color: performance.total_pnl_usd >= 0 ? 'text-sendo-green' : 'text-sendo-red',
 		},
 		{
 			icon: Target,
 			label: 'SUCCESS RATE',
 			labelMobile: ['SUCCESS', 'RATE'],
-			value: `${performance.success_rate}%`,
+			value: performance.success_rate,
+			decimals: 2,
+			separator: false,
+			suffix: '%',
+			prefix: '',
 			color: 'text-foreground',
 		},
 		{
@@ -43,6 +57,10 @@ export default function PerformanceMetrics({ performance }: PerformanceMetricsPr
 			label: 'TOKENS ANALYZED',
 			labelMobile: ['TOKENS', 'ANALYZED'],
 			value: performance.tokens_analyzed,
+			decimals: 0,
+			separator: true,
+			suffix: '',
+			prefix: '',
 			color: 'text-foreground',
 		},
 	];
@@ -73,7 +91,19 @@ export default function PerformanceMetrics({ performance }: PerformanceMetricsPr
 									{metric.labelMobile?.[1]}
 								</span>
 							</p>
-							<p className={`text-xl font-bold ${metric.color}`}>{metric.value}</p>
+							<p className={`text-xl font-bold ${metric.color}`}>
+								<CountUp
+									end={metric.value}
+									decimals={metric.decimals}
+									separator={metric.separator}
+									prefix={metric.prefix}
+									suffix={metric.suffix}
+									enableContinuous={true}
+									isProcessing={isProcessing}
+									pollInterval={5000}
+									aggressiveness={0.5}
+								/>
+							</p>
 						</div>
 					</div>
 				))}

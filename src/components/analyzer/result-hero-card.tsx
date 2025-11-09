@@ -4,13 +4,14 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { TrendingDown, Skull, Share2, Twitter, Send, Download, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { CountUp } from '@/components/ui/count-up';
 import { downloadPainCard, getShareText, type PainCardData } from '@/lib/pain-card-generator';
 import { toast } from 'sonner';
 
 interface TokenData {
 	symbol: string;
 	ath_price: number;
-	sold_price?: number;
+	trade_price?: number; // Average price at which trades were executed
 	ath_change_pct: number;
 	missed_usd: number;
 }
@@ -23,35 +24,10 @@ interface ResultData {
 
 interface ResultHeroCardProps {
 	result: ResultData;
+	isProcessing?: boolean; // Whether analysis is still running
 }
 
-function CountUp({ end, duration = 2 }: { end: number; duration?: number }) {
-	const [count, setCount] = React.useState(0);
-
-	React.useEffect(() => {
-		let startTime: number | undefined;
-		let animationFrame: number;
-
-		const animate = (timestamp: number) => {
-			if (!startTime) startTime = timestamp;
-			const progress = (timestamp - startTime) / (duration * 1000);
-
-			if (progress < 1) {
-				setCount(Math.floor(end * progress));
-				animationFrame = requestAnimationFrame(animate);
-			} else {
-				setCount(end);
-			}
-		};
-
-		animationFrame = requestAnimationFrame(animate);
-		return () => cancelAnimationFrame(animationFrame);
-	}, [end, duration]);
-
-	return <span>${count.toLocaleString()}</span>;
-}
-
-export default function ResultHeroCard({ result }: ResultHeroCardProps) {
+export default function ResultHeroCard({ result, isProcessing = false }: ResultHeroCardProps) {
 	const [isGenerating, setIsGenerating] = useState(false);
 
 	// Prepare pain card data
@@ -138,7 +114,15 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 				{/* Big number */}
 				<div className='mb-3 md:mb-4'>
 					<span className='inline-block text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent leading-none'>
-						<CountUp end={result.total_missed_usd} />
+						<CountUp
+							end={result.total_missed_usd}
+							separator={true}
+							prefix='$'
+							enableContinuous={true}
+							isProcessing={isProcessing}
+							pollInterval={5000}
+							aggressiveness={0.4}
+						/>
 					</span>
 				</div>
 
@@ -169,20 +153,47 @@ export default function ResultHeroCard({ result }: ResultHeroCardProps) {
 										<div className='min-w-0 flex-1'>
 											<p className='text-foreground font-bold text-sm md:text-lg truncate'>{token.symbol}</p>
 											<p className='text-foreground/40 text-xs md:text-sm'>
-												<span className='block md:inline'>ATH: ${(token.ath_price ?? 0).toFixed(8)}</span>
+												<span className='block md:inline'>
+													ATH: $
+													{(token.ath_price ?? 0).toLocaleString('en-US', {
+														minimumFractionDigits: 2,
+														maximumFractionDigits: 8,
+													})}
+												</span>
 												<span className='hidden md:inline'> • </span>
 												<span className='block md:inline'>
-													Sold: ${typeof token.sold_price === 'number' ? token.sold_price.toFixed(8) : 'Still Held'}
+													Avg Trade:{' '}
+													{typeof token.trade_price === 'number'
+														? `$${token.trade_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}`
+														: 'N/A'}
 												</span>
 											</p>
 										</div>
 									</div>
 									<div className='text-right flex-shrink-0'>
 										<p className='text-sendo-red font-bold text-base md:text-xl whitespace-nowrap'>
-											-${(token.missed_usd ?? 0).toLocaleString()}
+											<CountUp
+												end={token.missed_usd ?? 0}
+												separator={true}
+												prefix='-$'
+												decimals={0}
+												enableContinuous={true}
+												isProcessing={isProcessing}
+												pollInterval={5000}
+												aggressiveness={0.6}
+											/>
 										</p>
 										<p className='text-sendo-red/60 text-xs md:text-sm whitespace-nowrap'>
-											{token.ath_change_pct}% from ATH
+											<CountUp
+												end={token.ath_change_pct}
+												decimals={2}
+												separator={false}
+												enableContinuous={true}
+												isProcessing={isProcessing}
+												pollInterval={5000}
+												aggressiveness={0.6}
+											/>
+											% from ATH
 										</p>
 									</div>
 								</div>

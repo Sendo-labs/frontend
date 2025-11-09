@@ -23,7 +23,7 @@ function formatNumber(num: number, format: string) {
 		} else if (num >= 1000) {
 			return `$${(num / 1000).toFixed(0)}k`;
 		}
-		return `$${num.toLocaleString()}`;
+		return `$${num.toLocaleString('en-US')}`;
 	}
 
 	if (num >= 1000000) {
@@ -31,7 +31,7 @@ function formatNumber(num: number, format: string) {
 	} else if (num >= 1000) {
 		return `${(num / 1000).toFixed(0)}k`;
 	}
-	return num.toLocaleString();
+	return num.toLocaleString('en-US');
 }
 
 function CountUp({ end, duration = 2, format = 'number' }: { end: number; duration?: number; format?: string }) {

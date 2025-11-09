@@ -237,13 +237,13 @@ export async function generatePainCardImage(data: PainCardData): Promise<Blob> {
 			ctx.font = 'bold 20px "IBM Plex Mono", monospace';
 			ctx.fillText(point.symbol.toUpperCase(), xPos + 52, yPos + 30);
 
-			// Loss amount (red) with European formatting
+			// Loss amount (red) with American formatting
 			ctx.fillStyle = '#FF223B';
 			ctx.font = '20px "IBM Plex Mono", monospace';
-			const formattedLoss = `-$${point.missedUSD
-				.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-				.replace(/,/g, ' ')
-				.replace('.', ',')}`;
+			const formattedLoss = `-$${point.missedUSD.toLocaleString('en-US', {
+				minimumFractionDigits: 2,
+				maximumFractionDigits: 2,
+			})}`;
 			ctx.fillText(formattedLoss, xPos, yPos + 70);
 		});
 
@@ -293,5 +293,5 @@ export async function downloadPainCard(data: PainCardData) {
  * Get share text for social media
  */
 export function getShareText(data: PainCardData): string {
-	return `I missed $${data.totalMissedUSD.toLocaleString()} by not selling at ATH! 💀\n\nRank: ${data.rank || 'Pain Holder'}\n\nCheck your pain at sendo.ai`;
+	return `I missed $${data.totalMissedUSD.toLocaleString('en-US')} by not selling at ATH! 💀\n\nRank: ${data.rank || 'Pain Holder'}\n\nCheck your pain at sendo.ai`;
 }
