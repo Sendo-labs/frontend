@@ -5,11 +5,11 @@ import { motion } from 'framer-motion';
 import PluginCard from '@/components/marketplace/plugin-card';
 import PluginDetailModal from '@/components/marketplace/plugin-detail-modal';
 import ConfigurePluginModal from '@/components/marketplace/configure-plugin-modal';
+import { InfoModal } from '@/components/shared/info-modal';
 import { useState } from 'react';
 import { Flame, Crown, Zap, Bot, Plug } from 'lucide-react';
 import { PluginCategories } from '@/types/plugins';
 import { Plugin } from '@/types/plugins';
-import { Button } from '@/components/ui/button';
 
 const PLUGINS: PluginCategories = {
 	sponsored: [
@@ -408,8 +408,9 @@ const PLUGINS: PluginCategories = {
 export default function MarketplacePage() {
 	const [selectedPlugin, setSelectedPlugin] = useState<Plugin | null>(null);
 	const [configuringPlugin, setConfiguringPlugin] = useState<Plugin | null>(null);
+	const [showDemoModal, setShowDemoModal] = useState<boolean>(true);
 	// Add isLoading state
-	const [isLoading, setIsLoading] = useState<boolean>(false); // Initialized to false as PLUGINS data is static
+	const [isLoading] = useState<boolean>(false); // Initialized to false as PLUGINS data is static
 
 	const handleDeploy = (plugin: Plugin): void => {
 		setSelectedPlugin(null);
@@ -620,6 +621,35 @@ export default function MarketplacePage() {
 					onComplete={handleConfigComplete}
 				/>
 			)}
+
+			{/* Demo Mode Modal */}
+			<InfoModal
+				open={showDemoModal}
+				onClose={() => setShowDemoModal(false)}
+				title='MARKETPLACE DEMO'
+				description='Welcome to the sEnDO Plugin Marketplace! All plugins and data are currently mocked for demonstration purposes. Connect your wallet to access real plugins and configure them for your Worker agent.'
+				variant='warning'
+				size='lg'
+				actions={[
+					{
+						label: 'Explore Plugins',
+						onClick: () => setShowDemoModal(false),
+						variant: 'default',
+					},
+				]}
+			>
+				<div className='space-y-4'>
+					<div className='border-l-4 border-sendo-orange pl-4'>
+						<h3 className='font-bold text-foreground mb-2 uppercase title-font'>What would you be able to do:</h3>
+						<ul className='space-y-2 text-sm text-foreground/70'>
+							<li>• Browse available plugins across different categories</li>
+							<li>• View detailed information about each plugin</li>
+							<li>• Explore configuration options and authentication types</li>
+							<li>• See ratings and reviews from the community</li>
+						</ul>
+					</div>
+				</div>
+			</InfoModal>
 		</div>
 	);
 }
