@@ -10,16 +10,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { FullScreenLoader } from '@/components/shared/loader';
 import PageWrapper from '@/components/shared/page-wrapper';
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+import { InfoModal } from '@/components/shared/info-modal';
 import { Button } from '@/components/ui/button';
 import ActionHistory from '@/components/worker/action-history';
 import ActionList from '@/components/worker/action-list';
@@ -375,26 +366,21 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 			)}
 
 			{mocked && (
-				<AlertDialog open={displayMockedAlert}>
-					<AlertDialogContent>
-						<AlertDialogHeader>
-							<AlertDialogTitle className='text-sendo-orange title-font'>All these data are mocked</AlertDialogTitle>
-							<AlertDialogDescription>
-								{authenticated
-									? 'No agent found. All the data are mocked for demonstration purposes. To see the real data, please create your agent.'
-									: 'You are not authenticated. Please sign in for full access.'}
-							</AlertDialogDescription>
-						</AlertDialogHeader>
-						<AlertDialogFooter>
-							<AlertDialogCancel onClick={() => setDisplayMockedAlert(false)}>Continue</AlertDialogCancel>
-							{authenticated && (
-								<AlertDialogAction onClick={createAgent} disabled={agentCreationLoading}>
-									Create Agent
-								</AlertDialogAction>
-							)}
-						</AlertDialogFooter>
-					</AlertDialogContent>
-				</AlertDialog>
+				<InfoModal
+					open={displayMockedAlert}
+					onClose={() => setDisplayMockedAlert(false)}
+					title='WORKER DEMO'
+					description='All the data displayed are mocked for demonstration purposes. Connect your wallet and create an agent to access real data.'
+					variant='warning'
+					size='md'
+					actions={[
+						{
+							label: 'Continue',
+							onClick: () => setDisplayMockedAlert(false),
+							variant: 'default',
+						},
+					]}
+				/>
 			)}
 		</PageWrapper>
 	);
