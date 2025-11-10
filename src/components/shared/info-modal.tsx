@@ -145,9 +145,7 @@ export function InfoModal({
 										{title}
 									</h2>
 									{description && (
-										<p className='text-sm md:text-base text-foreground/60 leading-relaxed break-words'>
-											{description}
-										</p>
+										<p className='text-sm md:text-base text-foreground/60 leading-relaxed break-words'>{description}</p>
 									)}
 								</div>
 							</div>
