@@ -1,70 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Crown } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Crown } from 'lucide-react';
 import { createPageUrl } from '@/lib/utils';
-
-interface Looser {
-	wallet: string;
-	missed: number;
-	rank: number;
-}
+import WalletInput from '@/components/analyzer/wallet-input';
+import { getShameLeaderboard } from '@/actions/analyzer/get';
+import type { LeaderboardEntry } from '@sendo-labs/plugin-sendo-analyser';
 
 export default function HeroSection() {
-	const [walletAddress, setWalletAddress] = useState('');
+	const [topLoosers, setTopLoosers] = useState<LeaderboardEntry[]>([]);
 
-	// Top 3 loosers mock data
-	const topLoosers: Looser[] = [
-		{ wallet: '9W3xHj9kUK7eJXR3QMNz6T8f2A4vPkLmC5dN1sB6wX9Y', missed: 2847392.5, rank: 1 },
-		{ wallet: '7hpWn64kb0q5nro2ZGX9TkP3Y8fLmA1sC6dN4wB5xJ2H', missed: 1923847.32, rank: 2 },
-		{ wallet: '5ZV3HcSDmmSoump8N2mT6P9fK4rLvC3dN1sB7wX8yM4K', missed: 1547821.15, rank: 3 },
-	];
+	// Fetch top 3 loosers on mount
+	useEffect(() => {
+		const fetchTopLoosers = async () => {
+			try {
+				const result = await getShameLeaderboard(3, 'week');
+				if (result.success) {
+					setTopLoosers(result.data.entries);
+				}
+			} catch (error) {
+				console.error('Failed to fetch top loosers:', error);
+			}
+		};
+		fetchTopLoosers();
+	}, []);
 
-	const getRankColor = (rank: number) => {
-		if (rank === 1) return 'text-[#FFD700]';
-		if (rank === 2) return 'text-[#C0C0C0]';
-		if (rank === 3) return 'text-[#CD7F32]';
-		return 'text-foreground/60';
+	// Handle wallet analysis - redirect to analyzer page
+	const handleAnalyze = (walletAddress: string) => {
+		if (!walletAddress.trim()) return;
+		window.location.href = createPageUrl('Analyzer');
 	};
 
 	const formatWallet = (wallet: string) => {
 		return `${wallet.slice(0, 4)}...${wallet.slice(-4)}`;
 	};
 
-	const handleLooserClick = (wallet: string) => {
-		window.open(`${createPageUrl('Analyzer')}?wallet=${wallet}`, '_blank');
-	};
-
-	// Regex Base58 pour les adresses Solana (exclut 0, O, I, l pour éviter l'ambiguïté)
-	// Alphabet Base58: 123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz
-	const BASE58_REGEX = /[^1-9A-HJ-NP-Za-km-z]/g;
-	const BASE58_VALID_REGEX = /^[1-9A-HJ-NP-Za-km-z]+$/;
-
-	const isValidSolanaAddress = (address: string): boolean => {
-		// Vérifier que l'adresse n'est pas vide
-		if (!address.trim()) return false;
-
-		// Vérifier que l'adresse contient uniquement des caractères Base58 valides
-		if (!BASE58_VALID_REGEX.test(address)) return false;
-
-		// Les adresses Solana standard font généralement entre 32 et 44 caractères en Base58
-		// On accepte une plage plus large pour être flexible (32-58 caractères)
-		const length = address.length;
-		return length == 44;
-	};
-
-	const handleWalletChange = (value: string) => {
-		// Filtrer uniquement les caractères Base58 valides pour Solana
-		// La validation complète (longueur) est faite par isValidSolanaAddress pour le bouton
-		const filteredValue = value.replace(BASE58_REGEX, '');
-		setWalletAddress(filteredValue);
-	};
-
-	const handleAnalyze = () => {
-		if (isValidSolanaAddress(walletAddress)) {
-			window.location.href = `${createPageUrl('Analyzer')}?wallet=${walletAddress}`;
-		}
+	const handleLooserClick = () => {
+		window.location.href = createPageUrl('Leaderboard');
 	};
 
 	return (
@@ -122,42 +93,14 @@ export default function HeroSection() {
 					Stop bagholding. Custom AI agents will catch the next ATH for you.
 				</motion.p>
 
-				{/* Wallet Input */}
+				{/* Wallet Connection */}
 				<motion.div
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 1.1, duration: 0.8 }}
 					className='max-w-2xl mx-auto'
 				>
-					<div className='relative'>
-						<div className='flex flex-col sm:flex-row gap-3'>
-							<Input
-								type='text'
-								placeholder='Enter your Solana wallet...'
-								value={walletAddress}
-								onChange={(e) => handleWalletChange(e.target.value)}
-								onKeyDown={(e) => e.key === 'Enter' && isValidSolanaAddress(walletAddress) && handleAnalyze()}
-								className='h-10 md:h-12 text-sm md:text-base bg-foreground/10 border-foreground/20 text-foreground placeholder:text-foreground/40 focus:border-sendo-orange transition-all'
-								style={{ borderRadius: 0 }}
-							/>
-							<Button
-								onClick={handleAnalyze}
-								disabled={!isValidSolanaAddress(walletAddress)}
-								className='h-10 md:h-12 px-6 md:px-8 whitespace-nowrap bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red text-white'
-								style={{
-									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
-									borderRadius: 0,
-								}}
-							>
-								<Search className='w-4 h-4 md:w-5 md:h-5 mr-2' />
-								SCAN NOW
-							</Button>
-						</div>
-					</div>
-
-					<p className='text-xs sm:text-sm text-foreground/40 mt-2 sm:mt-3'>
-						Example: 2fg5QD1eD7rzNNCsvnhmXFm5hqNgwTTG8p7kQ6f3rx6f
-					</p>
+					<WalletInput onAnalyze={handleAnalyze} isAnalyzing={false} />
 
 					{/* Top 3 Loosers */}
 					<motion.div
@@ -166,39 +109,48 @@ export default function HeroSection() {
 						transition={{ delay: 1.3, duration: 0.8 }}
 						className='mt-4 sm:mt-6 md:mt-8'
 					>
-						<div className='flex items-center justify-center gap-2 mb-2 sm:mb-3'>
+						<div className='flex items-center justify-center gap-2 mb-3 sm:mb-4'>
 							<Crown className='w-4 h-4 sm:w-5 sm:h-5 text-sendo-orange' />
 							<p className='text-xs sm:text-sm md:text-base text-foreground/60 uppercase tracking-wider title-font'>
-								BIGGEST LOOSERS TODAY
+								BIGGEST LOOSERS THIS WEEK
 							</p>
 						</div>
 
 						<div className='grid grid-cols-3 gap-2 sm:gap-3 md:gap-4'>
-							{topLoosers.map((looser) => (
+							{topLoosers.map((looser, index) => (
 								<button
 									key={looser.rank}
-									className='bg-foreground/5 border border-foreground/10 p-2 sm:p-3 md:p-4 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all cursor-pointer group'
+									onClick={handleLooserClick}
+									className='bg-foreground/5 border border-foreground/10 p-3 sm:p-4 md:p-5 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all cursor-pointer group'
 									style={{ borderRadius: 0 }}
 									type='button'
 								>
-									<div className='flex items-center justify-center gap-1 sm:gap-2 mb-1 sm:mb-2'>
-										<Crown
-											className={`w-3 h-3 sm:w-4 sm:h-4 ${getRankColor(looser.rank)} group-hover:scale-110 transition-transform`}
-										/>
-										<span
-											className={`text-base sm:text-lg md:text-xl font-bold ${getRankColor(looser.rank)} title-font numeric-font`}
+									<div className='flex items-center justify-center mb-2 sm:mb-3'>
+										<div
+											className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 flex items-center justify-center ${
+												index === 0
+													? 'bg-gradient-to-br from-[#FFD700] to-[#FFA500]'
+													: index === 1
+														? 'bg-gradient-to-br from-[#C0C0C0] to-[#808080]'
+														: 'bg-gradient-to-br from-[#CD7F32] to-[#8B4513]'
+											}`}
+											style={{
+												clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
+											}}
 										>
-											#{looser.rank}
-										</span>
+											<span className='text-xl sm:text-2xl md:text-3xl font-bold text-black title-font numeric-font'>
+												#{index + 1}
+											</span>
+										</div>
 									</div>
-									<p className='text-[9px] sm:text-[10px] md:text-xs text-foreground/60 font-mono mb-1 sm:mb-2'>
+									<p className='text-[10px] sm:text-xs md:text-sm text-foreground/60 font-mono mb-2'>
 										{formatWallet(looser.wallet)}
 									</p>
-									<p className='text-xs sm:text-sm md:text-base font-bold text-sendo-red group-hover:scale-105 transition-transform title-font numeric-font'>
+									<p className='text-sm sm:text-base md:text-lg font-bold text-sendo-red group-hover:scale-105 transition-transform title-font numeric-font'>
 										$
-										{looser.missed >= 1000000
-											? `${(looser.missed / 1000000).toFixed(2)}M`
-											: `${(looser.missed / 1000).toFixed(0)}k`}
+										{(looser.total_missed_usd || 0) >= 1000000
+											? `${((looser.total_missed_usd || 0) / 1000000).toFixed(2)}M`
+											: `${((looser.total_missed_usd || 0) / 1000).toFixed(2)}K`}
 									</p>
 								</button>
 							))}

@@ -4,6 +4,9 @@ import type {
 	StartAnalysisResponse,
 	AnalysisStatusResponse,
 	AnalysisResultsResponse,
+	ShameLeaderboardResponse,
+	FameLeaderboardResponse,
+	LeaderboardPeriod,
 } from '@sendo-labs/plugin-sendo-analyser';
 
 interface ApiWrappedResponse<T> {
@@ -69,6 +72,52 @@ export class AnalysisClientService {
 
 		if (!response.success || !response.data) {
 			throw new Error('Failed to fetch analysis results');
+		}
+
+		return response.data;
+	}
+
+	/**
+	 * Get Hall of Shame leaderboard (top wallets by missed ATH gains)
+	 */
+	public async getShameLeaderboard(
+		limit: number = 20,
+		period: LeaderboardPeriod = 'all',
+	): Promise<ShameLeaderboardResponse> {
+		const params = new URLSearchParams({
+			limit: limit.toString(),
+			period,
+		});
+
+		const path = `/api/agents/${ANALYSER_AGENT_NAME}/plugins/plugin-sendo-analyser/leaderboard/shame?${params.toString()}`;
+
+		const response = await this.elizaService.apiRequest<ApiWrappedResponse<ShameLeaderboardResponse>>(path, 'GET');
+
+		if (!response.success || !response.data) {
+			throw new Error('Failed to fetch shame leaderboard');
+		}
+
+		return response.data;
+	}
+
+	/**
+	 * Get Hall of Fame leaderboard (top wallets by positive PnL)
+	 */
+	public async getFameLeaderboard(
+		limit: number = 20,
+		period: LeaderboardPeriod = 'all',
+	): Promise<FameLeaderboardResponse> {
+		const params = new URLSearchParams({
+			limit: limit.toString(),
+			period,
+		});
+
+		const path = `/api/agents/${ANALYSER_AGENT_NAME}/plugins/plugin-sendo-analyser/leaderboard/fame?${params.toString()}`;
+
+		const response = await this.elizaService.apiRequest<ApiWrappedResponse<FameLeaderboardResponse>>(path, 'GET');
+
+		if (!response.success || !response.data) {
+			throw new Error('Failed to fetch fame leaderboard');
 		}
 
 		return response.data;

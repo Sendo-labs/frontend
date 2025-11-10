@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Crown, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -14,13 +13,10 @@ import PerformanceMetrics from '@/components/analyzer/performance-metrics';
 import TokenDistribution from '@/components/analyzer/token-distribution';
 import MiniChartATH from '@/components/analyzer/mini-chart-ath';
 import TokenAnalysisList from '@/components/analyzer/token-analysis-list';
-import CTAActivateWorker from '@/components/analyzer/cta-activate-worker';
 import PageWrapper from '@/components/shared/page-wrapper';
 import { useWalletAnalysis } from '@/hooks/use-wallet-analysis';
 
 export default function AnalyzerPage() {
-	const searchParams = useSearchParams();
-	const [wallet, setWallet] = useState('');
 	const [analyzingWallet, setAnalyzingWallet] = useState('');
 
 	// Use the wallet analysis hook
@@ -40,17 +36,8 @@ export default function AnalyzerPage() {
 		}
 	}, [results]);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: no need to define dependencies
-	useEffect(() => {
-		const walletParam = searchParams.get('wallet');
-
-		if (walletParam?.trim()) {
-			setWallet(walletParam);
-			setAnalyzingWallet(walletParam);
-		}
-	}, [searchParams]);
-
-	const handleAnalyze = (walletAddress = wallet) => {
+	// Handle wallet analysis request from WalletInput
+	const handleAnalyze = (walletAddress: string) => {
 		if (!walletAddress.trim()) return;
 
 		console.log('[AnalyzerPage] Starting analysis for:', walletAddress);
@@ -315,12 +302,7 @@ export default function AnalyzerPage() {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ delay: 0.2, duration: 0.8 }}
 			>
-				<WalletInput
-					wallet={wallet}
-					setWallet={setWallet}
-					onAnalyze={() => handleAnalyze()}
-					isAnalyzing={isAnalyzing}
-				/>
+				<WalletInput onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} />
 			</motion.div>
 
 			{/* Error Message */}
@@ -395,9 +377,6 @@ export default function AnalyzerPage() {
 								)}
 							</div>
 						)}
-
-						{/* CTA Activate Worker */}
-						{isCompleted && <CTAActivateWorker />}
 					</div>
 				</>
 			)}

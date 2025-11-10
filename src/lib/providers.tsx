@@ -1,6 +1,7 @@
 'use client';
 
 import { PrivyProvider } from '@privy-io/react-auth';
+import { toSolanaWalletConnectors } from '@privy-io/react-auth/solana';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type * as React from 'react';
 import { Toaster } from 'sonner';
@@ -34,6 +35,19 @@ export function GlobalProviders({ children }: GlobalProvidersProps) {
 				appearance: {
 					theme: 'light',
 					accentColor: '#FF6B00',
+					// Show wallet login first (not email)
+					showWalletLoginFirst: true,
+					// Solana only (no Ethereum)
+					walletChainType: 'solana-only',
+				},
+				// External Solana wallets configuration (Phantom, Solflare, etc.)
+				externalWallets: {
+					solana: {
+						connectors: toSolanaWalletConnectors({
+							// Automatically detect all installed Solana wallets
+							shouldAutoConnect: true,
+						}),
+					},
 				},
 			}}
 		>
