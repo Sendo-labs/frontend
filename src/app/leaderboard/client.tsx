@@ -2,19 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, TrendingDown, TrendingUp, Crown, Skull } from 'lucide-react';
+import { Trophy, TrendingDown, Crown, Skull } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { FullScreenLoader } from '@/components/shared/loader';
 import PageWrapper from '@/components/shared/page-wrapper';
-
-interface LeaderboardEntry {
-	wallet: string;
-	total_missed_usd?: number;
-	total_gains_usd?: number;
-	rank: string;
-	badge?: 'diamond' | 'gold' | 'silver' | 'bronze';
-}
+import { getShameLeaderboard, getFameLeaderboard } from '@/actions/analyzer/get';
+import type { LeaderboardEntry } from '@sendo-labs/plugin-sendo-analyser';
 
 interface LeaderboardData {
 	shame: LeaderboardEntry[];
@@ -23,137 +16,61 @@ interface LeaderboardData {
 
 export default function Leaderboard() {
 	const [activeTab, setActiveTab] = useState<'shame' | 'fame'>('shame');
-	const [isLoading, setIsLoading] = useState(true);
-	const [leaderboardData, setLeaderboardData] = useState<LeaderboardData | null>(null);
+	const [period, setPeriod] = useState<'all' | 'month' | 'week'>('week');
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
+	const [leaderboardData, setLeaderboardData] = useState<LeaderboardData>({
+		shame: [],
+		fame: [],
+	});
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		fetchLeaderboard();
-	}, []);
+	}, [period, activeTab]);
 
 	const fetchLeaderboard = async () => {
-		// Mock API call
-		setTimeout(() => {
-			setLeaderboardData({
-				shame: [
-					{
-						wallet: '9W3xHj9kUK7eJXR3QMNz6T8f2A4vPkLmC5dN1sB6wX9Y',
-						total_missed_usd: 98210,
-						rank: '🐳 Elite of Pain',
-						badge: 'diamond',
-					},
-					{
-						wallet: '7hpWn64kb0q5nro2ZGX9TkP3Y8fLmA1sC6dN4wB5xJ2H',
-						total_missed_usd: 67834,
-						rank: '💀 Certified Bagholder',
-						badge: 'gold',
-					},
-					{
-						wallet: '5ZV3HcSDmmSoump8N2mT6P9fK4rLvC3dN1sB7wX8yM4K',
-						total_missed_usd: 43810,
-						rank: '💎 Diamond Hands (Wrong Way)',
-						badge: 'silver',
-					},
-					{
-						wallet: '3qp2G1s4t8m9N6Y7K2P4F5rLmC1dN8sB3wX4yJ5H',
-						total_missed_usd: 38921,
-						rank: '🎯 Master of Mistiming',
-						badge: 'bronze',
-					},
-					{
-						wallet: '8TkP3Y2f4LmA5s1C6dN9wB2xJ7H3qp4G1s8t9m0N',
-						total_missed_usd: 32450,
-						rank: '📉 Professional Holder',
-					},
-					{
-						wallet: '6dN1sB7wX8yM4K2P9fK4rLvC3ZV3HcSDmmSoump8N',
-						total_missed_usd: 28730,
-						rank: '🤡 Clown Prince',
-					},
-					{
-						wallet: '4G1s8t9m0N6Y7K2P4F5rLmC1dN8sB3wX4yJ5H3qp2',
-						total_missed_usd: 24180,
-						rank: '🚀 Rocket to the Ground',
-					},
-					{
-						wallet: '2f4LmA5s1C6dN9wB2xJ7H3qp4G1s8t9m0N8TkP3Y',
-						total_missed_usd: 19560,
-						rank: '💸 Money Burner',
-					},
-					{
-						wallet: '7wX8yM4K2P9fK4rLvC3ZV3HcSDmmSoump8N6dN1sB',
-						total_missed_usd: 15320,
-						rank: '🎰 Casino Enthusiast',
-					},
-					{
-						wallet: '8t9m0N6Y7K2P4F5rLmC1dN8sB3wX4yJ5H3qp24G1s',
-						total_missed_usd: 12840,
-						rank: '🔥 Burn Master',
-					},
-				],
-				fame: [
-					{
-						wallet: '2Y9wX8hK7M4vPkN6dN1sB9fK3rLvC5ZV3HcSDmmSo',
-						total_gains_usd: 145320,
-						rank: '👑 Exit Legend',
-						badge: 'diamond',
-					},
-					{
-						wallet: '5H3qp4G1s8t9m0N6Y7K2P4F5rLmC1dN8sB3wX4yJ',
-						total_gains_usd: 98450,
-						rank: '🎯 Perfect Timer',
-						badge: 'gold',
-					},
-					{
-						wallet: '8N6dN1sB7wX8yM4K2P9fK4rLvC3ZV3HcSDmmSoump',
-						total_gains_usd: 76210,
-						rank: '💰 Profit Master',
-						badge: 'silver',
-					},
-					{
-						wallet: '1C6dN9wB2xJ7H3qp4G1s8t9m0N8TkP3Y2f4LmA5s',
-						total_gains_usd: 63840,
-						rank: '🚀 Moon Walker',
-						badge: 'bronze',
-					},
-					{
-						wallet: '9fK4rLvC3ZV3HcSDmmSoump8N6dN1sB7wX8yM4K2P',
-						total_gains_usd: 54720,
-						rank: '⚡ Lightning Seller',
-					},
-					{
-						wallet: '4yJ5H3qp24G1s8t9m0N6Y7K2P4F5rLmC1dN8sB3wX',
-						total_gains_usd: 47890,
-						rank: '🧠 Big Brain',
-					},
-					{
-						wallet: '7K2P4F5rLmC1dN8sB3wX4yJ5H3qp2G1s8t9m0N6Y',
-						total_gains_usd: 41230,
-						rank: '🎪 Circus Master',
-					},
-					{
-						wallet: '0N8TkP3Y2f4LmA5s1C6dN9wB2xJ7H3qp4G1s8t9m',
-						total_gains_usd: 36540,
-						rank: '💎 Diamond Hands (Right Way)',
-					},
-					{
-						wallet: '3ZV3HcSDmmSoump8N6dN1sB7wX8yM4K2P9fK4rLvC',
-						total_gains_usd: 29870,
-						rank: '🏆 Champion',
-					},
-					{
-						wallet: '6Y7K2P4F5rLmC1dN8sB3wX4yJ5H3qp24G1s8t9m0N',
-						total_gains_usd: 24590,
-						rank: '🌟 Star Player',
-					},
-				],
-			});
+		try {
+			setIsLoading(true);
+			setError(null);
+
+			// Fetch only the active leaderboard
+			if (activeTab === 'shame') {
+				const shameResult = await getShameLeaderboard(20, period);
+				if (!shameResult.success) {
+					throw new Error('Failed to fetch shame leaderboard');
+				}
+				setLeaderboardData((prev) => ({
+					...prev,
+					shame: shameResult.data.entries,
+				}));
+			} else {
+				const fameResult = await getFameLeaderboard(20, period);
+				if (!fameResult.success) {
+					throw new Error('Failed to fetch fame leaderboard');
+				}
+				setLeaderboardData((prev) => ({
+					...prev,
+					fame: fameResult.data.entries,
+				}));
+			}
+		} catch (err: any) {
+			console.error('Failed to fetch leaderboard:', err);
+			setError(err?.message || 'Failed to load leaderboard');
+		} finally {
 			setIsLoading(false);
-		}, 1000);
+		}
 	};
 
 	const formatWallet = (wallet: string) => {
 		return `${wallet.slice(0, 6)}...${wallet.slice(-6)}`;
+	};
+
+	const formatUSD = (value: number) => {
+		return (value / 1000).toLocaleString('en-US', {
+			minimumFractionDigits: 2,
+			maximumFractionDigits: 2,
+		});
 	};
 
 	const getBadgeColor = (badge: string) => {
@@ -171,11 +88,7 @@ export default function Leaderboard() {
 		}
 	};
 
-	if (isLoading) {
-		return <FullScreenLoader text='Loading Leaderboard Data...' />;
-	}
-
-	const currentData = activeTab === 'shame' ? leaderboardData?.shame : leaderboardData?.fame;
+	const currentData = activeTab === 'shame' ? leaderboardData.shame : leaderboardData.fame;
 
 	return (
 		<PageWrapper>
@@ -243,99 +156,197 @@ export default function Leaderboard() {
 				</button>
 			</motion.div>
 
-			{/* Leaderboard */}
-			<AnimatePresence mode='wait'>
-				<motion.div
-					key={activeTab}
-					initial={{ opacity: 0, y: 30 }}
-					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: -30 }}
-					transition={{ duration: 0.5 }}
-					className='space-y-4'
+			{/* Period Filter */}
+			<motion.div
+				initial={{ opacity: 0, y: 30 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ delay: 0.3, duration: 0.8 }}
+				className='flex gap-2 mb-8 max-w-md mx-auto justify-center'
+			>
+				<button
+					type='button'
+					onClick={() => setPeriod('all')}
+					className={`px-4 py-2 text-xs md:text-sm font-bold uppercase transition-all ${
+						period === 'all'
+							? 'bg-foreground text-background'
+							: 'bg-foreground/5 text-foreground/60 hover:bg-foreground/10'
+					}`}
+					style={{
+						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
+						borderRadius: 0,
+					}}
 				>
-					{currentData?.map((entry, index) => (
-						<motion.div
-							key={entry.wallet}
-							initial={{ opacity: 0, x: -30 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ delay: index * 0.05, duration: 0.5 }}
-							className={`relative overflow-hidden ${
-								entry.badge
-									? `bg-gradient-to-r ${getBadgeColor(entry.badge)} p-[2px]`
-									: 'bg-foreground/5 border border-foreground/10'
-							}`}
-							style={{ borderRadius: 0 }}
+					All Time
+				</button>
+				<button
+					type='button'
+					onClick={() => setPeriod('month')}
+					className={`px-4 py-2 text-xs md:text-sm font-bold uppercase transition-all ${
+						period === 'month'
+							? 'bg-foreground text-background'
+							: 'bg-foreground/5 text-foreground/60 hover:bg-foreground/10'
+					}`}
+					style={{
+						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
+						borderRadius: 0,
+					}}
+				>
+					This Month
+				</button>
+				<button
+					type='button'
+					onClick={() => setPeriod('week')}
+					className={`px-4 py-2 text-xs md:text-sm font-bold uppercase transition-all ${
+						period === 'week'
+							? 'bg-foreground text-background'
+							: 'bg-foreground/5 text-foreground/60 hover:bg-foreground/10'
+					}`}
+					style={{
+						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
+						borderRadius: 0,
+					}}
+				>
+					This Week
+				</button>
+			</motion.div>
+
+			{/* Leaderboard */}
+			{error && (
+				<div className='text-center text-red-500 mb-8'>
+					<p>Error loading leaderboard: {error}</p>
+				</div>
+			)}
+
+			{isLoading ? (
+				<div className='py-20'>
+					<div className='relative mx-auto w-40 h-16'>
+						{/* Background logo (grisé) */}
+						<div className='absolute inset-0 opacity-20'>
+							<img
+								src='https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/6ee61bcb6_SENDO_white2x.png'
+								alt='SENDO'
+								className='w-full h-full object-contain'
+							/>
+						</div>
+
+						{/* Logo avec masque et gradient animé */}
+						<div
+							className='absolute inset-0'
+							style={{
+								maskImage:
+									'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/6ee61bcb6_SENDO_white2x.png)',
+								maskSize: 'contain',
+								maskRepeat: 'no-repeat',
+								maskPosition: 'center',
+								WebkitMaskImage:
+									'url(https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/6ee61bcb6_SENDO_white2x.png)',
+								WebkitMaskSize: 'contain',
+								WebkitMaskRepeat: 'no-repeat',
+								WebkitMaskPosition: 'center',
+							}}
 						>
-							<div className='bg-background p-4 md:p-6' style={{ borderRadius: 0 }}>
-								<div className='flex items-center gap-4 md:gap-6'>
-									{/* Rank Badge */}
-									<div
-										className={`w-12 h-12 md:w-16 md:h-16 flex items-center justify-center flex-shrink-0 ${
-											entry.badge ? `bg-gradient-to-r ${getBadgeColor(entry.badge)}` : 'bg-foreground/10'
-										}`}
-										style={{
-											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
-										}}
-									>
-										{index < 3 ? (
-											<Crown
-												className={`w-6 h-6 md:w-8 md:h-8 ${
-													entry.badge === 'diamond'
-														? 'text-[#0052cc]'
-														: entry.badge === 'gold'
-															? 'text-[#cc9900]'
-															: entry.badge === 'silver'
-																? 'text-[#888888]'
-																: 'text-[#cc6600]'
-												}`}
-											/>
-										) : (
-											<span className='text-lg md:text-2xl font-bold text-foreground title-font numeric-font'>
-												#{index + 1}
-											</span>
-										)}
-									</div>
-
-									{/* Wallet Info */}
-									<div className='flex-1 min-w-0'>
-										<div className='flex items-center gap-2 mb-1'>
-											<p className='text-base md:text-lg font-bold text-foreground font-mono truncate'>
-												{formatWallet(entry.wallet)}
-											</p>
-										</div>
-										<p className='text-sm md:text-base text-foreground/60'>{entry.rank}</p>
-									</div>
-
-									{/* Amount */}
-									<div className='text-right flex-shrink-0'>
-										<div className='flex items-center gap-2 mb-1'>
-											{activeTab === 'shame' ? (
-												<TrendingDown className='w-5 h-5 text-sendo-red' />
+							<div
+								className='absolute inset-0 animate-fill-left-right bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red'
+								style={{
+									filter: 'drop-shadow(0 0 15px rgba(255, 90, 31, 0.6))',
+								}}
+							/>
+						</div>
+					</div>
+				</div>
+			) : (
+				<AnimatePresence mode='wait'>
+					<motion.div
+						key={activeTab}
+						initial={{ opacity: 0, y: 30 }}
+						animate={{ opacity: 1, y: 0 }}
+						exit={{ opacity: 0, y: -30 }}
+						transition={{ duration: 0.5 }}
+						className='space-y-4'
+					>
+						{currentData?.map((entry, index) => (
+							<motion.div
+								key={entry.wallet}
+								initial={{ opacity: 0, x: -30 }}
+								animate={{ opacity: 1, x: 0 }}
+								transition={{ delay: index * 0.05, duration: 0.5 }}
+								className={`relative overflow-hidden ${
+									entry.badge
+										? `bg-gradient-to-r ${getBadgeColor(entry.badge)} p-[2px]`
+										: 'bg-foreground/5 border border-foreground/10'
+								}`}
+								style={{ borderRadius: 0 }}
+							>
+								<div className='bg-background p-4 md:p-6' style={{ borderRadius: 0 }}>
+									<div className='flex items-center gap-4 md:gap-6'>
+										{/* Rank Badge */}
+										<div
+											className={`w-12 h-12 md:w-16 md:h-16 flex items-center justify-center flex-shrink-0 ${
+												entry.badge ? `bg-gradient-to-r ${getBadgeColor(entry.badge)}` : 'bg-foreground/10'
+											}`}
+											style={{
+												clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+											}}
+										>
+											{index < 3 ? (
+												<Crown
+													className={`w-6 h-6 md:w-8 md:h-8 ${
+														entry.badge === 'diamond'
+															? 'text-[#0052cc]'
+															: entry.badge === 'gold'
+																? 'text-[#cc9900]'
+																: entry.badge === 'silver'
+																	? 'text-[#888888]'
+																	: 'text-[#cc6600]'
+													}`}
+												/>
 											) : (
-												<TrendingUp className='w-5 h-5 text-sendo-green' />
+												<span className='text-lg md:text-2xl font-bold text-foreground title-font numeric-font'>
+													#{index + 1}
+												</span>
 											)}
-											<p
-												className={`text-xl md:text-3xl font-bold title-font numeric-font ${
-													activeTab === 'shame' ? 'text-sendo-red' : 'text-sendo-green'
-												}`}
-											>
-												$
-												{activeTab === 'shame'
-													? ((entry.total_missed_usd || 0) / 1000).toFixed(1)
-													: ((entry.total_gains_usd || 0) / 1000).toFixed(1)}
-												K
+										</div>
+
+										{/* Wallet Info */}
+										<div className='flex-1 min-w-0'>
+											<div className='flex items-center gap-2 mb-1'>
+												<p className='text-base md:text-lg font-bold text-foreground font-mono truncate'>
+													{formatWallet(entry.wallet)}
+												</p>
+											</div>
+											<p className='text-sm md:text-base text-foreground/60'>{entry.rank}</p>
+										</div>
+
+										{/* Amount */}
+										<div className='text-right flex-shrink-0'>
+											<p className='text-xs text-foreground/40 mb-2'>
+												{entry.days_since_analysis === 0
+													? 'Analyzed today'
+													: entry.days_since_analysis === 1
+														? 'Analyzed yesterday'
+														: `Analyzed ${entry.days_since_analysis} days ago`}
+											</p>
+											<div className='flex items-center justify-end gap-2 mb-1'>
+												<TrendingDown className='w-5 h-5 text-sendo-red' />
+												<p className='text-xl md:text-3xl font-bold title-font numeric-font text-sendo-red'>
+													$
+													{activeTab === 'shame'
+														? formatUSD(entry.total_missed_usd || 0)
+														: formatUSD(entry.total_gains_usd || 0)}
+													K
+												</p>
+											</div>
+											<p className='text-xs md:text-sm text-foreground/40 uppercase'>
+												{activeTab === 'shame' ? 'MISSED' : 'LOST'}
 											</p>
 										</div>
-										<p className='text-xs md:text-sm text-foreground/40 uppercase'>
-											{activeTab === 'shame' ? 'MISSED' : 'GAINED'}
-										</p>
 									</div>
 								</div>
-							</div>
-						</motion.div>
-					))}
-				</motion.div>
-			</AnimatePresence>
+							</motion.div>
+						))}
+					</motion.div>
+				</AnimatePresence>
+			)}
 
 			{/* CTA */}
 			<motion.div

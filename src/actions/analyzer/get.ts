@@ -67,3 +67,45 @@ export async function getAnalysisResults(address: string, page: number = 1, limi
 		return await analysisClient.getAnalysisResults(address, page, limit);
 	}, false);
 }
+
+/**
+ * Get Hall of Shame leaderboard (top wallets by missed ATH gains)
+ * @param limit - Number of entries to return (default: 20)
+ * @param period - Time period filter (default: 'all')
+ * @returns The shame leaderboard response
+ */
+export async function getShameLeaderboard(limit: number = 20, period: 'all' | 'month' | 'week' = 'all') {
+	return withAction(async () => {
+		const apiKeyResult = await getAnalyserOpenRouterApiKey();
+		if (!apiKeyResult.success || !apiKeyResult.data) {
+			throw new Error('Analyzer not configured');
+		}
+
+		const baseUrl = ANALYSER_BASE_URL;
+		const elizaService = new ElizaService(apiKeyResult.data, baseUrl);
+		const analysisClient = new AnalysisClientService(elizaService);
+
+		return await analysisClient.getShameLeaderboard(limit, period);
+	}, false);
+}
+
+/**
+ * Get Hall of Fame leaderboard (top wallets by positive PnL)
+ * @param limit - Number of entries to return (default: 20)
+ * @param period - Time period filter (default: 'all')
+ * @returns The fame leaderboard response
+ */
+export async function getFameLeaderboard(limit: number = 20, period: 'all' | 'month' | 'week' = 'all') {
+	return withAction(async () => {
+		const apiKeyResult = await getAnalyserOpenRouterApiKey();
+		if (!apiKeyResult.success || !apiKeyResult.data) {
+			throw new Error('Analyzer not configured');
+		}
+
+		const baseUrl = ANALYSER_BASE_URL;
+		const elizaService = new ElizaService(apiKeyResult.data, baseUrl);
+		const analysisClient = new AnalysisClientService(elizaService);
+
+		return await analysisClient.getFameLeaderboard(limit, period);
+	}, false);
+}

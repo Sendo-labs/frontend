@@ -2,11 +2,12 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { TrendingDown, Skull, Share2, Twitter, Send, Download, MessageCircle } from 'lucide-react';
+import { TrendingDown, Skull, Share2, Twitter, Send, Download, MessageCircle, Zap, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CountUp } from '@/components/ui/count-up';
 import { downloadPainCard, getShareText, type PainCardData } from '@/lib/pain-card-generator';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 interface TokenData {
 	symbol: string;
@@ -230,7 +231,7 @@ export default function ResultHeroCard({ result, isProcessing = false }: ResultH
 								<div className='absolute inset-0 flex items-center justify-center'>
 									<Button
 										onClick={handleDownload}
-										disabled={isGenerating}
+										disabled={isGenerating || isProcessing}
 										className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red text-white h-10 md:h-12 px-4 md:px-6'
 										style={{
 											clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
@@ -256,6 +257,7 @@ export default function ResultHeroCard({ result, isProcessing = false }: ResultH
 							<div className='grid grid-cols-3 gap-2'>
 								<Button
 									onClick={handleShareTwitter}
+									disabled={isProcessing}
 									className='bg-[#1DA1F2] text-white h-8 md:h-9 px-2 md:px-3 flex items-center gap-1 md:gap-2'
 									style={{ borderRadius: 0 }}
 								>
@@ -264,6 +266,7 @@ export default function ResultHeroCard({ result, isProcessing = false }: ResultH
 								</Button>
 								<Button
 									onClick={handleShareTelegram}
+									disabled={isProcessing}
 									className='bg-[#0088cc] text-white h-8 md:h-9 px-2 md:px-3 flex items-center gap-1 md:gap-2'
 									style={{ borderRadius: 0 }}
 								>
@@ -272,6 +275,7 @@ export default function ResultHeroCard({ result, isProcessing = false }: ResultH
 								</Button>
 								<Button
 									onClick={handleShareDiscord}
+									disabled={isProcessing}
 									className='bg-[#5865F2] text-white h-8 md:h-9 px-2 md:px-3 flex items-center gap-1 md:gap-2'
 									style={{ borderRadius: 0 }}
 								>
@@ -282,6 +286,44 @@ export default function ResultHeroCard({ result, isProcessing = false }: ResultH
 
 							<p className='text-foreground/40 text-xs mt-3'>Challenge a friend to analyze their wallet 👀</p>
 						</div>
+					</div>
+				</div>
+
+				{/* CTA Activate Worker - Full Width Below */}
+				<div
+					className='mt-6 bg-gradient-to-br from-sendo-orange/10 via-sendo-red/10 to-sendo-dark-red/10 border border-sendo-orange/30 p-4 md:p-6 relative overflow-hidden group hover:border-sendo-orange/50 transition-all'
+					style={{ borderRadius: 0 }}
+				>
+					<div className='absolute top-0 right-0 w-32 h-32 bg-sendo-orange/5 blur-3xl' />
+
+					<div className='relative z-10 max-w-2xl mx-auto text-center'>
+						<div className='flex items-center justify-center gap-2 mb-3'>
+							<div
+								className='w-8 h-8 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red flex items-center justify-center'
+								style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)' }}
+							>
+								<Zap className='w-4 h-4 text-white' />
+							</div>
+							<h3 className='text-foreground uppercase text-sm font-bold title-font'>TIRED OF MISSING ATHS?</h3>
+						</div>
+
+						<p className='text-foreground/70 text-sm mb-4 whitespace-nowrap'>
+							Activate the Worker to get real-time suggestions and automate your exit strategy. Never miss a top again
+							🎯
+						</p>
+
+						<Link href='/worker'>
+							<Button
+								className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-10 md:h-12 px-6 md:px-8 group title-font'
+								style={{
+									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
+									borderRadius: 0,
+								}}
+							>
+								<span className='text-sm md:text-base'>ACTIVATE WORKER</span>
+								<ArrowRight className='w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform' />
+							</Button>
+						</Link>
 					</div>
 				</div>
 			</div>
