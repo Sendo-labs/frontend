@@ -126,6 +126,24 @@ export default function MissingAthSection() {
 									className='block w-auto object-contain h-6 sm:h-7 md:h-8 lg:h-[38px]'
 								/>
 							</motion.a>
+
+							<motion.a
+								href='https://ferno.ag/'
+								target='_blank'
+								rel='noopener noreferrer'
+								initial={{ opacity: 0, scale: 0.9 }}
+								whileInView={{ opacity: 1, scale: 1 }}
+								viewport={{ once: true }}
+								transition={{ duration: 0.4, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+								style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
+								className='opacity-80 hover:opacity-100 hover:brightness-75 transition-all duration-300 flex items-center cursor-pointer'
+							>
+								<img
+									src='/logos_partners/ferno_logo.png'
+									alt='Ferno'
+									className='block w-auto object-contain h-6 sm:h-7 md:h-8 lg:h-[38px]'
+								/>
+							</motion.a>
 						</div>
 					</div>
 				</motion.div>
