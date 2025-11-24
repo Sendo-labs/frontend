@@ -1,14 +1,14 @@
 'use client';
 
+import type { UUID } from 'node:crypto';
 import type { Message } from '@elizaos/api-client';
-import type { UUID } from 'crypto';
+import { stringToUuid } from '@elizaos/core';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { io, type Socket } from 'socket.io-client';
-import type { AgentMessage, UseElizaChatParams, UseElizaChatReturn } from '@/types/agent';
-import { stringToUuid } from '@elizaos/core';
 import { getAnalyserOpenRouterApiKey } from '@/actions/openrouter/get';
-import { useElizaClient } from './use-eliza-client';
 import { ANALYSER_BASE_URL } from '@/lib/constants';
+import type { AgentMessage, UseElizaChatParams, UseElizaChatReturn } from '@/types/agent';
+import { useElizaClient } from './use-eliza-client';
 
 /**
  * Hook to manage chat with an Eliza agent

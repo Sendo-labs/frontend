@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { Crown, Trophy } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { getShameLeaderboard } from '@/actions/analyzer/get';
 import type { LeaderboardEntry } from '@sendo-labs/plugin-sendo-analyser';
+import { motion } from 'framer-motion';
+import { Crown, Trophy } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { getShameLeaderboard } from '@/actions/analyzer/get';
+import { Button } from '@/components/ui/button';
 
 // Types
 interface LeaderboardEntryWithMeta extends LeaderboardEntry {

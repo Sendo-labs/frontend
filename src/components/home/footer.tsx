@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowUp, Send, Mail, MessageSquare, Twitter } from 'lucide-react';
+import { ArrowUp, Mail, Twitter } from 'lucide-react';
 import { SOCIAL_LINKS } from '@/lib/constants';
 
 const socialPlatforms = [

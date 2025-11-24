@@ -1,5 +1,5 @@
-import type { OpenRouterSecret } from '@/types/openrouter';
 import { sanitizeUserId } from '@/lib/utils';
+import type { OpenRouterSecret } from '@/types/openrouter';
 
 const KEYS = ['api_key', 'hash'];
 

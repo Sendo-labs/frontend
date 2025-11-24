@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
-import { Geist } from 'next/font/google';
-import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
+import { Geist, IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
 import './globals.css';
-import Navigation from '@/components/navigation';
 import AgentChat from '@/components/agent-chat';
-import { GlobalProviders } from '@/lib/providers';
+import Navigation from '@/components/navigation';
 import CustomCursor from '@/components/ui/custom-cursor';
+import { GlobalProviders } from '@/lib/providers';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',

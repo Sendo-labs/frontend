@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { TrendingDown, Skull, Share2, Twitter, Send, Download, MessageCircle, Zap, ArrowRight } from 'lucide-react';
+import { ArrowRight, Download, MessageCircle, Send, Share2, Skull, TrendingDown, Twitter, Zap } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { CountUp } from '@/components/ui/count-up';
 import { downloadPainCard, getShareText, type PainCardData } from '@/lib/pain-card-generator';
-import { toast } from 'sonner';
-import Link from 'next/link';
 
 interface TokenData {
 	symbol: string;

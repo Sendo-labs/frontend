@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Star, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';

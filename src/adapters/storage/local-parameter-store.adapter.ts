@@ -4,9 +4,9 @@
  * Perfect for local development without AWS dependencies
  */
 
-import fs from 'fs/promises';
-import path from 'path';
-import { IParameterStore, ParameterType, ParameterMetadata } from '@/interfaces/storage/iparameter-store';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import type { IParameterStore, ParameterMetadata, ParameterType } from '@/interfaces/storage/iparameter-store';
 
 interface StoredParameter {
 	name: string;
@@ -33,7 +33,7 @@ export class LocalParameterStoreAdapter implements IParameterStore {
 	private async ensureStorageDir(): Promise<void> {
 		try {
 			await fs.mkdir(this.storageDir, { recursive: true });
-		} catch (error) {
+		} catch (_error) {
 			// Ignore if directory already exists
 		}
 	}
@@ -176,7 +176,7 @@ export class LocalParameterStoreAdapter implements IParameterStore {
 					result.set(param.name, param.value);
 				}
 			}
-		} catch (error) {
+		} catch (_error) {
 			// Return empty map if directory doesn't exist
 		}
 
@@ -243,7 +243,7 @@ export class LocalParameterStoreAdapter implements IParameterStore {
 					names.push(param.name);
 				}
 			}
-		} catch (error) {
+		} catch (_error) {
 			// Return empty array if directory doesn't exist
 		}
 

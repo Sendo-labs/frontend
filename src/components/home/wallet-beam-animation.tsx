@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 
 // Types pour les wallets
 interface WalletCard {
@@ -22,7 +22,7 @@ function generateWalletAddress(): string {
 
 // Génère du code lié à Sendo au lieu de code générique
 function generateSendoCode(width: number, height: number): string {
-	const codeChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789(){}[]<>;:,._-+=!@#$%^&*|\\/"\'`~?';
+	const _codeChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789(){}[]<>;:,._-+=!@#$%^&*|\\/"\'`~?';
 	const randInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 	const pick = (arr: string[]) => arr[randInt(0, arr.length - 1)];
 
@@ -84,7 +84,7 @@ function generateSendoCode(width: number, height: number): string {
 	const totalChars = width * height;
 	while (flow.length < totalChars + width) {
 		const extra = pick(library).replace(/\s+/g, ' ').trim();
-		flow += ' ' + extra;
+		flow += ` ${extra}`;
 	}
 
 	let out = '';
@@ -182,7 +182,7 @@ export default function WalletBeamAnimation() {
 					this.cardLineWidth = (cardWidth + cardGap) * cardCount;
 				}
 
-				createWalletWrapper(index: number) {
+				createWalletWrapper(_index: number) {
 					const wrapper = document.createElement('div');
 					wrapper.className = 'wallet-wrapper';
 					wrapper.style.cssText = `
@@ -739,8 +739,8 @@ export default function WalletBeamAnimation() {
 				setupCanvas() {
 					this.canvas.width = this.w;
 					this.canvas.height = this.h;
-					this.canvas.style.width = this.w + 'px';
-					this.canvas.style.height = this.h + 'px';
+					this.canvas.style.width = `${this.w}px`;
+					this.canvas.style.height = `${this.h}px`;
 					this.ctx.clearRect(0, 0, this.w, this.h);
 				}
 
@@ -1088,7 +1088,7 @@ export default function WalletBeamAnimation() {
 					particleSystemRef.current.renderer.dispose();
 				}
 			}
-			if (scannerRef.current && scannerRef.current.animationId) {
+			if (scannerRef.current?.animationId) {
 				cancelAnimationFrame(scannerRef.current.animationId);
 			}
 		};

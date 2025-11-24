@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import type { LeaderboardEntry } from '@sendo-labs/plugin-sendo-analyser';
 import { motion } from 'framer-motion';
 import { Crown } from 'lucide-react';
-import { createPageUrl } from '@/lib/utils';
-import WalletInput from '@/components/analyzer/wallet-input';
+import { useEffect, useState } from 'react';
 import { getShameLeaderboard } from '@/actions/analyzer/get';
-import type { LeaderboardEntry } from '@sendo-labs/plugin-sendo-analyser';
+import WalletInput from '@/components/analyzer/wallet-input';
+import { createPageUrl } from '@/lib/utils';
 
 export default function HeroSection() {
 	const [topLoosers, setTopLoosers] = useState<LeaderboardEntry[]>([]);

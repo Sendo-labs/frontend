@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Users, TrendingDown, DollarSign, Wallet } from 'lucide-react';
+import { DollarSign, TrendingDown, Users, Wallet } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface Stat {
 	icon: React.ComponentType<{ className?: string }>;

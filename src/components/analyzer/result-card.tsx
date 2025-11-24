@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { TrendingDown } from 'lucide-react';
+import React from 'react';
 
 interface TokenData {
 	symbol: string;

@@ -1,8 +1,7 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
-import { PieChart, TrendingUp, TrendingDown } from 'lucide-react';
+import { PieChart, TrendingDown, TrendingUp } from 'lucide-react';
 import { CountUp } from '@/components/ui/count-up';
 
 interface DistributionData {

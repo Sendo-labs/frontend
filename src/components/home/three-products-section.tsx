@@ -1,9 +1,8 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
+import { ArrowRight, Lock, Target, TrendingDown, Zap } from 'lucide-react';
 import Link from 'next/link';
-import { ArrowRight, Zap, TrendingDown, Target, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface Product {

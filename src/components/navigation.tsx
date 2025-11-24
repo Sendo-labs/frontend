@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { LoginButton } from './auth/login';
 
@@ -50,7 +50,7 @@ export default function Navigation() {
 	// Fermer le menu mobile lors du changement de route
 	useEffect(() => {
 		setMobileMenuOpen(false);
-	}, [pathname]);
+	}, []);
 
 	// Hide navigation on homepage (it has its own navbar)
 	if (pathname === '/') {

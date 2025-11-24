@@ -1,8 +1,8 @@
 'use server';
 
-import { withAction } from '@/lib/wrapper/with-action';
-import { getWorkerCreationTemplate } from '@/lib/agents/creation-template';
 import { createAgent } from '@/actions/agents/create';
+import { getWorkerCreationTemplate } from '@/lib/agents/creation-template';
+import { withAction } from '@/lib/wrapper/with-action';
 
 /**
  * Create a new worker agent

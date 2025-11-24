@@ -1,13 +1,13 @@
-import { ANALYSER_AGENT_NAME } from '@/lib/constants';
-import type { ElizaService } from './eliza.service';
 import type {
-	StartAnalysisResponse,
-	AnalysisStatusResponse,
 	AnalysisResultsResponse,
-	ShameLeaderboardResponse,
+	AnalysisStatusResponse,
 	FameLeaderboardResponse,
 	LeaderboardPeriod,
+	ShameLeaderboardResponse,
+	StartAnalysisResponse,
 } from '@sendo-labs/plugin-sendo-analyser';
+import { ANALYSER_AGENT_NAME } from '@/lib/constants';
+import type { ElizaService } from './eliza.service';
 
 interface ApiWrappedResponse<T> {
 	success: boolean;

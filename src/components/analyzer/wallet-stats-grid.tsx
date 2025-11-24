@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Activity, Wallet, Image as ImageIcon, Coins } from 'lucide-react';
+import { Activity, Coins, Image as ImageIcon, Wallet } from 'lucide-react';
 import { CountUp } from '@/components/ui/count-up';
 
 interface WalletStats {

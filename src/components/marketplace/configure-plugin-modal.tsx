@@ -1,9 +1,10 @@
-import React, { FormEvent, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { CheckCircle, Eye, EyeOff, X } from 'lucide-react';
+import type React from 'react';
+import { type FormEvent, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Plugin } from '@/types/plugins';
+import type { Plugin } from '@/types/plugins';
 
 interface ConfigurePluginModalProps {
 	plugin: Plugin;
@@ -111,45 +112,40 @@ export default function ConfigurePluginModal({ plugin, onClose, onComplete }: Co
 							</div>
 						) : (
 							<form onSubmit={handleSubmit} className='space-y-6'>
-								{plugin.configFields &&
-									plugin.configFields.map((field) => (
-										<div key={field.name}>
-											<label htmlFor={field.name} className='block mb-2'>
-												<span className='text-foreground font-bold text-sm uppercase'>
-													{field.label} {field.required && <span className='text-sendo-red'>*</span>}
-												</span>
-												{field.description && (
-													<span className='block text-foreground/60 text-xs mt-1'>{field.description}</span>
-												)}
-											</label>
+								{plugin.configFields?.map((field) => (
+									<div key={field.name}>
+										<label htmlFor={field.name} className='block mb-2'>
+											<span className='text-foreground font-bold text-sm uppercase'>
+												{field.label} {field.required && <span className='text-sendo-red'>*</span>}
+											</span>
+											{field.description && (
+												<span className='block text-foreground/60 text-xs mt-1'>{field.description}</span>
+											)}
+										</label>
 
-											<div className='relative'>
-												<Input
-													type={field.type === 'password' && !showPassword[field.name] ? 'password' : field.type}
-													placeholder={
-														field.default ? `Default: ${field.default}` : `Enter ${field.label.toLowerCase()}`
-													}
-													value={formData[field.name] || ''}
-													onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
-													required={field.required}
-													className='bg-foreground/5 border-foreground/20 text-foreground h-10 md:h-12'
-													style={{ borderRadius: 0 }}
-												/>
+										<div className='relative'>
+											<Input
+												type={field.type === 'password' && !showPassword[field.name] ? 'password' : field.type}
+												placeholder={field.default ? `Default: ${field.default}` : `Enter ${field.label.toLowerCase()}`}
+												value={formData[field.name] || ''}
+												onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
+												required={field.required}
+												className='bg-foreground/5 border-foreground/20 text-foreground h-10 md:h-12'
+												style={{ borderRadius: 0 }}
+											/>
 
-												{field.type === 'password' && (
-													<button
-														type='button'
-														onClick={() =>
-															setShowPassword({ ...showPassword, [field.name]: !showPassword[field.name] })
-														}
-														className='absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground/70'
-													>
-														{showPassword[field.name] ? <EyeOff className='w-5 h-5' /> : <Eye className='w-5 h-5' />}
-													</button>
-												)}
-											</div>
+											{field.type === 'password' && (
+												<button
+													type='button'
+													onClick={() => setShowPassword({ ...showPassword, [field.name]: !showPassword[field.name] })}
+													className='absolute right-3 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground/70'
+												>
+													{showPassword[field.name] ? <EyeOff className='w-5 h-5' /> : <Eye className='w-5 h-5' />}
+												</button>
+											)}
 										</div>
-									))}
+									</div>
+								))}
 
 								{(!plugin.configFields || plugin.configFields.length === 0) && (
 									<div className='text-center py-8'>

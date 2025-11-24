@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, TrendingDown, Crown, Skull } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import PageWrapper from '@/components/shared/page-wrapper';
-import { getShameLeaderboard, getFameLeaderboard } from '@/actions/analyzer/get';
 import type { LeaderboardEntry } from '@sendo-labs/plugin-sendo-analyser';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Crown, Skull, TrendingDown, Trophy } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { getFameLeaderboard, getShameLeaderboard } from '@/actions/analyzer/get';
+import PageWrapper from '@/components/shared/page-wrapper';
+import { Button } from '@/components/ui/button';
 
 interface LeaderboardData {
 	shame: LeaderboardEntry[];

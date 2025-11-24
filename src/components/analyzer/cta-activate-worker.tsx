@@ -1,10 +1,9 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
-import { Zap, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { ArrowRight, Zap } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export default function CTAActivateWorker() {
 	return (

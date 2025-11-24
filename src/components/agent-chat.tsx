@@ -1,16 +1,16 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Loader2, Sparkles } from 'lucide-react';
+import { usePrivy } from '@privy-io/react-auth';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Loader2, MessageCircle, Send, Sparkles, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatedMarkdown } from '@/components/ui/animated-markdown';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { AnimatedMarkdown } from '@/components/ui/animated-markdown';
 import { Tool } from '@/components/ui/tool';
 import { useElizaAgent } from '@/hooks/use-eliza-agent';
 import { useElizaChat } from '@/hooks/use-eliza-chat';
 import type { AgentMessage } from '@/types/agent';
-import { usePrivy } from '@privy-io/react-auth';
 import { LoginButton } from './auth/login';
 
 interface ToolPart {

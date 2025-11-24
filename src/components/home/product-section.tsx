@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import { usePrivy, useWallets } from '@privy-io/react-auth';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { usePrivy, useWallets } from '@privy-io/react-auth';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // --- Reusable Widgets ---
 

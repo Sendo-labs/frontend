@@ -1,12 +1,12 @@
 'use client';
 
-import { History, TrendingDown, DollarSign, AlertCircle, CheckCircle, X, Clock, Loader2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import type { LucideIcon } from 'lucide-react';
 import type { RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { AnimatePresence, motion } from 'framer-motion';
+import type { LucideIcon } from 'lucide-react';
+import { AlertCircle, CheckCircle, Clock, DollarSign, History, Loader2, TrendingDown, X } from 'lucide-react';
 import { useState } from 'react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface ActionHistoryProps {
 	actions: RecommendedAction[];

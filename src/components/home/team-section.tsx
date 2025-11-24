@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Github, Twitter, Linkedin } from 'lucide-react';
+import { Github, Linkedin, Twitter } from 'lucide-react';
 
 interface TeamMember {
 	name: string;

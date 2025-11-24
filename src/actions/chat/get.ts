@@ -1,9 +1,9 @@
 'use server';
 
-import { withAction } from '@/lib/wrapper/with-action';
 import type { Character } from '@elizaos/core';
 import { getUserAgents } from '@/actions/agents/get';
 import { ANALYSER_AGENT_NAME } from '@/lib/constants';
+import { withAction } from '@/lib/wrapper/with-action';
 
 /**
  * Get the chat agent for the authenticated user

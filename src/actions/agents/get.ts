@@ -1,8 +1,8 @@
 'use server';
 
+import type { Character } from '@elizaos/core';
 import { withAction } from '@/lib/wrapper/with-action';
 import { getUserSecret } from '../secrets/get';
-import type { Character } from '@elizaos/core';
 
 export async function getUserAgents() {
 	return withAction<Character[] | null>(async () => {
@@ -11,9 +11,14 @@ export async function getUserAgents() {
 			return null;
 		}
 
-		const agents = Object.keys(userSecret.data);
+		const data = userSecret.data;
+		const agents = Object.keys(data);
 		return agents.map((agent) => {
-			return JSON.parse(userSecret.data![agent]) as Character;
+			const agentData = data[agent];
+			if (!agentData) {
+				throw new Error(`Agent data not found for key: ${agent}`);
+			}
+			return JSON.parse(agentData) as Character;
 		});
 	});
 }

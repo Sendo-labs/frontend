@@ -1,8 +1,8 @@
 'use client';
 
+import { usePrivy, useWallets } from '@privy-io/react-auth';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { usePrivy, useWallets } from '@privy-io/react-auth';
 
 export default function RecallSection() {
 	const router = useRouter();

@@ -1,20 +1,20 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Crown, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { createPageUrl } from '@/lib/utils';
-import WalletInput from '@/components/analyzer/wallet-input';
-import ResultHeroCard from '@/components/analyzer/result-hero-card';
-import WalletStatsGrid from '@/components/analyzer/wallet-stats-grid';
-import PerformanceMetrics from '@/components/analyzer/performance-metrics';
-import TokenDistribution from '@/components/analyzer/token-distribution';
+import React, { useEffect, useRef, useState } from 'react';
 import MiniChartATH from '@/components/analyzer/mini-chart-ath';
+import PerformanceMetrics from '@/components/analyzer/performance-metrics';
+import ResultHeroCard from '@/components/analyzer/result-hero-card';
 import TokenAnalysisList from '@/components/analyzer/token-analysis-list';
+import TokenDistribution from '@/components/analyzer/token-distribution';
+import WalletInput from '@/components/analyzer/wallet-input';
+import WalletStatsGrid from '@/components/analyzer/wallet-stats-grid';
 import PageWrapper from '@/components/shared/page-wrapper';
+import { Button } from '@/components/ui/button';
 import { useWalletAnalysis } from '@/hooks/use-wallet-analysis';
+import { createPageUrl } from '@/lib/utils';
 
 export default function AnalyzerPage() {
 	const [analyzingWallet, setAnalyzingWallet] = useState('');
@@ -55,7 +55,7 @@ export default function AnalyzerPage() {
 
 	// Show loading states
 	const isAnalyzing = isStarting || status?.status === 'processing';
-	const isCompleted = status?.status === 'completed';
+	const _isCompleted = status?.status === 'completed';
 	const hasResults = results && results.tokens.length > 0;
 
 	// Reset loading state when new tokens arrive
@@ -64,7 +64,7 @@ export default function AnalyzerPage() {
 			previousTokenCountRef.current = results.tokens.length;
 			setIsLoadingMore(false);
 		}
-	}, [results?.tokens.length]);
+	}, [results?.tokens.length, results]);
 
 	// Safety timeout: reset loading state after 5 seconds if nothing happens
 	useEffect(() => {

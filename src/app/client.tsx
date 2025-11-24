@@ -1,15 +1,14 @@
 'use client';
 
-import React from 'react';
-import TeamSectionV2 from '@/components/home/team-section-v2';
-import RecallSection from '@/components/home/recall-section';
 import Footer from '@/components/home/footer';
-import HomepageNavbar from '@/components/home/homepage-navbar';
 import HeroSectionV3 from '@/components/home/hero-section-v3';
-import MissingAthSection from '@/components/home/missing-ath-section';
-import ScannerSeparator from '@/components/home/scanner-separator';
-import ProductSection from '@/components/home/product-section';
+import HomepageNavbar from '@/components/home/homepage-navbar';
 import LeaderboardSection from '@/components/home/leaderboard-section';
+import MissingAthSection from '@/components/home/missing-ath-section';
+import ProductSection from '@/components/home/product-section';
+import RecallSection from '@/components/home/recall-section';
+import ScannerSeparator from '@/components/home/scanner-separator';
+import TeamSectionV2 from '@/components/home/team-section-v2';
 
 export default function Home() {
 	return (

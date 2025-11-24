@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import type React from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export type ChartCase = 'sold-before-peak' | 'sold-during-drop' | 'no-sale';
 
@@ -46,7 +47,7 @@ function getChartData(caseType: ChartCase, size: number = 400): ChartData {
 	const h = size - padding * 2;
 	const candleCount = 8;
 	const candleWidth = w / candleCount;
-	const candleSpacing = candleWidth * 0.3;
+	const _candleSpacing = candleWidth * 0.3;
 
 	// Helper to convert price to Y coordinate
 	const priceToY = (price: number, minPrice: number, maxPrice: number) => {
@@ -253,7 +254,7 @@ export default function MissingAthChart({
 	isMobile = false,
 }: MissingAthChartProps) {
 	const [hoveredPoint, setHoveredPoint] = useState<string | null>(null);
-	const [isHovered, setIsHovered] = useState(false);
+	const [_isHovered, setIsHovered] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const particlesRef = useRef<HTMLCanvasElement>(null);
@@ -356,7 +357,7 @@ export default function MissingAthChart({
 		return () => {
 			if (animationId) cancelAnimationFrame(animationId);
 		};
-	}, [chartData.candles, size]);
+	}, [chartData.candles]);
 
 	const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
 		if (!containerRef.current) return;
@@ -372,7 +373,6 @@ export default function MissingAthChart({
 				return { opacity: 0, x: -50, y: 0 };
 			case 'scale':
 				return { opacity: 0, scale: 0.8, y: 0 };
-			case 'fade':
 			default:
 				return { opacity: 0, y: 30 };
 		}
@@ -384,7 +384,6 @@ export default function MissingAthChart({
 				return { opacity: 1, x: 0, y: 0 };
 			case 'scale':
 				return { opacity: 1, scale: 1, y: 0 };
-			case 'fade':
 			default:
 				return { opacity: 1, y: 0 };
 		}

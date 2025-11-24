@@ -1,6 +1,6 @@
+import { z } from 'zod';
 import { getSystemOpenRouterKey } from '@/actions/openrouter/get';
 import { apiKeyResponseSchema, createApiKeySchema } from '@/schemas/openrouter';
-import { z } from 'zod';
 
 export class OpenRouterServiceError extends Error {
 	constructor(message: string) {

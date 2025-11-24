@@ -3,8 +3,8 @@
 import type { ElizaClient } from '@elizaos/api-client';
 import { useEffect, useState } from 'react';
 import { getAnalyserOpenRouterApiKey } from '@/actions/openrouter/get';
-import { ElizaService } from '@/services/eliza.service';
 import { ANALYSER_BASE_URL } from '@/lib/constants';
+import { ElizaService } from '@/services/eliza.service';
 
 /**
  * Hook to get the Eliza client instance for WebSocket and messaging operations

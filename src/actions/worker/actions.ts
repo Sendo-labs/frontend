@@ -1,11 +1,11 @@
 'use server';
 
-import { withAction } from '@/lib/wrapper/with-action';
 import type { RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
-import { createAgentService } from '@/services/agent.service';
 import { getUserAgents } from '@/actions/agents/get';
 import { WORKER_AGENT_NAME } from '@/lib/constants';
 import { getWorkerAgentBaseUrl } from '@/lib/utils';
+import { withAction } from '@/lib/wrapper/with-action';
+import { createAgentService } from '@/services/agent.service';
 
 /**
  * Accept worker actions

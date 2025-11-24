@@ -8,9 +8,11 @@ import { RefreshCw } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { createWorkerAgent } from '@/actions/worker/create';
+import { getWorkerActions, getWorkerAnalyses } from '@/actions/worker/get';
+import { InfoModal } from '@/components/shared/info-modal';
 import { FullScreenLoader } from '@/components/shared/loader';
 import PageWrapper from '@/components/shared/page-wrapper';
-import { InfoModal } from '@/components/shared/info-modal';
 import { Button } from '@/components/ui/button';
 import ActionHistory from '@/components/worker/action-history';
 import ActionList from '@/components/worker/action-list';
@@ -22,8 +24,6 @@ import RuleBuilder from '@/components/worker/rule-builder';
 import WorkerPanel from '@/components/worker/worker-panel';
 import { MOCK_ANALYSIS_ACTIONS, MOCKED_WORKER_ANALYSIS } from '@/lib/agents/worker/mocks';
 import { QUERY_KEYS } from '@/lib/query-keys';
-import { getWorkerAnalyses, getWorkerActions } from '@/actions/worker/get';
-import { createWorkerAgent } from '@/actions/worker/create';
 
 interface RuleParams {
 	min_usd?: number;
@@ -101,7 +101,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 	const [isExecuting, setIsExecuting] = useState(false);
 	const [showAddConnection, setShowAddConnection] = useState(false);
 	const [selectedPluginToConnect, setSelectedPluginToConnect] = useState<Plugin | null>(null);
-	const [agentCreationLoading, setAgentCreationLoading] = useState(false);
+	const [_agentCreationLoading, setAgentCreationLoading] = useState(false);
 	const [isWaitingForAnalysis, setIsWaitingForAnalysis] = useState(false);
 
 	const userId = authenticated ? user?.id : null;
@@ -228,7 +228,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 		return <FullScreenLoader text='Loading Worker' />;
 	}
 
-	const createAgent = async () => {
+	const _createAgent = async () => {
 		try {
 			setAgentCreationLoading(true);
 			if (!userId) {

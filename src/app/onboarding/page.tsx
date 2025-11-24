@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import Onboarding from './client';
 import { QueryBoundary } from '@/components/shared/query-boundary';
+import Onboarding from './client';
 
 export const metadata: Metadata = {
 	title: 'Onboarding',

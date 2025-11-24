@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
-import { Search, Wallet } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { usePrivy, useWallets } from '@privy-io/react-auth';
+import { Search, Wallet } from 'lucide-react';
+import React from 'react';
+import { Button } from '@/components/ui/button';
 
 interface WalletInputProps {
 	onAnalyze: (walletAddress: string) => void;

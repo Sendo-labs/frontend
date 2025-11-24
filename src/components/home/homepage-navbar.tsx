@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { usePrivy } from '@privy-io/react-auth';
 import { Menu, X } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 export default function HomepageNavbar() {
-	const { ready, authenticated, login } = usePrivy();
+	const { ready, login } = usePrivy();
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
 	const [isScrolled, setIsScrolled] = useState(false);

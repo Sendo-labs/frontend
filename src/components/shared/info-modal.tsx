@@ -1,9 +1,9 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, AlertCircle, Info, CheckCircle, AlertTriangle } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { AlertCircle, AlertTriangle, CheckCircle, Info, X } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
-import { ReactNode } from 'react';
 
 export type InfoModalVariant = 'info' | 'warning' | 'success' | 'alert';
 

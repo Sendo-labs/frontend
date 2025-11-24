@@ -1,11 +1,11 @@
 'use server';
 
 import { StorageFactory } from '@/factories/storage-factory';
+import { sanitizeUserId } from '@/lib/utils';
 import { withAction } from '@/lib/wrapper/with-action';
+import { openRouterService } from '@/services/openrouter.service';
 import type { OpenRouterSecret } from '@/types/openrouter';
 import { getRelatedSecret, getUserOpenRouterKeyPath } from './utils';
-import { openRouterService } from '@/services/openrouter.service';
-import { sanitizeUserId } from '@/lib/utils';
 
 /**
  * Create a new OpenRouter API key for a user

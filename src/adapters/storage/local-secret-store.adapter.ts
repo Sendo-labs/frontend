@@ -4,9 +4,9 @@
  * Perfect for local development without AWS dependencies
  */
 
-import fs from 'fs/promises';
-import path from 'path';
-import type { ISecretStore, Tag, SecretMetadata } from '@/interfaces/storage/isecret-store';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import type { ISecretStore, SecretMetadata, Tag } from '@/interfaces/storage/isecret-store';
 
 interface StoredSecret {
 	name: string;
@@ -31,7 +31,7 @@ export class LocalSecretStoreAdapter implements ISecretStore {
 	private async ensureStorageDir(): Promise<void> {
 		try {
 			await fs.mkdir(this.storageDir, { recursive: true });
-		} catch (error) {
+		} catch (_error) {
 			// Ignore if directory already exists
 		}
 	}
@@ -77,7 +77,7 @@ export class LocalSecretStoreAdapter implements ISecretStore {
 		try {
 			const files = await fs.readdir(this.storageDir);
 			return files.filter((f) => f.endsWith('.json')).map((f) => f.replace('.json', '').replace(/_/g, '-'));
-		} catch (error) {
+		} catch (_error) {
 			return [];
 		}
 	}
@@ -129,7 +129,7 @@ export class LocalSecretStoreAdapter implements ISecretStore {
 		}
 	}
 
-	async deleteSecret(secretName: string, forceDelete: boolean = false): Promise<boolean> {
+	async deleteSecret(secretName: string, _forceDelete: boolean = false): Promise<boolean> {
 		try {
 			const filePath = this.getSecretPath(secretName);
 			await fs.unlink(filePath);

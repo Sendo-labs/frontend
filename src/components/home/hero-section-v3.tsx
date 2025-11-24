@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { usePrivy, useWallets } from '@privy-io/react-auth';
+import { AnimatePresence, motion, useMotionValue, useScroll, useSpring, useTransform } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import Loader from '@/components/shared/loader';
+import { useEffect, useRef, useState } from 'react';
 import WalletBeamAnimation from '@/components/home/wallet-beam-animation';
+import Loader from '@/components/shared/loader';
 
 // Animation discrète tout blanc
 function MatrixText({ text, isAnimating }: { text: string; isAnimating: boolean }) {

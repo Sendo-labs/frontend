@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Brain, Store, Zap, Sparkles, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowRight, Brain, ChevronLeft, ChevronRight, Search, Sparkles, Store, Zap } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const steps = [
 	{

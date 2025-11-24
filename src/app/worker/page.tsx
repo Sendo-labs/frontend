@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
+import { getUserAgents } from '@/actions/agents/get';
 import { QueryBoundary } from '@/components/shared/query-boundary';
 import { getServerSession } from '@/lib/auth/session';
-import { WorkerClientService } from '@/services/worker-client.service';
-import { ElizaService } from '@/services/eliza.service';
-import Worker from './client';
-import { getUserAgents } from '@/actions/agents/get';
 import { WORKER_AGENT_NAME } from '@/lib/constants';
 import { getWorkerAgentBaseUrl } from '@/lib/utils';
+import { ElizaService } from '@/services/eliza.service';
+import { WorkerClientService } from '@/services/worker-client.service';
+import Worker from './client';
 
 export const dynamic = 'force-dynamic';
 
