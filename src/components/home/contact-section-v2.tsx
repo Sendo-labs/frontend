@@ -193,4 +193,3 @@ export default function ContactSectionV2() {
 		</section>
 	);
 }
-

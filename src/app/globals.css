@@ -199,10 +199,12 @@ h1.title-font {
 
 /* Terminal cursor blink animation */
 @keyframes terminal-blink {
-	0%, 50% {
+	0%,
+	50% {
 		opacity: 1;
 	}
-	51%, 100% {
+	51%,
+	100% {
 		opacity: 0;
 	}
 }
@@ -263,7 +265,8 @@ h1.title-font {
 
 /* Animation skeleton breathing - effet de respiration */
 @keyframes skeleton-breathing {
-	0%, 100% {
+	0%,
+	100% {
 		opacity: 0.3;
 	}
 	50% {
@@ -322,34 +325,35 @@ h1.title-font {
 	--ring-width: 3px;
 	--easing: 0.3s ease;
 	--btn-blur: 8px;
-	
+
 	position: relative;
-	border: 2px solid #FF223B;
+	border: 2px solid #ff223b;
 	overflow: visible;
 	background: transparent;
 }
 
 .sendo-glow-button::before {
-	content: '';
+	content: "";
 	position: absolute;
 	inset: calc(-1 * var(--outer-offset));
 	z-index: -1;
-	
+
 	/* Gradient avec couleurs Sendo (rouge/orange) */
-	background: linear-gradient(160deg, 
-		#ffffff00 0%, 
-		#FF223B 15%, 
-		#FF6B00 20%, 
-		#FF223B 25%, 
+	background: linear-gradient(
+		160deg,
+		#ffffff00 0%,
+		#ff223b 15%,
+		#ff6b00 20%,
+		#ff223b 25%,
 		#ffffff00 35%,
 		#ffffff00 40%,
-		#FF223B 55%,
-		#FF6B00 60%,
-		#FF223B 65%,
+		#ff223b 55%,
+		#ff6b00 60%,
+		#ff223b 65%,
 		#ffffff00 75%,
 		#ffffff00 80%,
-		#FF223B 95%,
-		#FF6B00 100%
+		#ff223b 95%,
+		#ff6b00 100%
 	);
 	background-size: 300% 300%;
 	filter: blur(var(--btn-blur));
@@ -359,7 +363,7 @@ h1.title-font {
 }
 
 .sendo-glow-button::after {
-	content: '';
+	content: "";
 	position: absolute;
 	inset: calc(-1 * var(--outer-offset) + var(--ring-width));
 	z-index: -1;
@@ -380,7 +384,7 @@ h1.title-font {
 .arc-raiders-pill-button {
 	position: relative;
 	background-color: rgba(0, 0, 0, 0.8);
-	color: #FFFFFF;
+	color: #ffffff;
 	border: 0 none;
 	cursor: pointer;
 	white-space: nowrap;
@@ -417,27 +421,28 @@ h1.title-font {
 
 /* Fine gradient border glow - visible en permanence avec couleurs Sendo (cohérent avec les cartes) */
 .arc-raiders-pill-button::before {
-	content: '';
+	content: "";
 	position: absolute;
 	inset: -1.5px;
 	z-index: -2;
-	background: linear-gradient(160deg, 
-		#ffffff00 0%, 
-		#ffffff 10%, 
-		#FF223B 15%, 
-		#FF6B00 20%, 
-		#FF223B 25%, 
+	background: linear-gradient(
+		160deg,
+		#ffffff00 0%,
+		#ffffff 10%,
+		#ff223b 15%,
+		#ff6b00 20%,
+		#ff223b 25%,
 		#ffffff00 35%,
 		#ffffff00 40%,
 		#ffffff 48%,
-		#FF223B 55%,
-		#FF6B00 60%,
-		#FF223B 65%,
+		#ff223b 55%,
+		#ff6b00 60%,
+		#ff223b 65%,
 		#ffffff00 75%,
 		#ffffff00 80%,
 		#ffffff 88%,
-		#FF223B 95%,
-		#FF6B00 100%
+		#ff223b 95%,
+		#ff6b00 100%
 	);
 	background-size: 300% 300%;
 	filter: blur(1px);
@@ -450,7 +455,7 @@ h1.title-font {
 
 /* Mask layer to create fine border-only glow effect */
 .arc-raiders-pill-button::after {
-	content: '';
+	content: "";
 	position: absolute;
 	inset: 0;
 	z-index: -1;

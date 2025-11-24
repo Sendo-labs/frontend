@@ -40,13 +40,16 @@ function WorstPerformerWidget({ className, style }: { className?: string; style?
 		<div
 			className={`w-[260px] h-[125px] rounded-[20px] backdrop-blur-[20px] p-4 overflow-visible flex flex-col justify-between ${className || ''}`}
 			style={{
-				background: 'radial-gradient(circle at 66.64% 54.43%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.24) 100%)',
+				background:
+					'radial-gradient(circle at 66.64% 54.43%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.24) 100%)',
 				boxShadow: '0 4px 100px rgba(27, 41, 110, 0.1)',
 				contain: 'layout style paint',
 				...style,
 			}}
 		>
-			<div className='text-[12px] text-[#D0D0D0] tracking-[0.05em] whitespace-nowrap overflow-hidden text-ellipsis relative z-10'>Worst Performer</div>
+			<div className='text-[12px] text-[#D0D0D0] tracking-[0.05em] whitespace-nowrap overflow-hidden text-ellipsis relative z-10'>
+				Worst Performer
+			</div>
 			<div className='flex items-center justify-between gap-1 relative z-10'>
 				<div className='flex flex-col gap-1'>
 					<div className='flex items-center gap-2'>
@@ -58,9 +61,13 @@ function WorstPerformerWidget({ className, style }: { className?: string; style?
 							className='w-6 h-6 flex-shrink-0'
 							style={{ filter: 'drop-shadow(0 0 20px rgba(41, 41, 110, 0.3))' }}
 						/>
-						<div className='text-[24px] font-bold text-white tracking-[0.05em] whitespace-nowrap overflow-hidden text-ellipsis'>Starknet</div>
+						<div className='text-[24px] font-bold text-white tracking-[0.05em] whitespace-nowrap overflow-hidden text-ellipsis'>
+							Starknet
+						</div>
 					</div>
-					<div className='text-[20px] font-bold text-[#FF223B] tracking-[0.05em] whitespace-nowrap overflow-hidden text-ellipsis'>-$23,494.92</div>
+					<div className='text-[20px] font-bold text-[#FF223B] tracking-[0.05em] whitespace-nowrap overflow-hidden text-ellipsis'>
+						-$23,494.92
+					</div>
 				</div>
 			</div>
 			{/* Character image */}
@@ -151,7 +158,7 @@ function TerminalAnimation() {
 					isVisibleRef.current = entry.isIntersecting;
 				});
 			},
-			{ threshold: 0.1 }
+			{ threshold: 0.1 },
 		);
 
 		observer.observe(containerRef.current);
@@ -282,7 +289,7 @@ function MiniBarChart() {
 			{bars.map((bar, index) => {
 				const coloredHeight = bar.height;
 				const grayHeight = totalBarHeight - coloredHeight;
-				
+
 				return (
 					<div key={index} className='w-[18.55px] relative' style={{ height: `${totalBarHeight}px` }}>
 						{/* Dark gray segment on top */}
@@ -340,11 +347,11 @@ function FloatingIcon({
 				const rect = iconRef.current.getBoundingClientRect();
 				const centerX = rect.left + rect.width / 2;
 				const centerY = rect.top + rect.height / 2;
-				
+
 				// Calculate distance from mouse to icon center
 				const deltaX = (e.clientX - centerX) / window.innerWidth;
 				const deltaY = (e.clientY - centerY) / window.innerHeight;
-				
+
 				// Very subtle movement (multiply by small factor)
 				setMousePosition({
 					x: deltaX * 8,
@@ -362,10 +369,10 @@ function FloatingIcon({
 		// Generate 8 random points for a smooth path
 		// Range +/- 6px for subtle movement
 		const generatePoints = () => Array.from({ length: 8 }, () => (Math.random() - 0.5) * 12);
-		
+
 		setRandomPath({
 			x: generatePoints(),
-			y: generatePoints()
+			y: generatePoints(),
 		});
 	}, []);
 
@@ -416,15 +423,16 @@ function FloatingIcon({
 				<div
 					className='w-full h-full rounded-[20px] backdrop-blur-[20px] p-2 overflow-visible flex items-center justify-center'
 					style={{
-						background: 'radial-gradient(circle at 66.64% 54.43%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.24) 100%)',
+						background:
+							'radial-gradient(circle at 66.64% 54.43%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.24) 100%)',
 						contain: 'layout style paint',
 					}}
 				>
-					<Image 
-						src={src} 
-						alt={alt} 
-						width={imageSize || size - 16} 
-						height={imageSize || size - 16} 
+					<Image
+						src={src}
+						alt={alt}
+						width={imageSize || size - 16}
+						height={imageSize || size - 16}
 						className='object-contain'
 						style={{
 							width: `${imageSize || size - 16}px`,
@@ -445,7 +453,8 @@ function PainCardSkeleton() {
 		<div
 			className='relative w-[510px] h-[273.646px] rounded-[20px] border border-white/16 backdrop-blur-[20px] overflow-hidden'
 			style={{
-				background: 'radial-gradient(circle at 66.64% 54.43%, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.24) 100%)',
+				background:
+					'radial-gradient(circle at 66.64% 54.43%, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.24) 100%)',
 				contain: 'layout style paint',
 			}}
 		>
@@ -455,7 +464,10 @@ function PainCardSkeleton() {
 				{/* 212px bar (extended from 140) */}
 				<div className='absolute h-[23px] w-[212px] bg-[#D9D9D9] rounded-[20px]' style={{ top: '38px', left: '0px' }} />
 				{/* 261px bar with gradient (extended from 189) */}
-				<div className='absolute h-[23px] w-[261px] rounded-[20px] overflow-hidden' style={{ top: '76px', left: '0px' }}>
+				<div
+					className='absolute h-[23px] w-[261px] rounded-[20px] overflow-hidden'
+					style={{ top: '76px', left: '0px' }}
+				>
 					<div className='absolute inset-0 bg-[#D9D9D9] opacity-28' />
 					<div
 						className='absolute inset-0'
@@ -465,7 +477,10 @@ function PainCardSkeleton() {
 					/>
 				</div>
 				{/* 294px bar (extended from 222) */}
-				<div className='absolute h-[23px] w-[294px] bg-[#D9D9D9] rounded-[20px]' style={{ top: '114px', left: '0px' }} />
+				<div
+					className='absolute h-[23px] w-[294px] bg-[#D9D9D9] rounded-[20px]'
+					style={{ top: '114px', left: '0px' }}
+				/>
 				{/* Three 70px bars - kept same size but maybe gap increased? Kept simple for now */}
 				<div className='absolute' style={{ top: '180px', left: '0px' }}>
 					<div className='flex gap-[15px]'>
@@ -520,18 +535,13 @@ function PainCardVisuals() {
 					ease: 'easeInOut',
 				}}
 			>
-				<svg width="41" height="22" viewBox="0 0 41 22" fill="none">
-					<path
-						d="M0 11 L41 11"
-						stroke="url(#gradient-line)"
-						strokeWidth="5"
-						strokeLinecap="round"
-					/>
+				<svg width='41' height='22' viewBox='0 0 41 22' fill='none'>
+					<path d='M0 11 L41 11' stroke='url(#gradient-line)' strokeWidth='5' strokeLinecap='round' />
 					<defs>
-						<linearGradient id="gradient-line" x1="0%" y1="0%" x2="100%" y2="0%">
-							<stop offset="0%" stopColor="#4A0C13" />
-							<stop offset="49.5%" stopColor="#FF223B" />
-							<stop offset="100%" stopColor="#FF5C1A" />
+						<linearGradient id='gradient-line' x1='0%' y1='0%' x2='100%' y2='0%'>
+							<stop offset='0%' stopColor='#4A0C13' />
+							<stop offset='49.5%' stopColor='#FF223B' />
+							<stop offset='100%' stopColor='#FF5C1A' />
 						</linearGradient>
 					</defs>
 				</svg>
@@ -595,12 +605,13 @@ export default function ProductSection() {
 				>
 					<span className='font-bold text-4xl sm:text-5xl md:text-[56px]'>Analyze smarter.</span>
 					<br />
-					<span className='block sm:inline text-3xl sm:text-4xl md:text-[48px] font-medium'>See your trading history in one place.</span>
+					<span className='block sm:inline text-3xl sm:text-4xl md:text-[48px] font-medium'>
+						See your trading history in one place.
+					</span>
 				</motion.h2>
 
 				{/* Cards Container */}
 				<div className='relative w-full min-h-[855px] lg:min-h-[664px]'>
-					
 					{/* Mobile/Tablet: Stack cards */}
 					<div className='lg:hidden space-y-6 sm:space-y-8'>
 						{/* Card 1: Wallet Analyzer - Mobile */}
@@ -613,14 +624,16 @@ export default function ProductSection() {
 							style={cardStyle}
 						>
 							<div className='flex flex-col gap-4 items-start'>
-									<div className='flex flex-col sm:flex-row items-start gap-6 sm:gap-8 w-full'>
-										<MetricsWidget className='w-full sm:flex-1' />
-										<WorstPerformerWidget className='w-full sm:flex-1' />
-									</div>
+								<div className='flex flex-col sm:flex-row items-start gap-6 sm:gap-8 w-full'>
+									<MetricsWidget className='w-full sm:flex-1' />
+									<WorstPerformerWidget className='w-full sm:flex-1' />
+								</div>
 								<div className='w-full text-left mt-4'>
 									<h3 className='text-[28px] font-semibold mb-2 text-white leading-[1.2]'>The Wallet Analyzer</h3>
 									<p className='text-[16px] text-[#D0D0D0] leading-[1.5]'>
-										Smart reconstruction of your entire trading history.<br />Every buy, sell and ATH is rebuilt automatically.
+										Smart reconstruction of your entire trading history.
+										<br />
+										Every buy, sell and ATH is rebuilt automatically.
 									</p>
 								</div>
 							</div>
@@ -662,7 +675,9 @@ export default function ProductSection() {
 							<div className='absolute top-[180px] left-[30px] right-[30px] z-30'>
 								<h3 className='text-[28px] font-semibold mb-2 text-white leading-[1.2]'>Missing ATH Engine</h3>
 								<p className='text-[16px] text-[#D0D0D0] leading-[1.5] whitespace-normal'>
-									Real-time calculation of your lost potential,<br />per token and globally.
+									Real-time calculation of your lost potential,
+									<br />
+									per token and globally.
 								</p>
 							</div>
 						</motion.div>
@@ -726,11 +741,13 @@ export default function ProductSection() {
 								<MetricsWidget className='flex-1' />
 								<WorstPerformerWidget className='flex-1' />
 							</div>
-							
+
 							<div className='absolute bottom-[30px] left-[30px]'>
 								<h3 className='text-[28px] font-semibold mb-2 text-white leading-[1.2]'>The Wallet Analyzer</h3>
 								<p className='text-[16px] text-[#D0D0D0] leading-[1.5] max-w-[400px]'>
-									Smart reconstruction of your entire trading history.<br />Every buy, sell and ATH is rebuilt automatically.
+									Smart reconstruction of your entire trading history.
+									<br />
+									Every buy, sell and ATH is rebuilt automatically.
 								</p>
 							</div>
 						</motion.div>
@@ -778,7 +795,9 @@ export default function ProductSection() {
 							<div className='absolute top-[180px] left-[30px] right-[30px] z-30'>
 								<h3 className='text-[28px] font-semibold mb-2 text-white leading-[1.2]'>Missing ATH Engine</h3>
 								<p className='text-[16px] text-[#D0D0D0] leading-[1.5] whitespace-normal'>
-									Real-time calculation of your lost potential,<br />per token and globally.
+									Real-time calculation of your lost potential,
+									<br />
+									per token and globally.
 								</p>
 							</div>
 						</motion.div>

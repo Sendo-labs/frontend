@@ -61,16 +61,14 @@ export default function Navigation() {
 		<div
 			className={cn(
 				'fixed top-0 left-0 right-0 z-[100] pt-5 transition-all duration-500 ease-out',
-				isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+				isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0',
 			)}
 		>
 			<div className='max-w-[1400px] mx-auto px-4 sm:px-6'>
 				<div
 					className={cn(
 						'w-full border border-border transition-all duration-300',
-						isScrolled
-							? 'bg-background/95 backdrop-blur-md shadow-lg'
-							: 'bg-background/80 backdrop-blur-sm'
+						isScrolled ? 'bg-background/95 backdrop-blur-md shadow-lg' : 'bg-background/80 backdrop-blur-sm',
 					)}
 					style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)' }}
 				>
@@ -117,7 +115,7 @@ export default function Navigation() {
 						<div
 							className={cn(
 								'md:hidden overflow-hidden transition-all duration-300 ease-in-out',
-								mobileMenuOpen ? 'max-h-[600px] opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'
+								mobileMenuOpen ? 'max-h-[600px] opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0',
 							)}
 						>
 							<nav className='pt-4 border-t border-border'>

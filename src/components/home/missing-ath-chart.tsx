@@ -60,7 +60,7 @@ function getChartData(caseType: ChartCase, size: number = 400): ChartData {
 			const minPrice = 0.5;
 			const maxPrice = 5.5;
 			const quantity = 10; // Assume 10 tokens
-			
+
 			const candles: Candle[] = prices.map((close, i) => {
 				const open = i === 0 ? close : prices[i - 1];
 				const high = Math.max(open, close) + (i === 6 ? 0.3 : 0.1); // ATH candle has higher wick
@@ -264,8 +264,14 @@ export default function MissingAthChart({
 	const mouseX = useMotionValue(0);
 	const mouseY = useMotionValue(0);
 	const springConfig = { damping: 25, stiffness: 200 };
-	const x = useSpring(useTransform(mouseX, (v) => v * 0.02), springConfig);
-	const y = useSpring(useTransform(mouseY, (v) => v * 0.02), springConfig);
+	const x = useSpring(
+		useTransform(mouseX, (v) => v * 0.02),
+		springConfig,
+	);
+	const y = useSpring(
+		useTransform(mouseY, (v) => v * 0.02),
+		springConfig,
+	);
 	const rotateX = useTransform(y, [-10, 10], [2, -2]);
 	const rotateY = useTransform(x, [-10, 10], [-2, 2]);
 
@@ -417,11 +423,7 @@ export default function MissingAthChart({
 			}}
 		>
 			{/* Particles canvas */}
-			<canvas
-				ref={particlesRef}
-				className='absolute inset-0 w-full h-full pointer-events-none'
-				style={{ zIndex: 5 }}
-			/>
+			<canvas ref={particlesRef} className='absolute inset-0 w-full h-full pointer-events-none' style={{ zIndex: 5 }} />
 
 			{/* Background with Sendo gradient - like scanner cards */}
 			<div
@@ -483,12 +485,7 @@ export default function MissingAthChart({
 				}}
 				className='relative w-full h-full'
 			>
-				<svg
-					width={size}
-					height={size}
-					viewBox={`0 0 ${size} ${size}`}
-					className='w-full h-full'
-				>
+				<svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className='w-full h-full'>
 					<defs>
 						{/* Gradients for candles */}
 						<linearGradient id={`fillGradient-${caseType}`} x1='0%' y1='0%' x2='0%' y2='100%'>
@@ -503,7 +500,6 @@ export default function MissingAthChart({
 							</feMerge>
 						</filter>
 					</defs>
-
 
 					{/* Candlesticks - appear one by one in real-time */}
 					{chartData.candles.map((candle, index) => {
@@ -624,10 +620,14 @@ export default function MissingAthChart({
 									stroke={pointStyle.stroke}
 									strokeWidth='1.5'
 									initial={{ scale: 0, opacity: 0 }}
-									animate={isVisible ? {
-										scale: hoveredPoint === point.key ? 1.3 : 1,
-										opacity: 1,
-									} : { scale: 0, opacity: 0 }}
+									animate={
+										isVisible
+											? {
+													scale: hoveredPoint === point.key ? 1.3 : 1,
+													opacity: 1,
+												}
+											: { scale: 0, opacity: 0 }
+									}
 									transition={{
 										scale: { duration: 0.2, type: 'spring', stiffness: 300, damping: 20 },
 										opacity: { duration: 0.3, delay: pointsDelay + index * 0.1, ease: [0.25, 0.1, 0.25, 1] },
@@ -699,7 +699,11 @@ export default function MissingAthChart({
 							strokeWidth='1'
 							initial={{ opacity: 0 }}
 							animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
-							transition={{ duration: 0.3, delay: animationDelay + chartData.candles.length * (isMobile ? 0.05 : 0.15) + 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+							transition={{
+								duration: 0.3,
+								delay: animationDelay + chartData.candles.length * (isMobile ? 0.05 : 0.15) + 0.7,
+								ease: [0.25, 0.1, 0.25, 1],
+							}}
 							style={{ willChange: 'opacity' }}
 						/>
 						{/* Explanation text */}
@@ -715,7 +719,11 @@ export default function MissingAthChart({
 							opacity='0.7'
 							initial={{ opacity: 0 }}
 							animate={isVisible ? { opacity: 0.7 } : { opacity: 0 }}
-							transition={{ duration: 0.4, delay: animationDelay + chartData.candles.length * (isMobile ? 0.05 : 0.15) + 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+							transition={{
+								duration: 0.4,
+								delay: animationDelay + chartData.candles.length * (isMobile ? 0.05 : 0.15) + 0.8,
+								ease: [0.25, 0.1, 0.25, 1],
+							}}
 							style={{ willChange: 'opacity' }}
 						>
 							If you bought 10 tokens
@@ -732,7 +740,11 @@ export default function MissingAthChart({
 							letterSpacing='1px'
 							initial={{ opacity: 0 }}
 							animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
-							transition={{ duration: 0.5, delay: animationDelay + chartData.candles.length * (isMobile ? 0.05 : 0.15) + 0.9, ease: [0.25, 0.1, 0.25, 1] }}
+							transition={{
+								duration: 0.5,
+								delay: animationDelay + chartData.candles.length * (isMobile ? 0.05 : 0.15) + 0.9,
+								ease: [0.25, 0.1, 0.25, 1],
+							}}
 							style={{ willChange: 'opacity' }}
 						>
 							Missing ATH ${chartData.values.missingATH.toFixed(0)}
@@ -740,7 +752,6 @@ export default function MissingAthChart({
 					</g>
 				</svg>
 			</motion.div>
-
 		</motion.div>
 	);
 }

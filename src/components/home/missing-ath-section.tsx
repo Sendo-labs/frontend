@@ -39,7 +39,10 @@ export default function MissingAthSection() {
 	}, []);
 
 	return (
-		<section id='about' className='w-full bg-[#CCCCCC] pt-4 pb-20 px-4 sm:pt-6 sm:pb-12 sm:px-6 md:pt-8 md:pb-16 lg:pt-10 lg:pb-40'>
+		<section
+			id='about'
+			className='w-full bg-[#CCCCCC] pt-4 pb-20 px-4 sm:pt-6 sm:pb-12 sm:px-6 md:pt-8 md:pb-16 lg:pt-10 lg:pb-40'
+		>
 			<div className='max-w-7xl mx-auto'>
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
@@ -50,9 +53,7 @@ export default function MissingAthSection() {
 					className='mb-12 sm:mb-16 md:mb-20 lg:mb-24 xl:mb-28'
 				>
 					<div className='flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12 w-full'>
-						<p className='text-[#2B2B2B] text-sm sm:text-base md:text-lg font-normal whitespace-nowrap'>
-							Backed by
-						</p>
+						<p className='text-[#2B2B2B] text-sm sm:text-base md:text-lg font-normal whitespace-nowrap'>Backed by</p>
 						<div className='flex flex-wrap sm:flex-nowrap items-center justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-10 xl:gap-12'>
 							<motion.a
 								href='https://solana.org/'
@@ -141,8 +142,8 @@ export default function MissingAthSection() {
 						<p className='text-[#2B2B2B] text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed'>
 							<span className='font-bold'>Your PNL is incomplete.</span>{' '}
 							<span className='text-[#595959] font-normal'>
-								Trading tools show what you earned or lost, but never what you should have made. A blind spot
-								that hides your real performance as a trader.
+								Trading tools show what you earned or lost, but never what you should have made. A blind spot that hides
+								your real performance as a trader.
 							</span>
 						</p>
 					</div>
@@ -151,11 +152,9 @@ export default function MissingAthSection() {
 						<p className='text-[#2B2B2B] text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed'>
 							<span className='font-bold'>Sendo reveals what&apos;s missing.</span>{' '}
 							<span className='text-[#595959] font-normal'>
-								By reconstructing every buy, sell and ATH across your wallet, we expose the money left on the
-								table —
+								By reconstructing every buy, sell and ATH across your wallet, we expose the money left on the table —
 							</span>
-							<span className='font-bold'> the gap between your conviction and your execution.
-							</span>
+							<span className='font-bold'> the gap between your conviction and your execution.</span>
 						</p>
 					</div>
 				</motion.div>
@@ -169,7 +168,8 @@ export default function MissingAthSection() {
 					className='text-[#2B2B2B] text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-left mt-12 sm:mt-16 md:mt-20 lg:mt-24 xl:mt-28 mb-10 sm:mb-14 md:mb-18 lg:mb-20 xl:mb-24'
 				>
 					Understand the value
-					<br />you left behind.
+					<br />
+					you left behind.
 				</motion.h2>
 
 				{/* Swipe Indicator - Mobile Only */}
@@ -191,15 +191,15 @@ export default function MissingAthSection() {
 						// Each chart starts after the previous one's candles have finished
 						// Animation timeline: 0.2s (card appear) + 1.2s (8 candles * 0.15s) = ~1.4s for candles
 						// Start next chart when previous candles are done (1.5s delay)
-						
+
 						// Animation configuration
 						// On mobile: fast sequential animation (swipe friendly)
 						// On desktop: slow sequential animation (scroll friendly)
 						const animationDelay = isMobile ? index * 0.1 : index * 1.5;
 
 						return (
-							<motion.div 
-								key={card.caseType} 
+							<motion.div
+								key={card.caseType}
 								className='flex flex-col w-[85vw] max-w-[400px] md:w-auto md:max-w-none shrink-0 snap-center first:pl-4 last:pr-4 md:first:pl-0 md:last:pr-0 h-full'
 								initial={{ opacity: 0 }}
 								whileInView={{ opacity: 1 }}
@@ -208,15 +208,15 @@ export default function MissingAthSection() {
 								style={{ willChange: 'opacity', transform: 'translateZ(0)' }}
 							>
 								<div className='w-full mb-4 sm:mb-6 md:mb-8 flex justify-center items-center aspect-square'>
-									<MissingAthChart 
-										caseType={card.caseType} 
+									<MissingAthChart
+										caseType={card.caseType}
 										animationDelay={animationDelay}
 										animationType={animationType}
 										isMobile={isMobile}
 									/>
 								</div>
 
-								<motion.div 
+								<motion.div
 									className='text-left flex-1'
 									initial={{ opacity: 0, y: 20 }}
 									whileInView={{ opacity: 1, y: 0 }}
@@ -224,12 +224,8 @@ export default function MissingAthSection() {
 									transition={{ duration: 0.6, delay: animationDelay, ease: [0.25, 0.1, 0.25, 1] }}
 									style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 								>
-									<h4 className='text-[#2B2B2B] text-lg sm:text-xl md:text-2xl font-bold mb-1 sm:mb-2'>
-										{card.title}
-									</h4>
-									<p className='text-[#2B2B2B] text-sm sm:text-base md:text-lg opacity-70'>
-										{card.description}
-									</p>
+									<h4 className='text-[#2B2B2B] text-lg sm:text-xl md:text-2xl font-bold mb-1 sm:mb-2'>{card.title}</h4>
+									<p className='text-[#2B2B2B] text-sm sm:text-base md:text-lg opacity-70'>{card.description}</p>
 								</motion.div>
 							</motion.div>
 						);
@@ -239,4 +235,3 @@ export default function MissingAthSection() {
 		</section>
 	);
 }
-

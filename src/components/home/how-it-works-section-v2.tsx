@@ -126,7 +126,15 @@ export default function HowItWorksSectionV2() {
 										clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%)',
 									}}
 								>
-									<video src={step.videoUrl} autoPlay loop muted playsInline className='w-full h-full object-cover' suppressHydrationWarning />
+									<video
+										src={step.videoUrl}
+										autoPlay
+										loop
+										muted
+										playsInline
+										className='w-full h-full object-cover'
+										suppressHydrationWarning
+									/>
 
 									{/* Overlay gradient bottom */}
 									<div className='absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent pointer-events-none' />
@@ -193,17 +201,13 @@ export default function HowItWorksSectionV2() {
 									>
 										<div
 											className={`w-10 h-10 mx-auto mb-2 flex items-center justify-center ${
-												index === currentStep
-													? 'bg-gradient-to-r from-sendo-orange to-sendo-red'
-													: 'bg-foreground/10'
+												index === currentStep ? 'bg-gradient-to-r from-sendo-orange to-sendo-red' : 'bg-foreground/10'
 											}`}
 											style={{
 												clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)',
 											}}
 										>
-											<s.icon
-												className={`w-5 h-5 ${index === currentStep ? 'text-white' : 'text-foreground/40'}`}
-											/>
+											<s.icon className={`w-5 h-5 ${index === currentStep ? 'text-white' : 'text-foreground/40'}`} />
 										</div>
 										<p
 											className={`text-xs font-bold uppercase title-font ${
@@ -268,7 +272,15 @@ export default function HowItWorksSectionV2() {
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%)',
 								}}
 							>
-								<video src={mobileStep.videoUrl} autoPlay loop muted playsInline className='w-full h-full object-cover' suppressHydrationWarning />
+								<video
+									src={mobileStep.videoUrl}
+									autoPlay
+									loop
+									muted
+									playsInline
+									className='w-full h-full object-cover'
+									suppressHydrationWarning
+								/>
 								<div
 									className='absolute top-3 right-3 px-2 py-1 text-sm font-bold uppercase bg-sendo-orange text-white'
 									style={{ borderRadius: 0 }}
@@ -329,4 +341,3 @@ export default function HowItWorksSectionV2() {
 		</section>
 	);
 }
-

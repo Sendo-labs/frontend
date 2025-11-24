@@ -18,7 +18,7 @@ export default function ScannerSeparator() {
 
 	// Group of items that is guaranteed to be wider than the screen
 	const MarqueeGroup = () => (
-		<div className="flex items-center shrink-0">
+		<div className='flex items-center shrink-0'>
 			{[1, 2, 3, 4].map((i) => (
 				<div key={i} className='flex gap-16 items-center pr-16'>
 					<SingleItem />
@@ -37,7 +37,7 @@ export default function ScannerSeparator() {
 						fontFamily: 'var(--font-ibm-plex-sans), monospace',
 						textShadow: '0 0 5px rgba(255, 34, 59, 0.3)',
 					}}
-					animate={{ x: "-50%" }}
+					animate={{ x: '-50%' }}
 					transition={{
 						duration: 100,
 						repeat: Infinity,
@@ -53,7 +53,8 @@ export default function ScannerSeparator() {
 			<motion.div
 				className='absolute w-full h-[3px] z-10'
 				style={{
-					background: 'linear-gradient(90deg, transparent 0%, rgba(255, 50, 40, 0.5) 20%, rgba(255, 34, 59, 1) 50%, rgba(255, 50, 40, 0.5) 80%, transparent 100%)',
+					background:
+						'linear-gradient(90deg, transparent 0%, rgba(255, 50, 40, 0.5) 20%, rgba(255, 34, 59, 1) 50%, rgba(255, 50, 40, 0.5) 80%, transparent 100%)',
 					boxShadow: '0 0 20px rgba(255, 34, 59, 1), 0 0 10px rgba(255, 255, 255, 0.5)',
 				}}
 				animate={{
@@ -62,10 +63,10 @@ export default function ScannerSeparator() {
 				transition={{
 					duration: 2,
 					repeat: Infinity,
-					ease: "easeInOut"
+					ease: 'easeInOut',
 				}}
 			/>
-			
+
 			{/* Vertical Scan Line */}
 			{/* 
 			<motion.div 
@@ -77,4 +78,3 @@ export default function ScannerSeparator() {
 		</div>
 	);
 }
-

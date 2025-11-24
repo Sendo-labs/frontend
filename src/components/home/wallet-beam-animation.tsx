@@ -119,7 +119,8 @@ export default function WalletBeamAnimation() {
 	}, []);
 
 	useEffect(() => {
-		if (!containerRef.current || !cardLineRef.current || !particleCanvasRef.current || !scannerCanvasRef.current) return;
+		if (!containerRef.current || !cardLineRef.current || !particleCanvasRef.current || !scannerCanvasRef.current)
+			return;
 
 		// Fonction pour charger Three.js
 		const loadThreeJS = (): Promise<any> => {
@@ -194,7 +195,7 @@ export default function WalletBeamAnimation() {
 					// Wallet normal avec gradients et effets visuels
 					const normalWallet = document.createElement('div');
 					normalWallet.className = 'wallet wallet-normal';
-					
+
 					// Background avec gradient complexe
 					const bgGradient = document.createElement('div');
 					bgGradient.style.cssText = `
@@ -209,7 +210,7 @@ export default function WalletBeamAnimation() {
 						);
 						border-radius: 15px;
 					`;
-					
+
 					// Overlay gradient pour effet de profondeur
 					const overlayGradient = document.createElement('div');
 					overlayGradient.style.cssText = `
@@ -231,7 +232,7 @@ export default function WalletBeamAnimation() {
 						border-radius: 15px;
 						pointer-events: none;
 					`;
-					
+
 					// Shine effect
 					const shineEffect = document.createElement('div');
 					shineEffect.style.cssText = `
@@ -248,7 +249,7 @@ export default function WalletBeamAnimation() {
 						animation: shine 3s infinite;
 						pointer-events: none;
 					`;
-					
+
 					normalWallet.style.cssText = `
 						position: absolute;
 						top: 0;
@@ -283,7 +284,8 @@ export default function WalletBeamAnimation() {
 					const loss = (Math.random() * 500).toFixed(0);
 
 					const contentDiv = document.createElement('div');
-					contentDiv.style.cssText = 'position: relative; z-index: 10; height: 100%; display: flex; flex-direction: column; justify-content: space-between;';
+					contentDiv.style.cssText =
+						'position: relative; z-index: 10; height: 100%; display: flex; flex-direction: column; justify-content: space-between;';
 					contentDiv.innerHTML = `
 						<div style="display: flex; justify-content: space-between; align-items: start;">
 							<div>
@@ -425,7 +427,7 @@ export default function WalletBeamAnimation() {
 							// Effet de scan + brûlure
 							if (!wrapper.hasAttribute('data-scanned') && scannerIntersectLeft > 0) {
 								wrapper.setAttribute('data-scanned', 'true');
-								
+
 								// Effet de scan
 								const scanEffect = document.createElement('div');
 								scanEffect.className = 'scan-effect';
@@ -531,14 +533,7 @@ export default function WalletBeamAnimation() {
 				constructor() {
 					this.scene = new THREE.Scene();
 					const width = document.documentElement.clientWidth;
-					this.camera = new THREE.OrthographicCamera(
-						-width / 2,
-						width / 2,
-						135,
-						-125,
-						1,
-						1000
-					);
+					this.camera = new THREE.OrthographicCamera(-width / 2, width / 2, 135, -125, 1, 1000);
 					this.camera.position.z = 100;
 
 					this.renderer = new THREE.WebGLRenderer({
@@ -824,7 +819,9 @@ export default function WalletBeamAnimation() {
 					particle.y += particle.vy;
 					particle.time++;
 
-					particle.alpha = particle.originalAlpha * particle.life + Math.sin(particle.time * particle.twinkleSpeed) * particle.twinkleAmount;
+					particle.alpha =
+						particle.originalAlpha * particle.life +
+						Math.sin(particle.time * particle.twinkleSpeed) * particle.twinkleAmount;
 					particle.life -= particle.decay;
 
 					if (particle.x > this.w + 10 || particle.life <= 0) {
@@ -856,7 +853,13 @@ export default function WalletBeamAnimation() {
 					fadeAlpha = Math.max(0, Math.min(1, fadeAlpha));
 
 					this.ctx.globalAlpha = particle.alpha * fadeAlpha;
-					this.ctx.drawImage(this.gradientCanvas, particle.x - particle.radius, particle.y - particle.radius, particle.radius * 2, particle.radius * 2);
+					this.ctx.drawImage(
+						this.gradientCanvas,
+						particle.x - particle.radius,
+						particle.y - particle.radius,
+						particle.radius * 2,
+						particle.radius * 2,
+					);
 				}
 
 				drawLightBar() {
@@ -877,7 +880,12 @@ export default function WalletBeamAnimation() {
 					const glow3Alpha = this.scanningActive ? 0.6 : 0.4;
 
 					// Core gradient - blanc/orange
-					const coreGradient = this.ctx.createLinearGradient(this.lightBarX - lineWidth / 2, 0, this.lightBarX + lineWidth / 2, 0);
+					const coreGradient = this.ctx.createLinearGradient(
+						this.lightBarX - lineWidth / 2,
+						0,
+						this.lightBarX + lineWidth / 2,
+						0,
+					);
 					coreGradient.addColorStop(0, 'rgba(255, 255, 255, 0)');
 					coreGradient.addColorStop(0.3, `rgba(255, 255, 255, ${0.9 * glowIntensity})`);
 					coreGradient.addColorStop(0.5, `rgba(255, 255, 255, ${1 * glowIntensity})`);
@@ -892,7 +900,12 @@ export default function WalletBeamAnimation() {
 					this.ctx.fill();
 
 					// Glow 1 - orange
-					const glow1Gradient = this.ctx.createLinearGradient(this.lightBarX - lineWidth * 2, 0, this.lightBarX + lineWidth * 2, 0);
+					const glow1Gradient = this.ctx.createLinearGradient(
+						this.lightBarX - lineWidth * 2,
+						0,
+						this.lightBarX + lineWidth * 2,
+						0,
+					);
 					glow1Gradient.addColorStop(0, 'rgba(255, 34, 59, 0)');
 					glow1Gradient.addColorStop(0.5, `rgba(255, 50, 40, ${0.8 * glowIntensity})`);
 					glow1Gradient.addColorStop(1, 'rgba(255, 34, 59, 0)');
@@ -905,7 +918,12 @@ export default function WalletBeamAnimation() {
 					this.ctx.fill();
 
 					// Glow 2 - rouge
-					const glow2Gradient = this.ctx.createLinearGradient(this.lightBarX - lineWidth * 4, 0, this.lightBarX + lineWidth * 4, 0);
+					const glow2Gradient = this.ctx.createLinearGradient(
+						this.lightBarX - lineWidth * 4,
+						0,
+						this.lightBarX + lineWidth * 4,
+						0,
+					);
 					glow2Gradient.addColorStop(0, 'rgba(255, 34, 59, 0)');
 					glow2Gradient.addColorStop(0.5, `rgba(255, 34, 59, ${0.4 * glowIntensity})`);
 					glow2Gradient.addColorStop(1, 'rgba(255, 34, 59, 0)');
@@ -919,7 +937,12 @@ export default function WalletBeamAnimation() {
 
 					if (this.scanningActive) {
 						// Glow 3 - dark red
-						const glow3Gradient = this.ctx.createLinearGradient(this.lightBarX - lineWidth * 8, 0, this.lightBarX + lineWidth * 8, 0);
+						const glow3Gradient = this.ctx.createLinearGradient(
+							this.lightBarX - lineWidth * 8,
+							0,
+							this.lightBarX + lineWidth * 8,
+							0,
+						);
 						glow3Gradient.addColorStop(0, 'rgba(74, 12, 19, 0)');
 						glow3Gradient.addColorStop(0.5, 'rgba(255, 34, 59, 0.2)');
 						glow3Gradient.addColorStop(1, 'rgba(74, 12, 19, 0)');
@@ -1145,4 +1168,3 @@ export default function WalletBeamAnimation() {
 		</motion.div>
 	);
 }
-

@@ -71,7 +71,9 @@ export default function TeamSectionV2() {
 					>
 						<span className='font-bold text-4xl sm:text-5xl md:text-[56px]'>The Guardians.</span>
 						<br />
-						<span className='block sm:inline text-3xl sm:text-4xl md:text-[48px] font-medium'>The minds behind the mission.</span>
+						<span className='block sm:inline text-3xl sm:text-4xl md:text-[48px] font-medium'>
+							The minds behind the mission.
+						</span>
 					</motion.h2>
 				</motion.div>
 
@@ -90,7 +92,7 @@ export default function TeamSectionV2() {
 						>
 							{/* Background Glow */}
 							<div className='absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
-							
+
 							{/* Image */}
 							<div className='relative aspect-square overflow-hidden rounded-t-[20px]'>
 								<img
@@ -150,14 +152,3 @@ export default function TeamSectionV2() {
 		</section>
 	);
 }
-
-
-
-
-
-
-
-
-
-
-

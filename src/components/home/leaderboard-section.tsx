@@ -263,15 +263,9 @@ export default function LeaderboardSection() {
 									<table className='w-full'>
 										<thead className='bg-[#F5F5F5] border-b border-[#2B2B2B]/10'>
 											<tr>
-												<th className='text-left p-3 sm:p-4 text-[#2B2B2B]/60 text-xs uppercase font-bold'>
-													Rank
-												</th>
-												<th className='text-left p-3 sm:p-4 text-[#2B2B2B]/60 text-xs uppercase font-bold'>
-													Degen
-												</th>
-												<th className='text-right p-3 sm:p-4 text-[#2B2B2B]/60 text-xs uppercase font-bold'>
-													Missed
-												</th>
+												<th className='text-left p-3 sm:p-4 text-[#2B2B2B]/60 text-xs uppercase font-bold'>Rank</th>
+												<th className='text-left p-3 sm:p-4 text-[#2B2B2B]/60 text-xs uppercase font-bold'>Degen</th>
+												<th className='text-right p-3 sm:p-4 text-[#2B2B2B]/60 text-xs uppercase font-bold'>Missed</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -286,9 +280,7 @@ export default function LeaderboardSection() {
 												>
 													<td className='p-3 sm:p-4'>
 														<div className='flex items-center gap-2 sm:gap-3'>
-															<span className='text-xl sm:text-2xl font-bold text-[#2B2B2B]/40'>
-																#{entry.rank}
-															</span>
+															<span className='text-xl sm:text-2xl font-bold text-[#2B2B2B]/40'>#{entry.rank}</span>
 															<span className='text-2xl sm:text-3xl'>{entry.badge}</span>
 														</div>
 													</td>
@@ -336,9 +328,7 @@ export default function LeaderboardSection() {
 							transition={{ delay: 0.4, duration: 0.6 }}
 							className='mt-8 sm:mt-12 text-center'
 						>
-							<p className='text-lg sm:text-xl text-[#2B2B2B]/70 mb-4 sm:mb-6 px-4'>
-								Think you can beat them? 🎯
-							</p>
+							<p className='text-lg sm:text-xl text-[#2B2B2B]/70 mb-4 sm:mb-6 px-4'>Think you can beat them? 🎯</p>
 							<button
 								type='button'
 								onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -361,4 +351,3 @@ export default function LeaderboardSection() {
 		</section>
 	);
 }
-

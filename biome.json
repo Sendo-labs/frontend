@@ -46,8 +46,7 @@
 	},
 	"css": {
 		"parser": {
-			"cssModules": false,
-			"tailwindDirectives": true
+			"cssModules": false
 		}
 	},
 	"linter": {

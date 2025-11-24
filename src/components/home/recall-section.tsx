@@ -25,12 +25,12 @@ export default function RecallSection() {
 		<section className='w-full bg-[#050505] py-24 px-4 sm:px-6 relative overflow-hidden'>
 			{/* Atmospheric Background */}
 			<div className='absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#1a0505] via-[#050505] to-black opacity-60 pointer-events-none' />
-			
+
 			{/* Subtle animated grain/noise can be added here if desired, but keeping it clean for now */}
-			
+
 			{/* Central Light Source */}
 			<div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-sendo-red/10 blur-[120px] rounded-[100%] pointer-events-none mix-blend-screen' />
-			
+
 			{/* Top Highlight Line */}
 			<div className='absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-30' />
 
@@ -47,7 +47,7 @@ export default function RecallSection() {
 					>
 						Ready to face the <span className='font-bold text-sendo-red'>truth</span>?
 					</h2>
-					
+
 					<button
 						type='button'
 						onClick={handleScanWallet}
@@ -65,4 +65,3 @@ export default function RecallSection() {
 		</section>
 	);
 }
-

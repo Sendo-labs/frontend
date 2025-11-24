@@ -48,7 +48,7 @@ export default function Footer() {
 
 	// Marquee content for the separator effect
 	const MarqueeContent = () => (
-		<div className="flex items-center shrink-0">
+		<div className='flex items-center shrink-0'>
 			{[1, 2, 3, 4].map((i) => (
 				<div key={i} className='flex gap-8 items-center pr-8 text-sendo-red/20 font-mono text-sm'>
 					<span>// SENDO PROTOCOL</span>
@@ -68,13 +68,13 @@ export default function Footer() {
 		<footer className='w-full bg-black border-t border-white/10 relative overflow-hidden'>
 			{/* Scanner Effect Top Border */}
 			<div className='absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-sendo-red to-transparent opacity-50' />
-			
+
 			{/* Animated Marquee Background (Subtle) */}
 			<div className='absolute top-0 left-0 right-0 h-12 overflow-hidden opacity-30 pointer-events-none select-none'>
 				<motion.div
 					className='flex whitespace-nowrap'
-					animate={{ x: "-50%" }}
-					transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+					animate={{ x: '-50%' }}
+					transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
 				>
 					<MarqueeContent />
 					<MarqueeContent />
@@ -99,28 +99,26 @@ export default function Footer() {
 							/>
 						</motion.div>
 						<p className='text-[#D0D0D0] text-sm leading-relaxed max-w-xs mb-8 font-mono'>
-							Uncovering the truth behind every trade. 
+							Uncovering the truth behind every trade.
 							<br />
 							Built by degens, for degens.
 						</p>
-						
+
 						{/* Socials */}
 						<div className='flex gap-4'>
 							{socialPlatforms.map((platform, index) => (
 								<motion.a
 									key={platform.name}
 									href={platform.url}
-									target="_blank"
-									rel="noopener noreferrer"
+									target='_blank'
+									rel='noopener noreferrer'
 									initial={{ opacity: 0, scale: 0.8 }}
 									whileInView={{ opacity: 1, scale: 1 }}
 									viewport={{ once: true }}
 									transition={{ delay: index * 0.1, duration: 0.4 }}
 									className='w-10 h-10 rounded-full bg-[#141414] border border-white/10 flex items-center justify-center hover:bg-sendo-red hover:border-sendo-red transition-all group'
 								>
-									<div className='transform group-hover:scale-110 transition-transform'>
-										{platform.icon}
-									</div>
+									<div className='transform group-hover:scale-110 transition-transform'>{platform.icon}</div>
 								</motion.a>
 							))}
 						</div>
@@ -130,9 +128,24 @@ export default function Footer() {
 					<div className='md:col-span-3 md:col-start-7'>
 						<h4 className='text-white font-bold uppercase tracking-wider mb-6 text-sm'>Platform</h4>
 						<ul className='space-y-4 text-sm text-[#D0D0D0] font-mono'>
-							<li><a href='/analyzer' className='hover:text-sendo-red transition-colors flex items-center gap-2 group'><span className='w-1 h-1 bg-sendo-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity'/> Wallet Analyzer</a></li>
-							<li><a href='#team' className='hover:text-sendo-red transition-colors flex items-center gap-2 group'><span className='w-1 h-1 bg-sendo-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity'/> The Guardians</a></li>
-							<li><a href='#product' className='hover:text-sendo-red transition-colors flex items-center gap-2 group'><span className='w-1 h-1 bg-sendo-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity'/> Features</a></li>
+							<li>
+								<a href='/analyzer' className='hover:text-sendo-red transition-colors flex items-center gap-2 group'>
+									<span className='w-1 h-1 bg-sendo-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity' />{' '}
+									Wallet Analyzer
+								</a>
+							</li>
+							<li>
+								<a href='#team' className='hover:text-sendo-red transition-colors flex items-center gap-2 group'>
+									<span className='w-1 h-1 bg-sendo-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity' />{' '}
+									The Guardians
+								</a>
+							</li>
+							<li>
+								<a href='#product' className='hover:text-sendo-red transition-colors flex items-center gap-2 group'>
+									<span className='w-1 h-1 bg-sendo-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity' />{' '}
+									Features
+								</a>
+							</li>
 						</ul>
 					</div>
 
@@ -140,18 +153,28 @@ export default function Footer() {
 					<div className='md:col-span-3'>
 						<h4 className='text-white font-bold uppercase tracking-wider mb-6 text-sm'>Legal</h4>
 						<ul className='space-y-4 text-sm text-[#D0D0D0] font-mono'>
-							<li><a href='#' className='hover:text-white transition-colors'>Terms of Service</a></li>
-							<li><a href='#' className='hover:text-white transition-colors'>Privacy Policy</a></li>
-							<li><a href='#' className='hover:text-white transition-colors'>Cookie Policy</a></li>
+							<li>
+								<a href='#' className='hover:text-white transition-colors'>
+									Terms of Service
+								</a>
+							</li>
+							<li>
+								<a href='#' className='hover:text-white transition-colors'>
+									Privacy Policy
+								</a>
+							</li>
+							<li>
+								<a href='#' className='hover:text-white transition-colors'>
+									Cookie Policy
+								</a>
+							</li>
 						</ul>
 					</div>
 				</div>
 
 				{/* Bottom Bar */}
 				<div className='border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4'>
-					<p className='text-[#D0D0D0]/40 text-xs font-mono'>
-						© {currentYear} SENDO LABS. ALL RIGHTS RESERVED.
-					</p>
+					<p className='text-[#D0D0D0]/40 text-xs font-mono'>© {currentYear} SENDO LABS. ALL RIGHTS RESERVED.</p>
 
 					<motion.button
 						onClick={scrollToTop}

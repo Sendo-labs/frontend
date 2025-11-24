@@ -180,10 +180,10 @@ export default function AgentChat() {
 						transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
 						onClick={() => setIsOpen(true)}
 						className='fixed bottom-6 right-6 z-40 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 flex items-center justify-center transition-all group'
-						style={{ 
+						style={{
 							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
 							willChange: 'opacity, transform',
-							transform: 'translateZ(0)'
+							transform: 'translateZ(0)',
 						}}
 					>
 						<MessageCircle className='w-7 h-7 md:w-8 md:h-8 text-white group-hover:scale-110 transition-transform' />

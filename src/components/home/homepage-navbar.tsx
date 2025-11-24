@@ -45,7 +45,7 @@ export default function HomepageNavbar() {
 		window.addEventListener('scroll', handleScroll);
 		// Initial check
 		handleScroll();
-		
+
 		return () => window.removeEventListener('scroll', handleScroll);
 	}, []);
 
@@ -76,7 +76,7 @@ export default function HomepageNavbar() {
 	useEffect(() => {
 		// Trouver la section MissingAthSection (fond blanc)
 		const whiteSection = document.querySelector('section[class*="bg-[#CCCCCC]"]');
-		
+
 		if (!whiteSection) return;
 
 		const observer = new IntersectionObserver(
@@ -97,7 +97,7 @@ export default function HomepageNavbar() {
 				root: null,
 				rootMargin: '-120px 0px 0px 0px', // Prendre en compte la hauteur de la navbar
 				threshold: 0,
-			}
+			},
 		);
 
 		observer.observe(whiteSection);
@@ -110,7 +110,7 @@ export default function HomepageNavbar() {
 		};
 
 		window.addEventListener('scroll', handleScroll);
-		
+
 		return () => {
 			observer.disconnect();
 			window.removeEventListener('scroll', handleScroll);
@@ -121,27 +121,21 @@ export default function HomepageNavbar() {
 		<nav
 			className={cn(
 				'fixed top-0 left-0 right-0 z-[100] pt-5 transition-all duration-500 ease-out',
-				isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+				isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0',
 			)}
 		>
 			<div className='max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8'>
 				<div
 					className={cn(
 						'w-full relative transition-all duration-300',
-						isScrolled
-							? 'bg-black/50 backdrop-blur-md'
-							: 'bg-black/50 backdrop-blur-sm'
+						isScrolled ? 'bg-black/50 backdrop-blur-md' : 'bg-black/50 backdrop-blur-sm',
 					)}
 					style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)' }}
 				>
 					{/* Animation de bordure qui fait le tour - progression linéaire */}
 					{isVisible && (
 						<div className='absolute inset-0 pointer-events-none z-10'>
-							<svg
-								className='absolute inset-0 w-full h-full'
-								preserveAspectRatio='none'
-								viewBox='0 0 1400 100'
-							>
+							<svg className='absolute inset-0 w-full h-full' preserveAspectRatio='none' viewBox='0 0 1400 100'>
 								<defs>
 									<style>{`
 										@keyframes drawBorderLinear {
@@ -193,7 +187,7 @@ export default function HomepageNavbar() {
 										'px-3 sm:px-4 py-2 text-sm sm:text-base transition-all uppercase',
 										activeSection === 'about'
 											? 'bg-foreground text-background'
-											: 'text-foreground/70 hover:text-foreground hover:bg-foreground/10'
+											: 'text-foreground/70 hover:text-foreground hover:bg-foreground/10',
 									)}
 									style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace', borderRadius: 0 }}
 								>
@@ -205,7 +199,7 @@ export default function HomepageNavbar() {
 										'px-3 sm:px-4 py-2 text-sm sm:text-base transition-all uppercase',
 										activeSection === 'product'
 											? 'bg-foreground text-background'
-											: 'text-foreground/70 hover:text-foreground hover:bg-foreground/10'
+											: 'text-foreground/70 hover:text-foreground hover:bg-foreground/10',
 									)}
 									style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace', borderRadius: 0 }}
 								>
@@ -224,7 +218,7 @@ export default function HomepageNavbar() {
 										'px-3 sm:px-4 py-2 text-sm sm:text-base transition-all uppercase',
 										activeSection === 'team'
 											? 'bg-foreground text-background'
-											: 'text-foreground/70 hover:text-foreground hover:bg-foreground/10'
+											: 'text-foreground/70 hover:text-foreground hover:bg-foreground/10',
 									)}
 									style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace', borderRadius: 0 }}
 								>
@@ -262,7 +256,7 @@ export default function HomepageNavbar() {
 						<div
 							className={cn(
 								'md:hidden overflow-hidden transition-all duration-300 ease-in-out',
-								mobileMenuOpen ? 'max-h-[400px] opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'
+								mobileMenuOpen ? 'max-h-[400px] opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0',
 							)}
 						>
 							<div className='flex flex-col gap-3 pt-4 border-t border-border'>
@@ -273,7 +267,7 @@ export default function HomepageNavbar() {
 										'text-sm transition-all uppercase px-4 py-2',
 										activeSection === 'about'
 											? 'bg-foreground text-background'
-											: 'text-foreground/70 hover:text-foreground hover:bg-foreground/10'
+											: 'text-foreground/70 hover:text-foreground hover:bg-foreground/10',
 									)}
 									style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace', borderRadius: 0 }}
 								>
@@ -286,7 +280,7 @@ export default function HomepageNavbar() {
 										'text-sm transition-all uppercase px-4 py-2',
 										activeSection === 'product'
 											? 'bg-foreground text-background'
-											: 'text-foreground/70 hover:text-foreground hover:bg-foreground/10'
+											: 'text-foreground/70 hover:text-foreground hover:bg-foreground/10',
 									)}
 									style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace', borderRadius: 0 }}
 								>
@@ -307,7 +301,7 @@ export default function HomepageNavbar() {
 										'text-sm transition-all uppercase px-4 py-2',
 										activeSection === 'team'
 											? 'bg-foreground text-background'
-											: 'text-foreground/70 hover:text-foreground hover:bg-foreground/10'
+											: 'text-foreground/70 hover:text-foreground hover:bg-foreground/10',
 									)}
 									style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace', borderRadius: 0 }}
 								>
@@ -333,4 +327,3 @@ export default function HomepageNavbar() {
 		</nav>
 	);
 }
-

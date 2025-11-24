@@ -2,13 +2,13 @@
 
 import { useState, useEffect, useRef } from 'react';
 
-export default function Loader({ 
-	text, 
-	blur = false, 
+export default function Loader({
+	text,
+	blur = false,
 	onFadeStart,
-	onComplete 
-}: { 
-	text?: string; 
+	onComplete,
+}: {
+	text?: string;
 	blur?: boolean;
 	onFadeStart?: () => void;
 	onComplete?: () => void;
@@ -32,7 +32,7 @@ export default function Loader({
 
 		const startTime = Date.now();
 		let hasReached100 = false;
-		
+
 		const interval = setInterval(() => {
 			const elapsed = Date.now() - startTime;
 			const newProgress = Math.min(100, Math.round((elapsed / animationDuration) * 100));
@@ -41,7 +41,7 @@ export default function Loader({
 			if (newProgress >= 100 && !hasReached100) {
 				hasReached100 = true;
 				clearInterval(interval);
-				
+
 				// Démarrer le fade out après un court délai (200ms)
 				setTimeout(() => {
 					setIsFadingOut(true);
@@ -50,7 +50,7 @@ export default function Loader({
 						callbacksRef.current.onComplete?.();
 					}, fadeOutDuration);
 				}, 200);
-				
+
 				// Démarrer les animations exactement 1 seconde après avoir atteint 100%
 				setTimeout(() => {
 					callbacksRef.current.onFadeStart?.();
@@ -105,7 +105,10 @@ export default function Loader({
 					/>
 				</div>
 				{/* Pourcentage */}
-				<div className='mt-6 text-foreground/60 text-sm sm:text-base md:text-lg' style={{ fontFamily: 'var(--font-ibm-plex-mono), monospace' }}>
+				<div
+					className='mt-6 text-foreground/60 text-sm sm:text-base md:text-lg'
+					style={{ fontFamily: 'var(--font-ibm-plex-mono), monospace' }}
+				>
 					{progress}%
 				</div>
 			</div>

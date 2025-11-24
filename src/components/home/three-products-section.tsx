@@ -81,13 +81,10 @@ export default function ThreeProductsSection() {
 							viewport={{ once: true }}
 							transition={{ delay: index * 0.1, duration: 0.6 }}
 							className={`bg-foreground/5 border-2 ${
-								product.available
-									? 'border-foreground/10 hover:border-sendo-orange/50'
-									: 'border-foreground/5'
+								product.available ? 'border-foreground/10 hover:border-sendo-orange/50' : 'border-foreground/5'
 							} p-6 sm:p-8 relative overflow-hidden transition-all ${product.available ? 'hover:shadow-2xl' : ''}`}
 							style={{
-								clipPath:
-									'polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%)',
+								clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%)',
 							}}
 						>
 							{/* Status Badge */}
@@ -106,8 +103,7 @@ export default function ThreeProductsSection() {
 									!product.available && 'opacity-40'
 								}`}
 								style={{
-									clipPath:
-										'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
+									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)',
 								}}
 							>
 								<product.icon className='w-6 h-6 sm:w-8 sm:h-8 text-white' />
@@ -168,4 +164,3 @@ export default function ThreeProductsSection() {
 		</section>
 	);
 }
-
