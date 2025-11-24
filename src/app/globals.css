@@ -144,6 +144,12 @@
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
+		cursor: none !important; /* Hide default OS cursor - custom cursor used instead */
+	}
+
+	/* Force cursor: none on all interactive elements */
+	button, a, input, textarea, select, [role="button"] {
+		cursor: none !important;
 	}
 	html {
 		@apply bg-background;

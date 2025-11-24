@@ -20,8 +20,9 @@ export default function CustomCursor() {
 	const mouseRef = useRef({ x: -100, y: -100 });
 	const cursorRef = useRef({ x: -100, y: -100 });
 	const particlesRef = useRef<Particle[]>([]);
-	const requestRef = useRef<number>();
+	const requestRef = useRef<number | undefined>(undefined);
 	const isHoveringRef = useRef(false);
+	const isDarkBgRef = useRef(true); // Track if background is dark
 
 	useEffect(() => {
 		// Check if device supports fine pointer (mouse)
@@ -29,7 +30,7 @@ export default function CustomCursor() {
 		if (isTouch) return;
 
 		setIsEnabled(true);
-		// Note: We keep the default OS cursor visible as requested
+		// Note: Default OS cursor is hidden via CSS (cursor: none in globals.css)
 		
 		// Add hover listeners for interactive elements
 		const handleMouseOver = (e: MouseEvent) => {
@@ -72,12 +73,25 @@ export default function CustomCursor() {
 			const ctx = canvas.getContext('2d');
 			if (!ctx) return;
 
-			// Smooth cursor movement for the effect (trails behind the real cursor slightly)
+			// Perfect instant cursor position - zero latency
 			const dx = mouseRef.current.x - cursorRef.current.x;
 			const dy = mouseRef.current.y - cursorRef.current.y;
-			
-			cursorRef.current.x += dx * 0.2; // Slightly faster to follow closely
-			cursorRef.current.y += dy * 0.2;
+
+			cursorRef.current.x = mouseRef.current.x; // Direct copy, no smoothing
+			cursorRef.current.y = mouseRef.current.y;
+
+			// Detect background brightness under cursor
+			const element = document.elementFromPoint(mouseRef.current.x, mouseRef.current.y);
+			if (element) {
+				const bgColor = window.getComputedStyle(element).backgroundColor;
+				// Parse RGB and calculate brightness
+				const rgbMatch = bgColor.match(/\d+/g);
+				if (rgbMatch) {
+					const [r, g, b] = rgbMatch.map(Number);
+					const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+					isDarkBgRef.current = brightness < 128; // Dark if brightness < 128
+				}
+			}
 
 			// Clear canvas
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -87,6 +101,11 @@ export default function CustomCursor() {
 				const particleCount = isHoveringRef.current ? 3 : 1;
 				for (let i = 0; i < particleCount; i++) {
 					if (Math.random() > 0.4) {
+						// Adapt particle colors based on background
+						const color = isDarkBgRef.current
+							? (Math.random() > 0.5 ? 'rgba(255, 50, 40, 0.8)' : 'rgba(255, 34, 59, 0.4)') // Red on dark
+							: (Math.random() > 0.5 ? 'rgba(20, 20, 20, 0.8)' : 'rgba(50, 50, 50, 0.6)'); // Black on light
+
 						particlesRef.current.push({
 							x: cursorRef.current.x,
 							y: cursorRef.current.y,
@@ -95,7 +114,7 @@ export default function CustomCursor() {
 							life: 1,
 							maxLife: Math.random() * 20 + 10,
 							size: Math.random() * 1.5 + 0.5,
-							color: Math.random() > 0.5 ? 'rgba(255, 50, 40, 0.8)' : 'rgba(255, 34, 59, 0.4)'
+							color: color
 						});
 					}
 				}
@@ -121,33 +140,65 @@ export default function CustomCursor() {
 			// Draw Scanner Glow (Highlighting the cursor)
 			// We draw a glow around the cursor tip to "outline" it nicely
 			const radius = isHoveringRef.current ? 12 : 8;
-			
-			// Outer Glow
-			const gradient = ctx.createRadialGradient(
-				cursorRef.current.x, cursorRef.current.y, 0,
-				cursorRef.current.x, cursorRef.current.y, radius * 2.5
-			);
-			gradient.addColorStop(0, 'rgba(255, 50, 40, 0.3)');
-			gradient.addColorStop(0.5, 'rgba(255, 34, 59, 0.1)');
-			gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
-			ctx.fillStyle = gradient;
-			ctx.beginPath();
-			ctx.arc(cursorRef.current.x, cursorRef.current.y, radius * 2.5, 0, Math.PI * 2);
-			ctx.fill();
+			// Adapt colors based on background
+			if (isDarkBgRef.current) {
+				// Dark background: use red/orange colors
+				// Outer Glow
+				const gradient = ctx.createRadialGradient(
+					cursorRef.current.x, cursorRef.current.y, 0,
+					cursorRef.current.x, cursorRef.current.y, radius * 2.5
+				);
+				gradient.addColorStop(0, 'rgba(255, 50, 40, 0.3)');
+				gradient.addColorStop(0.5, 'rgba(255, 34, 59, 0.1)');
+				gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
-			// Inner "Scanner" Ring
-			ctx.strokeStyle = 'rgba(255, 50, 40, 0.4)';
-			ctx.lineWidth = 1.5;
-			ctx.beginPath();
-			ctx.arc(cursorRef.current.x, cursorRef.current.y, radius, 0, Math.PI * 2);
-			ctx.stroke();
+				ctx.fillStyle = gradient;
+				ctx.beginPath();
+				ctx.arc(cursorRef.current.x, cursorRef.current.y, radius * 2.5, 0, Math.PI * 2);
+				ctx.fill();
 
-			// Center dot (Scanner eye)
-			ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-			ctx.beginPath();
-			ctx.arc(cursorRef.current.x, cursorRef.current.y, 1.5, 0, Math.PI * 2);
-			ctx.fill();
+				// Inner "Scanner" Ring
+				ctx.strokeStyle = 'rgba(255, 50, 40, 0.4)';
+				ctx.lineWidth = 1.5;
+				ctx.beginPath();
+				ctx.arc(cursorRef.current.x, cursorRef.current.y, radius, 0, Math.PI * 2);
+				ctx.stroke();
+
+				// Center dot (Scanner eye)
+				ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+				ctx.beginPath();
+				ctx.arc(cursorRef.current.x, cursorRef.current.y, 1.5, 0, Math.PI * 2);
+				ctx.fill();
+			} else {
+				// Light background: use black/dark colors
+				// Outer Glow
+				const gradient = ctx.createRadialGradient(
+					cursorRef.current.x, cursorRef.current.y, 0,
+					cursorRef.current.x, cursorRef.current.y, radius * 2.5
+				);
+				gradient.addColorStop(0, 'rgba(20, 20, 20, 0.4)');
+				gradient.addColorStop(0.5, 'rgba(50, 50, 50, 0.2)');
+				gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+				ctx.fillStyle = gradient;
+				ctx.beginPath();
+				ctx.arc(cursorRef.current.x, cursorRef.current.y, radius * 2.5, 0, Math.PI * 2);
+				ctx.fill();
+
+				// Inner "Scanner" Ring
+				ctx.strokeStyle = 'rgba(20, 20, 20, 0.6)';
+				ctx.lineWidth = 1.5;
+				ctx.beginPath();
+				ctx.arc(cursorRef.current.x, cursorRef.current.y, radius, 0, Math.PI * 2);
+				ctx.stroke();
+
+				// Center dot (Scanner eye)
+				ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
+				ctx.beginPath();
+				ctx.arc(cursorRef.current.x, cursorRef.current.y, 1.5, 0, Math.PI * 2);
+				ctx.fill();
+			}
 
 			requestRef.current = requestAnimationFrame(animate);
 		};
@@ -169,7 +220,6 @@ export default function CustomCursor() {
 		<canvas
 			ref={canvasRef}
 			className="fixed inset-0 pointer-events-none z-[9999]"
-			style={{ mixBlendMode: 'screen' }}
 		/>
 	);
 }
