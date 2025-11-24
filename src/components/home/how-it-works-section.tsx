@@ -84,7 +84,8 @@ export default function HowItWorksSection() {
 				<motion.h2
 					initial={{ opacity: 0, y: 30 }}
 					whileInView={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.8 }}
+					transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+					style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 					className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-2 md:mb-3 text-foreground title-font'
 				>
 					HOW IT{' '}
@@ -96,7 +97,8 @@ export default function HowItWorksSection() {
 				<motion.p
 					initial={{ opacity: 0, y: 20 }}
 					whileInView={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.2, duration: 0.8 }}
+					transition={{ delay: 0.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+					style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 					className='text-xs sm:text-sm md:text-base text-foreground/60 text-center mb-4 md:mb-6'
 				>
 					From wallet analysis to autonomous trading — your journey in 5 steps
@@ -111,7 +113,8 @@ export default function HowItWorksSection() {
 								initial={{ opacity: 0, x: 100 }}
 								animate={{ opacity: 1, x: 0 }}
 								exit={{ opacity: 0, x: -100 }}
-								transition={{ duration: 0.5 }}
+								transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+								style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 								className='grid md:grid-cols-2 gap-4 lg:gap-6 items-center'
 							>
 								{/* Content Side */}
@@ -216,7 +219,8 @@ export default function HowItWorksSection() {
 						<motion.div
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
-							transition={{ delay: 0.4, duration: 0.8 }}
+							transition={{ delay: 0.4, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+							style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 							className='flex justify-center mt-6'
 						>
 							<a
@@ -245,7 +249,8 @@ export default function HowItWorksSection() {
 							key={index}
 							initial={{ opacity: 0, y: 30 }}
 							whileInView={{ opacity: 1, y: 0 }}
-							transition={{ delay: index * 0.1, duration: 0.6 }}
+							transition={{ delay: index * 0.1, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+							style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 							className='space-y-2'
 						>
 							{/* Media Vidéo */}

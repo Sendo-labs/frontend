@@ -28,6 +28,7 @@ export default function AgentChat() {
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLTextAreaElement>(null);
 	const [animatedMessagesSet, setAnimatedMessagesSet] = useState(new Set<string>());
+	const [showButton, setShowButton] = useState(false);
 
 	const { authenticated, user } = usePrivy();
 
@@ -83,6 +84,47 @@ export default function AgentChat() {
 		}
 	}, [isOpen]);
 
+	// Détecter quand on scroll au-delà de la Hero section
+	useEffect(() => {
+		const checkScrollPosition = () => {
+			// Trouver la Hero section (elle a une classe min-h-screen)
+			const heroSection = document.querySelector('section[class*="min-h-screen"]');
+			if (!heroSection) {
+				// Si on ne trouve pas la section, afficher le bouton après un certain scroll
+				setShowButton(window.scrollY > window.innerHeight);
+				return;
+			}
+
+			const heroBottom = heroSection.getBoundingClientRect().bottom;
+			// Afficher le bouton quand on dépasse le bas de la Hero section
+			setShowButton(heroBottom <= 0);
+		};
+
+		// Vérifier immédiatement après un court délai pour laisser le DOM se charger
+		const timeoutId = setTimeout(checkScrollPosition, 100);
+
+		// Écouter les événements de scroll avec throttling
+		let ticking = false;
+		const handleScroll = () => {
+			if (!ticking) {
+				window.requestAnimationFrame(() => {
+					checkScrollPosition();
+					ticking = false;
+				});
+				ticking = true;
+			}
+		};
+
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		window.addEventListener('resize', checkScrollPosition);
+
+		return () => {
+			clearTimeout(timeoutId);
+			window.removeEventListener('scroll', handleScroll);
+			window.removeEventListener('resize', checkScrollPosition);
+		};
+	}, []);
+
 	const handleSend = async () => {
 		if (!input.trim() || isLoading || isAgentThinking || !agent) return;
 
@@ -130,22 +172,26 @@ export default function AgentChat() {
 		<>
 			{/* Floating Button */}
 			<AnimatePresence>
-				{!isOpen && (
+				{!isOpen && showButton && (
 					<motion.button
 						initial={{ scale: 0, opacity: 0 }}
 						animate={{ scale: 1, opacity: 1 }}
 						exit={{ scale: 0, opacity: 0 }}
-						transition={{ duration: 0.3 }}
+						transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
 						onClick={() => setIsOpen(true)}
 						className='fixed bottom-6 right-6 z-40 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 flex items-center justify-center transition-all group'
-						style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)' }}
+						style={{ 
+							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)',
+							willChange: 'opacity, transform',
+							transform: 'translateZ(0)'
+						}}
 					>
 						<MessageCircle className='w-7 h-7 md:w-8 md:h-8 text-white group-hover:scale-110 transition-transform' />
 						<motion.div
 							animate={{ scale: [1, 1.2, 1] }}
-							transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+							transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: [0.25, 0.1, 0.25, 1] }}
 							className='absolute -top-1 -right-1 w-3 h-3 bg-sendo-green'
-							style={{ borderRadius: 0 }}
+							style={{ borderRadius: 0, willChange: 'transform', transform: 'translateZ(0)' }}
 						/>
 					</motion.button>
 				)}
@@ -158,6 +204,8 @@ export default function AgentChat() {
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
+						transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+						style={{ willChange: 'opacity', transform: 'translateZ(0)' }}
 						className='fixed inset-0 z-[100] flex items-end md:items-center justify-end'
 						onWheel={(e) => e.stopPropagation()}
 						onTouchMove={(e) => e.stopPropagation()}
@@ -170,7 +218,8 @@ export default function AgentChat() {
 							initial={{ x: 400, opacity: 0 }}
 							animate={{ x: 0, opacity: 1 }}
 							exit={{ x: 400, opacity: 0 }}
-							transition={{ duration: 0.3, ease: 'easeOut' }}
+							transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+							style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 							className='chat-drawer relative w-full md:w-[400px] h-[80vh] md:h-[600px] md:m-6 bg-background border-2 border-sendo-orange/30 flex flex-col rounded-none'
 							onClick={(e) => e.stopPropagation()}
 						>

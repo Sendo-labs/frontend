@@ -89,7 +89,7 @@ export default function HowItWorksSectionV2() {
 	const step = steps[currentStep];
 
 	return (
-		<section className='py-16 sm:py-20 px-4 sm:px-6'>
+		<section id='how-it-works' className='py-16 sm:py-20 px-4 sm:px-6'>
 			<div className='max-w-7xl mx-auto'>
 				<motion.div
 					initial={{ opacity: 0, y: 30 }}
@@ -126,7 +126,7 @@ export default function HowItWorksSectionV2() {
 										clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%)',
 									}}
 								>
-									<video src={step.videoUrl} autoPlay loop muted playsInline className='w-full h-full object-cover' />
+									<video src={step.videoUrl} autoPlay loop muted playsInline className='w-full h-full object-cover' suppressHydrationWarning />
 
 									{/* Overlay gradient bottom */}
 									<div className='absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent pointer-events-none' />
@@ -268,7 +268,7 @@ export default function HowItWorksSectionV2() {
 									clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%)',
 								}}
 							>
-								<video src={mobileStep.videoUrl} autoPlay loop muted playsInline className='w-full h-full object-cover' />
+								<video src={mobileStep.videoUrl} autoPlay loop muted playsInline className='w-full h-full object-cover' suppressHydrationWarning />
 								<div
 									className='absolute top-3 right-3 px-2 py-1 text-sm font-bold uppercase bg-sendo-orange text-white'
 									style={{ borderRadius: 0 }}

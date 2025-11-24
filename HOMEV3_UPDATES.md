@@ -364,3 +364,13 @@ npm run dev
 **Date** : 13 Novembre 2025  
 **Version** : 1.1
 
+
+
+
+
+
+
+
+
+
+

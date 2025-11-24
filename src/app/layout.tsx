@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
-import { IBM_Plex_Mono } from 'next/font/google';
+import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
 import './globals.css';
 import Navigation from '@/components/navigation';
 import AgentChat from '@/components/agent-chat';
 import { GlobalProviders } from '@/lib/providers';
+import CustomCursor from '@/components/ui/custom-cursor';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -13,6 +14,12 @@ const geistSans = Geist({
 
 const ibmPlexMono = IBM_Plex_Mono({
 	variable: '--font-ibm-plex-mono',
+	subsets: ['latin'],
+	weight: ['400', '500', '600', '700'],
+});
+
+const ibmPlexSans = IBM_Plex_Sans({
+	variable: '--font-ibm-plex-sans',
 	subsets: ['latin'],
 	weight: ['400', '500', '600', '700'],
 });
@@ -28,7 +35,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang='en'>
+		<html lang='en' className='bg-background' suppressHydrationWarning>
 			<head>
 				<style>{`
           @font-face {
@@ -51,9 +58,11 @@ export default function RootLayout({
         `}</style>
 			</head>
 			<body
-				className={`${geistSans.variable} ${ibmPlexMono.variable} antialiased bg-background text-foreground min-h-screen`}
+				className={`${geistSans.variable} ${ibmPlexMono.variable} ${ibmPlexSans.variable} antialiased bg-background text-foreground min-h-screen`}
+				suppressHydrationWarning
 			>
 				<GlobalProviders>
+					<CustomCursor />
 					<Navigation />
 					<AgentChat />
 					{children}

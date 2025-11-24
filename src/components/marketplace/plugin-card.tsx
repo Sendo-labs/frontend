@@ -28,11 +28,11 @@ export default function PluginCard({ plugin, isSponsored = false, onDetails, onD
 		<motion.div
 			initial={{ opacity: 0, y: 30 }}
 			whileInView={{ opacity: 1, y: 0 }}
-			transition={{ delay, duration: 0.6 }}
+			transition={{ delay, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+			style={{ borderRadius: 0, willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 			className={`relative overflow-hidden bg-foreground/5 border hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all group ${
 				isSponsored ? 'border-[#FFD700]/50' : 'border-foreground/10'
 			}`}
-			style={{ borderRadius: 0 }}
 		>
 			{isSponsored && (
 				<div

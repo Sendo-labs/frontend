@@ -10,6 +10,9 @@ export interface PainCardData {
 		symbol: string;
 		missedUSD: number;
 		rank: number;
+		ath_change_pct?: number;
+		trade_price?: number;
+		ath_price?: number;
 	}>;
 }
 

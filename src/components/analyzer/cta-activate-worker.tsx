@@ -11,9 +11,9 @@ export default function CTAActivateWorker() {
 		<motion.div
 			initial={{ opacity: 0, y: 30 }}
 			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 0.6, delay: 0.6 }}
+			transition={{ duration: 0.6, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+			style={{ borderRadius: 0, willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 			className='bg-gradient-to-br from-sendo-orange/10 via-sendo-red/10 to-sendo-dark-red/10 border border-sendo-orange/30 p-4 md:p-6 relative overflow-hidden group hover:border-sendo-orange/50 transition-all'
-			style={{ borderRadius: 0 }}
 		>
 			<div className='absolute top-0 right-0 w-32 h-32 bg-sendo-orange/5 blur-3xl' />
 
