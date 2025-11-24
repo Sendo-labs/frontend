@@ -148,7 +148,12 @@
 	}
 
 	/* Force cursor: none on all interactive elements */
-	button, a, input, textarea, select, [role="button"] {
+	button,
+	a,
+	input,
+	textarea,
+	select,
+	[role="button"] {
 		cursor: none !important;
 	}
 	html {
