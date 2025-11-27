@@ -255,6 +255,30 @@ export default function AnalyzerPage() {
 
 	return (
 		<PageWrapper>
+			{/* Scanner Background Effect */}
+			<div className='fixed inset-0 pointer-events-none z-0 opacity-20'>
+				<div
+					className='absolute inset-0'
+					style={{
+						backgroundImage:
+							'linear-gradient(rgba(242, 237, 231, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(242, 237, 231, 0.05) 1px, transparent 1px)',
+						backgroundSize: '40px 40px',
+					}}
+				/>
+			</div>
+
+			{/* Scanning Line Animation - Active when analyzing */}
+			{isAnalyzing && (
+				<div className='fixed inset-0 pointer-events-none z-50 overflow-hidden'>
+					<motion.div
+						className='w-full h-[2px] bg-sendo-red/50 shadow-[0_0_20px_rgba(255,34,59,0.5)]'
+						animate={{ top: ['0%', '100%'] }}
+						transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+						style={{ position: 'absolute' }}
+					/>
+				</div>
+			)}
+
 			{/* Header */}
 			<motion.div
 				initial={{ opacity: 0, y: 30 }}
@@ -264,7 +288,7 @@ export default function AnalyzerPage() {
 			>
 				<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font'>
 					WALLET{' '}
-					<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
+					<span className='bg-gradient-to-r from-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
 						ANALYZER
 					</span>
 				</h1>
@@ -390,13 +414,15 @@ export default function AnalyzerPage() {
 					className='mt-16 text-center'
 				>
 					<Link href={createPageUrl('Leaderboard')}>
-						<Button
-							className='bg-foreground/5 border border-foreground/10 hover:bg-foreground/10 hover:border-sendo-red/50 text-foreground h-12 px-8 transition-all group'
-							style={{ borderRadius: 0 }}
+						<button
+							className='text-sm md:text-base bg-transparent border-none hover:opacity-80 transition-opacity flex items-center justify-center gap-2 mx-auto group cursor-pointer'
+							style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace' }}
 						>
-							<Crown className='w-5 h-5 mr-2 text-sendo-orange group-hover:scale-110 transition-transform' />
-							<span className='title-font'>VIEW LEADERBOARD</span>
-						</Button>
+							<Crown className='w-5 h-5 text-[#FFD700] group-hover:scale-110 transition-transform' />
+							<span className='font-bold text-foreground uppercase underline decoration-1 underline-offset-4 decoration-foreground/30 group-hover:decoration-foreground/60'>
+								VIEW LEADERBOARD
+							</span>
+						</button>
 					</Link>
 				</motion.div>
 			)}

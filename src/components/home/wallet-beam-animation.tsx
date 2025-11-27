@@ -716,6 +716,7 @@ export default function WalletBeamAnimation() {
 				currentGlowIntensity: number = 1;
 				gradientCanvas!: HTMLCanvasElement;
 				gradientCtx!: CanvasRenderingContext2D;
+				isAnimating: boolean = true;
 
 				constructor() {
 					this.canvas = scannerCanvas;
@@ -1009,7 +1010,9 @@ export default function WalletBeamAnimation() {
 				}
 
 				animate() {
-					this.render();
+					if (this.isAnimating) {
+						this.render();
+					}
 					this.animationId = requestAnimationFrame(() => this.animate());
 				}
 
@@ -1022,6 +1025,28 @@ export default function WalletBeamAnimation() {
 			cardControllerRef.current = new CardStreamController();
 			particleSystemRef.current = new ParticleSystem();
 			scannerRef.current = new ParticleScanner();
+
+			// Intersection Observer pour pauser les animations quand hors écran
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach(entry => {
+					const isVisible = entry.isIntersecting;
+					
+					if (cardControllerRef.current) {
+						cardControllerRef.current.isAnimating = isVisible;
+					}
+					
+					// Note: ParticleSystem ne supporte pas pause/resume simplement, 
+					// mais on pourrait ajouter un flag si nécessaire.
+					// Pour l'instant on pause le scanner qui est le plus lourd.
+					if (scannerRef.current) {
+						scannerRef.current.isAnimating = isVisible;
+					}
+				});
+			}, { threshold: 0 });
+			
+			if (container) {
+				observer.observe(container);
+			}
 
 			(window as any).setScannerScanning = (active: boolean) => {
 				if (scannerRef.current) {

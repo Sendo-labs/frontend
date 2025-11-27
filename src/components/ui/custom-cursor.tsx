@@ -23,6 +23,7 @@ export default function CustomCursor() {
 	const requestRef = useRef<number | undefined>(undefined);
 	const isHoveringRef = useRef(false);
 	const isDarkBgRef = useRef(true); // Track if background is dark
+	const frameCountRef = useRef(0); // Frame counter for throttling
 
 	useEffect(() => {
 		// Check if device supports fine pointer (mouse)
@@ -81,15 +82,42 @@ export default function CustomCursor() {
 			cursorRef.current.y = mouseRef.current.y;
 
 			// Detect background brightness under cursor
-			const element = document.elementFromPoint(mouseRef.current.x, mouseRef.current.y);
-			if (element) {
-				const bgColor = window.getComputedStyle(element).backgroundColor;
-				// Parse RGB and calculate brightness
-				const rgbMatch = bgColor.match(/\d+/g);
-				if (rgbMatch) {
-					const [r, g, b] = rgbMatch.map(Number);
-					const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-					isDarkBgRef.current = brightness < 128; // Dark if brightness < 128
+			// Note: We use a throttled check (every 3 frames) to ensure responsiveness while maintaining performance.
+			frameCountRef.current++;
+			if (frameCountRef.current % 3 === 0) {
+				// Use elementsFromPoint to look through transparent layers
+				const elements = document.elementsFromPoint(mouseRef.current.x, mouseRef.current.y);
+				let foundColor = false;
+
+				for (const element of elements) {
+					const style = window.getComputedStyle(element);
+					// Skip elements that are not effectively part of the background
+					if (style.pointerEvents === 'none' || style.visibility === 'hidden' || style.opacity === '0') continue;
+
+					const bgColor = style.backgroundColor;
+					// Improved regex to handle decimals in rgba (e.g. "0.5")
+					const rgbMatch = bgColor.match(/[0-9.]+/g);
+					
+					if (rgbMatch && rgbMatch.length >= 3) {
+						const r = Number(rgbMatch[0]);
+						const g = Number(rgbMatch[1]);
+						const b = Number(rgbMatch[2]);
+						// Check transparency (default to 1 if RGB, check index 3 if RGBA)
+						const alpha = rgbMatch.length > 3 ? Number(rgbMatch[3]) : 1;
+						
+						// If the element is significantly opaque, use it
+						if (alpha > 0.1) {
+							const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+							isDarkBgRef.current = brightness < 128;
+							foundColor = true;
+							break; // Found the topmost visible background
+						}
+					}
+				}
+				
+				// If no opaque background found after checking layers, default to dark (safe bet for this DA)
+				if (!foundColor) {
+					isDarkBgRef.current = true; 
 				}
 			}
 

@@ -26,10 +26,6 @@ export default function Loader({
 	}, [onFadeStart, onComplete]);
 
 	useEffect(() => {
-		// S'assurer que l'animation ne se lance qu'une seule fois
-		if (hasStartedRef.current) return;
-		hasStartedRef.current = true;
-
 		const startTime = Date.now();
 		let hasReached100 = false;
 

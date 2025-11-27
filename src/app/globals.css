@@ -180,8 +180,9 @@
 }
 
 .title-font {
-	font-family: "IBM Plex Mono Digits", "TECHNOS", sans-serif;
+	font-family: "IBM Plex Mono Digits", var(--font-ibm-plex-sans), sans-serif;
 	letter-spacing: 0.1em;
+	text-transform: uppercase;
 }
 
 /* Annuler l'espacement pour les très gros titres h1 uniquement */

@@ -7,65 +7,50 @@ import { useEffect, useRef, useState } from 'react';
 import WalletBeamAnimation from '@/components/home/wallet-beam-animation';
 import Loader from '@/components/shared/loader';
 
-// Animation discrète tout blanc
+// Animation discrète tout blanc optimisée via CSS/Framer
 function MatrixText({ text, isAnimating }: { text: string; isAnimating: boolean }) {
-	const [displayText, setDisplayText] = useState<string[]>(Array(text.length).fill(''));
-	const [opacities, setOpacities] = useState<number[]>(Array(text.length).fill(0));
-	const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
+	// Utilisation d'une clé pour forcer le re-render complet et relancer l'animation CSS
+	// quand le texte change ou que l'état d'animation change.
+	const animationKey = `${text}-${isAnimating}`;
 
-	useEffect(() => {
-		// Clear all previous timeouts
-		timeoutsRef.current.forEach((timeout) => clearTimeout(timeout));
-		timeoutsRef.current = [];
-
-		if (!isAnimating) {
-			setDisplayText(text.split(''));
-			setOpacities(Array(text.length).fill(1));
-			return;
-		}
-
-		// Reset pour l'animation
-		setDisplayText(Array(text.length).fill(''));
-		setOpacities(Array(text.length).fill(0));
-
-		// Animation discrète : chaque lettre apparaît progressivement avec un fade in doux
-		text.split('').forEach((char, index) => {
-			const delay = index * 60;
-			const timeout = setTimeout(() => {
-				setDisplayText((prev) => {
-					const newText = [...prev];
-					newText[index] = char;
-					return newText;
-				});
-				// Fade in progressif
-				setOpacities((prev) => {
-					const newOpacities = [...prev];
-					newOpacities[index] = 1;
-					return newOpacities;
-				});
-			}, delay);
-			timeoutsRef.current.push(timeout);
-		});
-
-		return () => {
-			timeoutsRef.current.forEach((timeout) => clearTimeout(timeout));
-			timeoutsRef.current = [];
-		};
-	}, [text, isAnimating]);
+	if (!isAnimating) {
+		return (
+			<span className='inline-block'>
+				{text.split('').map((char, index) => (
+					<span
+						key={index}
+						className='text-foreground'
+						style={{
+							fontFamily: 'var(--font-ibm-plex-sans), monospace',
+							opacity: 1,
+						}}
+					>
+						{char || ' '}
+					</span>
+				))}
+			</span>
+		);
+	}
 
 	return (
-		<span className='inline-block'>
-			{displayText.map((char, index) => (
-				<span
+		<span className='inline-block' key={animationKey}>
+			{text.split('').map((char, index) => (
+				<motion.span
 					key={index}
-					className='text-foreground transition-opacity duration-500'
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{
+						duration: 0.5,
+						delay: index * 0.06, // Délai géré par Framer Motion (CSS transitions)
+						ease: 'linear',
+					}}
+					className='text-foreground inline-block'
 					style={{
 						fontFamily: 'var(--font-ibm-plex-sans), monospace',
-						opacity: opacities[index] || 0,
 					}}
 				>
-					{char || ' '}
-				</span>
+					{char || '\u00A0'}
+				</motion.span>
 			))}
 		</span>
 	);

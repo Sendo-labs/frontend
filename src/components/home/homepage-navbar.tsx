@@ -3,11 +3,13 @@
 import { usePrivy } from '@privy-io/react-auth';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 export default function HomepageNavbar() {
 	const { ready, login } = usePrivy();
+	const pathname = usePathname();
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
 	const [isScrolled, setIsScrolled] = useState(false);
@@ -15,8 +17,20 @@ export default function HomepageNavbar() {
 	const [isOverWhiteSection, setIsOverWhiteSection] = useState(false);
 	const [activeSection, setActiveSection] = useState('');
 
+	const isHome = pathname === '/';
+
+	// Helper to get correct link href
+	const getLinkHref = (sectionId: string) => {
+		return isHome ? `#${sectionId}` : `/#${sectionId}`;
+	};
+
 	// Active section detection
 	useEffect(() => {
+		if (!isHome) {
+			setActiveSection('');
+			return;
+		}
+
 		const handleScroll = () => {
 			const sections = ['about', 'product', 'team'];
 			// Trigger detection line at 30% of viewport height
@@ -47,20 +61,21 @@ export default function HomepageNavbar() {
 		handleScroll();
 
 		return () => window.removeEventListener('scroll', handleScroll);
-	}, []);
+	}, [isHome]);
 
-	// Animation d'apparition après 3 secondes
+	// Animation d'apparition (3 secondes sur la homepage, 0.1s ailleurs)
 	useEffect(() => {
+		const delay = isHome ? 3000 : 100;
 		const timer = setTimeout(() => {
 			setIsVisible(true);
 			// Démarrer l'animation de bordure après un court délai
 			setTimeout(() => {
 				setBorderAnimationStarted(true);
 			}, 300); // Démarrer l'animation 300ms après l'apparition
-		}, 3000);
+		}, delay);
 
 		return () => clearTimeout(timer);
-	}, []);
+	}, [isHome]);
 
 	// Détection du scroll pour l'effet blur
 	useEffect(() => {
@@ -182,7 +197,7 @@ export default function HomepageNavbar() {
 							{/* Navigation Links Desktop - Centered */}
 							<div className='hidden md:flex items-center justify-center flex-1 gap-1'>
 								<Link
-									href='#about'
+									href={getLinkHref('about')}
 									className={cn(
 										'px-3 sm:px-4 py-2 text-sm sm:text-base transition-all uppercase',
 										activeSection === 'about'
@@ -194,7 +209,7 @@ export default function HomepageNavbar() {
 									About
 								</Link>
 								<Link
-									href='#product'
+									href={getLinkHref('product')}
 									className={cn(
 										'px-3 sm:px-4 py-2 text-sm sm:text-base transition-all uppercase',
 										activeSection === 'product'
@@ -207,13 +222,18 @@ export default function HomepageNavbar() {
 								</Link>
 								<Link
 									href='/leaderboard'
-									className='px-3 sm:px-4 py-2 text-sm sm:text-base text-foreground/70 hover:text-foreground hover:bg-foreground/10 transition-all uppercase'
+									className={cn(
+										'px-3 sm:px-4 py-2 text-sm sm:text-base transition-all uppercase',
+										pathname === '/leaderboard'
+											? 'bg-foreground text-background'
+											: 'text-foreground/70 hover:text-foreground hover:bg-foreground/10',
+									)}
 									style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace', borderRadius: 0 }}
 								>
 									Leaderboard
 								</Link>
 								<Link
-									href='#team'
+									href={getLinkHref('team')}
 									className={cn(
 										'px-3 sm:px-4 py-2 text-sm sm:text-base transition-all uppercase',
 										activeSection === 'team'
@@ -228,15 +248,26 @@ export default function HomepageNavbar() {
 
 							{/* Right Action Button */}
 							<div className='hidden md:flex w-[200px] justify-end'>
-								<button
-									type='button'
-									onClick={login}
-									disabled={!ready}
-									className='text-sm sm:text-base text-sendo-red px-3 sm:px-4 py-2 rounded-sm transition-all hover:bg-foreground/10 font-medium'
-									style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace' }}
-								>
-									ANALYZE MY WALLET
-								</button>
+								{pathname === '/analyzer' ? (
+									<div
+										className='text-sm sm:text-base text-sendo-red bg-black/40 border border-sendo-red/50 px-3 sm:px-4 py-2 rounded-full font-medium flex items-center gap-2 cursor-default backdrop-blur-sm'
+										style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace' }}
+									>
+										<span className='relative flex h-2 w-2'>
+											<span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-sendo-red opacity-75'></span>
+											<span className='relative inline-flex rounded-full h-2 w-2 bg-sendo-red'></span>
+										</span>
+										ANALYZING...
+									</div>
+								) : (
+									<Link
+										href='/analyzer'
+										className='text-sm sm:text-base text-sendo-red px-3 sm:px-4 py-2 rounded-sm transition-all hover:bg-foreground/10 font-medium'
+										style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace' }}
+									>
+										ANALYZE MY WALLET
+									</Link>
+								)}
 							</div>
 
 							{/* Bouton menu mobile */}
@@ -261,7 +292,7 @@ export default function HomepageNavbar() {
 						>
 							<div className='flex flex-col gap-3 pt-4 border-t border-border'>
 								<Link
-									href='#about'
+									href={getLinkHref('about')}
 									onClick={() => setMobileMenuOpen(false)}
 									className={cn(
 										'text-sm transition-all uppercase px-4 py-2',
@@ -274,7 +305,7 @@ export default function HomepageNavbar() {
 									About
 								</Link>
 								<Link
-									href='#product'
+									href={getLinkHref('product')}
 									onClick={() => setMobileMenuOpen(false)}
 									className={cn(
 										'text-sm transition-all uppercase px-4 py-2',
@@ -289,13 +320,18 @@ export default function HomepageNavbar() {
 								<Link
 									href='/leaderboard'
 									onClick={() => setMobileMenuOpen(false)}
-									className='text-sm text-foreground/70 hover:text-foreground hover:bg-foreground/10 transition-all uppercase px-4 py-2'
+									className={cn(
+										'text-sm transition-all uppercase px-4 py-2',
+										pathname === '/leaderboard'
+											? 'bg-foreground text-background'
+											: 'text-foreground/70 hover:text-foreground hover:bg-foreground/10',
+									)}
 									style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace', borderRadius: 0 }}
 								>
 									Leaderboard
 								</Link>
 								<Link
-									href='#team'
+									href={getLinkHref('team')}
 									onClick={() => setMobileMenuOpen(false)}
 									className={cn(
 										'text-sm transition-all uppercase px-4 py-2',
@@ -307,18 +343,27 @@ export default function HomepageNavbar() {
 								>
 									Team
 								</Link>
-								<button
-									type='button'
-									onClick={() => {
-										setMobileMenuOpen(false);
-										login();
-									}}
-									disabled={!ready}
-									className='text-sm text-sendo-red hover:text-sendo-red/80 transition-colors font-medium py-2 text-left'
-									style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace' }}
-								>
-									ANALYZE MY WALLET
-								</button>
+								{pathname === '/analyzer' ? (
+									<div
+										className='text-sm text-sendo-red bg-black/40 border border-sendo-red/50 font-medium py-2 px-4 flex items-center gap-2 rounded-full mx-4 w-fit backdrop-blur-sm'
+										style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace' }}
+									>
+										<span className='relative flex h-2 w-2'>
+											<span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-sendo-red opacity-75'></span>
+											<span className='relative inline-flex rounded-full h-2 w-2 bg-sendo-red'></span>
+										</span>
+										ANALYZING...
+									</div>
+								) : (
+									<Link
+										href='/analyzer'
+										onClick={() => setMobileMenuOpen(false)}
+										className='text-sm text-sendo-red hover:text-sendo-red/80 transition-colors font-medium py-2 text-left px-4'
+										style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace' }}
+									>
+										ANALYZE MY WALLET
+									</Link>
+								)}
 							</div>
 						</div>
 					</div>

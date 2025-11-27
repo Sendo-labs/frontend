@@ -37,14 +37,6 @@ export default function RootLayout({
 		<html lang='en' className='bg-background' suppressHydrationWarning>
 			<head>
 				<style>{`
-          @font-face {
-            font-family: 'TECHNOS';
-            src: url('https://cdn.prod.website-files.com/61b3737273405dd7b65eec4c/68e3cd8726651e5fccb99f93_Technos-PKDZP.otf') format('opentype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-          }
-
           /* IBM Plex Mono for digits only via unicode-range */
           @font-face {
             font-family: 'IBM Plex Mono Digits';
