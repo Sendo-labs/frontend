@@ -225,7 +225,7 @@ export default function Worker({ agentId = null, initialWorkerAnalysis, initialA
 	};
 
 	if (!ready || isWorkerAnalysisLoading || isWorkerActionsLoading) {
-		return <FullScreenLoader text='Loading Worker' />;
+		return <FullScreenLoader />;
 	}
 
 	const _createAgent = async () => {

@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import React from 'react';
 import MissingAthChart, { type ChartCase } from './missing-ath-chart';
 
@@ -66,9 +67,11 @@ export default function MissingAthSection() {
 								style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 								className='opacity-80 hover:opacity-100 hover:brightness-75 transition-all duration-300 flex items-center cursor-pointer'
 							>
-								<img
+								<Image
 									src='/logos_partners/foundation_solana.png'
 									alt='Solana Foundation'
+									width={100}
+									height={22}
 									className='block w-auto object-contain h-4 sm:h-5 md:h-6 lg:h-[22px]'
 								/>
 							</motion.a>
@@ -84,9 +87,11 @@ export default function MissingAthSection() {
 								style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 								className='opacity-80 hover:opacity-100 hover:brightness-75 transition-all duration-300 flex items-center cursor-pointer'
 							>
-								<img
+								<Image
 									src='/logos_partners/superteam.png'
 									alt='Superteam'
+									width={120}
+									height={28}
 									className='block w-auto object-contain h-5 sm:h-6 md:h-7 lg:h-[28px]'
 								/>
 							</motion.a>
@@ -102,9 +107,11 @@ export default function MissingAthSection() {
 								style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 								className='opacity-80 hover:opacity-100 hover:brightness-75 transition-all duration-300 flex items-center cursor-pointer'
 							>
-								<img
+								<Image
 									src='/logos_partners/elizaos-logo.png'
 									alt='ELIZA.OS'
+									width={80}
+									height={20}
 									className='block w-auto object-contain h-4 sm:h-5 md:h-5 lg:h-[20px]'
 								/>
 							</motion.a>
@@ -120,9 +127,11 @@ export default function MissingAthSection() {
 								style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 								className='opacity-80 hover:opacity-100 hover:brightness-75 transition-all duration-300 flex items-center cursor-pointer'
 							>
-								<img
+								<Image
 									src='/logos_partners/codigo-logo.png'
 									alt='Código'
+									width={100}
+									height={38}
 									className='block w-auto object-contain h-6 sm:h-7 md:h-8 lg:h-[38px]'
 								/>
 							</motion.a>
@@ -138,9 +147,11 @@ export default function MissingAthSection() {
 								style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 								className='opacity-80 hover:opacity-100 hover:brightness-75 transition-all duration-300 flex items-center cursor-pointer'
 							>
-								<img
+								<Image
 									src='/logos_partners/ferno_logo.png'
 									alt='Ferno'
+									width={100}
+									height={38}
 									className='block w-auto object-contain h-6 sm:h-7 md:h-8 lg:h-[38px]'
 								/>
 							</motion.a>

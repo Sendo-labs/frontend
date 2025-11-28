@@ -3,11 +3,11 @@
 import type { LeaderboardEntry } from '@sendo-labs/plugin-sendo-analyser';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Crown, Skull, TrendingDown, Trophy } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { getFameLeaderboard, getShameLeaderboard } from '@/actions/analyzer/get';
 import PageWrapper from '@/components/shared/page-wrapper';
-import { Button } from '@/components/ui/button';
 
 interface LeaderboardData {
 	shame: LeaderboardEntry[];
@@ -24,7 +24,7 @@ export default function Leaderboard() {
 		fame: [],
 	});
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: fetchLeaderboard is defined in component scope but doesn't need to be a dependency since it uses current state values
 	useEffect(() => {
 		fetchLeaderboard();
 	}, [period, activeTab]);
@@ -113,9 +113,7 @@ export default function Leaderboard() {
 			>
 				<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font'>
 					LEADER
-					<span className='bg-gradient-to-r from-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
-						BOARD
-					</span>
+					<span className='bg-gradient-to-r from-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>BOARD</span>
 				</h1>
 				<p className='text-lg sm:text-xl md:text-2xl text-foreground/60 max-w-3xl mx-auto'>
 					The best and worst traders on Solana 🏆
@@ -230,10 +228,12 @@ export default function Leaderboard() {
 					<div className='relative mx-auto w-40 h-16'>
 						{/* Background logo (grisé) */}
 						<div className='absolute inset-0 opacity-20'>
-							<img
+							<Image
 								src='https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/6ee61bcb6_SENDO_white2x.png'
 								alt='SENDO'
-								className='w-full h-full object-contain'
+								fill
+								className='object-contain'
+								unoptimized
 							/>
 						</div>
 
@@ -368,6 +368,7 @@ export default function Leaderboard() {
 				</p>
 				<Link href='/analyzer'>
 					<button
+						type='button'
 						className='arc-raiders-pill-button text-sm md:text-base'
 						style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace' }}
 					>

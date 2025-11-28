@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Twitter } from 'lucide-react';
+import { Github, Linkedin, X } from 'lucide-react';
+import Image from 'next/image';
 
 interface TeamMember {
 	name: string;
@@ -82,10 +83,12 @@ export default function TeamSection() {
 								style={{ borderRadius: 0 }}
 							>
 								<div className='relative aspect-square overflow-hidden'>
-									<img
+									<Image
 										src={member.image}
 										alt={member.name}
-										className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-500'
+										fill
+										className='object-cover group-hover:scale-110 transition-transform duration-500'
+										unoptimized
 									/>
 									<div className='absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-60' />
 
@@ -96,7 +99,7 @@ export default function TeamSection() {
 												className='w-8 h-8 sm:w-10 sm:h-10 bg-foreground/10 flex items-center justify-center hover:bg-sendo-orange transition-colors'
 												style={{ borderRadius: 0 }}
 											>
-												<Twitter className='w-4 h-4 sm:w-5 sm:h-5 text-foreground' />
+												<X className='w-4 h-4 sm:w-5 sm:h-5 text-foreground' />
 											</a>
 										)}
 										{member.socials.github && (

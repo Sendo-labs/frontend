@@ -9,7 +9,7 @@ import { getShameLeaderboard } from '@/actions/analyzer/get';
 import { Button } from '@/components/ui/button';
 
 // Types
-interface LeaderboardEntryWithMeta extends LeaderboardEntry {
+interface LeaderboardEntryWithMeta extends Omit<LeaderboardEntry, 'badge'> {
 	badge: string;
 	nickname: string;
 }

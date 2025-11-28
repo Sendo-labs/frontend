@@ -1,14 +1,13 @@
 'use client';
 
-import { usePrivy } from '@privy-io/react-auth';
 import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 export default function HomepageNavbar() {
-	const { ready, login } = usePrivy();
 	const pathname = usePathname();
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
@@ -150,7 +149,12 @@ export default function HomepageNavbar() {
 					{/* Animation de bordure qui fait le tour - progression linéaire */}
 					{isVisible && (
 						<div className='absolute inset-0 pointer-events-none z-10'>
-							<svg className='absolute inset-0 w-full h-full' preserveAspectRatio='none' viewBox='0 0 1400 100'>
+							<svg
+								className='absolute inset-0 w-full h-full'
+								preserveAspectRatio='none'
+								viewBox='0 0 1400 100'
+								aria-hidden='true'
+							>
 								<defs>
 									<style>{`
 										@keyframes drawBorderLinear {
@@ -186,10 +190,13 @@ export default function HomepageNavbar() {
 							{/* Logo - width defined to balance the layout */}
 							<div className='w-[200px] flex-shrink-0'>
 								<Link href='/'>
-									<img
+									<Image
 										src='https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/6ee61bcb6_SENDO_white2x.png'
 										alt='SENDO'
-										className='h-5 sm:h-6'
+										width={90}
+										height={24}
+										className='h-5 sm:h-6 w-auto'
+										unoptimized
 									/>
 								</Link>
 							</div>

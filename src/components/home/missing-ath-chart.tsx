@@ -484,7 +484,14 @@ export default function MissingAthChart({
 				}}
 				className='relative w-full h-full'
 			>
-				<svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className='w-full h-full'>
+				<svg
+					width={size}
+					height={size}
+					viewBox={`0 0 ${size} ${size}`}
+					className='w-full h-full'
+					role='img'
+					aria-label='Price chart visualization'
+				>
 					<defs>
 						{/* Gradients for candles */}
 						<linearGradient id={`fillGradient-${caseType}`} x1='0%' y1='0%' x2='0%' y2='100%'>

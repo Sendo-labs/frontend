@@ -263,7 +263,7 @@ export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalys
 						// Merge logic:
 						// - For 'append': add only truly new tokens at the end
 						// - For 'refresh': update existing + add new ones while preserving order
-						let mergedTokens;
+						let mergedTokens: any[];
 
 						if (mode === 'refresh') {
 							// Refresh mode: Update existing tokens with fresh data, add new ones

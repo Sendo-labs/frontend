@@ -65,7 +65,9 @@ export default function PluginDetailModal({ plugin, onClose, onDeploy }: PluginD
 												<Star
 													key={star}
 													className={`w-4 h-4 ${
-														star <= Math.floor(plugin.rating!) ? 'text-[#FFD700] fill-[#FFD700]' : 'text-foreground/20'
+														star <= Math.floor(plugin.rating ?? 0)
+															? 'text-[#FFD700] fill-[#FFD700]'
+															: 'text-foreground/20'
 													}`}
 												/>
 											))}
