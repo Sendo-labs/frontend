@@ -12,7 +12,6 @@ import TokenDistribution from '@/components/analyzer/token-distribution';
 import WalletInput from '@/components/analyzer/wallet-input';
 import WalletStatsGrid from '@/components/analyzer/wallet-stats-grid';
 import PageWrapper from '@/components/shared/page-wrapper';
-import { Button } from '@/components/ui/button';
 import { useWalletAnalysis } from '@/hooks/use-wallet-analysis';
 import { createPageUrl } from '@/lib/utils';
 
@@ -415,6 +414,7 @@ export default function AnalyzerPage() {
 				>
 					<Link href={createPageUrl('Leaderboard')}>
 						<button
+							type='button'
 							className='text-sm md:text-base bg-transparent border-none hover:opacity-80 transition-opacity flex items-center justify-center gap-2 mx-auto group cursor-pointer'
 							style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace' }}
 						>

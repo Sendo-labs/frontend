@@ -51,11 +51,7 @@ export function QueryBoundary({
  * @param {Function} props.resetErrorBoundary - The function to reset the error boundary
  * @param {string[]} props.queryKeys - The query keys to display
  */
-export function DefaultErrorFallback({
-	error,
-	resetErrorBoundary,
-	queryKeys = [],
-}: FallbackProps & { queryKeys?: string[] }) {
+export function DefaultErrorFallback({ error, resetErrorBoundary }: FallbackProps & { queryKeys?: string[] }) {
 	return (
 		<div className='p-6 rounded-lg border border-sendo-orange flex flex-col items-center justify-center space-y-4 text-center my-32'>
 			<AlertCircle className='text-destructive size-12' />

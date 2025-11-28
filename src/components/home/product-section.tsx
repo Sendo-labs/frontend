@@ -114,6 +114,7 @@ function PoweredByWidget({ className }: { className?: string }) {
 						paddingBottom: '15.31%',
 						height: 0,
 					}}
+					role='img'
 					aria-label='ElizaOS'
 				/>
 			</div>
@@ -536,7 +537,7 @@ function PainCardVisuals() {
 					ease: 'easeInOut',
 				}}
 			>
-				<svg width='41' height='22' viewBox='0 0 41 22' fill='none'>
+				<svg width='41' height='22' viewBox='0 0 41 22' fill='none' aria-hidden='true'>
 					<path d='M0 11 L41 11' stroke='url(#gradient-line)' strokeWidth='5' strokeLinecap='round' />
 					<defs>
 						<linearGradient id='gradient-line' x1='0%' y1='0%' x2='100%' y2='0%'>

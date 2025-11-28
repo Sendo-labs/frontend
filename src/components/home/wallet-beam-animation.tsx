@@ -3,13 +3,6 @@
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
-// Types pour les wallets
-interface WalletCard {
-	address: string;
-	balance: string;
-	loss: string;
-}
-
 // Génère des adresses de wallet aléatoires pour la démo
 function generateWalletAddress(): string {
 	const chars = '0123456789ABCDEF';
@@ -22,7 +15,6 @@ function generateWalletAddress(): string {
 
 // Génère du code lié à Sendo au lieu de code générique
 function generateSendoCode(width: number, height: number): string {
-	const _codeChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789(){}[]<>;:,._-+=!@#$%^&*|\\/"\'`~?';
 	const randInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 	const pick = (arr: string[]) => arr[randInt(0, arr.length - 1)];
 
@@ -64,10 +56,10 @@ function generateSendoCode(width: number, height: number): string {
 	];
 
 	const library: string[] = [];
-	sendoHeaders.forEach((l) => library.push(l));
-	sendoHelpers.forEach((l) => library.push(l));
-	sendoBlocks.forEach((l) => library.push(l));
-	sendoData.forEach((l) => library.push(l));
+	for (const l of sendoHeaders) library.push(l);
+	for (const l of sendoHelpers) library.push(l);
+	for (const l of sendoBlocks) library.push(l);
+	for (const l of sendoData) library.push(l);
 
 	for (let i = 0; i < 40; i++) {
 		const n1 = randInt(1, 9);
@@ -151,10 +143,17 @@ export default function WalletBeamAnimation() {
 				return;
 			}
 
-			const container = containerRef.current!;
-			const cardLine = cardLineRef.current!;
-			const particleCanvas = particleCanvasRef.current!;
-			const scannerCanvas = scannerCanvasRef.current!;
+			const containerEl = containerRef.current;
+			const cardLineEl = cardLineRef.current;
+			const particleCanvasEl = particleCanvasRef.current;
+			const scannerCanvasEl = scannerCanvasRef.current;
+			if (!containerEl || !cardLineEl || !particleCanvasEl || !scannerCanvasEl) return;
+
+			// Store validated refs in const variables that TypeScript knows are non-null
+			const container = containerEl;
+			const cardLine = cardLineEl;
+			const particleCanvas = particleCanvasEl;
+			const scannerCanvas = scannerCanvasEl;
 
 			// Card Stream Controller
 			class CardStreamController {
@@ -560,6 +559,7 @@ export default function WalletBeamAnimation() {
 					const canvas = document.createElement('canvas');
 					canvas.width = 100;
 					canvas.height = 100;
+					// biome-ignore lint/style/noNonNullAssertion: Canvas just created, context always exists
 					const ctx = canvas.getContext('2d')!;
 
 					const half = canvas.width / 2;
@@ -720,6 +720,7 @@ export default function WalletBeamAnimation() {
 
 				constructor() {
 					this.canvas = scannerCanvas;
+					// biome-ignore lint/style/noNonNullAssertion: Canvas ref validated at function start
 					this.ctx = scannerCanvas.getContext('2d')!;
 					this.w = document.documentElement.clientWidth;
 					this.lightBarX = this.w / 2;
@@ -753,6 +754,7 @@ export default function WalletBeamAnimation() {
 
 				createGradientCache() {
 					this.gradientCanvas = document.createElement('canvas');
+					// biome-ignore lint/style/noNonNullAssertion: Canvas just created, context always exists
 					this.gradientCtx = this.gradientCanvas.getContext('2d')!;
 					this.gradientCanvas.width = 16;
 					this.gradientCanvas.height = 16;
@@ -1021,29 +1023,32 @@ export default function WalletBeamAnimation() {
 				}
 			}
 
-			// Initialiser les systèmes
+			// Initialize the systems
 			cardControllerRef.current = new CardStreamController();
 			particleSystemRef.current = new ParticleSystem();
 			scannerRef.current = new ParticleScanner();
 
-			// Intersection Observer pour pauser les animations quand hors écran
-			const observer = new IntersectionObserver((entries) => {
-				entries.forEach(entry => {
-					const isVisible = entry.isIntersecting;
-					
-					if (cardControllerRef.current) {
-						cardControllerRef.current.isAnimating = isVisible;
-					}
-					
-					// Note: ParticleSystem ne supporte pas pause/resume simplement, 
-					// mais on pourrait ajouter un flag si nécessaire.
-					// Pour l'instant on pause le scanner qui est le plus lourd.
-					if (scannerRef.current) {
-						scannerRef.current.isAnimating = isVisible;
-					}
-				});
-			}, { threshold: 0 });
-			
+			// Intersection Observer to pause the animations when off screen
+			const observer = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((entry) => {
+						const isVisible = entry.isIntersecting;
+
+						if (cardControllerRef.current) {
+							cardControllerRef.current.isAnimating = isVisible;
+						}
+
+						// Note: ParticleSystem doesn't support pause/resume simply,
+						// but we could add a flag if necessary.
+						// For now we pause the scanner which is the heaviest.
+						if (scannerRef.current) {
+							scannerRef.current.isAnimating = isVisible;
+						}
+					});
+				},
+				{ threshold: 0 },
+			);
+
 			if (container) {
 				observer.observe(container);
 			}
@@ -1054,7 +1059,7 @@ export default function WalletBeamAnimation() {
 				}
 			};
 
-			// Ajouter les styles CSS dynamiquement
+			// Add dynamically the CSS styles
 			const style = document.createElement('style');
 			style.textContent = `
 				@keyframes scanEffect {
@@ -1096,7 +1101,7 @@ export default function WalletBeamAnimation() {
 			document.head.appendChild(style);
 		};
 
-		// Charger Three.js puis initialiser
+		// Load Three.js then initialize
 		loadThreeJS().then((THREE) => {
 			if (THREE) {
 				initializeAnimation(THREE);
@@ -1128,7 +1133,7 @@ export default function WalletBeamAnimation() {
 			transition={{
 				duration: 0.8,
 				ease: [0.25, 0.1, 0.25, 1],
-				delay: 0.2, // Légèrement après la navbar pour un effet en cascade
+				delay: 0.2, // Slightly after the navbar for a cascading effect
 			}}
 			style={{
 				position: 'absolute',

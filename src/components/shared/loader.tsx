@@ -1,14 +1,13 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
 export default function Loader({
-	text,
 	blur = false,
 	onFadeStart,
 	onComplete,
 }: {
-	text?: string;
 	blur?: boolean;
 	onFadeStart?: () => void;
 	onComplete?: () => void;
@@ -17,7 +16,7 @@ export default function Loader({
 	const [isFadingOut, setIsFadingOut] = useState(false);
 	const animationDuration = 1500; // 1.5 secondes
 	const fadeOutDuration = 500; // 0.5 secondes pour le fade out
-	const hasStartedRef = useRef(false);
+	const _hasStartedRef = useRef(false);
 	const callbacksRef = useRef({ onFadeStart, onComplete });
 
 	// Mettre à jour les callbacks sans relancer l'effet
@@ -112,7 +111,7 @@ export default function Loader({
 	);
 }
 
-export function FullScreenLoader({ text, blur = false }: { text?: string; blur?: boolean }) {
+export function FullScreenLoader({ blur = false }: { blur?: boolean }) {
 	return (
 		<div
 			className={`fixed top-0 left-0 h-[100vh] w-full flex items-center justify-center z-50 ${blur ? 'backdrop-blur-sm bg-background/30' : 'bg-background'}`}
@@ -121,10 +120,12 @@ export function FullScreenLoader({ text, blur = false }: { text?: string; blur?:
 				<div className='relative mx-auto w-40 h-16'>
 					{/* Background logo (grisé) */}
 					<div className='absolute inset-0 opacity-20'>
-						<img
+						<Image
 							src='https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/6ee61bcb6_SENDO_white2x.png'
 							alt='SENDO'
-							className='w-full h-full object-contain'
+							fill
+							className='object-contain'
+							unoptimized
 						/>
 					</div>
 

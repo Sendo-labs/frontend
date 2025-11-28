@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { ArrowRight, Download, MessageCircle, Send, Share2, Skull, TrendingDown, Twitter, Zap } from 'lucide-react';
-import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -312,6 +311,7 @@ export default function ResultHeroCard({ result, isProcessing = false }: ResultH
 
 						<div className='opacity-50 cursor-not-allowed'>
 							<button
+								type='button'
 								disabled={true}
 								className='arc-raiders-pill-button text-sm md:text-base'
 								style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace' }}

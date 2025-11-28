@@ -106,9 +106,11 @@ export function InfoModal({
 	return (
 		<AnimatePresence>
 			{open && (
+				// biome-ignore lint/a11y/noStaticElementInteractions: Modal overlay needs click handler to close
 				<div
 					className='fixed inset-0 backdrop-blur-sm z-50 flex items-center justify-center p-4'
 					onClick={handleOverlayClick}
+					onKeyDown={(e) => e.key === 'Escape' && closable && onClose()}
 				>
 					<motion.div
 						initial={{ opacity: 0, scale: 0.95, y: 20 }}

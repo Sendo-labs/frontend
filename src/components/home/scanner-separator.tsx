@@ -9,8 +9,8 @@ export default function ScannerSeparator() {
 			<span>WALLET ADDRESS 0x3597...C8A1</span>
 			<span>MISSED ATH $229k</span>
 			<span>BALANCE 70.16 SOL</span>
-			<span>// SENDO WALLET SCANNER • ANALYZING ON-CHAIN DATA</span>
-			<span>/* SCAN EFFECT • BURNING WALLET DATA */</span>
+			<span>{'// SENDO WALLET SCANNER • ANALYZING ON-CHAIN DATA'}</span>
+			<span>{'/* SCAN EFFECT • BURNING WALLET DATA */'}</span>
 			<span>const SCAN_WIDTH = 8; const BURN_INTENSITY = 0.85;</span>
 		</>
 	);
