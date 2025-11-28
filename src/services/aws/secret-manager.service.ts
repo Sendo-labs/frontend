@@ -1,4 +1,3 @@
-import { getAwsProfile } from '@/lib/aws/profile';
 import {
 	CreateSecretCommand,
 	DeleteSecretCommand,
@@ -15,6 +14,7 @@ import {
 	UpdateSecretCommand,
 } from '@aws-sdk/client-secrets-manager';
 import { fromSSO } from '@aws-sdk/credential-provider-sso';
+import { getAwsProfile } from '@/lib/aws/profile';
 
 export class SecretManagerError extends Error {
 	constructor(message: string) {

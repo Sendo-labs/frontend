@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Users, TrendingDown, DollarSign, Wallet } from 'lucide-react';
+import { DollarSign, TrendingDown, Users, Wallet } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface Stat {
 	icon: React.ComponentType<{ className?: string }>;
@@ -67,7 +67,8 @@ export default function StatisticsSection() {
 				<motion.h2
 					initial={{ opacity: 0, y: 30 }}
 					whileInView={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.8 }}
+					transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+					style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 					className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-2 sm:mb-3 md:mb-4 text-foreground title-font'
 				>
 					THE{' '}
@@ -79,7 +80,8 @@ export default function StatisticsSection() {
 				<motion.p
 					initial={{ opacity: 0, y: 20 }}
 					whileInView={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.2, duration: 0.8 }}
+					transition={{ delay: 0.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+					style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 					className='text-xs sm:text-sm md:text-base lg:text-lg text-foreground/60 text-center mb-6 sm:mb-8 md:mb-12'
 				>
 					Collective pain measured in real numbers
@@ -91,7 +93,8 @@ export default function StatisticsSection() {
 							key={index}
 							initial={{ opacity: 0, scale: 0.8 }}
 							whileInView={{ opacity: 1, scale: 1 }}
-							transition={{ delay: index * 0.1, duration: 0.6 }}
+							transition={{ delay: index * 0.1, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+							style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 							className='relative group'
 						>
 							<div className='bg-foreground/5 border border-foreground/10 p-3 sm:p-4 md:p-6 hover:bg-foreground/10 hover:border-sendo-orange/50 transition-all duration-300 h-full'>
@@ -117,7 +120,8 @@ export default function StatisticsSection() {
 				<motion.div
 					initial={{ opacity: 0, y: 30 }}
 					whileInView={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.6, duration: 0.8 }}
+					transition={{ delay: 0.6, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+					style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 					className='mt-6 sm:mt-8 md:mt-12 text-center px-4'
 				>
 					<p className='text-foreground/40 text-xs sm:text-sm md:text-base italic'>

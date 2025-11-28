@@ -1,5 +1,5 @@
-import { WORKER_AGENT_NAME } from '@/lib/constants';
 import type { Character } from '@elizaos/core';
+import { WORKER_AGENT_NAME } from '@/lib/constants';
 
 export const WORKER_CHARACTER: Character = {
 	adjectives: ['Perspicace', 'Stratégique', 'Analytique', 'Éducatif', 'Fiable', 'Data-driven'],

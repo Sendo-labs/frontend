@@ -1,15 +1,13 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
+import { Bot, Crown, Flame, Plug, Zap } from 'lucide-react';
+import { useState } from 'react';
+import ConfigurePluginModal from '@/components/marketplace/configure-plugin-modal';
 import PluginCard from '@/components/marketplace/plugin-card';
 import PluginDetailModal from '@/components/marketplace/plugin-detail-modal';
-import ConfigurePluginModal from '@/components/marketplace/configure-plugin-modal';
 import { InfoModal } from '@/components/shared/info-modal';
-import { useState } from 'react';
-import { Flame, Crown, Zap, Bot, Plug } from 'lucide-react';
-import { PluginCategories } from '@/types/plugins';
-import { Plugin } from '@/types/plugins';
+import type { Plugin, PluginCategories } from '@/types/plugins';
 
 const PLUGINS: PluginCategories = {
 	sponsored: [

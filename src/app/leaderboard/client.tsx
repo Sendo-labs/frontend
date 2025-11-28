@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, TrendingDown, Crown, Skull } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import PageWrapper from '@/components/shared/page-wrapper';
-import { getShameLeaderboard, getFameLeaderboard } from '@/actions/analyzer/get';
 import type { LeaderboardEntry } from '@sendo-labs/plugin-sendo-analyser';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Crown, Skull, TrendingDown, Trophy } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { getFameLeaderboard, getShameLeaderboard } from '@/actions/analyzer/get';
+import PageWrapper from '@/components/shared/page-wrapper';
+import { Button } from '@/components/ui/button';
 
 interface LeaderboardData {
 	shame: LeaderboardEntry[];
@@ -92,6 +92,18 @@ export default function Leaderboard() {
 
 	return (
 		<PageWrapper>
+			{/* Scanner Background Effect */}
+			<div className='fixed inset-0 pointer-events-none z-0 opacity-20'>
+				<div
+					className='absolute inset-0'
+					style={{
+						backgroundImage:
+							'linear-gradient(rgba(242, 237, 231, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(242, 237, 231, 0.05) 1px, transparent 1px)',
+						backgroundSize: '40px 40px',
+					}}
+				/>
+			</div>
+
 			{/* Header */}
 			<motion.div
 				initial={{ opacity: 0, y: 30 }}
@@ -101,7 +113,7 @@ export default function Leaderboard() {
 			>
 				<h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 title-font'>
 					LEADER
-					<span className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
+					<span className='bg-gradient-to-r from-sendo-red to-sendo-dark-red bg-clip-text text-transparent'>
 						BOARD
 					</span>
 				</h1>
@@ -120,10 +132,10 @@ export default function Leaderboard() {
 				<button
 					type='button'
 					onClick={() => setActiveTab('shame')}
-					className={`flex-1 h-14 md:h-16 flex items-center justify-center gap-2 transition-all ${
+					className={`flex-1 h-14 md:h-16 flex items-center justify-center gap-2 transition-all border border-transparent ${
 						activeTab === 'shame'
-							? 'bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red'
-							: 'bg-foreground/5 hover:bg-foreground/10'
+							? 'bg-gradient-to-r from-sendo-red to-sendo-dark-red text-white'
+							: 'bg-black/40 border-white/10 hover:border-sendo-red/50 text-foreground/60'
 					}`}
 					style={{
 						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
@@ -137,10 +149,10 @@ export default function Leaderboard() {
 				<button
 					type='button'
 					onClick={() => setActiveTab('fame')}
-					className={`flex-1 h-14 md:h-16 flex items-center justify-center gap-2 transition-all ${
+					className={`flex-1 h-14 md:h-16 flex items-center justify-center gap-2 transition-all border border-transparent ${
 						activeTab === 'fame'
-							? 'bg-gradient-to-r from-sendo-green to-sendo-green/80'
-							: 'bg-foreground/5 hover:bg-foreground/10'
+							? 'bg-gradient-to-r from-sendo-green to-sendo-green/80 text-black'
+							: 'bg-black/40 border-white/10 hover:border-sendo-green/50 text-foreground/60'
 					}`}
 					style={{
 						clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
@@ -148,11 +160,7 @@ export default function Leaderboard() {
 					}}
 				>
 					<Trophy className='w-5 h-5 md:w-6 md:h-6' />
-					<span
-						className={`text-sm md:text-base font-bold uppercase title-font ${activeTab === 'fame' ? 'text-black' : ''}`}
-					>
-						HALL OF FAME
-					</span>
+					<span className='text-sm md:text-base font-bold uppercase title-font'>HALL OF FAME</span>
 				</button>
 			</motion.div>
 
@@ -246,9 +254,9 @@ export default function Leaderboard() {
 							}}
 						>
 							<div
-								className='absolute inset-0 animate-fill-left-right bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red'
+								className='absolute inset-0 animate-fill-left-right bg-gradient-to-r from-sendo-red via-sendo-dark-red to-black'
 								style={{
-									filter: 'drop-shadow(0 0 15px rgba(255, 90, 31, 0.6))',
+									filter: 'drop-shadow(0 0 15px rgba(255, 34, 59, 0.6))',
 								}}
 							/>
 						</div>
@@ -294,7 +302,7 @@ export default function Leaderboard() {
 														entry.badge === 'diamond'
 															? 'text-[#0052cc]'
 															: entry.badge === 'gold'
-																? 'text-[#cc9900]'
+																? 'text-white drop-shadow-md'
 																: entry.badge === 'silver'
 																	? 'text-[#888888]'
 																	: 'text-[#cc6600]'
@@ -359,15 +367,12 @@ export default function Leaderboard() {
 					{activeTab === 'shame' ? 'Think you can beat them? 💀' : 'Can you join the legends? 🏆'}
 				</p>
 				<Link href='/analyzer'>
-					<Button
-						className='bg-gradient-to-r from-sendo-orange via-sendo-red to-sendo-dark-red hover:shadow-lg hover:shadow-sendo-red/50 text-white h-12 md:h-14 px-6 md:px-8'
-						style={{
-							clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)',
-							borderRadius: 0,
-						}}
+					<button
+						className='arc-raiders-pill-button text-sm md:text-base'
+						style={{ fontFamily: 'var(--font-ibm-plex-sans), monospace' }}
 					>
-						<span className='text-sm md:text-base font-bold uppercase title-font'>ANALYZE YOUR WALLET</span>
-					</Button>
+						<span>ANALYZE YOUR WALLET</span>
+					</button>
 				</Link>
 			</motion.div>
 		</PageWrapper>

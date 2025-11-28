@@ -1,12 +1,12 @@
 'use server';
 
-import { withAction } from '@/lib/wrapper/with-action';
-import type { RecommendedAction, AnalysisResult } from '@sendo-labs/plugin-sendo-worker';
-import { WorkerClientService } from '@/services/worker-client.service';
-import { ElizaService } from '@/services/eliza.service';
+import type { AnalysisResult, RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
 import { getUserAgents } from '@/actions/agents/get';
 import { WORKER_AGENT_NAME } from '@/lib/constants';
 import { getWorkerAgentBaseUrl } from '@/lib/utils';
+import { withAction } from '@/lib/wrapper/with-action';
+import { ElizaService } from '@/services/eliza.service';
+import { WorkerClientService } from '@/services/worker-client.service';
 
 /**
  * Get all analyses for the worker agent

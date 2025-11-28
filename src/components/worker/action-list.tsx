@@ -1,13 +1,13 @@
 'use client';
 
-import { TrendingDown, DollarSign, AlertCircle, CheckCircle, Zap, Check, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import type { LucideIcon } from 'lucide-react';
 import type { RecommendedAction } from '@sendo-labs/plugin-sendo-worker';
-import { acceptWorkerActions, rejectWorkerActions } from '@/actions/worker/actions';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { QUERY_KEYS } from '@/lib/query-keys';
+import type { LucideIcon } from 'lucide-react';
+import { AlertCircle, Check, CheckCircle, DollarSign, TrendingDown, X, Zap } from 'lucide-react';
 import { toast } from 'sonner';
+import { acceptWorkerActions, rejectWorkerActions } from '@/actions/worker/actions';
+import { Button } from '@/components/ui/button';
+import { QUERY_KEYS } from '@/lib/query-keys';
 
 interface ActionListProps {
 	agentId: string | null;

@@ -3,9 +3,9 @@
  * Wraps the existing SSMParameterService to conform to the abstract interface
  */
 
-import type { IParameterStore, ParameterType, ParameterMetadata } from '@/interfaces/storage/iparameter-store';
-import { SSMParameterService } from '@/services/aws/ssm.service';
 import { ParameterType as AWSParameterType } from '@aws-sdk/client-ssm';
+import type { IParameterStore, ParameterMetadata, ParameterType } from '@/interfaces/storage/iparameter-store';
+import { SSMParameterService } from '@/services/aws/ssm.service';
 
 export class AWSParameterStoreAdapter implements IParameterStore {
 	private ssmService: SSMParameterService;
@@ -48,7 +48,7 @@ export class AWSParameterStoreAdapter implements IParameterStore {
 		try {
 			await this.ssmService.deleteParameter(parameterName);
 			return true;
-		} catch (error) {
+		} catch (_error) {
 			// SSM service already handles ParameterNotFound silently
 			return false;
 		}
@@ -60,14 +60,14 @@ export class AWSParameterStoreAdapter implements IParameterStore {
 
 	// ============= BATCH OPERATIONS =============
 
-	async getParametersByPath(path: string, recursive: boolean = false): Promise<Map<string, string>> {
+	async getParametersByPath(_path: string, _recursive: boolean = false): Promise<Map<string, string>> {
 		// Note: This would require adding a new method to SSMParameterService
 		// For now, we'll implement a basic version using getParameter
 		// In a full implementation, you'd use GetParametersByPathCommand
 		throw new Error('getParametersByPath not yet implemented. Add to SSMParameterService if needed.');
 	}
 
-	async deleteParametersByPath(path: string, recursive: boolean = false): Promise<number> {
+	async deleteParametersByPath(_path: string, _recursive: boolean = false): Promise<number> {
 		// Note: This would require batch deletion support in SSMParameterService
 		throw new Error('deleteParametersByPath not yet implemented. Add to SSMParameterService if needed.');
 	}
@@ -88,7 +88,7 @@ export class AWSParameterStoreAdapter implements IParameterStore {
 		};
 	}
 
-	async listParameters(path?: string, recursive: boolean = false): Promise<string[]> {
+	async listParameters(_path?: string, _recursive: boolean = false): Promise<string[]> {
 		// Note: This would require adding list functionality to SSMParameterService
 		// You'd use GetParametersByPathCommand with names only
 		throw new Error('listParameters not yet implemented. Add to SSMParameterService if needed.');

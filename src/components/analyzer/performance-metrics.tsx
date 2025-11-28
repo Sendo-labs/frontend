@@ -1,8 +1,7 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
-import { DollarSign, TrendingUp, Target, BarChart3 } from 'lucide-react';
+import { BarChart3, DollarSign, Target, TrendingUp } from 'lucide-react';
 import { CountUp } from '@/components/ui/count-up';
 
 interface PerformanceData {

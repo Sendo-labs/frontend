@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import type { AnalysisStatusResponse, AnalysisResultsResponse } from '@sendo-labs/plugin-sendo-analyser';
-import { startAnalysis, getAnalysisStatus, getAnalysisResults } from '@/actions/analyzer/get';
+import type { AnalysisResultsResponse, AnalysisStatusResponse } from '@sendo-labs/plugin-sendo-analyser';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import { getAnalysisResults, getAnalysisStatus, startAnalysis } from '@/actions/analyzer/get';
 
 const POLL_INTERVAL = 5000; // 5 seconds
 const PAGE_SIZE = 10; // Number of tokens to load per page
@@ -392,11 +392,11 @@ export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalys
 		} finally {
 			setIsStarting(false);
 		}
-	}, [walletAddress, startPolling, fetchResults]);
+	}, [walletAddress, startPolling, fetchResults, fetchStatus]);
 
 	// Next page
 	const nextPage = useCallback(() => {
-		if (results && results.pagination.hasMore) {
+		if (results?.pagination.hasMore) {
 			fetchResults(currentPage + 1, PAGE_SIZE, 'append');
 		}
 	}, [results, currentPage, fetchResults]);
@@ -411,7 +411,7 @@ export function useWalletAnalysis(walletAddress: string | null): UseWalletAnalys
 				toastIdRef.current = null;
 			}
 		};
-	}, [stopPolling, walletAddress]);
+	}, [stopPolling]);
 
 	// Auto-fetch status on mount if wallet address is provided
 	// Only runs ONCE per wallet address

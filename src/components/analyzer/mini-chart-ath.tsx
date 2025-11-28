@@ -1,9 +1,8 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { TrendingDown } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { CountUp } from '@/components/ui/count-up';
 
 interface ChartDataPoint {

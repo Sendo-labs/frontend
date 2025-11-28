@@ -1,16 +1,16 @@
 'use server';
 
-import { withAction } from '@/lib/wrapper/with-action';
 import type { Character } from '@elizaos/core';
-import { getUserSecret } from '../secrets/get';
-import { createUserSecret } from '../secrets/create';
-import { updateSecretTagsAction, updateUserSecret } from '../secrets/update';
-import type { UserSecrets } from '@/types/agent';
-import { getUserOpenRouterKey } from '../openrouter/get';
-import { createUserOpenRouterKey } from '../openrouter/create';
-import type { OpenRouterSecret } from '@/types/openrouter';
-import { sanitizeUserId } from '@/lib/utils';
 import { getWorkerAgentId } from '@/lib/agents/utils';
+import { sanitizeUserId } from '@/lib/utils';
+import { withAction } from '@/lib/wrapper/with-action';
+import type { UserSecrets } from '@/types/agent';
+import type { OpenRouterSecret } from '@/types/openrouter';
+import { createUserOpenRouterKey } from '../openrouter/create';
+import { getUserOpenRouterKey } from '../openrouter/get';
+import { createUserSecret } from '../secrets/create';
+import { getUserSecret } from '../secrets/get';
+import { updateSecretTagsAction, updateUserSecret } from '../secrets/update';
 
 /**
  * Create a new agent by uploading the new character on the user secret (secret manager).
@@ -77,7 +77,7 @@ export async function createAgent(character: Character) {
 			return;
 		}
 		userSecretValue = userSecret.data;
-		const nbAgent = (userSecret.data.NbAgent ? parseInt(userSecret.data.NbAgent) : 0) + 1;
+		const nbAgent = (userSecret.data.NbAgent ? parseInt(userSecret.data.NbAgent, 10) : 0) + 1;
 		// Then, update the user secret with the new character
 		console.log('User secret found, updating with new character');
 		await updateUserSecret({

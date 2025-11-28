@@ -1,8 +1,7 @@
 'use client';
 
-import React from 'react';
-import { List } from 'lucide-react';
 import type { TokenAnalysisResult } from '@sendo-labs/plugin-sendo-analyser';
+import { List } from 'lucide-react';
 
 interface TokenAnalysisListProps {
 	tokens: TokenAnalysisResult[];
@@ -22,7 +21,7 @@ export default function TokenAnalysisList({ tokens, totalCount }: TokenAnalysisL
 
 			{/* Token List */}
 			<div className='space-y-3'>
-				{tokens.map((token, index) => {
+				{tokens.map((token, _index) => {
 					const totalVolumeUSD = Number(token.totalVolumeUSD);
 					const totalVolumeSOL = Number(token.totalVolumeSOL);
 					const totalGainLoss = Number(token.totalGainLoss); // Sum of percentages

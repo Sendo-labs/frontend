@@ -1,10 +1,10 @@
 'use server';
 
-import { withAction } from '@/lib/wrapper/with-action';
 import { getAnalyserOpenRouterApiKey } from '@/actions/openrouter/get';
-import { ElizaService } from '@/services/eliza.service';
-import { AnalysisClientService } from '@/services/analysis-client.service';
 import { ANALYSER_BASE_URL } from '@/lib/constants';
+import { withAction } from '@/lib/wrapper/with-action';
+import { AnalysisClientService } from '@/services/analysis-client.service';
+import { ElizaService } from '@/services/eliza.service';
 
 /**
  * Start async wallet analysis

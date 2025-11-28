@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import { Geist } from 'next/font/google';
-import { IBM_Plex_Mono } from 'next/font/google';
+import { Geist, IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
 import './globals.css';
-import Navigation from '@/components/navigation';
 import AgentChat from '@/components/agent-chat';
+import Navigation from '@/components/navigation';
+import CustomCursor from '@/components/ui/custom-cursor';
 import { GlobalProviders } from '@/lib/providers';
 
 const geistSans = Geist({
@@ -13,6 +13,12 @@ const geistSans = Geist({
 
 const ibmPlexMono = IBM_Plex_Mono({
 	variable: '--font-ibm-plex-mono',
+	subsets: ['latin'],
+	weight: ['400', '500', '600', '700'],
+});
+
+const ibmPlexSans = IBM_Plex_Sans({
+	variable: '--font-ibm-plex-sans',
 	subsets: ['latin'],
 	weight: ['400', '500', '600', '700'],
 });
@@ -28,17 +34,9 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang='en'>
+		<html lang='en' className='bg-background' suppressHydrationWarning>
 			<head>
 				<style>{`
-          @font-face {
-            font-family: 'TECHNOS';
-            src: url('https://cdn.prod.website-files.com/61b3737273405dd7b65eec4c/68e3cd8726651e5fccb99f93_Technos-PKDZP.otf') format('opentype');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-          }
-
           /* IBM Plex Mono for digits only via unicode-range */
           @font-face {
             font-family: 'IBM Plex Mono Digits';
@@ -51,9 +49,11 @@ export default function RootLayout({
         `}</style>
 			</head>
 			<body
-				className={`${geistSans.variable} ${ibmPlexMono.variable} antialiased bg-background text-foreground min-h-screen`}
+				className={`${geistSans.variable} ${ibmPlexMono.variable} ${ibmPlexSans.variable} antialiased bg-background text-foreground min-h-screen`}
+				suppressHydrationWarning
 			>
 				<GlobalProviders>
+					<CustomCursor />
 					<Navigation />
 					<AgentChat />
 					{children}

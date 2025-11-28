@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import type { LeaderboardEntry } from '@sendo-labs/plugin-sendo-analyser';
 import { motion } from 'framer-motion';
 import { Crown } from 'lucide-react';
-import { createPageUrl } from '@/lib/utils';
-import WalletInput from '@/components/analyzer/wallet-input';
+import { useEffect, useState } from 'react';
 import { getShameLeaderboard } from '@/actions/analyzer/get';
-import type { LeaderboardEntry } from '@sendo-labs/plugin-sendo-analyser';
+import WalletInput from '@/components/analyzer/wallet-input';
+import { createPageUrl } from '@/lib/utils';
 
 export default function HeroSection() {
 	const [topLoosers, setTopLoosers] = useState<LeaderboardEntry[]>([]);
@@ -74,7 +74,8 @@ export default function HeroSection() {
 				<motion.h1
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.7, duration: 0.8 }}
+					transition={{ delay: 0.7, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+					style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 					className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-3 sm:mb-4 md:mb-6 text-foreground title-font'
 				>
 					HOW MUCH DID
@@ -87,7 +88,8 @@ export default function HeroSection() {
 				<motion.p
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.9, duration: 0.8 }}
+					transition={{ delay: 0.9, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+					style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 					className='text-sm sm:text-base md:text-lg lg:text-xl text-foreground/80 mb-4 sm:mb-6 md:mb-8 font-light'
 				>
 					Stop bagholding. Custom AI agents will catch the next ATH for you.
@@ -97,7 +99,8 @@ export default function HeroSection() {
 				<motion.div
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 1.1, duration: 0.8 }}
+					transition={{ delay: 1.1, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+					style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 					className='max-w-2xl mx-auto'
 				>
 					<WalletInput onAnalyze={handleAnalyze} isAnalyzing={false} />
@@ -106,7 +109,8 @@ export default function HeroSection() {
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: 1.3, duration: 0.8 }}
+						transition={{ delay: 1.3, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+						style={{ willChange: 'opacity, transform', transform: 'translateZ(0)' }}
 						className='mt-4 sm:mt-6 md:mt-8'
 					>
 						<div className='flex items-center justify-center gap-2 mb-3 sm:mb-4'>

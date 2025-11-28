@@ -44,13 +44,14 @@
 	--color-sendo-red: var(--sendo-red);
 	--color-sendo-dark-red: var(--sendo-dark-red);
 	--color-sendo-green: var(--sendo-green);
+	--color-sendo-gray: var(--sendo-gray);
 }
 
 :root {
 	--radius: 0rem; /* Sharp corners for SENDO design */
 
 	/* SENDO Dark Theme - OKLCH version */
-	--background: oklch(0.1591 0 0); /* #0D0D0D */
+	--background: oklch(0 0 0); /* #000 */
 	--foreground: oklch(0.9483 0.0097 72.66); /* #F2EDE7 */
 	--card: oklch(12% 0.01 270); /* Slightly lighter than background */
 	--card-foreground: oklch(0.9483 0.0097 72.66);
@@ -94,10 +95,11 @@
 	--sendo-red: oklch(0.6404 0.2452 23.56); /* #FF223B */
 	--sendo-dark-red: oklch(0.2717 0.0915 20.01); /* #4A0C13 */
 	--sendo-green: oklch(0.8441 0.1991 156.83); /* #14F195 */
+	--sendo-gray: #595959;
 }
 
 .dark {
-	--background: oklch(0.1591 0 0);
+	--background: oklch(0 0 0); /* #000 */
 	--foreground: oklch(0.9483 0.0097 72.66);
 	--card: oklch(12% 0.01 270);
 	--card-foreground: oklch(0.9483 0.0097 72.66);
@@ -136,11 +138,27 @@
 	--sendo-red: oklch(0.6404 0.2452 23.56); /* #FF223B */
 	--sendo-dark-red: oklch(0.2717 0.0915 20.01); /* #4A0C13 */
 	--sendo-green: oklch(0.8441 0.1991 156.83); /* #14F195 */
+	--sendo-gray: #595959;
 }
 
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
+		cursor: none !important; /* Hide default OS cursor - custom cursor used instead */
+	}
+
+	/* Force cursor: none on all interactive elements */
+	button,
+	a,
+	input,
+	textarea,
+	select,
+	[role="button"] {
+		cursor: none !important;
+	}
+	html {
+		@apply bg-background;
+		scroll-behavior: smooth;
 	}
 	body {
 		@apply bg-background text-foreground;
@@ -162,8 +180,9 @@
 }
 
 .title-font {
-	font-family: "IBM Plex Mono Digits", "TECHNOS", sans-serif;
+	font-family: "IBM Plex Mono Digits", var(--font-ibm-plex-sans), sans-serif;
 	letter-spacing: 0.1em;
+	text-transform: uppercase;
 }
 
 /* Annuler l'espacement pour les très gros titres h1 uniquement */
@@ -190,6 +209,282 @@ h1.title-font {
 	}
 }
 
+/* Terminal cursor blink animation */
+@keyframes terminal-blink {
+	0%,
+	50% {
+		opacity: 1;
+	}
+	51%,
+	100% {
+		opacity: 0;
+	}
+}
+
+.terminal-cursor {
+	animation: terminal-blink 1s step-end infinite;
+}
+
+/* Hide scrollbar but keep scrolling functionality */
+.hide-scrollbar {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+	display: none; /* Chrome, Safari, Opera */
+}
+
+/* Global Scrollbar Styling (Desktop Only) */
+@media (min-width: 768px) {
+	::-webkit-scrollbar {
+		width: 12px;
+	}
+
+	::-webkit-scrollbar-track {
+		background: var(--background);
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: linear-gradient(to bottom, var(--sendo-dark-red), var(--sendo-red));
+		border-radius: 9999px;
+		border: 3px solid var(--background); /* Légèrement plus fin visuellement grâce au border plus large */
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background: var(--sendo-red);
+		border: 2px solid var(--background); /* Grossit légèrement au survol */
+	}
+}
+
 .animate-fill-left-right {
 	animation: fill-left-right 1.5s ease-in-out infinite;
+}
+
+/* Animation skeleton shimmer */
+@keyframes skeleton-shimmer {
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: translateX(100%);
+	}
+}
+
+.animate-skeleton-shimmer {
+	animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+/* Animation skeleton breathing - effet de respiration */
+@keyframes skeleton-breathing {
+	0%,
+	100% {
+		opacity: 0.3;
+	}
+	50% {
+		opacity: 0.8;
+	}
+}
+
+.animate-skeleton-breathing {
+	animation: skeleton-breathing 2s ease-in-out infinite;
+}
+
+/* Animation skeleton loading - remplissage progressif */
+@keyframes skeleton-loading {
+	0% {
+		clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+	}
+	100% {
+		clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+	}
+}
+
+.animate-skeleton-loading {
+	animation: skeleton-loading 1.5s ease-in-out;
+}
+
+/* Animations pour le glow rotatif */
+@keyframes spin-slow {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes spin-reverse-slow {
+	from {
+		transform: rotate(360deg);
+	}
+	to {
+		transform: rotate(0deg);
+	}
+}
+
+.animate-spin-slow {
+	animation: spin-slow 3s linear infinite;
+}
+
+.animate-spin-reverse-slow {
+	animation: spin-reverse-slow 4s linear infinite;
+}
+
+/* Animation pour le glow qui fait le tour du bouton - Style CodePen adapté Sendo */
+.sendo-glow-button {
+	--outer-offset: 4px;
+	--ring-width: 3px;
+	--easing: 0.3s ease;
+	--btn-blur: 8px;
+
+	position: relative;
+	border: 2px solid #ff223b;
+	overflow: visible;
+	background: transparent;
+}
+
+.sendo-glow-button::before {
+	content: "";
+	position: absolute;
+	inset: calc(-1 * var(--outer-offset));
+	z-index: -1;
+
+	/* Gradient avec couleurs Sendo (rouge/orange) */
+	background: linear-gradient(
+		160deg,
+		#ffffff00 0%,
+		#ff223b 15%,
+		#ff6b00 20%,
+		#ff223b 25%,
+		#ffffff00 35%,
+		#ffffff00 40%,
+		#ff223b 55%,
+		#ff6b00 60%,
+		#ff223b 65%,
+		#ffffff00 75%,
+		#ffffff00 80%,
+		#ff223b 95%,
+		#ff6b00 100%
+	);
+	background-size: 300% 300%;
+	filter: blur(var(--btn-blur));
+	opacity: 1;
+	animation: sendo-gradient-move 3s linear infinite;
+	pointer-events: none;
+}
+
+.sendo-glow-button::after {
+	content: "";
+	position: absolute;
+	inset: calc(-1 * var(--outer-offset) + var(--ring-width));
+	z-index: -1;
+	background: var(--background, #000);
+	pointer-events: none;
+}
+
+@keyframes sendo-gradient-move {
+	0% {
+		background-position: 15% 15%;
+	}
+	100% {
+		background-position: 75% 75%;
+	}
+}
+
+/* Arc Raiders Pill Button */
+.arc-raiders-pill-button {
+	position: relative;
+	background-color: rgba(0, 0, 0, 0.8);
+	color: #ffffff;
+	border: 0 none;
+	cursor: pointer;
+	white-space: nowrap;
+	text-transform: uppercase;
+	transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	overflow: visible;
+	border-radius: 500px;
+	padding: 1rem 2rem;
+	font-weight: bold;
+	z-index: 1;
+}
+
+.arc-raiders-pill-button .arrow {
+	display: inline-block;
+	transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+	font-size: 0.9em;
+	line-height: 1;
+}
+
+.arc-raiders-pill-button:hover {
+	transform: scale(1.05);
+}
+
+.arc-raiders-pill-button:hover .arrow {
+	transform: translateX(4px);
+}
+
+.arc-raiders-pill-button:active {
+	transform: scale(0.98);
+}
+
+/* Fine gradient border glow - visible en permanence avec couleurs Sendo (cohérent avec les cartes) */
+.arc-raiders-pill-button::before {
+	content: "";
+	position: absolute;
+	inset: -1.5px;
+	z-index: -2;
+	background: linear-gradient(
+		160deg,
+		#ffffff00 0%,
+		#ffffff 10%,
+		#ff223b 15%,
+		#ff6b00 20%,
+		#ff223b 25%,
+		#ffffff00 35%,
+		#ffffff00 40%,
+		#ffffff 48%,
+		#ff223b 55%,
+		#ff6b00 60%,
+		#ff223b 65%,
+		#ffffff00 75%,
+		#ffffff00 80%,
+		#ffffff 88%,
+		#ff223b 95%,
+		#ff6b00 100%
+	);
+	background-size: 300% 300%;
+	filter: blur(1px);
+	border-radius: inherit;
+	opacity: 1;
+	transition: filter 0.4s ease;
+	animation: arc-raiders-gradient-move 3s linear infinite;
+	pointer-events: none;
+}
+
+/* Mask layer to create fine border-only glow effect */
+.arc-raiders-pill-button::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background: rgba(0, 0, 0, 0.85);
+	border-radius: inherit;
+	pointer-events: none;
+}
+
+.arc-raiders-pill-button:hover::before {
+	filter: blur(1.5px);
+}
+
+@keyframes arc-raiders-gradient-move {
+	0% {
+		background-position: 15% 15%;
+	}
+	100% {
+		background-position: 75% 75%;
+	}
 }

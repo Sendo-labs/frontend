@@ -1,6 +1,6 @@
 'use client';
 
-import { Link, CheckCircle, Plus, X } from 'lucide-react';
+import { CheckCircle, Link, Plus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface Connections {

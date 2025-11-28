@@ -1,11 +1,11 @@
 'use client';
 
-import { FullScreenLoader } from '@/components/shared/loader';
-import { Button } from '@/components/ui/button';
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { AlertCircle, RefreshCcw } from 'lucide-react';
 import * as React from 'react';
 import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
+import { FullScreenLoader } from '@/components/shared/loader';
+import { Button } from '@/components/ui/button';
 
 interface QueryBoundaryProps {
 	children: React.ReactNode;

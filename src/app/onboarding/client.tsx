@@ -1,10 +1,9 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
-import { Github, MessageCircle, Trophy, Coins, Code, Users, Zap, ExternalLink } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Code, Coins, ExternalLink, Github, MessageCircle, Trophy, Users, Zap } from 'lucide-react';
 import PageWrapper from '@/components/shared/page-wrapper';
+import { Button } from '@/components/ui/button';
 import { SOCIAL_LINKS } from '@/lib/constants';
 
 export default function Onboarding() {

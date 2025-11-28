@@ -1,4 +1,3 @@
-import { getAwsProfile } from '@/lib/aws/profile';
 import {
 	DeleteParameterCommand,
 	GetParameterCommand,
@@ -9,6 +8,7 @@ import {
 	SSMServiceException,
 } from '@aws-sdk/client-ssm';
 import { fromSSO } from '@aws-sdk/credential-provider-sso';
+import { getAwsProfile } from '@/lib/aws/profile';
 
 export class SSMParameterServiceError extends Error {
 	constructor(message: string) {
