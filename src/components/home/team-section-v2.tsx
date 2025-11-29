@@ -40,7 +40,7 @@ const team: TeamMember[] = [
 		role: 'UX/UI Designer',
 		image:
 			'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/68de5637652a326681f5a5a3/039ae2e84_u9457137444_Cinematic_anime_concept_art_portrait_of_a_mysteri_f89ed810-e4e4-48cf-baec-15bff380b5f1_1.png',
-		socials: { twitter: 'https://x.com/0xCanet'},
+		socials: { twitter: 'https://x.com/0xCanet', github: 'https://github.com/0xCanet' },
 	},
 ];
 
@@ -110,7 +110,7 @@ export default function TeamSectionV2() {
 									{member.socials.twitter && (
 										<a
 											href={member.socials.twitter}
-											target="_blank"
+											target='_blank'
 											className='w-12 h-12 bg-white/10 border border-white/20 rounded-full flex items-center justify-center hover:bg-sendo-red hover:border-sendo-red hover:scale-110 transition-all duration-300 group/icon'
 										>
 											<X className='w-5 h-5 text-white group-hover/icon:text-white' />
@@ -119,7 +119,7 @@ export default function TeamSectionV2() {
 									{member.socials.github && (
 										<a
 											href={member.socials.github}
-											target="_blank"
+											target='_blank'
 											className='w-12 h-12 bg-white/10 border border-white/20 rounded-full flex items-center justify-center hover:bg-sendo-red hover:border-sendo-red hover:scale-110 transition-all duration-300 group/icon'
 										>
 											<Github className='w-5 h-5 text-white group-hover/icon:text-white' />
@@ -128,7 +128,7 @@ export default function TeamSectionV2() {
 									{member.socials.linkedin && (
 										<a
 											href={member.socials.linkedin}
-											target="_blank"
+											target='_blank'
 											className='w-12 h-12 bg-white/10 border border-white/20 rounded-full flex items-center justify-center hover:bg-sendo-red hover:border-sendo-red hover:scale-110 transition-all duration-300 group/icon'
 										>
 											<Linkedin className='w-5 h-5 text-white group-hover/icon:text-white' />
