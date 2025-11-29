@@ -257,6 +257,24 @@ h1.title-font {
 	}
 }
 
+/* Fine Scrollbar Utility Class */
+.scrollbar-fine::-webkit-scrollbar {
+	width: 3px;
+}
+
+.scrollbar-fine::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.scrollbar-fine::-webkit-scrollbar-thumb {
+	background: var(--sendo-red);
+	border-radius: 9999px;
+}
+
+.scrollbar-fine::-webkit-scrollbar-thumb:hover {
+	background: var(--sendo-orange);
+}
+
 .animate-fill-left-right {
 	animation: fill-left-right 1.5s ease-in-out infinite;
 }

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { ArrowUp, Mail, X } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { SOCIAL_LINKS } from '@/lib/constants';
 
 const socialPlatforms = [
@@ -170,13 +171,22 @@ export default function Footer() {
 						<h4 className='text-white font-bold uppercase tracking-wider mb-6 text-sm'>Legal</h4>
 						<ul className='space-y-4 text-sm text-[#D0D0D0] font-mono'>
 							<li>
-								<span className='hover:text-white transition-colors cursor-pointer'>Terms of Service</span>
+								<Link href='/terms-of-service' className='hover:text-sendo-red transition-colors flex items-center gap-2 group'>
+									<span className='w-1 h-1 bg-sendo-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity' />{' '}
+									Terms of Service
+								</Link>
 							</li>
 							<li>
-								<span className='hover:text-white transition-colors cursor-pointer'>Privacy Policy</span>
+								<Link href='/privacy-policy' className='hover:text-sendo-red transition-colors flex items-center gap-2 group'>
+									<span className='w-1 h-1 bg-sendo-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity' />{' '}
+									Privacy Policy
+								</Link>
 							</li>
 							<li>
-								<span className='hover:text-white transition-colors cursor-pointer'>Cookie Policy</span>
+								<Link href='/cookie-policy' className='hover:text-sendo-red transition-colors flex items-center gap-2 group'>
+									<span className='w-1 h-1 bg-sendo-red rounded-full opacity-0 group-hover:opacity-100 transition-opacity' />{' '}
+									Cookie Policy
+								</Link>
 							</li>
 						</ul>
 					</div>
